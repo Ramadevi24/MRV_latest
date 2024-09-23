@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 //Import Icons
 import FeatherIcon from "feather-icons-react";
 
-import { getUserDeviceChartsData } from "../../slices/thunks";
+// import { getUserDeviceChartsData } from "../../slices/thunks";
 
 import { UsersByDeviceCharts } from './DashboardAnalyticsCharts';
 import { createSelector } from 'reselect';
@@ -31,12 +31,12 @@ const UsersByDevice = () => {
     const [seletedMonth, setSeletedMonth] = useState("today");
     const onChangeChartPeriod = pType => {
         setSeletedMonth(pType);
-        dispatch(getUserDeviceChartsData(pType));
+        // dispatch(getUserDeviceChartsData(pType));
     };
 
-    useEffect(() => {
-        dispatch(getUserDeviceChartsData("today"));
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(getUserDeviceChartsData("today"));
+    // }, [dispatch]);
 
     return (
         <React.Fragment>

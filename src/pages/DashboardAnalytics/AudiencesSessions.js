@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, Col, DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem } from 'reactstrap';
 import { useSelector, useDispatch } from "react-redux";
 import {AudiencesSessionsCharts} from './DashboardAnalyticsCharts';
-import { getAudiencesSessionsChartsData } from "../../slices/thunks";
+// import { getAudiencesSessionsChartsData } from "../../slices/thunks";
 import { createSelector } from 'reselect';
 
 const AudiencesSessions = () => {
@@ -24,12 +24,12 @@ const AudiencesSessions = () => {
     const [seletedMonth, setSeletedMonth] = useState("today");
     const onChangeChartPeriod = pType => {
         setSeletedMonth(pType);
-        dispatch(getAudiencesSessionsChartsData(pType));
+        // dispatch(getAudiencesSessionsChartsData(pType));
     };
 
-    useEffect(() => {
-        dispatch(getAudiencesSessionsChartsData("today"));
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(getAudiencesSessionsChartsData("today"));
+    // }, [dispatch]);
     return (
         <React.Fragment>
             <Col xl={6}>

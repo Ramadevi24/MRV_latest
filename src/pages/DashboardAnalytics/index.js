@@ -20,22 +20,7 @@ document.title="MRV_PROJECT";
             <div className="page-content">
                 <Container fluid>
                     <BreadCrumb title="Analytics" pageTitle="Dashboards" />
-                    <Row>
-                        <Col xxl={5}>
-                            <UpgradeAccountNotise />
-                            <Widget />
-                        </Col>
-                        <LiveUsers />
-                    </Row>
-                    <Row>
-                        <AudiencesMetrics />
-                        <AudiencesSessions />
-                    </Row>
-                    <Row>
-                        <UsersByDevice />
-                        <TopReferrals />
-                        <TopPages />
-                    </Row>
+                   <div>Dashboard</div>
                 </Container>
             </div>
         </React.Fragment>

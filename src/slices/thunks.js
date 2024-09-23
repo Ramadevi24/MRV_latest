@@ -8,7 +8,6 @@ export * from "./auth/forgetpwd/thunk";
 export * from "./auth/profile/thunk";
 
 // Dashboard Analytics
-export * from "./dashboardAnalytics/thunk";
 
 // API Key
 export * from "./apiKey/thunk";

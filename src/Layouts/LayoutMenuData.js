@@ -6,14 +6,8 @@ const Navdata = () => {
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
-
-  // Authentication
-  const [isSignIn, setIsSignIn] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [isPasswordReset, setIsPasswordReset] = useState(false);
-  const [isPasswordCreate, setIsPasswordCreate] = useState(false);
-  const [isLockScreen, setIsLockScreen] = useState(false);
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
+
 
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute("subitems")) {
@@ -41,7 +35,7 @@ const Navdata = () => {
     history,
     iscurrentState,
     isDashboard,
-    isAuth
+    isAuth,
   ]);
 
   const menuItems = [
@@ -65,106 +59,60 @@ const Navdata = () => {
         {
           id: "analytics",
           label: "Analytics",
-          link: "/dashboard-analytics",
+          link: "/tenants",
           parentId: "dashboard",
         }
       ],
+    },
+    {
+      label: "Pages",
+      isHeader: true,
     },
     {
       id: "administration",
       label: "Administration",
       icon: "bx bx-user-circle",
       link: "/#",
+      stateVariables: isAuth,
       click: function (e) {
         e.preventDefault();
         setIsAuth(!isAuth);
         setIscurrentState("Auth");
         updateIconSidebar(e);
       },
-      stateVariables: isAuth,
       subItems: [
         {
-          id: "signIn",
+          id: "tenants",
           label: "Tenants",
-          link: "/#",
-          isChildItem: true,
-          click: function (e) {
-            e.preventDefault();
-            setIsSignIn(!isSignIn);
-          },
+          link: "/tenants",
           parentId: "administration",
-          stateVariables: isSignIn,
-          childItems: [
-            { id: 1, label: "Basic", link: "/auth-signin-basic" },
-            { id: 2, label: "Cover", link: "/auth-signin-cover" },
-          ],
         },
         {
-          id: "signUp",
+          id: "organizations",
           label: "Organizations",
-          link: "/#",
-          isChildItem: true,
-          click: function (e) {
-            e.preventDefault();
-            setIsSignUp(!isSignUp);
-          },
+          link: "/dashboard-crm",
           parentId: "administration",
-          stateVariables: isSignUp,
-          childItems: [
-            { id: 1, label: "Basic", link: "/auth-signup-basic" },
-            { id: 2, label: "Cover", link: "/auth-signup-cover" },
-          ],
         },
         {
-          id: "passwordReset",
+          id: "roles",
           label: "Roles",
-          link: "/#",
-          isChildItem: true,
-          click: function (e) {
-            e.preventDefault();
-            setIsPasswordReset(!isPasswordReset);
-          },
+          link: "/dashboard",
           parentId: "administration",
-          stateVariables: isPasswordReset,
-          childItems: [
-            { id: 1, label: "Basic", link: "/auth-pass-reset-basic" },
-            { id: 2, label: "Cover", link: "/auth-pass-reset-cover" },
-          ],
         },
         {
-          id: "passwordCreate",
+          id: "users",
           label: "Users",
-          link: "/#",
-          isChildItem: true,
-          click: function (e) {
-            e.preventDefault();
-            setIsPasswordCreate(!isPasswordCreate);
-          },
+          link: "/dashboard-crypto",
           parentId: "administration",
-          stateVariables: isPasswordCreate,
-          childItems: [
-            { id: 1, label: "Basic", link: "/auth-pass-change-basic" },
-            { id: 2, label: "Cover", link: "/auth-pass-change-cover" },
-          ],
         },
         {
-          id: "lockScreen",
+          id: "Permissions",
           label: "Permissions",
-          link: "/#",
-          isChildItem: true,
-          click: function (e) {
-            e.preventDefault();
-            setIsLockScreen(!isLockScreen);
-          },
+          link: "/dashboard-analytics",
           parentId: "administration",
-          stateVariables: isLockScreen,
-          childItems: [
-            { id: 1, label: "Basic", link: "/auth-lockscreen-basic" },
-            { id: 2, label: "Cover", link: "/auth-lockscreen-cover" },
-          ],
         }
       ],
-    },
+    }
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };

@@ -6,7 +6,7 @@ import { CountriesCharts } from './DashboardAnalyticsCharts';
 
 import { VectorMap } from '@south-paw/react-vector-maps'
 import world from '../../common/world.svg.json';
-import { getAllData } from "../../slices/thunks";
+// import { getAllData } from "../../slices/thunks";
 import { createSelector } from 'reselect';
 
 const LiveUsers = () => {
@@ -28,12 +28,12 @@ const LiveUsers = () => {
 
     const onChangeChartPeriod = pType => {
         setPeriodType(pType);
-        dispatch(getAllData(pType));
+        // dispatch(getAllData(pType));
     };
 
-    useEffect(() => {
-        dispatch(getAllData("halfyearly"));
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(getAllData("halfyearly"));
+    // }, [dispatch]);
     return (
         <React.Fragment>
             <Col xxl={7}>

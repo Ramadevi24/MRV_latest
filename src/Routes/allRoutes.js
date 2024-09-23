@@ -1,10 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-
 //Dashboard
 import DashboardAnalytics from "../pages/DashboardAnalytics";
-
-
 //AuthenticationInner pages
 import CoverSignIn from '../pages/AuthenticationInner/Login/CoverSignIn';
 import CoverSignUp from "../pages/AuthenticationInner/Register/CoverSignUp";
@@ -22,44 +19,40 @@ import Basic404 from '../pages/AuthenticationInner/Errors/Basic404';
 import Cover404 from '../pages/AuthenticationInner/Errors/Cover404';
 import Alt404 from '../pages/AuthenticationInner/Errors/Alt404';
 import Error500 from '../pages/AuthenticationInner/Errors/Error500';
-
+import TenantsGrid from "../pages/Tenants/TenantsGrid";
+import TenantForm from "../pages/Tenants/TenantForm";
+import EditTenant from "../pages/Tenants/EditTenant";
+import ViewTenant from "../pages/Tenants/ViewTenant";
 //login
 import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from "../pages/Authentication/Logout";
 import BasicPasswCreate from "../pages/AuthenticationInner/PasswordCreate/BasicPasswCreate";
 import CoverPasswCreate from "../pages/AuthenticationInner/PasswordCreate/CoverPasswCreate";
 import Offlinepage from "../pages/AuthenticationInner/Errors/Offlinepage";
-
-
-
 // User Profile
 import UserProfile from "../pages/Authentication/user-profile";
 
-
 const authProtectedRoutes = [
   { path: "/dashboard-analytics", component: <DashboardAnalytics /> },
-
-
   //User Profile
   { path: "/profile", component: <UserProfile /> },
-
-  // this route should be at the end of all other routes
-  // eslint-disable-next-line react/display-name
   {
     path: "/",
     exact: true,
     component: <Navigate to="/dashboard" />,
   },
+  {path:'/tenants', component: <TenantsGrid />},
+  {path:'/create-tenant', component: <TenantForm />},
+  {path:'/Mrv/edit-tenant/:id', component: <EditTenant />},
+  {path:'/Mrv/view-tenant/:id', component: <ViewTenant />},
   { path: "*", component: <Navigate to="/dashboard" /> },
 ];
 
 const publicRoutes = [
   // Authentication Page
   { path: "/logout", component: <Logout /> },
-  // { path: "/login", component: <Login /> },
   { path: "/login", component:  <CoverSignIn />},
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
-  // { path: "/register", component: <Register /> },
   { path: "/register", component:  <CoverSignUp /> },
 
   //AuthenticationInner pages
@@ -81,8 +74,7 @@ const publicRoutes = [
   { path: "/auth-500", component: <Error500 /> },
   { path: "/auth-pass-change-basic", component: <BasicPasswCreate /> },
   { path: "/auth-pass-change-cover", component: <CoverPasswCreate /> },
-  { path: "/auth-offline", component: <Offlinepage /> },
-
+  { path: "/auth-offline", component: <Offlinepage /> }
 ];
 
 export { authProtectedRoutes, publicRoutes };
