@@ -68,10 +68,12 @@ import JobReducer from "./jobs/reducer";
 
 // API Key
 import APIKeyReducer from "./apiKey/reducer";
+import CoverSignIn from "../pages/AuthenticationInner/Login/CoverSignIn";
 
 const rootReducer = combineReducers({
     Layout: LayoutReducer,
     Login: LoginReducer,
+    CoverSignIn:LoginReducer,
     Account: AccountReducer,
     ForgetPassword: ForgetPasswordReducer,
     Profile: ProfileReducer,
