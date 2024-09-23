@@ -28,9 +28,14 @@ const AuthSlider = () => {
 
 <div className="carousel-inner text-center text-white-50 pb-5">
                                     <div className="item">
-                                        <p className="fs-15 fst-italic">" Great! Clean code, clean design, easy for customization. Thanks very much! "</p>
+                                        <p className="fs-15 fst-italic">" #No. 1 Monitoring for UAE Environment Portals "</p>
+                                    </div>
+                                    <div className="item">
+                                        <p className="fs-15 fst-italic">"    Our company has been ranked as the number one
+                                        environment monitoring system in the UAE!"</p>
                                     </div>
                                 </div>
+                           
 
                             {/* <Carousel showThumbs={false} autoPlay={true} showArrows={false} showStatus={false} infiniteLoop={true} className="carousel slide" id="qoutescarouselIndicators" >
                                 <div className="carousel-inner text-center text-white-50 pb-5">
