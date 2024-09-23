@@ -39,7 +39,7 @@ const CoverPasswReset = () => {
                                         <Col lg={6}>
                                             <div className="p-lg-5 p-4">
                                                 <h5 className="text-primary">Forgot Password?</h5>
-                                                <p className="text-muted">Reset password with velzon</p>
+                                                <p className="text-muted">Reset password</p>
 
                                                 <div className="mt-2 text-center">
                                                     <lord-icon
@@ -91,7 +91,7 @@ const CoverPasswReset = () => {
                         </Row>
                     </Container>
                 </div>
-                <footer className="footer">
+                {/* <footer className="footer">
                     <Container>
                         <Row>
                             <Col lg={12}>
@@ -101,7 +101,7 @@ const CoverPasswReset = () => {
                             </Col>
                         </Row>
                     </Container>
-                </footer>
+                </footer> */}
             </div>
         </React.Fragment>
     );
