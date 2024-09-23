@@ -36,7 +36,7 @@ const DashboardCrypto = () => {
                         <Trading />
                     </Row>
                     <Row>
-                        <RecentActivity />
+                        {/* <RecentActivity /> */}
                         <TopPerformers />
                         <NewsFeed />
                     </Row>
