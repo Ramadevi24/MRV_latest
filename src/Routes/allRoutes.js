@@ -24,24 +24,17 @@ import Alt404 from '../pages/AuthenticationInner/Errors/Alt404';
 import Error500 from '../pages/AuthenticationInner/Errors/Error500';
 
 //login
-import Login from "../pages/Authentication/Login";
 import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from "../pages/Authentication/Logout";
-import Register from "../pages/Authentication/Register";
-import Maintenance from "../pages/Pages/Maintenance/Maintenance";
-import ComingSoon from "../pages/Pages/ComingSoon/ComingSoon";
 import BasicPasswCreate from "../pages/AuthenticationInner/PasswordCreate/BasicPasswCreate";
 import CoverPasswCreate from "../pages/AuthenticationInner/PasswordCreate/CoverPasswCreate";
 import Offlinepage from "../pages/AuthenticationInner/Errors/Offlinepage";
 
-// Landing Index
-import OnePage from "../pages/Landing/OnePage";
-import NFTLanding from "../pages/Landing/NFTLanding";
+
 
 // User Profile
 import UserProfile from "../pages/Authentication/user-profile";
 
-import JobLanding from "../pages/Landing/Job";
 
 const authProtectedRoutes = [
   { path: "/dashboard-analytics", component: <DashboardAnalytics /> },
@@ -86,13 +79,6 @@ const publicRoutes = [
   { path: "/auth-404-cover", component: <Cover404 /> },
   { path: "/auth-404-alt", component: <Alt404 /> },
   { path: "/auth-500", component: <Error500 /> },
-  { path: "/pages-maintenance", component: <Maintenance /> },
-  { path: "/pages-coming-soon", component: <ComingSoon /> },
-
-  { path: "/landing", component: <OnePage /> },
-  { path: "/nft-landing", component: <NFTLanding /> },
-  { path: "/job-landing", component: <JobLanding /> },
-
   { path: "/auth-pass-change-basic", component: <BasicPasswCreate /> },
   { path: "/auth-pass-change-cover", component: <CoverPasswCreate /> },
   { path: "/auth-offline", component: <Offlinepage /> },
