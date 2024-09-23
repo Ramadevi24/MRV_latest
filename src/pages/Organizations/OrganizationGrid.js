@@ -5,9 +5,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 
-const TenantsGrid = () => {
+const OrganizationGrid = () => {
 
-document.title="MRV_PROJECT | TenantsGrid";
+document.title="MRV_PROJECT | OrganizationGrid";
     const Navigate = useNavigate();
 
     return (
@@ -18,7 +18,7 @@ document.title="MRV_PROJECT | TenantsGrid";
                         <Col lg={12}>
                             <Card>
                                 <CardHeader>
-                                    <h4 className="card-title mb-0">Tenants</h4>
+                                    <h4 className="card-title mb-0">Organizations</h4>
                                 </CardHeader>
 
                                 <CardBody>
@@ -26,7 +26,7 @@ document.title="MRV_PROJECT | TenantsGrid";
                                         <Row className="g-4 mb-3">
                                             <Col className="col-sm-auto">
                                                 <div>
-                                                    <Button color="success" className="add-btn me-1" onClick={() => Navigate('/Mrv/create-tenant')} id="create-btn"><i className="ri-add-line align-bottom me-1"></i> Add</Button>
+                                                    <Button color="success" className="add-btn me-1" onClick={() => Navigate('/Mrv/create-organization')} id="create-btn"><i className="ri-add-line align-bottom me-1"></i> Add</Button>
                                                 </div>
                                             </Col>
                                             <Col className="col-sm">
@@ -382,4 +382,4 @@ document.title="MRV_PROJECT | TenantsGrid";
     );
 };
 
-export default TenantsGrid;
+export default OrganizationGrid;

@@ -31,6 +31,19 @@ import CoverPasswCreate from "../pages/AuthenticationInner/PasswordCreate/CoverP
 import Offlinepage from "../pages/AuthenticationInner/Errors/Offlinepage";
 // User Profile
 import UserProfile from "../pages/Authentication/user-profile";
+import OrganizationGrid from "../pages/Organizations/OrganizationGrid";
+import OrganizationForm from "../pages/Organizations/OrganizationForm";
+import EditOrganization from "../pages/Organizations/EditOrganization";
+import ViewOrganization from "../pages/Organizations/ViewOrganization";
+import RoleGrid from "../pages/Roles/RoleGrid";
+import RoleForm from "../pages/Roles/RoleForm";
+import EditRole from "../pages/Roles/EditRole";
+import ViewRole from "../pages/Roles/ViewRole";
+import UserGrid from "../pages/Users/UserGrid";
+import UserForm from "../pages/Users/UserForm";
+import EditUser from "../pages/Users/EditUser";
+import ViewUser from "../pages/Users/ViewUser";
+import PermissionGrid from "../pages/Permissions/PermissionGrid";
 
 const authProtectedRoutes = [
   { path: "/dashboard-analytics", component: <DashboardAnalytics /> },
@@ -41,10 +54,23 @@ const authProtectedRoutes = [
     exact: true,
     component: <Navigate to="/dashboard" />,
   },
-  {path:'/tenants', component: <TenantsGrid />},
-  {path:'/create-tenant', component: <TenantForm />},
+  {path:'/Mrv/tenants', component: <TenantsGrid />},
+  {path:'/Mrv/create-tenant', component: <TenantForm />},
   {path:'/Mrv/edit-tenant/:id', component: <EditTenant />},
   {path:'/Mrv/view-tenant/:id', component: <ViewTenant />},
+  {path:'/Mrv/organizations', component: <OrganizationGrid />},
+  {path:'/Mrv/create-organization', component: <OrganizationForm />},
+  {path:'/Mrv/edit-organization/:id', component: <EditOrganization />},
+  {path:'/Mrv/view-organization/:id', component: <ViewOrganization />},
+  {path:'/Mrv/roles', component: <RoleGrid />},
+  {path:'/Mrv/create-role', component: <RoleForm />},
+  {path:'/Mrv/edit-role/:id', component: <EditRole />},
+  {path:'/Mrv/view-role/:id', component: <ViewRole />},
+  {path:'/Mrv/users', component: <UserGrid />},
+  {path:'/Mrv/create-user', component: <UserForm />},
+  {path:'/Mrv/edit-user/:id', component: <EditUser />},
+  {path:'/Mrv/view-user/:id', component: <ViewUser />},
+  {path:'/Mrv/permissions', component: <PermissionGrid />},
   { path: "*", component: <Navigate to="/dashboard" /> },
 ];
 

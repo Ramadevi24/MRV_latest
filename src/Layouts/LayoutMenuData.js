@@ -59,7 +59,7 @@ const Navdata = () => {
         {
           id: "analytics",
           label: "Analytics",
-          link: "/tenants",
+          link: "/dashboard-analytics",
           parentId: "dashboard",
         }
       ],
@@ -84,31 +84,31 @@ const Navdata = () => {
         {
           id: "tenants",
           label: "Tenants",
-          link: "/tenants",
+          link: "/Mrv/tenants",
           parentId: "administration",
         },
         {
           id: "organizations",
           label: "Organizations",
-          link: "/dashboard-crm",
+          link: "/Mrv/organizations",
           parentId: "administration",
         },
         {
           id: "roles",
           label: "Roles",
-          link: "/dashboard",
+          link: "/Mrv/roles",
           parentId: "administration",
         },
         {
           id: "users",
           label: "Users",
-          link: "/dashboard-crypto",
+          link: "/Mrv/users",
           parentId: "administration",
         },
         {
           id: "Permissions",
           label: "Permissions",
-          link: "/dashboard-analytics",
+          link: "/Mrv/permissions",
           parentId: "administration",
         }
       ],

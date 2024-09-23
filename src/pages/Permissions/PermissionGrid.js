@@ -1,13 +1,10 @@
-import React from 'react';
+import React from 'react'
 import { Button, Card, CardBody, CardHeader, Col, Container, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 
 import { Link, useNavigate } from 'react-router-dom';
 
-
-
-const TenantsGrid = () => {
-
-document.title="MRV_PROJECT | TenantsGrid";
+const PermissionGrid = () => {
+    document.title="MRV_PROJECT | PermissionGrid";
     const Navigate = useNavigate();
 
     return (
@@ -18,17 +15,17 @@ document.title="MRV_PROJECT | TenantsGrid";
                         <Col lg={12}>
                             <Card>
                                 <CardHeader>
-                                    <h4 className="card-title mb-0">Tenants</h4>
+                                    <h4 className="card-title mb-0">Permissions</h4>
                                 </CardHeader>
 
                                 <CardBody>
                                     <div className="listjs-table" id="customerList">
                                         <Row className="g-4 mb-3">
-                                            <Col className="col-sm-auto">
+                                            {/* <Col className="col-sm-auto">
                                                 <div>
-                                                    <Button color="success" className="add-btn me-1" onClick={() => Navigate('/Mrv/create-tenant')} id="create-btn"><i className="ri-add-line align-bottom me-1"></i> Add</Button>
+                                                    <Button color="success" className="add-btn me-1" onClick={() => Navigate('/create-tenant')} id="create-btn"><i className="ri-add-line align-bottom me-1"></i> Add</Button>
                                                 </div>
-                                            </Col>
+                                            </Col> */}
                                             <Col className="col-sm">
                                                 <div className="d-flex justify-content-sm-end">
                                                     <div className="search-box ms-2">
@@ -380,6 +377,6 @@ document.title="MRV_PROJECT | TenantsGrid";
             </div>
         </React.Fragment>
     );
-};
+}
 
-export default TenantsGrid;
+export default PermissionGrid
