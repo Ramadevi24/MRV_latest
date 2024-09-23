@@ -149,9 +149,7 @@ import CryptoIcons from "../pages/Icons/CryptoIcons/CryptoIcons";
 import GoogleMaps from "../pages/Maps/GoogleMaps/GoogleMaps";
 
 //AuthenticationInner pages
-import BasicSignIn from '../pages/AuthenticationInner/Login/BasicSignIn';
 import CoverSignIn from '../pages/AuthenticationInner/Login/CoverSignIn';
-import BasicSignUp from '../pages/AuthenticationInner/Register/BasicSignUp';
 import CoverSignUp from "../pages/AuthenticationInner/Register/CoverSignUp";
 import BasicPasswReset from '../pages/AuthenticationInner/PasswordReset/BasicPasswReset';
 //pages
@@ -450,14 +448,14 @@ const authProtectedRoutes = [
 const publicRoutes = [
   // Authentication Page
   { path: "/logout", component: <Logout /> },
-  { path: "/login", component: <Login /> },
+  // { path: "/login", component: <Login /> },
+  { path: "/login", component:  <CoverSignIn />},
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
-  { path: "/register", component: <Register /> },
+  // { path: "/register", component: <Register /> },
+  { path: "/register", component:  <CoverSignUp /> },
 
   //AuthenticationInner pages
-  { path: "/auth-signin-basic", component: <BasicSignIn /> },
   { path: "/auth-signin-cover", component: <CoverSignIn /> },
-  { path: "/auth-signup-basic", component: <BasicSignUp /> },
   { path: "/auth-signup-cover", component: <CoverSignUp /> },
   { path: "/auth-pass-reset-basic", component: <BasicPasswReset /> },
   { path: "/auth-pass-reset-cover", component: <CoverPasswReset /> },

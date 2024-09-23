@@ -16,16 +16,23 @@ const AuthSlider = () => {
                     <div className="bg-overlay"></div>
                     <div className="position-relative h-100 d-flex flex-column">
                         <div className="mb-4">
-                            <Link to="/dashboard" className="d-block">
+                            {/* <Link to="/dashboard" className="d-block">
                                 <img src={logoLight} alt="" height="18" />
-                            </Link>
+                            </Link> */}
                         </div>
                         <div className="mt-auto">
-                            <div className="mb-3">
+                            {/* <div className="mb-3">
                                 <i className="ri-double-quotes-l display-4 text-success"></i>
-                            </div>
+                            </div> */}
 
-                            <Carousel showThumbs={false} autoPlay={true} showArrows={false} showStatus={false} infiniteLoop={true} className="carousel slide" id="qoutescarouselIndicators" >
+
+<div className="carousel-inner text-center text-white-50 pb-5">
+                                    <div className="item">
+                                        <p className="fs-15 fst-italic">" Great! Clean code, clean design, easy for customization. Thanks very much! "</p>
+                                    </div>
+                                </div>
+
+                            {/* <Carousel showThumbs={false} autoPlay={true} showArrows={false} showStatus={false} infiniteLoop={true} className="carousel slide" id="qoutescarouselIndicators" >
                                 <div className="carousel-inner text-center text-white-50 pb-5">
                                     <div className="item">
                                         <p className="fs-15 fst-italic">" Great! Clean code, clean design, easy for customization. Thanks very much! "</p>
@@ -41,7 +48,7 @@ const AuthSlider = () => {
                                         <p className="fs-15 fst-italic">" Great! Clean code, clean design, easy for customization. Thanks very much! "</p>
                                     </div>
                                 </div>
-                            </Carousel>
+                            </Carousel> */}
 
                         </div>
                     </div>
