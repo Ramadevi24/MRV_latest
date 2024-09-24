@@ -9,6 +9,7 @@ import translationSP from "./locales/sp.json";
 import translationENG from "./locales/en.json";
 import translationCN from "./locales/ch.json";
 import translationFR from "./locales/fr.json";
+import translationAr from "./locales/ar.json";
 
 // the translations
 const resources = {
@@ -33,6 +34,9 @@ const resources = {
   fr: {
     translation: translationFR,
   },
+  ar:{
+    translation: translationAr,
+  }
 };
 
 const language = localStorage.getItem("I18N_LANGUAGE");

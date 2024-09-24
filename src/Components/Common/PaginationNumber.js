@@ -1,6 +1,7 @@
 // Pagination.js
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Col } from 'reactstrap';
 
 const PaginationNumber = ({ itemsPerPage, currentPage, totalItems, paginate, setItemsPerPage, t }) => {
   const pageNumbers = [];
@@ -17,7 +18,7 @@ const PaginationNumber = ({ itemsPerPage, currentPage, totalItems, paginate, set
 
   return (
     <div className="d-flex justify-content-between mt-3">
-      <div className="pagination">
+      {/* <div className="pagination">
         <select
           value={itemsPerPage}
           onChange={handleItemsPerPageChange} // Updated here
@@ -28,6 +29,16 @@ const PaginationNumber = ({ itemsPerPage, currentPage, totalItems, paginate, set
           <option value="50">50</option>
         </select>
       </div>
+   */}
+      <div>
+    <select className="form-select" aria-label=" example"onChange={handleItemsPerPageChange}  value={itemsPerPage}>
+      
+        <option defaultValue="1" selected>10</option>
+        <option defaultValue="2">20</option>
+        <option defaultValue="3">50</option>
+    </select>
+    </div>
+
 
       <nav aria-label="Pagination Navigation">
         <ul className="pagination">
