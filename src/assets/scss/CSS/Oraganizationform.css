@@ -1,0 +1,17 @@
+.oraganizationform-container{
+    margin-bottom: 1.5rem;
+    box-shadow: 0 3px 3px rgba(56, 65, 74, 0.1);
+position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* height: var(--vz-card-height); */
+    color: var(--vz-body-color);
+    word-wrap: break-word;
+    background-color: white;
+    background-clip: border-box;
+    border: var(--vz-card-border-width) solid var(--vz-card-border-color);
+    border-radius: var(--vz-card-border-radius);
+    padding: 50px;
+ 
+}

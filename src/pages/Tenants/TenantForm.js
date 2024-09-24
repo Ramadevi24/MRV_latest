@@ -3,7 +3,7 @@ import { Label, Row, Col, Input, Container, Button } from 'reactstrap';
 
 const TenantForm = () => {
   return (
-    <Container style={{ marginTop: '10rem' }}>
+    <Container style={{  margin: '9rem 4rem ' }} className='oraganizationform-container'>
       <h2 className="form-heading" >Add Tenant</h2>
       <Row>
         <Col md={{ size: 10, offset: 1 }}>
