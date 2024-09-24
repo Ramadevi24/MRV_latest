@@ -127,17 +127,17 @@ const VerticalLayout = (props) => {
         let actiItems = items.filter((x) => x.classList.contains("active"));
 
         actiItems.forEach((item) => {
-            if (item.classList.contains("menu-link")) {
-                if (!item.classList.contains("active")) {
-                    item.setAttribute("aria-expanded", false);
-                }
-                if (item.nextElementSibling) {
-                    item.nextElementSibling.classList.remove("show");
-                }
-            }
+            // if (item.classList.contains("menu-link")) {
+            //     if (!item.classList.contains("active")) {
+            //         item.setAttribute("aria-expanded", false);
+            //     }
+            //     if (item.nextElementSibling) {
+            //         item.nextElementSibling.classList.remove("show");
+            //     }
+            // }
             if (item.classList.contains("nav-link")) {
                 if (item.nextElementSibling) {
-                    item.nextElementSibling.classList.remove("show");
+                    // item.nextElementSibling.classList.remove("show");
                 }
                 item.setAttribute("aria-expanded", false);
             }
