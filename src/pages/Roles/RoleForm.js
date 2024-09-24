@@ -2,7 +2,7 @@ import React from 'react'
 
 const RoleForm = () => {
   return (
-    <div>RoleForm</div>
+    <div style={{margin:'6rem'}}>RoleForm</div>
   )
 }
 

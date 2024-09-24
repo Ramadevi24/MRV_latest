@@ -88,7 +88,7 @@ const OrganizationGrid = ({ userPermissions }) => {
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  <h4 className="card-title mb-0">Tenants</h4>
+                  <h4 className="card-title mb-0">Organizations</h4>
                 </CardHeader>
 
                 <CardBody>
