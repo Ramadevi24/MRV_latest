@@ -1,7 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 //Dashboard
-import DashboardAnalytics from "../pages/DashboardAnalytics";
 //AuthenticationInner pages
 import CoverSignIn from '../pages/AuthenticationInner/Login/CoverSignIn';
 import CoverSignUp from "../pages/AuthenticationInner/Register/CoverSignUp";
@@ -46,31 +45,29 @@ import ViewUser from "../pages/Users/ViewUser";
 import PermissionGrid from "../pages/Permissions/PermissionGrid";
 
 const authProtectedRoutes = [
-  { path: "/dashboard-analytics", component: <DashboardAnalytics /> },
-  //User Profile
   { path: "/profile", component: <UserProfile /> },
   {
     path: "/",
     exact: true,
     component: <Navigate to="/dashboard" />,
   },
-  {path:'/Mrv/tenants', component: <TenantsGrid />},
-  {path:'/Mrv/create-tenant', component: <TenantForm />},
-  {path:'/Mrv/edit-tenant/:id', component: <EditTenant />},
-  {path:'/Mrv/view-tenant/:id', component: <ViewTenant />},
-  {path:'/Mrv/organizations', component: <OrganizationGrid />},
-  {path:'/Mrv/create-organization', component: <OrganizationForm />},
-  {path:'/Mrv/edit-organization/:id', component: <EditOrganization />},
-  {path:'/Mrv/view-organization/:id', component: <ViewOrganization />},
-  {path:'/Mrv/roles', component: <RoleGrid />},
-  {path:'/Mrv/create-role', component: <RoleForm />},
-  {path:'/Mrv/edit-role/:id', component: <EditRole />},
-  {path:'/Mrv/view-role/:id', component: <ViewRole />},
-  {path:'/Mrv/users', component: <UserGrid />},
-  {path:'/Mrv/create-user', component: <UserForm />},
-  {path:'/Mrv/edit-user/:id', component: <EditUser />},
-  {path:'/Mrv/view-user/:id', component: <ViewUser />},
-  {path:'/Mrv/permissions', component: <PermissionGrid />},
+  {path:'/tenants', component: <TenantsGrid /> },
+  {path:'/create-tenant', component: <TenantForm />},
+  {path:'/edit-tenant/:id', component: <EditTenant />},
+  {path:'/view-tenant/:id', component: <ViewTenant />},
+  {path:'/organizations', component: <OrganizationGrid />},
+  {path:'/create-organization', component: <OrganizationForm />},
+  {path:'/edit-organization/:id', component: <EditOrganization />},
+  {path:'/view-organization/:id', component: <ViewOrganization />},
+  {path:'/roles', component: <RoleGrid />},
+  {path:'/create-role', component: <RoleForm />},
+  {path:'/edit-role/:id', component: <EditRole />},
+  {path:'/view-role/:id', component: <ViewRole />},
+  {path:'/users', component: <UserGrid />},
+  {path:'/create-user', component: <UserForm />},
+  {path:'/edit-user/:id', component: <EditUser />},
+  {path:'/view-user/:id', component: <ViewUser />},
+  {path:'/permissions', component: <PermissionGrid />},
   { path: "*", component: <Navigate to="/dashboard" /> },
 ];
 
@@ -82,8 +79,8 @@ const publicRoutes = [
   { path: "/register", component:  <CoverSignUp /> },
 
   //AuthenticationInner pages
-  { path: "/auth-signin-cover", component: <CoverSignIn /> },
-  { path: "/auth-signup-cover", component: <CoverSignUp /> },
+  { path: "/login", component: <CoverSignIn /> },
+  { path: "/signup", component: <CoverSignUp /> },
   { path: "/auth-pass-reset-basic", component: <BasicPasswReset /> },
   { path: "/auth-pass-reset-cover", component: <CoverPasswReset /> },
   { path: "/auth-lockscreen-basic", component: <BasicLockScreen /> },

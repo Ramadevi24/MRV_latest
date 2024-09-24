@@ -17,14 +17,9 @@ export const RoleProvider = ({ children }) => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch all roles when the component mounts
-  useEffect(() => {
-    fetchAllRoles();
-  }, []);
-
-  const fetchAllRoles = async () => {
+  const fetchAllRoles = async (tenantID = null) => {
     try {
-      const data = await getRoles();
+      const data = await getRoles(tenantID);
       setRoles(data);
       setLoading(false);
     } catch (error) {

@@ -8,6 +8,7 @@ import VerticalLayout from "../Layouts/index";
 //routes
 import { authProtectedRoutes, publicRoutes } from "./allRoutes";
 import { AuthProtected } from './AuthProtected';
+import ProtectedRoute from '../Components/Common/ProtectedRoute';
 
 const Index = () => {
     return (
@@ -33,9 +34,9 @@ const Index = () => {
                         <Route
                             path={route.path}
                             element={
-                                <AuthProtected>
+                                <ProtectedRoute>
                                     <VerticalLayout>{route.component}</VerticalLayout>
-                                </AuthProtected>}
+                                </ProtectedRoute>}
                             key={idx}
                             exact={true}
                         />

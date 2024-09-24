@@ -1,6 +1,9 @@
 
 import React from 'react';
-import { Col, Label, Input, Row, FormGroup, Form, FormFeedback, Button } from 'reactstrap';
+import { Col, Label, Input, Row, FormGroup, Form, FormFeedback, Button,   Card,
+  CardBody,
+  CardHeader, Container,
+  CardFooter} from 'reactstrap';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 
@@ -36,8 +39,15 @@ const OrganizationForm = () => {
   });
 
   return (
-    <div style={{ margin: '5rem 1rem' }} className='oraganizationform-container'>
-      <h2 className="form-heading" >Add Organization</h2>
+    <Container fluid>
+    <div style={{ margin: '5rem 1rem' }}>
+    <Card>
+                <CardHeader className="ribbon-box" style={{padding:"2rem"}}>
+                <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Organization</h2>
+                </CardHeader>
+
+                <CardBody>
+      
       <Form
         className="needs-validation"
         onSubmit={(e) => {
@@ -48,12 +58,12 @@ const OrganizationForm = () => {
         <Row>
           <Col lg={6}>
             <Label htmlFor="validationtenantid">Tenant ID</Label>
-            <select className="form-select rounded-pill mb-3" aria-label="Default select example">
-              <option>Search for services</option>
-              <option defaultValue="1">Information Architecture</option>
-              <option defaultValue="2">UI/UX Design</option>
-              <option defaultValue="3">Back End Development</option>
-            </select>
+            <select className="form-select mb-3" aria-label="Default select example">
+            <option >Select your Status </option>
+            <option defaultValue="1">Declined Payment</option>
+            <option defaultValue="2">Delivery Error</option>
+            <option defaultValue="3">Wrong Amount</option>
+        </select>
           </Col>
           <Col md={6}>
             <FormGroup>
@@ -196,19 +206,19 @@ const OrganizationForm = () => {
             <Label>
               categoryIDs
             </Label>
-            <select className="form-select rounded-pill mb-3" aria-label="Default select example" >
-              <option >Select categoryIDs</option>
-              <option defaultValue="1">Information Architecture</option>
-              <option defaultValue="2">UI/UX Design</option>
-              <option defaultValue="3">Back End Development</option>
-            </select>
+            <select className="form-select mb-3" aria-label="Default select example">
+            <option >Select your categoryIDs </option>
+            <option defaultValue="1">Declined Payment</option>
+            <option defaultValue="2">Delivery Error</option>
+            <option defaultValue="3">Wrong Amount</option>
+        </select>
           </Col>
         </Row>
-        <Row>
-        <Col md={3}>
-          <Label style={{marginTop:'20px'}}>Location:</Label>
+        <Col md={4}>
+          <Label>Location:</Label>
           </Col>
-          <Col md={3}>
+        <Row>
+          <Col md={4}>
             <div className="mb-3">
               <Label for="lattitudeInput" className="form-label">Latitude
               </Label>
@@ -233,7 +243,7 @@ const OrganizationForm = () => {
               ) : null}
             </div>
           </Col>
-          <Col md={3}>
+          <Col md={4}>
             <div className="mb-3">
               <Label className="form-label" htmlFor='longittudeInput'>Longittude
               </Label>
@@ -255,7 +265,7 @@ const OrganizationForm = () => {
               ) : null}
             </div>
           </Col>
-          <Col md={3}>
+          <Col md={4}>
             <div className="mb-3">
               <Label htmlFor="locationaddressinput" className="form-label">Location Address
               </Label>
@@ -279,16 +289,28 @@ const OrganizationForm = () => {
             </div>
           </Col>
         </Row>
-        <Col md={12}>
-          <div className="text-end">
-            <Button type="submit" color="success" className="rounded-pill"> Submit </Button>
-          </div>
-        </Col>
+        <div className="d-flex justify-content-end">
+                <Button type="submit" color="success" className="rounded-pill me-2">
+                  Submit
+                </Button>
+                <Button
+                  type="button"
+                  color="danger"
+                  className="rounded-pill"
+                  onClick={() => history.back()}
+                >
+                  Cancel
+                </Button>
+              </div>
+     
 
 
       </Form>
-
+      </CardBody>
+</Card>
+    
     </div>
+    </Container>
   );
 };
 

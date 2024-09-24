@@ -4,9 +4,10 @@ const API_URL = "https://atlas.smartgeoapps.com/MRVAPI/api/Role/Roles";
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 
 // Get all Roles
-export const getRoles = async () => {
+export const getRoles =async (tenantID = null) => {
+  const url = tenantID ? `${API_URL}?tenantId=${tenantID}` : API_URL;
   try {
-    const response = await axios.get(API_URL, {
+    const response = await axios.get(url, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
     return response.$values;

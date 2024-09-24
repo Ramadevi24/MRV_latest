@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
+import {useAuth} from '../../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom';
 
 //import images
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
 import { createSelector } from 'reselect';
 
 const ProfileDropdown = () => {
+    const navigate = useNavigate();
+    const { logout } = useAuth();
 
     const profiledropdownData = createSelector(
         (state) => state.Profile,
@@ -17,14 +21,10 @@ const ProfileDropdown = () => {
     
     const [userName, setUserName] = useState("Admin");
 
-    useEffect(() => {
-        if (sessionStorage.getItem("authUser")) {
-            const obj = JSON.parse(sessionStorage.getItem("authUser"));
-            setUserName(process.env.REACT_APP_DEFAULTAUTH === "fake" ? obj.username === undefined ? user.first_name ? user.first_name : obj.data.first_name : "Admin" || "Admin" :
-                process.env.REACT_APP_DEFAULTAUTH === "firebase" ? obj.email && obj.email : "Admin"
-            );
-        }
-    }, [userName, user]);
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+      };
 
     //Dropdown Toggle
     const [isProfileDropdown, setIsProfileDropdown] = useState(false);
@@ -68,7 +68,7 @@ const ProfileDropdown = () => {
                                 className="align-middle">Settings</span></DropdownItem>
                     <DropdownItem href="/auth-lockscreen-basic"><i
                         className="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span className="align-middle">Lock screen</span></DropdownItem>
-                    <DropdownItem href="/logout"><i
+                    <DropdownItem onClick={handleLogout}><i
                         className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
                             className="align-middle" data-key="t-logout">Logout</span></DropdownItem>
                 </DropdownMenu>

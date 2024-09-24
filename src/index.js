@@ -9,6 +9,7 @@ import rootReducer from "./slices";
 import { TenantProvider } from './contexts/TenantContext';
 import { OrganizationProvider } from './contexts/OrganizationContext';
 import { RoleProvider } from './contexts/RoleContext';
+import { AuthProvider } from './contexts/AuthContext';
 
 const store = configureStore({ reducer: rootReducer, devTools: true });
 
@@ -21,7 +22,9 @@ root.render(
       <TenantProvider>
         <RoleProvider>
         <OrganizationProvider>
+          <AuthProvider>
         <App />
+        </AuthProvider>
         </OrganizationProvider>
         </RoleProvider>
         </TenantProvider>

@@ -23,7 +23,7 @@ const RoleGrid = () => {
                                         <Row className="g-4 mb-3">
                                             <Col className="col-sm-auto">
                                                 <div>
-                                                    <Button color="success" className="add-btn me-1" onClick={() => Navigate('/Mrv/create-role')} id="create-btn"><i className="ri-add-line align-bottom me-1"></i> Add</Button>
+                                                    <Button color="success" className="add-btn me-1" onClick={() => Navigate('/create-role')} id="create-btn"><i className="ri-add-line align-bottom me-1"></i> Add</Button>
                                                 </div>
                                             </Col>
                                             <Col className="col-sm">

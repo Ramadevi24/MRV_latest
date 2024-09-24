@@ -84,31 +84,31 @@ const Navdata = () => {
         {
           id: "tenants",
           label: "Tenants",
-          link: "/Mrv/tenants",
+          link: "/tenants",
           parentId: "administration",
         },
         {
           id: "organizations",
           label: "Organizations",
-          link: "/Mrv/organizations",
+          link: "/organizations",
           parentId: "administration",
         },
         {
           id: "roles",
           label: "Roles",
-          link: "/Mrv/roles",
+          link: "/roles",
           parentId: "administration",
         },
         {
           id: "users",
           label: "Users",
-          link: "/Mrv/users",
+          link: "/users",
           parentId: "administration",
         },
         {
           id: "Permissions",
           label: "Permissions",
-          link: "/Mrv/permissions",
+          link: "/permissions",
           parentId: "administration",
         }
       ],

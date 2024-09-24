@@ -94,7 +94,7 @@ const TenantsGrid = () => {
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  <h4 className="card-title mb-0">Tenants</h4>
+                  <h4 className="card-title mb-0" style={{color:'#45CB85', fontSize:'20px', fontWeight:'bold'}}>Tenants</h4>
                 </CardHeader>
 
                 <CardBody>
@@ -105,7 +105,7 @@ const TenantsGrid = () => {
                           <Button
                             color="success"
                             className="add-btn me-1"
-                            onClick={() => navigate("/Mrv/create-tenant")}
+                            onClick={() => navigate("/create-tenant")}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>{" "}
@@ -234,7 +234,7 @@ const TenantsGrid = () => {
                                         className="btn btn-sm btn-success edit-item-btn"
                                         onClick={() =>
                                           navigate(
-                                            `/Mrv/edit-tenant/${tenant.tenantID}`
+                                            `/edit-tenant/${tenant.tenantID}`
                                           )
                                         }
                                         data-bs-toggle="modal"
@@ -248,9 +248,7 @@ const TenantsGrid = () => {
                                       <button
                                         className="btn btn-sm btn-danger remove-item-btn"
                                         onClick={() =>
-                                          navigate(
-                                            `/Mrv/edit-tenant/${tenant.tenantID}`
-                                          )
+                                            handleDelete(tenant.tenantID)
                                         }
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteRecordModal"
@@ -263,7 +261,7 @@ const TenantsGrid = () => {
                                         className="btn btn-sm btn-success view-item-btn"
                                         onClick={() =>
                                           navigate(
-                                            `/Mrv/view-tenant/${tenant.tenantID}`
+                                            `/view-tenant/${tenant.tenantID}`
                                           )
                                         }
                                         data-bs-toggle="modal"

@@ -1,10 +1,16 @@
 import React from "react";
-import { Label, Row, Col, Input, Container, Button } from 'reactstrap';
+import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader } from 'reactstrap';
 
 const TenantForm = () => {
   return (
-    <Container style={{  margin: '9rem 4rem ' }} className='oraganizationform-container'>
-      <h2 className="form-heading" >Add Tenant</h2>
+    <Container style={{  margin: '9rem 4rem ' }} >
+<Card>
+                <CardHeader className="ribbon-box" style={{padding:"2rem"}}>
+                <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Tenant</h2>
+                </CardHeader>
+
+                <CardBody>
+      
       <Row>
         <Col md={{ size: 10, offset: 1 }}>
           <div className="mb-3">
@@ -18,14 +24,23 @@ const TenantForm = () => {
             <Label htmlFor="description" className="form-label">Description</Label>
             <textarea className="form-control" id="description" rows="3" placeholder="Enter your message"></textarea>
           </div>
-          <div className="text-end">
-
-<Button type="submit" color="success" className="rounded-pill"> Submit </Button>
-
-
-          </div>
+          <div className="d-flex justify-content-end">
+                <Button type="submit" color="success" className="rounded-pill me-2">
+                  Submit
+                </Button>
+                <Button
+                  type="button"
+                  color="danger"
+                  className="rounded-pill"
+                  onClick={() => history.back()}
+                >
+                  Cancel
+                </Button>
+              </div>
         </Col>
       </Row>
+      </CardBody>
+      </Card>
     </Container>
   );
 };

@@ -88,7 +88,7 @@ const OrganizationGrid = ({ userPermissions }) => {
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  <h4 className="card-title mb-0">Tenants</h4>
+                  <h4 className="card-title mb-0" style={{color:'#45CB85', fontSize:'20px', fontWeight:'bold'}}>Organizations</h4>
                 </CardHeader>
 
                 <CardBody>
@@ -99,7 +99,7 @@ const OrganizationGrid = ({ userPermissions }) => {
                           <Button
                             color="success"
                             className="add-btn me-1"
-                            onClick={() => navigate("/Mrv/create-organization")}
+                            onClick={() => navigate("/create-organization")}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>{" "}
@@ -218,7 +218,7 @@ const OrganizationGrid = ({ userPermissions }) => {
                                     <div className="edit">
                                       <button
                                         className="btn btn-sm btn-success edit-item-btn"
-                                        onClick={() => navigate(`/Mrv/edit-organization/${org.organizationID}`)
+                                        onClick={() => navigate(`/edit-organization/${org.organizationID}`)
                                         }
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
@@ -244,7 +244,7 @@ const OrganizationGrid = ({ userPermissions }) => {
                                         className="btn btn-sm btn-success view-item-btn"
                                         onClick={() =>
                                           navigate(
-                                            `/Mrv/view-organization/${org.organizationID}`
+                                            `/view-organization/${org.organizationID}`
                                           )
                                         }
                                         data-bs-toggle="modal"
