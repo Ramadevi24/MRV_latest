@@ -256,21 +256,7 @@ const TenantsGrid = () => {
                                         <FaTrashAlt color="white" />
                                       </button>
                                     </div>
-                                    <div className="view">
-                                      <button
-                                        className="btn btn-sm btn-success view-item-btn"
-                                        onClick={() =>
-                                          navigate(
-                                            `/view-tenant/${tenant.tenantID}`
-                                          )
-                                        }
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#showModal"
-                                      >
-                                        {" "}
-                                        <FaEye color="white" />
-                                      </button>
-                                    </div>
+                            
                                   </div>
                                 </td>
                               </tr>
