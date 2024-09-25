@@ -231,7 +231,7 @@ const TenantsGrid = () => {
                                   <div className="d-flex gap-2">
                                     <div className="edit">
                                       <button
-                                        className="btn btn-sm btn-success edit-item-btn"
+                                        className="btn btn-sm btn-info edit-item-btn"
                                         onClick={() =>
                                           navigate(
                                             `/edit-tenant/${tenant.tenantID}`
@@ -241,7 +241,7 @@ const TenantsGrid = () => {
                                         data-bs-target="#showModal"
                                       >
                                         {" "}
-                                        <FaPencilAlt color="blue" />
+                                        <FaPencilAlt color="white" />
                                       </button>
                                     </div>
                                     <div className="remove">
@@ -253,7 +253,7 @@ const TenantsGrid = () => {
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteRecordModal"
                                       >
-                                        <FaTrashAlt color="red" />
+                                        <FaTrashAlt color="white" />
                                       </button>
                                     </div>
                                     <div className="view">
@@ -268,7 +268,7 @@ const TenantsGrid = () => {
                                         data-bs-target="#showModal"
                                       >
                                         {" "}
-                                        <FaEye color="green" />
+                                        <FaEye color="white" />
                                       </button>
                                     </div>
                                   </div>

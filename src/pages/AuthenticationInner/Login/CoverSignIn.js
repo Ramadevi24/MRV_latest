@@ -57,7 +57,7 @@ const CoverSignIn = (props) => {
                     setError("Invalid login credentials");
                 }
             } catch (err) {
-                setError("An error occurred during login.");
+                setError("Invalid login credentials.");
             } finally {
                 setLoading(false); // Stop loading spinner
             }

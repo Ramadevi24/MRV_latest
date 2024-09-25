@@ -15,10 +15,6 @@ export const PermissionProvider = ({ children }) => {
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchAllPermissions();
-  }, []);
-
   const fetchAllPermissions = async () => {
     try {
       const data = await getPermissions();

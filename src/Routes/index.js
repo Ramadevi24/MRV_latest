@@ -7,7 +7,6 @@ import VerticalLayout from "../Layouts/index";
 
 //routes
 import { authProtectedRoutes, publicRoutes } from "./allRoutes";
-import { AuthProtected } from './AuthProtected';
 import ProtectedRoute from '../Components/Common/ProtectedRoute';
 
 const Index = () => {

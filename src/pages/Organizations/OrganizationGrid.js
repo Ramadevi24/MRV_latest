@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  FaPencilAlt,
-  FaTrashAlt,
-  FaEye
-} from "react-icons/fa";
+import { FaPencilAlt, FaTrashAlt, FaEye } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../Components/Common/PaginationNumber.js";
 import { formatDate } from "../../utils/formateDate.js";
@@ -19,12 +15,14 @@ import {
   Row,
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
+import DeleteModal from "../../Components/Common/DeleteModal";
 
 const OrganizationGrid = ({ userPermissions }) => {
   document.title = "MRV_PROJECT | OrganizationGrid";
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { organizations, loading, fetchAllOrganizations, deleteOrganization } = useContext(OrganizationContext);
+  const { organizations, loading, fetchAllOrganizations, deleteOrganization } =
+    useContext(OrganizationContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: "name",
@@ -32,22 +30,24 @@ const OrganizationGrid = ({ userPermissions }) => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteOrgId, setDeleteOrgId] = useState(null);
-
+  const [deleteModal, setDeleteModal] = useState(false);
 
   useEffect(() => {
     fetchAllOrganizations(userPermissions?.tenantID);
   }, [userPermissions]);
 
   const handleDelete = (id) => {
-    setDeleteOrgId(id);
-    setShowDeleteModal(true);
+    setDeleteOrgId(id); // Set the organization ID to delete
+    setDeleteModal(true); // Show the modal
   };
-
+  
   const confirmDelete = async () => {
-    await deleteOrganization(deleteOrgId);
-    setShowDeleteModal(false);
+    if (deleteOrgId) {
+      await deleteOrganization(deleteOrgId); // Call your deletion function with the correct org ID
+      setDeleteModal(false); // Close the modal
+      setDeleteOrgId(null); // Clear the state
+    }
   };
 
   const handleSort = (key) => {
@@ -60,23 +60,27 @@ const OrganizationGrid = ({ userPermissions }) => {
 
   const sortedOrganizations = [...organizations].sort((a, b) => {
     if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'ascending' ? -1 : 1;
+      return sortConfig.direction === "ascending" ? -1 : 1;
     }
     if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'ascending' ? 1 : -1;
+      return sortConfig.direction === "ascending" ? 1 : -1;
     }
     return 0;
   });
 
-  const filteredOrganizations = sortedOrganizations.filter(org =>
-    org.organizationName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    org.tenantName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    org.establishedDate?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOrganizations = sortedOrganizations.filter(
+    (org) =>
+      org.organizationName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      org.tenantName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      org.establishedDate?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredOrganizations.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredOrganizations.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -88,7 +92,16 @@ const OrganizationGrid = ({ userPermissions }) => {
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  <h4 className="card-title mb-0" style={{color:'#45CB85', fontSize:'20px', fontWeight:'bold'}}>Organizations</h4>
+                  <h4
+                    className="card-title mb-0"
+                    style={{
+                      color: "#45CB85",
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Organizations
+                  </h4>
                 </CardHeader>
 
                 <CardBody>
@@ -181,8 +194,8 @@ const OrganizationGrid = ({ userPermissions }) => {
                             </tr>
                           </thead>
                           <tbody className="list form-check-all">
-                            {currentItems.map((org ) => (
-                              <tr key={org .organizationID}>
+                            {currentItems.map((org) => (
+                              <tr key={org.organizationID}>
                                 <th scope="row">
                                   <div className="form-check">
                                     <input
@@ -204,7 +217,9 @@ const OrganizationGrid = ({ userPermissions }) => {
                                 <td className="customer_name">
                                   {org.organizationID}
                                 </td>
-                                <td className="email">{org.organizationName}</td>
+                                <td className="email">
+                                  {org.organizationName}
+                                </td>
                                 <td className="date">
                                   {formatDate(org.establishedDate)}
                                 </td>
@@ -217,26 +232,26 @@ const OrganizationGrid = ({ userPermissions }) => {
                                   <div className="d-flex gap-2">
                                     <div className="edit">
                                       <button
-                                        className="btn btn-sm btn-success edit-item-btn"
-                                        onClick={() => navigate(`/edit-organization/${org.organizationID}`)
+                                        className="btn btn-sm btn-info edit-item-btn"
+                                        onClick={() =>
+                                          navigate(
+                                            `/edit-organization/${org.organizationID}`
+                                          )
                                         }
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
                                         {" "}
-                                        <FaPencilAlt color="blue" />
+                                        <FaPencilAlt color="white" />
                                       </button>
                                     </div>
                                     <div className="remove">
                                       <button
                                         className="btn btn-sm btn-danger remove-item-btn"
                                         onClick={() =>
-                                            () => handleDelete(org.organizationID)
-                                        }
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteRecordModal"
+                                          handleDelete(org.organizationID)}
                                       >
-                                        <FaTrashAlt color="red" />
+                                        <FaTrashAlt color="white" />
                                       </button>
                                     </div>
                                     <div className="view">
@@ -251,7 +266,7 @@ const OrganizationGrid = ({ userPermissions }) => {
                                         data-bs-target="#showModal"
                                       >
                                         {" "}
-                                        <FaEye color="green" />
+                                        <FaEye color="white" />
                                       </button>
                                     </div>
                                   </div>
@@ -291,6 +306,11 @@ const OrganizationGrid = ({ userPermissions }) => {
             </Col>
           </Row>
         </Container>
+        <DeleteModal
+        show={deleteModal}
+        onDeleteClick={confirmDelete}
+        onCloseClick={() => setDeleteModal(false)}
+      />
       </div>
     </React.Fragment>
   );

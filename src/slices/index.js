@@ -9,9 +9,6 @@ import AccountReducer from "./auth/register/reducer";
 import ForgetPasswordReducer from "./auth/forgetpwd/reducer";
 import ProfileReducer from "./auth/profile/reducer";
 
-// Dashboard Analytics
-// API Key
-import APIKeyReducer from "./apiKey/reducer";
 
 const rootReducer = combineReducers({
     Layout: LayoutReducer,
@@ -20,7 +17,6 @@ const rootReducer = combineReducers({
     Account: AccountReducer,
     ForgetPassword: ForgetPasswordReducer,
     Profile: ProfileReducer,
-    APIKey: APIKeyReducer
 });
 
 export default rootReducer;

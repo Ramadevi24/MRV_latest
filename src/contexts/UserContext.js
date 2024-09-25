@@ -17,14 +17,9 @@ export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch all users when the component mounts
-  useEffect(() => {
-    fetchAllUsers();
-  }, []);
-
-  const fetchAllUsers = async () => {
+  const fetchAllUsers = async (tenantID = null) => {
     try {
-      const data = await getUsers();
+      const data = await getUsers(tenantID);
       setUsers(data);
       setLoading(false);
     } catch (error) {

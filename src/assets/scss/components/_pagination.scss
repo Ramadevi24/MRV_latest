@@ -34,5 +34,7 @@
 .page-item.active {
     .page-link{
         box-shadow: $element-shadow;
+        background-color: #299cdb !important;
+        border-color:white !important;
     }
 }

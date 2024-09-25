@@ -10,6 +10,8 @@ import { TenantProvider } from './contexts/TenantContext';
 import { OrganizationProvider } from './contexts/OrganizationContext';
 import { RoleProvider } from './contexts/RoleContext';
 import { AuthProvider } from './contexts/AuthContext';
+import { UserProvider } from './contexts/UserContext';
+import { PermissionProvider } from './contexts/PermissionContext';
 
 const store = configureStore({ reducer: rootReducer, devTools: true });
 
@@ -23,7 +25,11 @@ root.render(
         <RoleProvider>
         <OrganizationProvider>
           <AuthProvider>
+            <UserProvider>
+              <PermissionProvider>
         <App />
+        </PermissionProvider>
+        </UserProvider>
         </AuthProvider>
         </OrganizationProvider>
         </RoleProvider>
