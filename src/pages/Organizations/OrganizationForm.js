@@ -1,17 +1,43 @@
 
-import React from 'react';
+import React,{useState}from 'react';
 import { Col, Label, Input, Row, FormGroup, Form, FormFeedback, Button,   Card,
   CardBody,
-  CardHeader, Container,
+  CardHeader, Container, InputGroup,
   CardFooter} from 'reactstrap';
+  import Cleave from "cleave.js/react";
+  import Select from "react-select";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import "cleave.js/dist/addons/cleave-phone.in";
+
+const customStyles = (hasError) => ({
+  control: (provided, state) => ({
+    ...provided,
+    borderColor: hasError ? 'red' : provided.borderColor, // Change border color to red if there's an error
+    // '&:hover': {
+    //   borderColor: hasError ? 'red' : provided.borderColor // Red border on hover if error exists
+    // }
+  }),
+  multiValueLabel: (provided, state) => ({
+    ...provided,
+    color: 'white', // Text color of the selected item
+  }),
+});
+
+const SingleOptions = [
+  { value: 'Choices 1', label: 'Choices 1' },
+  { value: 'Choices 2', label: 'Choices 2' },
+  { value: 'Choices 3', label: 'Choices 3' },
+  { value: 'Choices 4', label: 'Choices 4' }
+];
 
 
 const OrganizationForm = () => {
+  const [selectedMulti, setselectedMulti] = useState(null);
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
+      tenantid: '', // Initial value for tenant ID dropdown
       organizationname: '',
       description: '',
       establishedDate: '',
@@ -20,9 +46,11 @@ const OrganizationForm = () => {
       address: '',
       lattitudevalidation: '',
       Longittudevalidation: '',
-      locationvalidation: ''
+      locationvalidation: '',
+      categoryIDs: [],  // Add initial value for category dropdown
     },
     validationSchema: Yup.object({
+      tenantid: Yup.string().required('Please select a Tenant ID'), 
       organizationname: Yup.string().required('Please enter organization name'),
       description: Yup.string().required('Please enter a description'),
       establishedDate: Yup.string().required('Please enter the established date'),
@@ -32,11 +60,19 @@ const OrganizationForm = () => {
       Longittudevalidation: Yup.string().required('Please enter longitude'),
       locationvalidation: Yup.string().required('Please enter location'),
       address: Yup.string().required('Please enter your address'),
+      categoryIDs: Yup.array().min(1, 'Please select at least one category'),  // Validation rule for multi-select
     }),
     onSubmit: (values) => {
       console.log('Form Submitted:', values);
     }
   });
+  const handleMultiSelectChange = (selectedOptions) => {
+    validation.setFieldValue('categoryIDs', selectedOptions);  // Update the form value for multi-select
+  };
+
+//   function handleMulti(selectedMulti) {
+//     setselectedMulti(selectedMulti);
+// }
 
   return (
     <Container fluid>
@@ -48,8 +84,8 @@ const OrganizationForm = () => {
 
                 <CardBody>
       
-      <Form
-        className="needs-validation"
+      <Form 
+        className="needs-validation "
         onSubmit={(e) => {
           e.preventDefault();
           validation.handleSubmit();
@@ -57,18 +93,31 @@ const OrganizationForm = () => {
       >
         <Row>
           <Col lg={6}>
-            <Label htmlFor="validationtenantid">Tenant ID</Label>
-            <select className="form-select mb-3" aria-label="Default select example">
+            <Label htmlFor="validationtenantid">Tenant ID <span className="text-danger">*</span></Label>
+            <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
+                    id="validationtenantid"
+                    name="tenantid"
+                    value={validation.values.tenantid}  // Formik-controlled value
+                    onChange={validation.handleChange}  // Formik change handler
+                    onBlur={validation.handleBlur}  // Formik blur handler
+                    aria-label="Default select example"
+                    invalid={validation.touched.tenantid && validation.errors.tenantid ? true : false}  // Validation state
+                  >
             <option >Select your Status </option>
             <option defaultValue="1">Declined Payment</option>
             <option defaultValue="2">Delivery Error</option>
             <option defaultValue="3">Wrong Amount</option>
         </select>
+        {validation.touched.tenantid && validation.errors.tenantid ? (
+                    <FormFeedback className="d-block">{validation.errors.tenantid}</FormFeedback>
+                  ) : null}
+      
           </Col>
+       
           <Col md={6}>
             <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="validationorganizationname">Organization Name</Label>
+                <Label htmlFor="validationorganizationname">Organization Name<span className="text-danger">*</span></Label>
                 <Input
                   type="text"
                   className="form-control"
@@ -89,10 +138,10 @@ const OrganizationForm = () => {
         </Row>
 
         <Row>
-          <Col md={6}>
+          <Col md={12}>
             <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="Textarea">Description</Label>
+                <Label htmlFor="Textarea">Description<span className="text-danger">*</span></Label>
                 <Input
                   type="textarea"
                   className="form-control"
@@ -110,10 +159,12 @@ const OrganizationForm = () => {
               </div>
             </FormGroup>
           </Col>
+          </Row>
+          <Row>
           <Col md={6}>
             <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="establishdate">Established Date</Label>
+                <Label htmlFor="establishdate">Established Date<span className="text-danger">*</span></Label>
                 <Input
                   type="date"
                   name="establishedDate"
@@ -130,13 +181,13 @@ const OrganizationForm = () => {
               </div>
             </FormGroup>
           </Col>
-        </Row>
+       
 
-        <Row>
+{/*       
           <Col md={6}>
             <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="emailadress">Email Address</Label>
+                <Label htmlFor="emailadress">Email Address<span className="text-danger">*</span></Label>
                 <Input
                   type="email"
                   className="form-control"
@@ -153,12 +204,28 @@ const OrganizationForm = () => {
                 ) : null}
               </div>
             </FormGroup>
-          </Col>
-
+          </Col> */}
+          <Col md={6}>
+    <label htmlFor="validationDefaultUsername" className="form-label">Email Address<span className="text-danger">*</span></label>
+    <InputGroup>
+        <span className="input-group-text" id="inputGroupPrepend2">@</span>
+        <Input type="email" className="form-control"  id="emailadress" name="Emailaddress"
+                  onChange={validation.handleChange}
+                  onBlur={validation.handleBlur}
+                  value={validation.values.Emailaddress || ""}
+                  invalid={validation.touched.Emailaddress && validation.errors.Emailaddress ? true : false}
+        />
+    </InputGroup>
+    {validation.touched.Emailaddress && validation.errors.Emailaddress ? (
+                  <FormFeedback>{validation.errors.Emailaddress}</FormFeedback>
+                ) : null}
+</Col>
+          </Row>
+<Row>
           <Col md={6}>
             <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="phonenumberInput">Phone Number</Label>
+                <Label htmlFor="phonenumberInput">Phone Number<span className="text-danger">*</span></Label>
                 <Input
                   type="tel"
                   className="form-control"
@@ -176,16 +243,48 @@ const OrganizationForm = () => {
               </div>
             </FormGroup>
           </Col>
+
+{/* <Col xl={6}>
+                          <div className="mb-3 mb-xl-0">
+                            <label htmlFor="cleave-phone" className="form-label">Phone Number<span className="text-danger">*</span></label>
+                            <Cleave
+                              placeholder="xxxx xxx xxx"
+                              options={{
+                                phone: true,
+                                phoneRegionCode: "IN"
+                              }}
+                              value={phone}
+                              onChange={onPhoneChange}
+                              className="form-control"
+                            />
+                          </div>
+                        </Col> */}
+                        <Col lg={6} md={6}>
+                                                    <div className="mb-3">
+                                                        <Label htmlFor="choices-multiple-default" className="form-label ">categoryIDs<span className="text-danger">*</span></Label>                                                        
+                                                        <Select
+                                                             value={validation.values.categoryIDs}
+                                                            isMulti={true}                                                            
+                                                            onChange={handleMultiSelectChange}
+                                                            options={SingleOptions}
+                                                            styles={customStyles(!!validation.errors.categoryIDs && validation.touched.categoryIDs)} // Dynamically set border color
+                                                            onBlur={() => validation.setFieldTouched('categoryIDs', true)}  // Mark the field as touched on blur
+                                                        />
+                                                              {validation.touched.categoryIDs && validation.errors.categoryIDs ? (
+                        <FormFeedback className="d-block">{validation.errors.categoryIDs}</FormFeedback>
+                      ) : null}
+                                                    </div>
+                                                </Col>
         </Row>
         <Row>
-          <Col md={6}>
+          <Col md={12}>
             <FormGroup>
               <div className="mb-3">
-                <Label className="form-label" htmlFor='addressinput'>Address</Label>
+                <Label className="form-label" htmlFor='addressinput'>Address<span className="text-danger">*</span></Label>
                 <Input
                   type="tel"
                   className="form-control"
-                  placeholder="Enter phone number"
+                  placeholder="Enter Your Address"
                   id="addressinput"
                   name="address"
                   onChange={validation.handleChange}
@@ -202,7 +301,7 @@ const OrganizationForm = () => {
               </div>
             </FormGroup>
           </Col>
-          <Col lg={6}>
+          {/* <Col lg={6}>
             <Label>
               categoryIDs
             </Label>
@@ -212,7 +311,23 @@ const OrganizationForm = () => {
             <option defaultValue="2">Delivery Error</option>
             <option defaultValue="3">Wrong Amount</option>
         </select>
-          </Col>
+          </Col> */}
+                  {/* <Col lg={6} md={6}>
+                                                    <div className="mb-3">
+                                                        <Label htmlFor="choices-multiple-default" className="form-label ">categoryIDs<span className="text-danger">*</span></Label>                                                        
+                                                        <Select
+                                                             value={validation.values.categoryIDs}
+                                                            isMulti={true}                                                            
+                                                            onChange={handleMultiSelectChange}
+                                                            options={SingleOptions}
+                                                            styles={customStyles(!!validation.errors.categoryIDs && validation.touched.categoryIDs)} // Dynamically set border color
+                                                            onBlur={() => validation.setFieldTouched('categoryIDs', true)}  // Mark the field as touched on blur
+                                                        />
+                                                              {validation.touched.categoryIDs && validation.errors.categoryIDs ? (
+                        <FormFeedback className="d-block">{validation.errors.categoryIDs}</FormFeedback>
+                      ) : null}
+                                                    </div>
+                                                </Col> */}
         </Row>
         <Col md={4}>
           <Label>Location:</Label>
@@ -220,9 +335,9 @@ const OrganizationForm = () => {
         <Row>
           <Col md={4}>
             <div className="mb-3">
-              <Label for="lattitudeInput" className="form-label">Latitude
+              <Label for="lattitudeInput" className="form-label">Latitude<span className="text-danger">*</span>
               </Label>
-              <Input type="email" className="form-control" placeholder="Enter your Latitude 
+              <Input type="text" className="form-control" placeholder="Enter your Latitude 
  " id="lattitudeInput"
 
                 onChange={validation.handleChange}
@@ -245,9 +360,9 @@ const OrganizationForm = () => {
           </Col>
           <Col md={4}>
             <div className="mb-3">
-              <Label className="form-label" htmlFor='longittudeInput'>Longittude
+              <Label className="form-label" htmlFor='longittudeInput'>Longittude<span className="text-danger">*</span>
               </Label>
-              <Input type="email" className="form-control" placeholder="Enter your Longittude" id="longittudeInput" onChange={validation.handleChange}
+              <Input type="text" className="form-control" placeholder="Enter your Longittude" id="longittudeInput" onChange={validation.handleChange}
                 name='Longittudevalidation'
                 onBlur={validation.handleBlur}
                 value={validation.values.Longittudevalidation || ""}
@@ -267,9 +382,9 @@ const OrganizationForm = () => {
           </Col>
           <Col md={4}>
             <div className="mb-3">
-              <Label htmlFor="locationaddressinput" className="form-label">Location Address
+              <Label htmlFor="locationaddressinput" className="form-label">Location Address<span className="text-danger">*</span>
               </Label>
-              <Input type="email" className="form-control" placeholder="Enter Location Address" id="locationaddressinput"
+              <Input type="text" className="form-control" placeholder="Enter Location Address" id="locationaddressinput"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
                 name='locationvalidation'
