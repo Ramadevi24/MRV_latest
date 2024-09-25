@@ -1,78 +1,192 @@
-
-import React,{useState}from 'react';
-import { Col, Label, Input, Row, FormGroup, Form, FormFeedback, Button,   Card,
+import React, { useState, useContext, useEffect } from "react";
+import {
+  Col,
+  Label,
+  Input,
+  Row,
+  FormGroup,
+  Form,
+  FormFeedback,
+  Button,
+  Card,
   CardBody,
-  CardHeader, Container, InputGroup,
-  CardFooter} from 'reactstrap';
-  import Cleave from "cleave.js/react";
-  import Select from "react-select";
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
+  CardHeader,
+  Container,
+  InputGroup,
+} from "reactstrap";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import "cleave.js/dist/addons/cleave-phone.in";
+import { TenantContext } from "../../contexts/TenantContext";
+import { OrganizationContext } from "../../contexts/OrganizationContext";
 
 const customStyles = (hasError) => ({
   control: (provided, state) => ({
     ...provided,
-    borderColor: hasError ? 'red' : provided.borderColor, // Change border color to red if there's an error
+    borderColor: hasError ? "red" : provided.borderColor, // Change border color to red if there's an error
     // '&:hover': {
     //   borderColor: hasError ? 'red' : provided.borderColor // Red border on hover if error exists
     // }
   }),
   multiValueLabel: (provided, state) => ({
     ...provided,
-    color: 'white', // Text color of the selected item
+    color: "white", // Text color of the selected item
   }),
 });
 
 const SingleOptions = [
-  { value: 'Choices 1', label: 'Choices 1' },
-  { value: 'Choices 2', label: 'Choices 2' },
-  { value: 'Choices 3', label: 'Choices 3' },
-  { value: 'Choices 4', label: 'Choices 4' }
+  { value: "Choices 1", label: "Choices 1" },
+  { value: "Choices 2", label: "Choices 2" },
+  { value: "Choices 3", label: "Choices 3" },
+  { value: "Choices 4", label: "Choices 4" },
 ];
 
-
 const OrganizationForm = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const [selectedMulti, setselectedMulti] = useState(null);
+  const { fetchAllTenants, tenants } = useContext(TenantContext);
+  const { fetchAllCategories, categories, addOrganization } = useContext(OrganizationContext);
+  const [checkedItems, setCheckedItems] = useState([]);
+  const [expandedItems, setExpandedItems] = useState([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      tenantid: '', // Initial value for tenant ID dropdown
-      organizationname: '',
-      description: '',
-      establishedDate: '',
-      Emailaddress: '',
-      phonenumber: '',
-      address: '',
-      lattitudevalidation: '',
-      Longittudevalidation: '',
-      locationvalidation: '',
-      categoryIDs: [],  // Add initial value for category dropdown
+      tenantID: "",
+      organizationName: "",
+      description: "",
+      establishedDate: "",
+      contactEmail: "",
+      contactPhone: "",
+      address: "",
+      locations: [{ latitude: "", longitude: "", address: "" }],
+      categoryIDs: [],
     },
     validationSchema: Yup.object({
-      tenantid: Yup.string().required('Please select a Tenant ID'), 
-      organizationname: Yup.string().required('Please enter organization name'),
-      description: Yup.string().required('Please enter a description'),
-      establishedDate: Yup.string().required('Please enter the established date'),
-      Emailaddress: Yup.string().email('Invalid email format').required('Please enter an email address'),
-      phonenumber: Yup.string().required('Please enter a phone number'),
-      lattitudevalidation: Yup.string().required('Please enter latitude'),
-      Longittudevalidation: Yup.string().required('Please enter longitude'),
-      locationvalidation: Yup.string().required('Please enter location'),
-      address: Yup.string().required('Please enter your address'),
-      categoryIDs: Yup.array().min(1, 'Please select at least one category'),  // Validation rule for multi-select
+      tenantID: Yup.string().required("Please select a Tenant ID"),
+      organizationName: Yup.string().required("Please enter organization name"),
+      description: Yup.string().required("Please enter a description"),
+      establishedDate: Yup.string().required(
+        "Please enter the established date"
+      ),
+      contactEmail: Yup.string()
+        .email("Invalid email format")
+        .required("Please enter an email address"),
+      contactPhone: Yup.string().required("Please enter a phone number"),
+      address: Yup.string().required("Please enter your address"),
+      categoryIDs: Yup.array().min(1, "Please select at least one category"),
+      locations: Yup.array().of(
+        Yup.object().shape({
+          latitude: Yup.string().required(t("Please enter latitude")),
+          longitude: Yup.string().required(t("Please enter longitude")),
+          address: Yup.string().required(t("Please enter location address")),
+        })
+      ),
     }),
-    onSubmit: (values) => {
-      console.log('Form Submitted:', values);
-    }
+    onSubmit: async (values) => {
+      try {
+        await addOrganization(values);
+        toast.success(t("Organization created successfully"), {
+          autoClose: 2000,
+        });
+        navigate("/organizations");
+      } catch (error) {
+        toast.error(t("createError"));
+      }
+    },
   });
   const handleMultiSelectChange = (selectedOptions) => {
-    validation.setFieldValue('categoryIDs', selectedOptions);  // Update the form value for multi-select
+    validation.setFieldValue("categoryIDs", selectedOptions); // Update the form value for multi-select
   };
 
-//   function handleMulti(selectedMulti) {
-//     setselectedMulti(selectedMulti);
-// }
+  //   function handleMulti(selectedMulti) {
+  //     setselectedMulti(selectedMulti);
+  // }
+
+  const handleCheck = (category) => {
+    const allChildIds = getAllChildIds(category);
+    setCheckedItems((prev) => {
+      const newCheckedItems = allChildIds.every((id) => prev.includes(id))
+        ? prev.filter((id) => !allChildIds.includes(id))
+        : [...new Set([...prev, ...allChildIds])];
+      validation.setFieldValue("categoryIDs", newCheckedItems);
+      return newCheckedItems;
+    });
+  };
+
+  const handleExpand = (categoryId) => {
+    setExpandedItems((prev) =>
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId]
+    );
+  };
+
+  const getAllChildIds = (category) => {
+    let ids = [category.categoryID];
+    category.subCategories?.$values?.forEach((subCategory) => {
+      ids = [...ids, ...getAllChildIds(subCategory)];
+    });
+    return ids;
+  };
+
+  const CheckboxTree = ({
+    data,
+    checkedItems,
+    expandedItems,
+    handleCheck,
+    handleExpand,
+  }) => (
+    <div style={{ paddingLeft: "20px" }}>
+      {data
+        ?.filter((category) => category.categoryName && category.categoryCode)
+        ?.map((item) => (
+          <div key={item.categoryID} style={{ marginBottom: "8px" }}>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              {item.subCategories && (
+                <span
+                  onClick={() => handleExpand(item.categoryID)}
+                  style={{ cursor: "pointer", marginRight: "8px" }}
+                >
+                  {expandedItems.includes(item.categoryID) ? "▼" : "▶"}
+                </span>
+              )}
+              <input
+                type="checkbox"
+                checked={checkedItems.includes(item.categoryID)}
+                onChange={() => handleCheck(item)}
+                style={{
+                  marginRight: "8px",
+                  marginTop: "-5px",
+                  width: "20px",
+                  transform: "scale(1.3)",
+                }}
+              />
+              <label>{`${item.categoryCode} - ${item.categoryName}`}</label>
+            </div>
+            {item.subCategories && expandedItems.includes(item.categoryID) && (
+              <CheckboxTree
+                data={item.subCategories.$values}
+                checkedItems={checkedItems}
+                expandedItems={expandedItems}
+                handleCheck={handleCheck}
+                handleExpand={handleExpand}
+              />
+            )}
+          </div>
+        ))}
+    </div>
+  );
+
+  useEffect(() => {
+    fetchAllTenants();
+    fetchAllCategories();
+  }, []);
 
   return (
     <React.Fragment>
@@ -90,119 +204,168 @@ const OrganizationForm = () => {
                       fontWeight: "bold",
                     }}
                   >
-                  Add Organization
+                    Add Organization
                   </h4>
                 </CardHeader>
 
                 <CardBody>
-  
-    {/* <div style={{ margin: '5rem 1rem' }}> */}
-  
-                {/* <CardHeader className="ribbon-box" style={{padding:"2rem"}}>
+                  {/* <div style={{ margin: '5rem 1rem' }}> */}
+
+                  {/* <CardHeader className="ribbon-box" style={{padding:"2rem"}}>
                 <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Organization</h2>
                 </CardHeader> */}
 
-      
-      <Form 
-        className="needs-validation "
-        onSubmit={(e) => {
-          e.preventDefault();
-          validation.handleSubmit();
-        }}
-      >
-        <Row>
-          <Col lg={6}>
-            <Label htmlFor="validationtenantid">Tenant ID <span className="text-danger">*</span></Label>
-            <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
-                    id="validationtenantid"
-                    name="tenantid"
-                    value={validation.values.tenantid}  // Formik-controlled value
-                    onChange={validation.handleChange}  // Formik change handler
-                    onBlur={validation.handleBlur}  // Formik blur handler
-                    aria-label="Default select example"
-                    invalid={validation.touched.tenantid && validation.errors.tenantid ? true : false}  // Validation state
+                  <Form
+                    className="needs-validation "
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      validation.handleSubmit();
+                    }}
                   >
-            <option >Select your Status </option>
-            <option defaultValue="1">Declined Payment</option>
-            <option defaultValue="2">Delivery Error</option>
-            <option defaultValue="3">Wrong Amount</option>
-        </select>
-        {validation.touched.tenantid && validation.errors.tenantid ? (
-                    <FormFeedback className="d-block">{validation.errors.tenantid}</FormFeedback>
-                  ) : null}
-      
-          </Col>
-       
-          <Col md={6}>
-            <FormGroup>
-              <div className="mb-3">
-                <Label htmlFor="validationorganizationname">Organization Name<span className="text-danger">*</span></Label>
-                <Input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter Organization Name"
-                  id="validationorganizationname"
-                  name="organizationname"
-                  onChange={validation.handleChange}
-                  onBlur={validation.handleBlur}
-                  value={validation.values.organizationname || ""}
-                  invalid={validation.touched.organizationname && validation.errors.organizationname ? true : false}
-                />
-                {validation.touched.organizationname && validation.errors.organizationname ? (
-                  <FormFeedback>{validation.errors.organizationname}</FormFeedback>
-                ) : null}
-              </div>
-            </FormGroup>
-          </Col>
-        </Row>
+                    <Row>
+                      <Col lg={6}>
+                        <Label htmlFor="validationtenantid">
+                          Tenant ID <span className="text-danger">*</span>
+                        </Label>
+                        <select
+                          className={`form-select  ${
+                            validation.touched.tenantID &&
+                            validation.errors.tenantID
+                              ? "is-invalid"
+                              : ""
+                          }`} // Add red border class if error
+                          id="validationtenantid"
+                          name="tenantID"
+                          value={validation.values.tenantID} // Formik-controlled value
+                          onChange={validation.handleChange} // Formik change handler
+                          onBlur={validation.handleBlur} // Formik blur handler
+                          aria-label="Default select example"
+                          invalid={
+                            validation.touched.tenantID &&
+                            validation.errors.tenantID
+                              ? true
+                              : false
+                          } // Validation state
+                        >
+                          <option value="">{t("selectTenant")}</option>
+                          {tenants.map((tenant) => (
+                            <option
+                              key={tenant.tenantID}
+                              value={tenant.tenantID}
+                            >
+                              {tenant.name}
+                            </option>
+                          ))}
+                        </select>
+                        {validation.touched.tenantID &&
+                        validation.errors.tenantID ? (
+                          <FormFeedback className="d-block">
+                            {validation.errors.tenantID}
+                          </FormFeedback>
+                        ) : null}
+                      </Col>
 
-        <Row>
-          <Col md={12}>
-            <FormGroup>
-              <div className="mb-3">
-                <Label htmlFor="Textarea">Description<span className="text-danger">*</span></Label>
-                <Input
-                  type="textarea"
-                  className="form-control"
-                  id="Textarea"
-                  rows="3"
-                  name="description"
-                  onChange={validation.handleChange}
-                  onBlur={validation.handleBlur}
-                  value={validation.values.description || ""}
-                  invalid={validation.touched.description && validation.errors.description ? true : false}
-                />
-                {validation.touched.description && validation.errors.description ? (
-                  <FormFeedback>{validation.errors.description}</FormFeedback>
-                ) : null}
-              </div>
-            </FormGroup>
-          </Col>
-          </Row>
-          <Row>
-          <Col md={6}>
-            <FormGroup>
-              <div className="mb-3">
-                <Label htmlFor="establishdate">Established Date<span className="text-danger">*</span></Label>
-                <Input
-                  type="date"
-                  name="establishedDate"
-                  id="establishdate"
-                  className="form-control"
-                  onChange={validation.handleChange}
-                  onBlur={validation.handleBlur}
-                  value={validation.values.establishedDate || ""}
-                  invalid={validation.touched.establishedDate && validation.errors.establishedDate ? true : false}
-                />
-                {validation.touched.establishedDate && validation.errors.establishedDate ? (
-                  <FormFeedback>{validation.errors.establishedDate}</FormFeedback>
-                ) : null}
-              </div>
-            </FormGroup>
-          </Col>
-       
+                      <Col md={6}>
+                        <FormGroup>
+                          <div className="mb-3">
+                            <Label htmlFor="validationorganizationname">
+                              Organization Name
+                              <span className="text-danger">*</span>
+                            </Label>
+                            <Input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter Organization Name"
+                              id="validationorganizationname"
+                              name="organizationName"
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              value={validation.values.organizationName || ""}
+                              invalid={
+                                validation.touched.organizationName &&
+                                validation.errors.organizationName
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {validation.touched.organizationName &&
+                            validation.errors.organizationName ? (
+                              <FormFeedback>
+                                {validation.errors.organizationName}
+                              </FormFeedback>
+                            ) : null}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                    </Row>
 
-{/*       
+                    <Row>
+                      <Col md={12}>
+                        <FormGroup>
+                          <div className="mb-3">
+                            <Label htmlFor="Textarea">
+                              Description<span className="text-danger">*</span>
+                            </Label>
+                            <Input
+                              type="textarea"
+                              className="form-control"
+                              id="Textarea"
+                              rows="3"
+                              name="description"
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              value={validation.values.description || ""}
+                              invalid={
+                                validation.touched.description &&
+                                validation.errors.description
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {validation.touched.description &&
+                            validation.errors.description ? (
+                              <FormFeedback>
+                                {validation.errors.description}
+                              </FormFeedback>
+                            ) : null}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md={6}>
+                        <FormGroup>
+                          <div className="mb-3">
+                            <Label htmlFor="establishdate">
+                              Established Date
+                              <span className="text-danger">*</span>
+                            </Label>
+                            <Input
+                              type="date"
+                              name="establishedDate"
+                              id="establishdate"
+                              className="form-control"
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              value={validation.values.establishedDate || ""}
+                              invalid={
+                                validation.touched.establishedDate &&
+                                validation.errors.establishedDate
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {validation.touched.establishedDate &&
+                            validation.errors.establishedDate ? (
+                              <FormFeedback>
+                                {validation.errors.establishedDate}
+                              </FormFeedback>
+                            ) : null}
+                          </div>
+                        </FormGroup>
+                      </Col>
+
+                      {/*       
           <Col md={6}>
             <FormGroup>
               <div className="mb-3">
@@ -224,46 +387,78 @@ const OrganizationForm = () => {
               </div>
             </FormGroup>
           </Col> */}
-          <Col md={6}>
-    <label htmlFor="validationDefaultUsername" className="form-label">Email Address<span className="text-danger">*</span></label>
-    <InputGroup>
-        <span className="input-group-text" id="inputGroupPrepend2">@</span>
-        <Input type="email" className="form-control"  id="emailadress" name="Emailaddress"
-                  onChange={validation.handleChange}
-                  onBlur={validation.handleBlur}
-                  value={validation.values.Emailaddress || ""}
-                  invalid={validation.touched.Emailaddress && validation.errors.Emailaddress ? true : false}
-        />
-    </InputGroup>
-    {validation.touched.Emailaddress && validation.errors.Emailaddress ? (
-                  <FormFeedback>{validation.errors.Emailaddress}</FormFeedback>
-                ) : null}
-</Col>
-          </Row>
-<Row>
-          <Col md={6}>
-            <FormGroup>
-              <div className="mb-3">
-                <Label htmlFor="phonenumberInput">Phone Number<span className="text-danger">*</span></Label>
-                <Input
-                  type="tel"
-                  className="form-control"
-                  placeholder="Enter phone number"
-                  id="phonenumberInput"
-                  name="phonenumber"
-                  onChange={validation.handleChange}
-                  onBlur={validation.handleBlur}
-                  value={validation.values.phonenumber || ""}
-                  invalid={validation.touched.phonenumber && validation.errors.phonenumber ? true : false}
-                />
-                {validation.touched.phonenumber && validation.errors.phonenumber ? (
-                  <FormFeedback>{validation.errors.phonenumber}</FormFeedback>
-                ) : null}
-              </div>
-            </FormGroup>
-          </Col>
+                      <Col md={6}>
+                        <label
+                          htmlFor="validationDefaultUsername"
+                          className="form-label"
+                        >
+                          Email<span className="text-danger">*</span>
+                        </label>
+                        <InputGroup>
+                          <span
+                            className="input-group-text"
+                            id="inputGroupPrepend2"
+                          >
+                            @
+                          </span>
+                          <Input
+                            type="email"
+                            className="form-control"
+                            id="emailadress"
+                            name="contactEmail"
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.contactEmail || ""}
+                            invalid={
+                              validation.touched.contactEmail &&
+                              validation.errors.contactEmail
+                                ? true
+                                : false
+                            }
+                          />
+                        </InputGroup>
+                        {validation.touched.contactEmail &&
+                        validation.errors.contactEmail ? (
+                          <FormFeedback>
+                            {validation.errors.contactEmail}
+                          </FormFeedback>
+                        ) : null}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md={6}>
+                        <FormGroup>
+                          <div className="mb-3">
+                            <Label htmlFor="phonenumberInput">
+                              Phone Number<span className="text-danger">*</span>
+                            </Label>
+                            <Input
+                              type="tel"
+                              className="form-control"
+                              placeholder="Enter phone number"
+                              id="phonenumberInput"
+                              name="contactPhone"
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              value={validation.values.contactPhone || ""}
+                              invalid={
+                                validation.touched.contactPhone &&
+                                validation.errors.contactPhone
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {validation.touched.contactPhone &&
+                            validation.errors.contactPhone ? (
+                              <FormFeedback>
+                                {validation.errors.contactPhone}
+                              </FormFeedback>
+                            ) : null}
+                          </div>
+                        </FormGroup>
+                      </Col>
 
-{/* <Col xl={6}>
+                      {/* <Col xl={6}>
                           <div className="mb-3 mb-xl-0">
                             <label htmlFor="cleave-phone" className="form-label">Phone Number<span className="text-danger">*</span></label>
                             <Cleave
@@ -278,49 +473,127 @@ const OrganizationForm = () => {
                             />
                           </div>
                         </Col> */}
-                        <Col lg={6} md={6}>
-                                                    <div className="mb-3">
-                                                        <Label htmlFor="choices-multiple-default" className="form-label ">categoryIDs<span className="text-danger">*</span></Label>                                                        
-                                                        <Select
-                                                             value={validation.values.categoryIDs}
-                                                            isMulti={true}                                                            
-                                                            onChange={handleMultiSelectChange}
-                                                            options={SingleOptions}
-                                                            styles={customStyles(!!validation.errors.categoryIDs && validation.touched.categoryIDs)} // Dynamically set border color
-                                                            onBlur={() => validation.setFieldTouched('categoryIDs', true)}  // Mark the field as touched on blur
-                                                        />
-                                                              {validation.touched.categoryIDs && validation.errors.categoryIDs ? (
-                        <FormFeedback className="d-block">{validation.errors.categoryIDs}</FormFeedback>
-                      ) : null}
-                                                    </div>
-                                                </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
-            <FormGroup>
-              <div className="mb-3">
-                <Label className="form-label" htmlFor='addressinput'>Address<span className="text-danger">*</span></Label>
-                <Input
-                  type="tel"
-                  className="form-control"
-                  placeholder="Enter Your Address"
-                  id="addressinput"
-                  name="address"
-                  onChange={validation.handleChange}
-                  onBlur={validation.handleBlur}
-                  value={validation.values.address || ""}
-                  invalid={validation.touched.address && validation.errors.address ? true : false}
-                />
-                {validation.touched.address &&
-                  validation.errors.address ? (
-                  <FormFeedback type="invalid">
-                    {validation.errors.address}
-                  </FormFeedback>
-                ) : null}
-              </div>
-            </FormGroup>
-          </Col>
-          {/* <Col lg={6}>
+                      <Col lg={6} md={6}>
+                        <div className="mb-3">
+                          <Label
+                            htmlFor="choices-multiple-default"
+                            className="form-label "
+                          >
+                            categoryIDs<span className="text-danger">*</span>
+                          </Label>
+                          <div style={{ margin: "0 auto" }}>
+                            <button
+                              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                              style={{
+                                padding: "10px",
+                                width: "100%",
+                                textAlign: "left",
+                                cursor: "pointer",
+                                background: "white",
+                                border: "1px solid #ddd",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                <div> Select Categories </div>
+                                <div> {isDropdownOpen ? "▲" : "▼"} </div>
+                              </div>
+                            </button>
+
+                            {isDropdownOpen && (
+                              <div
+                                style={{
+                                  border: "1px solid #ddd",
+                                  padding: "10px",
+                                  maxHeight: "300px",
+                                  overflowY: "auto",
+                                }}
+                              >
+                                <CheckboxTree
+                                  data={categories}
+                                  checkedItems={checkedItems}
+                                  expandedItems={expandedItems}
+                                  handleCheck={handleCheck}
+                                  handleExpand={handleExpand}
+                                />
+                              </div>
+                            )}
+                          </div>
+                          {/* {checkedItems.length > 0 && (
+                            <div className="mt-2">
+                              <strong>Selected Categories:</strong>{" "}
+                              {checkedItems
+                                .map(
+                                  (categoryID) =>
+                                    categories.find(
+                                      (cat) => cat.categoryID === categoryID
+                                    )?.categoryName
+                                )
+                                .join(", ")}
+                            </div>
+                          )} */}
+                          {/* <Select
+                            value={validation.values.categoryIDs}
+                            isMulti={true}
+                            onChange={handleMultiSelectChange}
+                            options={SingleOptions}
+                            styles={customStyles(
+                              !!validation.errors.categoryIDs &&
+                                validation.touched.categoryIDs
+                            )} // Dynamically set border color
+                            onBlur={() =>
+                              validation.setFieldTouched("categoryIDs", true)
+                            } 
+                          /> */}
+                          {validation.touched.categoryIDs &&
+                          validation.errors.categoryIDs ? (
+                            <FormFeedback className="d-block">
+                              {validation.errors.categoryIDs}
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md={12}>
+                        <FormGroup>
+                          <div className="mb-3">
+                            <Label
+                              className="form-label"
+                              htmlFor="addressinput"
+                            >
+                              Address<span className="text-danger">*</span>
+                            </Label>
+                            <Input
+                              type="tel"
+                              className="form-control"
+                              placeholder="Enter Your Address"
+                              id="addressinput"
+                              name="address"
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              value={validation.values.address || ""}
+                              invalid={
+                                validation.touched.address &&
+                                validation.errors.address
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {validation.touched.address &&
+                            validation.errors.address ? (
+                              <FormFeedback type="invalid">
+                                {validation.errors.address}
+                              </FormFeedback>
+                            ) : null}
+                          </div>
+                        </FormGroup>
+                      </Col>
+                      {/* <Col lg={6}>
             <Label>
               categoryIDs
             </Label>
@@ -331,7 +604,7 @@ const OrganizationForm = () => {
             <option defaultValue="3">Wrong Amount</option>
         </select>
           </Col> */}
-                  {/* <Col lg={6} md={6}>
+                      {/* <Col lg={6} md={6}>
                                                     <div className="mb-3">
                                                         <Label htmlFor="choices-multiple-default" className="form-label ">categoryIDs<span className="text-danger">*</span></Label>                                                        
                                                         <Select
@@ -347,110 +620,159 @@ const OrganizationForm = () => {
                       ) : null}
                                                     </div>
                                                 </Col> */}
-        </Row>
-        <Col md={4}>
-          <Label>Location:</Label>
-          </Col>
-        <Row>
-          <Col md={4}>
-            <div className="mb-3">
-              <Label for="lattitudeInput" className="form-label">Latitude<span className="text-danger">*</span>
-              </Label>
-              <Input type="text" className="form-control" placeholder="Enter your Latitude 
- " id="lattitudeInput"
+                    </Row>
+                    <Col md={4}>
+                      <Label>Location:</Label>
+                    </Col>
+                    {validation.values.locations.map((location, index) => (
+                      <Row key={index}>
+                        <Col md={4}>
+                          <div className="mb-3">
+                            <Label
+                              htmlFor={`latitude-${index}`}
+                              className="form-label"
+                            >
+                              Latitude<span className="text-danger">*</span>
+                            </Label>
+                            <Input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter your Latitude 
+ "
+                              id={`latitude-${index}`}
+                              onChange={validation.handleChange}
+                              name={`locations[${index}].latitude`}
+                              onBlur={validation.handleBlur}
+                              value={
+                                validation.values.locations[index].latitude ||
+                                ""
+                              }
+                              invalid={
+                                validation.touched.locations &&
+                                validation.touched.locations[index]?.latitude &&
+                                validation.errors.locations &&
+                                validation.errors.locations[index]?.latitude
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {validation.touched.locations &&
+                              validation.touched.locations[index]?.latitude &&
+                              validation.errors.locations &&
+                              validation.errors.locations[index]?.latitude && (
+                                <FormFeedback>
+                                  {validation.errors.locations[index].latitude}
+                                </FormFeedback>
+                              )}
+                          </div>
+                        </Col>
+                        <Col md={4}>
+                          <div className="mb-3">
+                            <Label
+                              className="form-label"
+                              htmlFor={`longitude-${index}`}
+                            >
+                              Longittude<span className="text-danger">*</span>
+                            </Label>
+                            <Input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter your Longittude"
+                              id={`longitude-${index}`}
+                              onChange={validation.handleChange}
+                              name={`locations[${index}].longitude`}
+                              onBlur={validation.handleBlur}
+                              value={
+                                validation.values.locations[index].longitude ||
+                                ""
+                              }
+                              invalid={
+                                validation.touched.locations &&
+                                validation.touched.locations[index]
+                                  ?.longitude &&
+                                validation.errors.locations &&
+                                validation.errors.locations[index]?.longitude
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {validation.touched.locations &&
+                              validation.touched.locations[index]?.longitude &&
+                              validation.errors.locations &&
+                              validation.errors.locations[index]?.longitude && (
+                                <FormFeedback>
+                                  {validation.errors.locations[index].longitude}
+                                </FormFeedback>
+                              )}
+                          </div>
+                        </Col>
+                        <Col md={4}>
+                          <div className="mb-3">
+                            <Label
+                              htmlFor={`address-${index}`}
+                              className="form-label"
+                            >
+                              Location Address
+                              <span className="text-danger">*</span>
+                            </Label>
+                            <Input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter Location Address"
+                              id={`address-${index}`}
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              name={`locations[${index}].address`}
+                              value={
+                                validation.values.locations[index].address || ""
+                              }
+                              invalid={
+                                validation.touched.locations &&
+                                validation.touched.locations[index]?.address &&
+                                validation.errors.locations &&
+                                validation.errors.locations[index]?.address
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {validation.touched.locations &&
+                              validation.touched.locations[index]?.address &&
+                              validation.errors.locations &&
+                              validation.errors.locations[index]?.address && (
+                                <FormFeedback>
+                                  {validation.errors.locations[index].address}
+                                </FormFeedback>
+                              )}
+                          </div>
+                        </Col>
+                      </Row>
+                    ))}
+                    <div className="d-flex justify-content-end">
+                      <Button
+                        type="submit"
+                        color="success"
+                        className="rounded-pill me-2"
+                      >
+                        Submit
+                      </Button>
+                      <Button
+                        type="button"
+                        color="danger"
+                        className="rounded-pill"
+                        onClick={() => history.back()}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </Form>
 
-                onChange={validation.handleChange}
-                name='lattitudevalidation'
-                onBlur={validation.handleBlur}
-                value={validation.values.lattitudevalidation || ""}
-                invalid={
-                  validation.touched.lattitudevalidation &&
-                    validation.errors.lattitudevalidation
-                    ? true
-                    : false
-                } />
-              {validation.touched.lattitudevalidation &&
-                validation.errors.lattitudevalidation ? (
-                <FormFeedback type="invalid">
-                  {validation.errors.lattitudevalidation}
-                </FormFeedback>
-              ) : null}
-            </div>
-          </Col>
-          <Col md={4}>
-            <div className="mb-3">
-              <Label className="form-label" htmlFor='longittudeInput'>Longittude<span className="text-danger">*</span>
-              </Label>
-              <Input type="text" className="form-control" placeholder="Enter your Longittude" id="longittudeInput" onChange={validation.handleChange}
-                name='Longittudevalidation'
-                onBlur={validation.handleBlur}
-                value={validation.values.Longittudevalidation || ""}
-                invalid={
-                  validation.touched.Longittudevalidation &&
-                    validation.errors.Longittudevalidation
-                    ? true
-                    : false
-                } />
-              {validation.touched.Longittudevalidation &&
-                validation.errors.Longittudevalidation ? (
-                <FormFeedback type="invalid">
-                  {validation.errors.Longittudevalidation}
-                </FormFeedback>
-              ) : null}
-            </div>
-          </Col>
-          <Col md={4}>
-            <div className="mb-3">
-              <Label htmlFor="locationaddressinput" className="form-label">Location Address<span className="text-danger">*</span>
-              </Label>
-              <Input type="text" className="form-control" placeholder="Enter Location Address" id="locationaddressinput"
-                onChange={validation.handleChange}
-                onBlur={validation.handleBlur}
-                name='locationvalidation'
-                value={validation.values.locationvalidation || ""}
-                invalid={
-                  validation.touched.locationvalidation &&
-                    validation.errors.locationvalidation
-                    ? true
-                    : false
-                } />
-              {validation.touched.locationvalidation &&
-                validation.errors.locationvalidation ? (
-                <FormFeedback type="invalid">
-                  {validation.errors.locationvalidation}
-                </FormFeedback>
-              ) : null}
-            </div>
-          </Col>
-        </Row>
-
-        <div className="d-flex justify-content-end">
-                <Button type="submit" color="success" className="rounded-pill me-2">
-                  Submit
-                </Button>
-                <Button
-                  type="button"
-                  color="danger"
-                  className="rounded-pill"
-                  onClick={() => history.back()}
-                >
-                  Cancel
-                </Button>
-              </div>
-     
-
-
-      </Form>
-     
-
-    
-    {/* </div> */}
-    </CardBody>
-    </Card>
-    </Col>
-    </Row>
-    </Container>
-    </div>
+                  {/* </div> */}
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </React.Fragment>
   );
 };

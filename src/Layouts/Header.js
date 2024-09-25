@@ -7,6 +7,8 @@ import logoSm from "../assets/images/logo-sm.png";
 import logoDark from "../assets/images/logo-dark.png";
 import logoLight from "../assets/images/logo-light.png";
 import logoImage from "../assets/images/Logoimage.png";
+import ead_dark from "../assets/images/ead_dark.png";
+import ead_light from "../assets/images/ead_light.png";
 
 //import Components
 import SearchOption from '../Components/Common/SearchOption';
@@ -80,19 +82,19 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                             <div className="navbar-brand-box horizontal-logo">
                                 <Link to="/" className="logo logo-dark">
                                     <span className="logo-sm">
-                                        <img src={logoImage} alt="" height="60" width="150" />
+                                        <img src={ead_light} alt="" height="60" width="150" />
                                     </span>
                                     <span className="logo-lg">
-                                        <img src={logoImage} alt="" height="100" width="150" />
+                                        <img src={ead_light} alt="" height="100" width="150" />
                                     </span>
                                 </Link>
 
                                 <Link to="/" className="logo logo-light">
                                     <span className="logo-sm">
-                                        <img src={logoImage} alt="" height="60" width="150" />
+                                        <img src={ead_dark} alt="" height="60" width="150" />
                                     </span>
                                     <span className="logo-lg">
-                                        <img src={logoImage} alt="" height="100" width="150" />
+                                        <img src={ead_dark} alt="" height="100" width="150" />
                                     </span>
                                 </Link>
                             </div>

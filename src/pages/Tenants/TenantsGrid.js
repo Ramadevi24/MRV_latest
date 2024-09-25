@@ -71,7 +71,7 @@ const TenantsGrid = () => {
     return 0;
   });
 
-  const filteredTenants = sortedTenants.filter((tenant) =>
+  const filteredTenants = sortedTenants?.filter((tenant) =>
     ["name", "description", "createdDate"].some((key) =>
       tenant[key].toLowerCase().includes(searchTerm.toLowerCase())
     )
