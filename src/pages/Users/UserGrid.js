@@ -104,7 +104,7 @@ const UserGrid = ({ userPermissions }) => {
                       fontWeight: "bold",
                     }}
                   >
-                    Roles
+                 Users
                   </h4>
                 </CardHeader>
 
@@ -116,7 +116,7 @@ const UserGrid = ({ userPermissions }) => {
                           <Button
                             color="success"
                             className="add-btn me-1"
-                            onClick={() => navigate("/create-role")}
+                            onClick={() => navigate("/create-user")}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>{" "}

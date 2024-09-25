@@ -75,14 +75,33 @@ const OrganizationForm = () => {
 // }
 
   return (
-    <Container fluid>
-    <div style={{ margin: '5rem 1rem' }}>
-    <Card>
-                <CardHeader className="ribbon-box" style={{padding:"2rem"}}>
-                <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Organization</h2>
+    <React.Fragment>
+      <div className="page-content">
+        <Container fluid>
+          <Row>
+            <Col lg={12}>
+              <Card>
+                <CardHeader>
+                  <h4
+                    className="card-title mb-0"
+                    style={{
+                      color: "#45CB85",
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                  Add Organization
+                  </h4>
                 </CardHeader>
 
                 <CardBody>
+  
+    {/* <div style={{ margin: '5rem 1rem' }}> */}
+  
+                {/* <CardHeader className="ribbon-box" style={{padding:"2rem"}}>
+                <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Organization</h2>
+                </CardHeader> */}
+
       
       <Form 
         className="needs-validation "
@@ -404,6 +423,7 @@ const OrganizationForm = () => {
             </div>
           </Col>
         </Row>
+
         <div className="d-flex justify-content-end">
                 <Button type="submit" color="success" className="rounded-pill me-2">
                   Submit
@@ -421,11 +441,17 @@ const OrganizationForm = () => {
 
 
       </Form>
-      </CardBody>
-</Card>
+     
+
     
-    </div>
+    {/* </div> */}
+    </CardBody>
+    </Card>
+    </Col>
+    </Row>
     </Container>
+    </div>
+    </React.Fragment>
   );
 };
 

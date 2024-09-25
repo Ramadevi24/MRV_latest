@@ -2,16 +2,25 @@ import React from 'react'
 import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader } from 'reactstrap';
 const RoleForm = () => {
   return (
-    <div style={{margin:'6rem'}}>
+    <div className="page-content">
+    <Container fluid>
+      <Row>
+        <Col lg={12}>
+          <Card>
+            <CardHeader>
+              <h4
+                className="card-title mb-0"
+                style={{
+                  color: "#45CB85",
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+     Add Role
+              </h4>
+            </CardHeader>
 
-
-    <Container style={{  margin: '9rem 4rem ' }} >
-<Card>
-                <CardHeader className="ribbon-box" style={{padding:"2rem"}}>
-                <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Tenant</h2>
-                </CardHeader>
-
-                <CardBody>
+            <CardBody>
       
       <Row>
         <Col md={{ size: 10, offset: 1 }}>
@@ -43,6 +52,8 @@ const RoleForm = () => {
       </Row>
       </CardBody>
       </Card>
+      </Col>
+      </Row>
     </Container>
     </div>
   );

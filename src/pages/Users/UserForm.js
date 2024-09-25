@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Label, Input, Row, FormGroup, Form, FormFeedback, Button } from 'reactstrap';
+import { Col, Label, Input, Row, FormGroup, Form, FormFeedback, Button, CardBody ,Container,Card,CardHeader} from 'reactstrap';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 
@@ -12,25 +12,53 @@ const UserForm = () => {
       firstnameinput: "",
       lastnameinput: "",
       Emailaddress: "",
-      city: "",
-      state: "",
-      zip: "",
+      phonenumber: '',
+      password:'',
+      tenantid: '', 
+      organizationid:'',
+    userrole:''
     },
     validationSchema: Yup.object({
       firstnameinput: Yup.string().required("Please Enter Your First Name"),
+      tenantid: Yup.string().required('Please select a Tenant ID'), 
+      organizationid: Yup.string().required('Please select a Organization Id'), 
       lastnameinput: Yup.string().required("Please Enter Your Last Name"),
       Emailaddress: Yup.string().required("Please Enter Your User Name"),
-      city: Yup.string().required("Please Enter Your City"),
-      state: Yup.string().required("Please Enter Your State"),
-      zip: Yup.string().required("Please Enter Your Zip"),
+      phonenumber: Yup.string().required('Please enter a phone number'),
+      password: Yup.string().required('Please enter a password'),
+      userrole: Yup.string().required('Please select a User Role'), 
     }),
     onSubmit: (values) => {
       console.log("values", values);
     },
   });
   return (
-    <div>
-      <div style={{ margin: '5rem 1rem' }} className='oraganizationform-container'>
+    <React.Fragment>
+    <div className="page-content">
+      <Container fluid>
+        <Row>
+          <Col lg={12}>
+            <Card>
+              <CardHeader>
+                <h4
+                  className="card-title mb-0"
+                  style={{
+                    color: "#45CB85",
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                  }}
+                >
+                Add User
+                </h4>
+              </CardHeader>
+
+              <CardBody>
+
+ 
+                {/* <div className="ribbon-box" style={{padding:"2rem"}}>
+                <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Users</h2>
+               </div> */}
+
         <div className="live-preview">
                     <Form
                       className="needs-validation"
@@ -130,105 +158,138 @@ const UserForm = () => {
                               className="form-control"
                               onChange={validation.handleChange}
                               onBlur={validation.handleBlur}
-                              value={validation.values.city || ""}
+                              value={validation.values.password || ""}
                               invalid={
-                                validation.touched.city && validation.errors.city
+                                validation.touched.password && validation.errors.password
                                   ? true
                                   : false
                               }
                             />
-                            {validation.touched.city && validation.errors.city ? (
+                            {validation.touched.password && validation.errors.password ? (
                               <FormFeedback type="invalid">
-                                {validation.errors.city}
+                                {validation.errors.password}
                               </FormFeedback>
                             ) : null}
                           </FormGroup>
                         </Col>
+
+                        <Col md={6}>
+            <FormGroup>
+              <div className="mb-3">
+                <Label htmlFor="phonenumberInput">Phone Number<span className="text-danger">*</span></Label>
+                <Input
+                  type="tel"
+                  className="form-control"
+                  placeholder="Enter phone number"
+                  id="phonenumberInput"
+                  name="phonenumber"
+                  onChange={validation.handleChange}
+                  onBlur={validation.handleBlur}
+                  value={validation.values.phonenumber || ""}
+                  invalid={validation.touched.phonenumber && validation.errors.phonenumber ? true : false}
+                />
+                {validation.touched.phonenumber && validation.errors.phonenumber ? (
+                  <FormFeedback>{validation.errors.phonenumber}</FormFeedback>
+                ) : null}
+              </div>
+            </FormGroup>
+          </Col>
+
+          <Col lg={6}>
+            <Label htmlFor="validationtenantid">Tenant ID <span className="text-danger">*</span></Label>
+            <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
+                    id="validationtenantid"
+                    name="tenantid"
+                    value={validation.values.tenantid}  // Formik-controlled value
+                    onChange={validation.handleChange}  // Formik change handler
+                    onBlur={validation.handleBlur}  // Formik blur handler
+                    aria-label="Default select example"
+                    invalid={validation.touched.tenantid && validation.errors.tenantid ? true : false}  // Validation state
+                  >
+            <option >Select your Status </option>
+            <option defaultValue="1">IST</option>
+            <option defaultValue="2">Tenant 1</option>
+            <option defaultValue="3">Tenant 2</option>
+            <option defaultValue="3">Tenant 4 data</option>
+        </select>
+        {validation.touched.tenantid && validation.errors.tenantid ? (
+                    <FormFeedback className="d-block">{validation.errors.tenantid}</FormFeedback>
+                  ) : null}
+      
+          </Col>
                     
                      
-                        <Col md={6}>
-                          <FormGroup className="mb-3">
-                            <Label htmlFor="validationCustom04">State</Label>
-                            <Input
-                              name="state"
-                              placeholder="State"
-                              type="text"
-                              className="form-control"
-                              id="validationCustom04"
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.state || ""}
-                              invalid={
-                                validation.touched.state &&
-                                  validation.errors.state
-                                  ? true
-                                  : false
-                              }
-                            />
-                            {validation.touched.state &&
-                              validation.errors.state ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.state}
-                              </FormFeedback>
-                            ) : null}
-                          </FormGroup>
-                        </Col>
-                        <Col md={6}>
-                          <FormGroup className="mb-3">
-                            <Label htmlFor="validationCustom05">Zip</Label>
-                            <Input
-                              name="zip"
-                              placeholder="Zip"
-                              type="text"
-                              className="form-control"
-                              id="validationCustom05"
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.zip || ""}
-                              invalid={
-                                validation.touched.zip && validation.errors.zip
-                                  ? true
-                                  : false
-                              }
-                            />
-                            {validation.touched.zip && validation.errors.zip ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.zip}
-                              </FormFeedback>
-                            ) : null}
-                          </FormGroup>
-                        </Col>
+          <Col lg={6}>
+            <Label htmlFor="validationtenantid">Organization ID<span className="text-danger">*</span></Label>
+            <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
+                    id="validationtenantid"
+                    name="tenantid"
+                    value={validation.values.organizationid}  // Formik-controlled value
+                    onChange={validation.handleChange}  // Formik change handler
+                    onBlur={validation.handleBlur}  // Formik blur handler
+                    aria-label="Default select example"
+                    invalid={validation.touched.organizationid && validation.errors.organizationid ? true : false}  // Validation state
+                  >
+            <option >Select your Status </option>
+            <option defaultValue="1">Select Organization</option>
+            <option defaultValue="2">Delivery Error</option>
+            <option defaultValue="3">Wrong Amount</option>
+        </select>
+        {validation.touched.tenantid && validation.errors.organizationid ? (
+                    <FormFeedback className="d-block">{validation.errors.organizationid}</FormFeedback>
+                  ) : null}
+      
+          </Col>
+          <Col lg={6}>
+            <Label htmlFor="validationtenantid">User Role<span className="text-danger">*</span></Label>
+            <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
+                    id="validationtenantid"
+                    name="tenantid"
+                    value={validation.values.userrole}  // Formik-controlled value
+                    onChange={validation.handleChange}  // Formik change handler
+                    onBlur={validation.handleBlur}  // Formik blur handler
+                    aria-label="Default select example"
+                    invalid={validation.touched.userrole && validation.errors.userrole ? true : false}  // Validation state
+                  >
+            <option >Select your Status </option>
+            <option defaultValue="1">Select User Role</option>
+            <option defaultValue="2">Delivery Error</option>
+            <option defaultValue="3">Wrong Amount</option>
+        </select>
+        {validation.touched.tenantid && validation.errors.userrole ? (
+                    <FormFeedback className="d-block">{validation.errors.userrole}</FormFeedback>
+                  ) : null}
+      
+          </Col>
+          </Row>
+                
+          <div className="d-flex justify-content-end mt-3">
+                <Button type="submit" color="success" className="rounded-pill me-2">
+                  Submit
+                </Button>
+                <Button
+                  type="button"
+                  color="danger"
+                  className="rounded-pill"
+                  onClick={() => history.back()}
+                >
+                  Cancel
+                </Button>
+              </div>
                    
-                 
-                        <Col lg="12">
-                          <FormGroup className="mb-3">
-                            <div className="form-check">
-                              <Input
-                                type="checkbox"
-                                className="form-check-input"
-                                id="invalidCheck"
-                              />
-                              <Label
-                                className="form-check-label"
-                                htmlFor="invalidCheck"
-                              >
-                                {" "}
-                                Agree to terms and conditions
-                              </Label>
-                            </div>
-                          </FormGroup>
-                        </Col>
-                     <Col md='6'>
-                      <Button color="primary" type="submit">
-                        Submit form
-                      </Button>
-                      </Col>
-                      </Row>
                     </Form>
+                    
                   </div>
 
+
+ 
+    </CardBody>
+    </Card>
+    </Col>
+    </Row>
+    </Container>
     </div>
-    </div>
+    </React.Fragment>
   )
 }
 
