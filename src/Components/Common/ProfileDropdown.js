@@ -11,6 +11,7 @@ import { createSelector } from 'reselect';
 const ProfileDropdown = () => {
     const navigate = useNavigate();
     const { logout } = useAuth();
+    const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
 
     const profiledropdownData = createSelector(
         (state) => state.Profile,
@@ -39,14 +40,14 @@ const ProfileDropdown = () => {
                         <img className="rounded-circle header-profile-user" src={avatar1}
                             alt="Header Avatar" />
                         <span className="text-start ms-xl-2">
-                            <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{userName}</span>
-                            <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">Founder</span>
+                            <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{userPermissions && userPermissions.firstName} {userPermissions && userPermissions.lastName}</span>
+                            <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">{userPermissions && userPermissions.roleName}</span>
                         </span>
                     </span>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-end">
 
-                    <h6 className="dropdown-header">Welcome {userName}!</h6>
+                    <h6 className="dropdown-header">Welcome {userPermissions && userPermissions.firstName} {userPermissions && userPermissions.lastName}!</h6>
                     <DropdownItem href="/profile"><i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
                         <span className="align-middle">Profile</span></DropdownItem>
                     <DropdownItem href="/apps-chat"><i

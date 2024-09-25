@@ -174,9 +174,6 @@
 }
 
 .topbar-user {
-    @media (min-width: 768px) {
-        background-color: var(--#{$prefix}topbar-user-bg);
-    }
 
     .dropdown-menu {
         top: 6px !important;
