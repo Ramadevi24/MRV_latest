@@ -271,7 +271,7 @@ const EditRole = () => {
       </Table>
 
     </Col>
-    <div className="d-flex justify-content-end">
+    <div className="d-flex mt-3">
                       <Button
                         type="submit"
                         color="success"

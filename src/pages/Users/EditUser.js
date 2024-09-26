@@ -36,47 +36,45 @@ const EditUser = () => {
   const userPermissions =
     JSON.parse(localStorage.getItem("UserPermissions")) || [];
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const user = await fetchUserById(id);
-          console.log("user", user);
-          // Ensure tenants data is available before finding the tenant
-          await fetchAllTenants();
-    
-          const initialTenant = tenants.find(
-            (tenant) => tenant.name === user.tenantName
-          );
-          const tenantID = initialTenant ? initialTenant.tenantID : "";
-    
-          // Set initial values
-          validation.setValues({
-            ...values,
-            firstName: user.firstName || "",
-            lastName: user.lastName || "",
-            email: user.email || "",
-            phone: user.phone,
-            tenantID: tenantID || userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
-            organizationID: user.organizationID || "",
-            roleID: user.roleID || "",
-            userRole: user.roleName || "",
-          });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const user = await fetchUserById(id);
+        console.log("user", user);
+        // Ensure tenants data is available before finding the tenant
+        await fetchAllTenants();
 
-          console.log("user", user.organizationName, user.roleName);
-    
-          // Fetch organizations and roles after user data is available
-          await fetchAllOrganizations(user.organizationName);
-          await fetchAllRoles(user.roleName);
-          
-        } catch (error) {
-          toast.error(t("Error fetching user data"));
-          setLoading(false);
-        }
-      };
-    
-      fetchData();
-    }, [id]);
-    
+        const initialTenant = tenants.find(
+          (tenant) => tenant.name === user.tenantName
+        );
+        const tenantID = initialTenant ? initialTenant.tenantID : "";
+
+        // Set initial values
+        validation.setValues({
+          ...values,
+          firstName: user.firstName || "",
+          lastName: user.lastName || "",
+          email: user.email || "",
+          phone: user.phone,
+          tenantID: tenantID || userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
+          organizationID: user.organizationID || "",
+          roleID: user.roleID || "",
+          userRole: user.roleName || "",
+        });
+
+        console.log("user", user.organizationName, user.roleName);
+
+        // Fetch organizations and roles after user data is available
+        await fetchAllOrganizations(user.organizationName);
+        await fetchAllRoles(user.roleName);
+      } catch (error) {
+        toast.error(t("Error fetching user data"));
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -161,12 +159,11 @@ const EditUser = () => {
                         e.preventDefault();
                         validation.handleSubmit();
                         return false;
-                      }}  style={{marginTop:'3.5rem'}}
+                      }}
+                      style={{ marginTop: "3.5rem" }}
                     >
-
                       <Row>
-                  
-                     <Col>
+                        <Col>
                           <FormGroup className="mb-3">
                             <Label htmlFor="firstName">{t("First name")}</Label>
                             <Input
@@ -193,7 +190,7 @@ const EditUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
-                        <Col >
+                        <Col>
                           <FormGroup className="mb-3">
                             <Label htmlFor="lastName">{t("Last Name")}</Label>
                             <Input
@@ -220,8 +217,8 @@ const EditUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
-</Row>
-                      
+                      </Row>
+
                       <Row>
                         <Col>
                           <FormGroup>
@@ -256,37 +253,6 @@ const EditUser = () => {
                         </Col>
 
                         <Col>
-                          <FormGroup className="mb-3">
-                            <Label htmlFor="validationCustom03">
-                              {t("Password")}
-                            </Label>
-                            <Input
-                              name="passwordHash"
-                              placeholder={t("Enter Password")}
-                              type="password"
-                              className="form-control"
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.passwordHash || ""}
-                              invalid={
-                                validation.touched.passwordHash &&
-                                validation.errors.passwordHash
-                                  ? true
-                                  : false
-                              }
-                            />
-                            {validation.touched.passwordHash &&
-                            validation.errors.passwordHash ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.passwordHash}
-                              </FormFeedback>
-                            ) : null}
-                          </FormGroup>
-                        </Col>
-
-</Row>
-                       <Row>
-                        <Col >
                           <FormGroup>
                             <div className="mb-3">
                               <Label htmlFor="phone">
@@ -318,8 +284,10 @@ const EditUser = () => {
                             </div>
                           </FormGroup>
                         </Col>
+                      </Row>
+                      <Row>
                         {!userPermissions.tenantID && (
-                          <Col lg={6}>
+                          <Col lg={12}>
                             <Label htmlFor="tenantID">
                               {t("Tenant ID")}
                               <span className="text-danger">*</span>
@@ -362,8 +330,9 @@ const EditUser = () => {
                             ) : null}
                           </Col>
                         )}
-
-                        <Col lg={6}>
+                      </Row>
+                      <Row>
+                        <Col>
                           <Label htmlFor="organizationID">
                             {t("Organization ID")}
                           </Label>
@@ -404,7 +373,7 @@ const EditUser = () => {
                             </FormFeedback>
                           ) : null}
                         </Col>
-                        <Col lg={6}>
+                        <Col>
                           <Label htmlFor="userRole">
                             {t("User Role")}
                             <span className="text-danger">*</span>
