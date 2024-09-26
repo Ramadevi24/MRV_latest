@@ -17,7 +17,6 @@ import {
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { useParams, useNavigate } from "react-router-dom";
-import Select from "react-select";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import "cleave.js/dist/addons/cleave-phone.in";
@@ -287,7 +286,7 @@ const EditOrganization = () => {
                   >
                     <Row>
                     {!userPermissions.tenantID && (
-                      <Col lg={6}>
+                      <Col>
                         <Label htmlFor="validationtenantid">
                           Tenant ID <span className="text-danger">*</span>
                         </Label>
@@ -324,7 +323,7 @@ const EditOrganization = () => {
                         ) : null}
                       </Col>
                     )}
-                      <Col md={6}>
+                      <Col>
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="validationorganizationname">
@@ -354,7 +353,7 @@ const EditOrganization = () => {
                     </Row>
 
                     <Row>
-                      <Col md={12}>
+                      <Col>
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="Textarea">
@@ -382,7 +381,7 @@ const EditOrganization = () => {
                       </Col>
                     </Row>
                     <Row>
-                      <Col md={6}>
+                      <Col>
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="establishdate">
@@ -431,7 +430,7 @@ const EditOrganization = () => {
               </div>
             </FormGroup>
           </Col> */}
-                      <Col md={6}>
+                      <Col>
                         <label
                           htmlFor="validationDefaultUsername"
                           className="form-label"
@@ -465,7 +464,7 @@ const EditOrganization = () => {
                       </Col>
                     </Row>
                     <Row>
-                      <Col md={6}>
+                      <Col>
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="phonenumberInput">
@@ -507,7 +506,7 @@ const EditOrganization = () => {
                             />
                           </div>
                         </Col> */}
-                      <Col lg={6} md={6}>
+                      <Col>
                         <div className="mb-3">
                           <Label
                             htmlFor="choices-multiple-default"
@@ -593,7 +592,7 @@ const EditOrganization = () => {
                       </Col>
                     </Row>
                     <Row>
-                      <Col md={12}>
+                      <Col>
                         <FormGroup>
                           <div className="mb-3">
                             <Label
@@ -650,12 +649,12 @@ const EditOrganization = () => {
                                                     </div>
                                                 </Col> */}
                     </Row>
-                    <Col md={4}>
-                      <Label>Location:</Label>
+                    <Col>
+                      <Label style={{    fontSize: "18px",fontWeight: 'bold'}}>Location:</Label>
                     </Col>
                     {validation.values.locations && validation.values.locations.$values && validation.values.locations.$values?.map((location, index) => (
                       <Row key={index}>
-                        <Col md={4}>
+                        <Col>
                           <div className="mb-3">
                             <Label
                               htmlFor={`latitude-${index}`}
@@ -688,7 +687,7 @@ const EditOrganization = () => {
                               )}
                           </div>
                         </Col>
-                        <Col md={4}>
+                        <Col>
                           <div className="mb-3">
                             <Label
                               className="form-label"
@@ -720,7 +719,7 @@ const EditOrganization = () => {
                               )}
                           </div>
                         </Col>
-                        <Col md={4}>
+                        <Col>
                           <div className="mb-3">
                             <Label
                               htmlFor={`address-${index}`}
@@ -754,7 +753,7 @@ const EditOrganization = () => {
                         </Col>
                       </Row>
                     ))}
-                    <div className="d-flex justify-content-end">
+                    <div className="d-flex mt-3">
                       <Button
                         type="submit"
                         color="success"

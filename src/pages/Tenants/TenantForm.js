@@ -2,40 +2,69 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader, Form } from 'reactstrap';
+import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader, Form, FormGroup, FormFeedback } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import { TenantContext } from '../../contexts/TenantContext';
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const TenantForm = () => {
   const { t } = useTranslation();
-  const [name, setTenantName] = useState('');
-  const [description, setDescription] = useState('');
-  const { addTenant } = React.useContext(TenantContext);
   const navigate = useNavigate();
+  const { addTenant } = React.useContext(TenantContext);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const validationSchema = Yup.object({
+    name: Yup.string()
+      .required(t("Please enter tenant name")),
+    description: Yup.string()
+      .required(t("Please enter description")),
+  });
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      description: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      const createPayload = {
+        ...values,
+        countryID: 1,
+        regionID: 1,
+      };
+      try {
+        await addTenant(createPayload);
+        toast.success(t('Tenant created successfully'), { autoClose: 3000 });
+        navigate('/tenants');
+      } catch (error) {
+        toast.error(t('Error creating tenant'), { autoClose: 3000 });
+      }
+    },
+  });
+ 
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
     
-    if (!name || !description) {
-    console.log(t('Please fill all fields'));
-      return;
-    }
+  //   if (!name || !description) {
+  //   console.log(t('Please fill all fields'));
+  //     return;
+  //   }
   
-    const createPayload = {
-      name,
-      description,
-      countryID: 1,
-      regionID: 1,
-    };
+  //   const createPayload = {
+  //     name,
+  //     description,
+  //     countryID: 1,
+  //     regionID: 1,
+  //   };
   
-    try {
-      await addTenant(createPayload);
-      toast.success(t('Tenant created successfully'), { autoClose: 3000 });
-      navigate('/tenants');
-    } catch (error) {
-      toast.error(t('Error creating tenant'), { autoClose: 3000 });
-    }
-  };
+  //   try {
+  //     await addTenant(createPayload);
+  //     toast.success(t('Tenant created successfully'), { autoClose: 3000 });
+  //     navigate('/tenants');
+  //   } catch (error) {
+  //     toast.error(t('Error creating tenant'), { autoClose: 3000 });
+  //   }
+  // };
   
 
   return (
@@ -53,32 +82,68 @@ const TenantForm = () => {
                   fontWeight: "bold",
                 }}
               >
-     Add Tenant
+   {t('Add Tenant')}
               </h4>
             </CardHeader>
 
             <CardBody>
-      <Form onSubmit={handleSubmit}>
+            <div className="listjs-table" id="customerList">
+                    <Row className="g-4 mb-3">
+                      <Col className="col-sm-auto">
+                        <div>
+                        
+                        </div>
+                      </Col>
+                      <Col className="col-sm">
+                        <div className="d-flex justify-content-sm-end">
+                          <div className="search-box ms-2">
+                          
+                          </div>
+                        </div>
+                      </Col>
+                    </Row>
+      <Form onSubmit={formik.handleSubmit}>
       <Row>
-        <Col md={{ size: 10, offset: 1 }}>
-          <div className="mb-3">
-            <Label htmlFor="tenantName" className="form-label">Tenant Name</Label>
-            <Input type="text" className="form-control" id="tenantName" 
-            value={name}
-            onChange={(e) => setTenantName(e.target.value)}
-            placeholder="Enter Tenant name" />
-          </div>
+        <Col md={{ size: 10}}>
+        <FormGroup>
+            <Label htmlFor="tenantName" className="form-label">{t('Tenant Name')}</Label>
+            <Input type="text"  id="name" name="name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className={`form-control ${
+              formik.touched.name && formik.errors.name ? 'is-invalid' : ''
+            }`}
+            placeholder={t("Enter Tenant name")} />
+            {formik.touched.name && formik.errors.name ? (
+                          <FormFeedback>{formik.errors.name}</FormFeedback>
+                        ) : null}
+                      </FormGroup>
        
           
          
-          <div className="mb-3">
-            <Label htmlFor="description" className="form-label">Description</Label>
-            <textarea className="form-control" id="description" rows="3" 
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter your message"></textarea>
-          </div>
-          <div className="d-flex justify-content-end">
+                      <FormGroup>
+                        <Label htmlFor="description" className="form-label">
+                          {t('Description')}
+                        </Label>
+                        <Input
+                          type="textarea"
+                          id="description"
+                          name="description"
+                          className={`form-control ${
+                            formik.touched.description && formik.errors.description ? 'is-invalid' : ''
+                          }`}
+                          placeholder={t("Enter your message")}
+                          value={formik.values.description}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          rows="3"
+                        />
+                        {formik.touched.description && formik.errors.description ? (
+                          <FormFeedback>{formik.errors.description}</FormFeedback>
+                        ) : null}
+                      </FormGroup>
+          <div className="d-flex mt-3">
                 <Button type="submit" color="success" className="rounded-pill me-2">
                   Submit
                 </Button>
@@ -90,10 +155,11 @@ const TenantForm = () => {
                 >
                   Cancel
                 </Button>
-              </div>
+                </div>
         </Col>
       </Row>
       </Form>
+      </div>
       </CardBody>
       </Card>
       </Col>

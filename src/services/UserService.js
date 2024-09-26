@@ -18,10 +18,10 @@ export const getUsers = async (tenantID) => {
 
 export const getUserById = async (id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/${id}`, {
+    const response = await axios.get(`${API_URL}/${id}`, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error fetching User");
   }
@@ -30,10 +30,10 @@ export const getUserById = async (id) => {
 // Create a new User
 export const createUser = async (UserData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}`, UserData, {
+    const response = await axios.post(`${API_URL}`, UserData, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error create User");
   }
@@ -42,10 +42,10 @@ export const createUser = async (UserData) => {
 // Update a User
 export const updateUser = async (id, UserData) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/${id}`, UserData, {
+    const response = await axios.put(`${API_URL}/${id}`, UserData, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error Updating User");
   }

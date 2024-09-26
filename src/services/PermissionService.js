@@ -17,7 +17,7 @@ export const getPermissions = async () => {
 
 export const getPermissionById = async (id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/${id}`, {
+    const response = await axios.get(`${API_URL}/${id}`, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
     return response.data;
@@ -29,7 +29,7 @@ export const getPermissionById = async (id) => {
 // Create a new Permission
 export const createPermission = async (PermissionData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}`, PermissionData, {
+    const response = await axios.post(`${API_URL}`, PermissionData, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
     return response.data;
@@ -41,10 +41,10 @@ export const createPermission = async (PermissionData) => {
 // Update a Permission
 export const updatePermission = async (id, PermissionData) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/${id}`, PermissionData, {
+    const response = await axios.put(`${API_URL}/${id}`, PermissionData, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error Updating Permission");
   }

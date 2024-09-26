@@ -40,6 +40,7 @@ export const PermissionProvider = ({ children }) => {
       const newPermission = await createPermission(permissionData);
       setPermissions((prevPermissions) => [...prevPermissions, newPermission]);
       toast.success("Permission created successfully");
+      fetchAllPermissions();
     } catch (error) {
       toast.error("Error creating permission");
       throw error;
@@ -54,7 +55,8 @@ export const PermissionProvider = ({ children }) => {
           permission.permissionId === id ? updatedPermission : permission
         )
       );
-      toast.success("Permission updated successfully");
+      toast.success("Permission updated successfully", { autoClose: 3000 });
+      fetchAllPermissions();
     } catch (error) {
       toast.error("Error updating permission");
       throw error;
