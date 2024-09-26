@@ -86,5 +86,11 @@
 "Edit User": "Editar usuario",
     "View User": "Ver usuario",
     "Permission DisplayName": "Nombre de pantalla del permiso",
-    "Permission Group": "Grupo de permisos"
+    "Permission Group": "Grupo de permisos",
+    "Please Enter Location Address": "Por favor, ingrese la dirección de ubicación",
+    "Enter Your Address": "Introduce tu dirección",
+     "Organization updated successfully": "Organización actualizada con éxito",
+      "Error updating organization": "Error al actualizar la organización",
+        "Location": "Ubicación",
+        "Edit Tenant": "Editar inquilino"
 }

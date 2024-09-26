@@ -85,7 +85,15 @@
    "Edit User": "تحرير المستخدم",
     "View User": "عرض المستخدم",
 "Permission DisplayName": "اسم العرض للإذن",
-    "Permission Group": "مجموعة الأذونات"
+    "Permission Group": "مجموعة الأذونات",
+     "Please Enter Location Address": "الرجاء إدخال عنوان الموقع",
+        "Enter Your Address": "أدخل عنوانك",
+         "Organization updated successfully": "تم تحديث المنظمة بنجاح",
+      "Error updating Organization": "خطأ في تحديث المنظمة",
+      "Location": "موقع",
+   "Edit Tenant": "تعديل المستأجر",
+  "Update": "تحديث"
+
 
     
    

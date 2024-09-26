@@ -87,7 +87,12 @@
    "Edit User": "编辑用户",
     "View User": "查看用户",
     "Permission DisplayName": "权限显示名称",
-    "Permission Group": "权限组"
-
+    "Permission Group": "权限组",
+     "Please Enter Location Address": "请输入地址",
+  "Enter Your Address": "请输入您的地址",
+    "Organization updated successfully": "组织更新成功",
+      "Error updating organization": "更新组织时出错",
+            "Location": "位置",
+ "Edit Tenant": "编辑租户"
     
 }

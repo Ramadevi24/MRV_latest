@@ -85,7 +85,13 @@
       "Edit User": "Benutzer bearbeiten",
     "View User": "Benutzer anzeigen",
     "Permission DisplayName": "Berechtigungsanzeige",
-    "Permission Group": "Berechtigungsgruppe"
+    "Permission Group": "Berechtigungsgruppe",
+    "Please Enter Location Address": "Bitte geben Sie die Standortadresse ein",
+       "Enter Your Address": "Geben Sie Ihre Adresse ein",
+            "Organization updated successfully": "Organisation erfolgreich aktualisiert",
+      "Error updating organization": "Fehler beim Aktualisieren der Organisation",
+         "Location": "Standort",
+"Edit Tenant": "Mieter bearbeiten"
           
       
       

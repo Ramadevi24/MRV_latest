@@ -53,7 +53,7 @@ const TenantForm = () => {
                   fontWeight: "bold",
                 }}
               >
-     Add Tenant
+     {t('Add Tenant')}
               </h4>
             </CardHeader>
 
@@ -62,25 +62,25 @@ const TenantForm = () => {
       <Row>
         <Col md={{ size: 10, offset: 1 }}>
           <div className="mb-3">
-            <Label htmlFor="tenantName" className="form-label">Tenant Name</Label>
+            <Label htmlFor="tenantName" className="form-label">{t('Tenant Name')}</Label>
             <Input type="text" className="form-control" id="tenantName" 
             value={name}
             onChange={(e) => setTenantName(e.target.value)}
-            placeholder="Enter Tenant name" />
+            placeholder={t("Enter Tenant name")} />
           </div>
        
           
          
           <div className="mb-3">
-            <Label htmlFor="description" className="form-label">Description</Label>
+            <Label htmlFor="description" className="form-label">{t('Description')}</Label>
             <textarea className="form-control" id="description" rows="3" 
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter your message"></textarea>
+            placeholder={t("Enter your message")}></textarea>
           </div>
           <div className="d-flex justify-content-end">
                 <Button type="submit" color="success" className="rounded-pill me-2">
-                  Submit
+                  {t('Submit')}
                 </Button>
                 <Button
                   type="button"
@@ -88,7 +88,7 @@ const TenantForm = () => {
                   className="rounded-pill"
                   onClick={() => history.back()}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </div>
         </Col>
