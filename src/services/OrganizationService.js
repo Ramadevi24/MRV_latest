@@ -22,7 +22,7 @@ export const getOrganizationById = async (id) => {
     const response = await axios.get(`${API_BASE_URL}/${id}`, {
         headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
       });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error fetching Organization");
   }
@@ -44,7 +44,7 @@ export const updateOrganization = async (id, organizationData) => {
     const response = await axios.put(`${API_BASE_URL}/${id}`, organizationData, {
         headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
       });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error update Organization");
   }

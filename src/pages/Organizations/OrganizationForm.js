@@ -48,6 +48,7 @@ const SingleOptions = [
 const OrganizationForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
   const [selectedMulti, setselectedMulti] = useState(null);
   const { fetchAllTenants, tenants } = useContext(TenantContext);
   const { fetchAllCategories, categories, addOrganization } = useContext(OrganizationContext);
@@ -223,6 +224,7 @@ const OrganizationForm = () => {
                     }}
                   >
                     <Row>
+                    {!userPermissions.tenantID && (
                       <Col lg={6}>
                         <Label htmlFor="validationtenantid">
                           Tenant ID <span className="text-danger">*</span>
@@ -264,7 +266,7 @@ const OrganizationForm = () => {
                           </FormFeedback>
                         ) : null}
                       </Col>
-
+                    )}
                       <Col md={6}>
                         <FormGroup>
                           <div className="mb-3">
