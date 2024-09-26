@@ -17,10 +17,10 @@ export const getTenants = async () => {
 
 export const getTenantById = async (id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/${id}`, {
+    const response = await axios.get(`${API_URL}/${id}`, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error fetching tenant");
   }
@@ -29,10 +29,10 @@ export const getTenantById = async (id) => {
 // Create a new tenant
 export const createTenant = async (tenantData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}`, tenantData, {
+    const response = await axios.post(`${API_URL}`, tenantData, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error create tenant");
   }
@@ -41,10 +41,10 @@ export const createTenant = async (tenantData) => {
 // Update a tenant
 export const updateTenant = async (id, tenantData) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/${id}`, tenantData, {
+    const response = await axios.put(`${API_URL}/${id}`, tenantData, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error Updating tenant");
   }

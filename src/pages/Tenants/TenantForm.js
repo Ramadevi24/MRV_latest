@@ -1,118 +1,104 @@
-import React from "react";
-import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader, FormFeedback, FormGroup } from 'reactstrap';
-import { useTranslation } from "react-i18next";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next';
+import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader, Form } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
+import { TenantContext } from '../../contexts/TenantContext';
 
 const TenantForm = () => {
   const { t } = useTranslation();
+  const [name, setTenantName] = useState('');
+  const [description, setDescription] = useState('');
+  const { addTenant } = React.useContext(TenantContext);
+  const navigate = useNavigate();
 
-  const validationSchema = Yup.object({
-    tenantName: Yup.string()
-      .required(t("Please enter tenant name")),
-    description: Yup.string()
-      .required(t("Please enter description")),
-  });
-
-  const formik = useFormik({
-    initialValues: {
-      tenantName: '',
-      description: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log("Form Submitted", values);
-      // handle form submission here
-    },
-  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!name || !description) {
+    console.log(t('Please fill all fields'));
+      return;
+    }
+  
+    const createPayload = {
+      name,
+      description,
+      countryID: 1,
+      regionID: 1,
+    };
+  
+    try {
+      await addTenant(createPayload);
+      toast.success(t('Tenant created successfully'), { autoClose: 3000 });
+      navigate('/tenants');
+    } catch (error) {
+      toast.error(t('Error creating tenant'), { autoClose: 3000 });
+    }
+  };
+  
 
   return (
     <div className="page-content">
-      <Container fluid>
-        <Row>
-          <Col lg={12}>
-            <Card>
-              <CardHeader>
-                <h4
-                  className="card-title mb-0"
-                  style={{
-                    color: "#45CB85",
-                    fontSize: "20px",
-                    fontWeight: "bold",
-                  }}
+    <Container fluid>
+      <Row>
+        <Col lg={12}>
+          <Card>
+            <CardHeader>
+              <h4
+                className="card-title mb-0"
+                style={{
+                  color: "#45CB85",
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                }}
+              >
+     Add Tenant
+              </h4>
+            </CardHeader>
+
+            <CardBody>
+      <Form onSubmit={handleSubmit}>
+      <Row>
+        <Col md={{ size: 10, offset: 1 }}>
+          <div className="mb-3">
+            <Label htmlFor="tenantName" className="form-label">Tenant Name</Label>
+            <Input type="text" className="form-control" id="tenantName" 
+            value={name}
+            onChange={(e) => setTenantName(e.target.value)}
+            placeholder="Enter Tenant name" />
+          </div>
+       
+          
+         
+          <div className="mb-3">
+            <Label htmlFor="description" className="form-label">Description</Label>
+            <textarea className="form-control" id="description" rows="3" 
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter your message"></textarea>
+          </div>
+          <div className="d-flex justify-content-end">
+                <Button type="submit" color="success" className="rounded-pill me-2">
+                  Submit
+                </Button>
+                <Button
+                  type="button"
+                  color="danger"
+                  className="rounded-pill"
+                  onClick={() => history.back()}
                 >
-                  {t('Add Tenant')}
-                </h4>
-              </CardHeader>
-
-              <CardBody>
-                <form onSubmit={formik.handleSubmit}>
-                  <Row>
-                    <Col md={{ size: 10, offset: 1 }}>
-                      <FormGroup>
-                        <Label htmlFor="tenantName" className="form-label">
-                          {t('Tenant Name')}
-                        </Label>
-                        <Input
-                          type="text"
-                          id="tenantName"
-                          name="tenantName"
-                          className={`form-control ${
-                            formik.touched.tenantName && formik.errors.tenantName ? 'is-invalid' : ''
-                          }`}
-                          placeholder={t("Enter Tenant name")}
-                          value={formik.values.tenantName}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                        />
-                        {formik.touched.tenantName && formik.errors.tenantName ? (
-                          <FormFeedback>{formik.errors.tenantName}</FormFeedback>
-                        ) : null}
-                      </FormGroup>
-
-                      <FormGroup>
-                        <Label htmlFor="description" className="form-label">
-                          {t('Description')}
-                        </Label>
-                        <Input
-                          type="textarea"
-                          id="description"
-                          name="description"
-                          className={`form-control ${
-                            formik.touched.description && formik.errors.description ? 'is-invalid' : ''
-                          }`}
-                          placeholder={t("Enter your message")}
-                          value={formik.values.description}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          rows="3"
-                        />
-                        {formik.touched.description && formik.errors.description ? (
-                          <FormFeedback>{formik.errors.description}</FormFeedback>
-                        ) : null}
-                      </FormGroup>
-
-                      <div className="d-flex justify-content-end">
-                        <Button type="submit" color="success" className="rounded-pill me-2">
-                          {t('Submit')}
-                        </Button>
-                        <Button
-                          type="button"
-                          color="danger"
-                          className="rounded-pill"
-                          onClick={() => window.history.back()}
-                        >
-                          {t('Cancel')}
-                        </Button>
-                      </div>
-                    </Col>
-                  </Row>
-                </form>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+                  Cancel
+                </Button>
+              </div>
+        </Col>
+      </Row>
+      </Form>
+      </CardBody>
+      </Card>
+      </Col>
+      </Row>
+    </Container>
     </div>
   );
 };

@@ -1,6 +1,10 @@
 // context/TenantContext.js
 import React, { createContext, useState, useEffect } from 'react';
-import { getTenants, deleteTenant } from '../services/TenantService';
+import {getTenants,
+  getTenantById,
+  createTenant,
+  updateTenant,
+  deleteTenant, } from '../services/TenantService';
 import { toast } from 'react-toastify';
 
 export const TenantContext = createContext();
@@ -8,10 +12,7 @@ export const TenantContext = createContext();
 export const TenantProvider = ({ children }) => {
   const [tenants, setTenants] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchAllTenants();
-  }, []);
+  const [error, setError] = useState(null);
 
   const fetchAllTenants = async () => {
     try {
@@ -20,6 +21,48 @@ export const TenantProvider = ({ children }) => {
       setLoading(false);
     } catch (error) {
       toast.error('Error fetching tenants');
+      setLoading(false);
+    }
+  };
+
+  const fetchTenantById = async (id) => {
+    console.log(id, 'id');
+    try {
+      setLoading(true);
+      const tenant = await getTenantById(id);
+      console.log(tenant, 'tenant');
+      return tenant;
+    } catch (error) {
+      setError("Error fetching tenant");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const addTenant = async (tenantData) => {
+    try {
+      setLoading(true);
+      const newTenant = await createTenant(tenantData);
+      setTenants((prevTenants) => [...prevTenants, newTenant]); // Update tenants list with new tenant
+    } catch (error) {
+      setError("Error creating tenant");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const editTenant = async (id, tenantData) => {
+    try {
+      setLoading(true);
+      const updatedTenant = await updateTenant(id, tenantData);
+      setTenants(
+        tenants.map((tenant) =>
+          tenant.id === id ? updatedTenant : tenant
+        )
+      ); // Update tenants list with the modified tenant
+    } catch (error) {
+      setError("Error updating tenant");
+    } finally {
       setLoading(false);
     }
   };
@@ -35,7 +78,11 @@ export const TenantProvider = ({ children }) => {
   };
 
   return (
-    <TenantContext.Provider value={{ tenants, loading, fetchAllTenants, removeTenant }}>
+    <TenantContext.Provider value={{ tenants, loading, fetchAllTenants, fetchTenantById,
+      addTenant,
+      editTenant,
+      removeTenant,
+}}>
       {children}
     </TenantContext.Provider>
   );

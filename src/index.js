@@ -12,6 +12,8 @@ import { RoleProvider } from './contexts/RoleContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { UserProvider } from './contexts/UserContext';
 import { PermissionProvider } from './contexts/PermissionContext';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const store = configureStore({ reducer: rootReducer, devTools: true });
 
@@ -27,6 +29,7 @@ root.render(
           <AuthProvider>
             <UserProvider>
               <PermissionProvider>
+              <ToastContainer closeButton={false} limit={1}  />
         <App />
         </PermissionProvider>
         </UserProvider>

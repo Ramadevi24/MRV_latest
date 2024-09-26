@@ -22,7 +22,7 @@ export const getOrganizationById = async (id) => {
     const response = await axios.get(`${API_BASE_URL}/${id}`, {
         headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
       });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error fetching Organization");
   }
@@ -33,7 +33,7 @@ export const createOrganization = async (organizationData) => {
     const response = await axios.post(`${API_BASE_URL}`, organizationData, {
         headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
       });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error create Organization");
   }
@@ -44,7 +44,7 @@ export const updateOrganization = async (id, organizationData) => {
     const response = await axios.put(`${API_BASE_URL}/${id}`, organizationData, {
         headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
       });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error update Organization");
   }
@@ -66,7 +66,7 @@ export const fetchCategories = async () => {
   const response = await  axios.get(CATEGORIES_URL, {
     headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
   });
-  return response.data.$values;
+  return response.$values;
   } catch (error) {
     throw new Error("Error fetching categories");;
   }

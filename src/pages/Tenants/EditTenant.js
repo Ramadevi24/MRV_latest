@@ -1,30 +1,48 @@
-import React from "react";
-import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader, FormFeedback, FormGroup } from 'reactstrap';
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useContext, useState } from 'react';
+import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader } from 'reactstrap';
+import { TenantContext } from '../../contexts/TenantContext';
+import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-const TenantForm = () => {
+const EditTenant = () => {
   const { t } = useTranslation();
+  const { id } = useParams();
+  const { editTenant, fetchTenantById } = useContext(TenantContext);
+  const navigate = useNavigate();
+  const [tenantName, setTenantName] = useState('');
+  const [description, setDescription] = useState('');
 
-  const validationSchema = Yup.object({
-    tenantName: Yup.string()
-      .required(t("Please enter tenant name")),
-    description: Yup.string()
-      .required(t("Please enter description")),
-  });
+  useEffect(() => {
+    const loadTenant = async () => {
+      try {
+        const tenant = await fetchTenantById(id);
+        console.log('Fetched tenant:', tenant); // Check the tenant data
+        if (tenant) {
+          setTenantName(tenant.name || '');
+          setDescription(tenant.description || '');
+        }
+      } catch (error) {
+        console.error("Error loading tenant:", error);
+      }
+    };
+    loadTenant();
+  }, [id]);
 
-  const formik = useFormik({
-    initialValues: {
-      tenantName: '',
-      description: '',
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log("Form Submitted", values);
-      // handle form submission here
-    },
-  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const updatedTenant = { name: tenantName, description, countryID: 1, regionID: 1 };
+
+    try {
+      await editTenant(id, updatedTenant);
+      toast.success(t("Tenant Updated Successfully"), { autoClose: 3000 });
+      navigate('/tenants');
+    } catch (error) {
+      toast.error(t('Error updating tenant'), { autoClose: 3000 });
+    }
+  };
 
   return (
     <div className="page-content">
@@ -33,75 +51,44 @@ const TenantForm = () => {
           <Col lg={12}>
             <Card>
               <CardHeader>
-                <h4
-                  className="card-title mb-0"
-                  style={{
-                    color: "#45CB85",
-                    fontSize: "20px",
-                    fontWeight: "bold",
-                  }}
-                >
+                <h4 className="card-title mb-0" style={{ color: "#45CB85", fontSize: "20px", fontWeight: "bold" }}>
                   {t('Edit Tenant')}
                 </h4>
               </CardHeader>
 
               <CardBody>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={handleSubmit}>
                   <Row>
                     <Col md={{ size: 10, offset: 1 }}>
-                      <FormGroup>
-                        <Label htmlFor="tenantName" className="form-label">
-                          {t('Tenant Name')}
-                        </Label>
+                      <div className="mb-3">
+                        <Label htmlFor="tenantName" className="form-label">{t('Tenant Name')}</Label>
                         <Input
                           type="text"
+                          className="form-control"
                           id="tenantName"
-                          name="tenantName"
-                          className={`form-control ${
-                            formik.touched.tenantName && formik.errors.tenantName ? 'is-invalid' : ''
-                          }`}
-                          placeholder={t("Enter Tenant name")}
-                          value={formik.values.tenantName}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
+                          value={tenantName}
+                          onChange={(e) => setTenantName(e.target.value)}
+                          placeholder={t('Enter Tenant name')}
                         />
-                        {formik.touched.tenantName && formik.errors.tenantName ? (
-                          <FormFeedback>{formik.errors.tenantName}</FormFeedback>
-                        ) : null}
-                      </FormGroup>
+                      </div>
 
-                      <FormGroup>
-                        <Label htmlFor="description" className="form-label">
-                          {t('Description')}
-                        </Label>
-                        <Input
-                          type="textarea"
+                      <div className="mb-3">
+                        <Label htmlFor="description" className="form-label">{t('Description')}</Label>
+                        <textarea
+                          className="form-control"
                           id="description"
-                          name="description"
-                          className={`form-control ${
-                            formik.touched.description && formik.errors.description ? 'is-invalid' : ''
-                          }`}
-                          placeholder={t("Enter your message")}
-                          value={formik.values.description}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
                           rows="3"
-                        />
-                        {formik.touched.description && formik.errors.description ? (
-                          <FormFeedback>{formik.errors.description}</FormFeedback>
-                        ) : null}
-                      </FormGroup>
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                          placeholder={t('Enter description')}
+                        ></textarea>
+                      </div>
 
                       <div className="d-flex justify-content-end">
                         <Button type="submit" color="success" className="rounded-pill me-2">
                           {t('Submit')}
                         </Button>
-                        <Button
-                          type="button"
-                          color="danger"
-                          className="rounded-pill"
-                          onClick={() => window.history.back()}
-                        >
+                        <Button type="button" color="danger" className="rounded-pill" onClick={() => navigate(-1)}>
                           {t('Cancel')}
                         </Button>
                       </div>
@@ -117,4 +104,4 @@ const TenantForm = () => {
   );
 };
 
-export default TenantForm;
+export default EditTenant;
