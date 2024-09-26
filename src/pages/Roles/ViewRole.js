@@ -65,7 +65,7 @@ const ViewRole = () => {
                     fontWeight: "bold",
                   }}
                 >
-                 View Role
+                 {t('View Role')}
                 </h4>
               </CardHeader>
 
@@ -74,7 +74,7 @@ const ViewRole = () => {
                 <Row  style={{marginTop:'3.5rem'}}>
                   <Col md={12}>
                     <FormGroup className="mb-3">
-                      <Label htmlFor="firstnameinput">Role Name</Label>
+                      <Label htmlFor="firstnameinput">{t('Role Name')}</Label>
                       <Input
                         name="rolenameinput"
                         placeholder="Enter Role Name"
@@ -101,7 +101,7 @@ const ViewRole = () => {
                   </Col>
                   <Col md={12}>
                     <FormGroup className="mb-3">
-                      <Label htmlFor="firstnameinput">Role Description</Label>
+                      <Label htmlFor="firstnameinput">{t('Role Description')}</Label>
                       <Input
                         name="Descriptioninput"
                         placeholder="Enter Role Discription"
@@ -156,7 +156,7 @@ const ViewRole = () => {
                     </FormGroup>
                   </Col> */}
                   <Col md={12}>
-                  <Label>Tenant ID</Label>
+                  <Label>{t('Tenant ID')}</Label>
                       <select  aria-label="Default select example" className={`form-select mb-3 ${
                             validation.touched.tenantinput &&
                             validation.errors.tenantinput
@@ -180,7 +180,7 @@ const ViewRole = () => {
         <option defaultValue="2">Delivery Error</option>
         <option defaultValue="3">Wrong Amount</option>
     </select>
-    {validation.touched.tenantID &&
+    {validation.touched.tenantinput &&
                         validation.errors.tenantinput ? (
                           <FormFeedback className="d-block">
                             {validation.errors.tenantinput}
@@ -209,7 +209,7 @@ const ViewRole = () => {
                   </Label>
                 </FormGroup>
                 <div>
-                  <a href="#">Show 7 sub-categories</a>
+                  <a href="#">{t('Show 7 sub-categories')}</a>
                 </div>
               </td>
               <td className="role-table">
@@ -219,7 +219,7 @@ const ViewRole = () => {
                 >
                   {permission.read ? "On" : "Off"}
                 </Button> */}
-                 <Label className="form-check-label" for="Readswitch">Read</Label>
+                 <Label className="form-check-label" for="Readswitch">{t('Read')}</Label>
                   <div className="form-check form-switch form-switch-md mb-3 form-switch-success" dir="ltr">
             <Input type="checkbox" className="form-check-input" id="Readswitch"/>
            
@@ -232,7 +232,7 @@ const ViewRole = () => {
                 >
                   {permission.write ? "On" : "Off"}
                 </Button> */}
-                <Label className="form-check-label" >Write</Label>
+                <Label className="form-check-label" >{t('Write')}</Label>
                             <div className="form-check form-switch form-switch-md mb-3 form-switch-warning" dir="ltr">
             <Input type="checkbox" className="form-check-input" id="writeswitch"/>
             
@@ -245,7 +245,7 @@ const ViewRole = () => {
                 >
                   {permission.edit ? "On" : "Off"}
                 </Button> */}
-                 <Label className="form-check-label" >Edit</Label>          
+                 <Label className="form-check-label" >{t('Edit')}</Label>          
         <div className="form-check form-switch form-switch-md mb-3" dir="ltr">
             <Input type="checkbox" className="form-check-input" id="Editswitch"/>
             
@@ -259,7 +259,7 @@ const ViewRole = () => {
                 >
                   {permission.edit ? "On" : "Off"}
                 </Button> */}
-                      <Label className="form-check-label" >Delete</Label>          
+                      <Label className="form-check-label" >{t('Delete')}</Label>          
         <div className="form-check form-switch form-switch-md mb-3 form-switch-danger" dir="ltr">
             <Input type="checkbox" className="form-check-input" id="Deletswitch"/>
        
@@ -277,7 +277,7 @@ const ViewRole = () => {
                         color="success"
                         className="rounded-pill me-2"
                       >
-                        Submit
+                        {t('Submit')}
                       </Button>
                       <Button
                         type="button"
@@ -285,7 +285,7 @@ const ViewRole = () => {
                         className="rounded-pill"
                         onClick={() => history.back()}
                       >
-                        Cancel
+                        {t('Cancel')}
                       </Button>
                     </div>
 

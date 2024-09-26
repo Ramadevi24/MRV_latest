@@ -92,7 +92,18 @@
       "Error updating Organization": "خطأ في تحديث المنظمة",
       "Location": "موقع",
    "Edit Tenant": "تعديل المستأجر",
-  "Update": "تحديث"
+  "Update": "تحديث",
+
+  "Add Role": "إضافة دور",
+  "Role Description": "وصف الدور",
+  "Select Tenant": "اختر المستأجر",
+ 
+  "Module": "الوحدة",
+  "Read": "قراءة",
+  "Write": "كتابة",
+  "Edit": "تحرير",
+  "Delete": "حذف",
+  "Show 7 sub-categories": "إظهار 7 الفئات الفرعية"
 
 
     

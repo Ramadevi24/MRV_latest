@@ -180,7 +180,7 @@ const EditRole = () => {
         <option defaultValue="2">Delivery Error</option>
         <option defaultValue="3">Wrong Amount</option>
     </select>
-    {validation.touched.tenantID &&
+    {validation.touched.tenantinput &&
                         validation.errors.tenantinput ? (
                           <FormFeedback className="d-block">
                             {validation.errors.tenantinput}
@@ -209,7 +209,7 @@ const EditRole = () => {
                   </Label>
                 </FormGroup>
                 <div>
-                  <a href="#">Show 7 sub-categories</a>
+                  <a href="#">{t('Show 7 sub-categories')}</a>
                 </div>
               </td>
               <td className="role-table">
@@ -219,7 +219,7 @@ const EditRole = () => {
                 >
                   {permission.read ? "On" : "Off"}
                 </Button> */}
-                 <Label className="form-check-label" for="Readswitch">Read</Label>
+                 <Label className="form-check-label" for="Readswitch">{t('Read')}</Label>
                   <div className="form-check form-switch form-switch-md mb-3 form-switch-success" dir="ltr">
             <Input type="checkbox" className="form-check-input" id="Readswitch"/>
            
@@ -232,7 +232,7 @@ const EditRole = () => {
                 >
                   {permission.write ? "On" : "Off"}
                 </Button> */}
-                <Label className="form-check-label" >Write</Label>
+                <Label className="form-check-label" >{t('Write')}</Label>
                             <div className="form-check form-switch form-switch-md mb-3 form-switch-warning" dir="ltr">
             <Input type="checkbox" className="form-check-input" id="writeswitch"/>
             
@@ -245,7 +245,7 @@ const EditRole = () => {
                 >
                   {permission.edit ? "On" : "Off"}
                 </Button> */}
-                 <Label className="form-check-label" >Edit</Label>          
+                 <Label className="form-check-label" >{t('Edit')}</Label>          
         <div className="form-check form-switch form-switch-md mb-3" dir="ltr">
             <Input type="checkbox" className="form-check-input" id="Editswitch"/>
             
@@ -259,7 +259,7 @@ const EditRole = () => {
                 >
                   {permission.edit ? "On" : "Off"}
                 </Button> */}
-                      <Label className="form-check-label" >Delete</Label>          
+                      <Label className="form-check-label" >{t('Delete')}</Label>          
         <div className="form-check form-switch form-switch-md mb-3 form-switch-danger" dir="ltr">
             <Input type="checkbox" className="form-check-input" id="Deletswitch"/>
        
@@ -277,7 +277,7 @@ const EditRole = () => {
                         color="success"
                         className="rounded-pill me-2"
                       >
-                        Submit
+                        {t('Submit')}
                       </Button>
                       <Button
                         type="button"
@@ -285,7 +285,7 @@ const EditRole = () => {
                         className="rounded-pill"
                         onClick={() => history.back()}
                       >
-                        Cancel
+                        {t('Cancel')}
                       </Button>
                     </div>
 
