@@ -87,22 +87,8 @@ const TenantForm = () => {
             </CardHeader>
 
             <CardBody>
-            <div className="listjs-table" id="customerList">
-                    <Row className="g-4 mb-3">
-                      <Col className="col-sm-auto">
-                        <div>
-                        
-                        </div>
-                      </Col>
-                      <Col className="col-sm">
-                        <div className="d-flex justify-content-sm-end">
-                          <div className="search-box ms-2">
-                          
-                          </div>
-                        </div>
-                      </Col>
-                    </Row>
-      <Form onSubmit={formik.handleSubmit}>
+  
+      <Form onSubmit={formik.handleSubmit} style={{marginTop:'3.5rem'}}>
       <Row>
         <Col md={{ size: 10}}>
         <FormGroup>
@@ -159,7 +145,6 @@ const TenantForm = () => {
         </Col>
       </Row>
       </Form>
-      </div>
       </CardBody>
       </Card>
       </Col>

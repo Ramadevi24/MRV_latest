@@ -69,9 +69,9 @@ const ViewUser = () => {
                         validation.handleSubmit();
                         return false;
                       }}
-                    >
+                      style={{marginTop:'3.5rem'}}>
                     <Row>
-                     <Col md={6}>
+                     <Col>
                           <FormGroup className="mb-3">
                             <Label htmlFor="firstnameinput">{t('First name')}</Label>
                             <Input
@@ -98,7 +98,7 @@ const ViewUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
-                        <Col md={6}>
+                        <Col >
                           <FormGroup className="mb-3">
                             <Label htmlFor="lastnameinput">{t("Last Name")}</Label>
                             <Input
@@ -125,9 +125,10 @@ const ViewUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
+                        </Row>
                       
-                      
-                        <Col md={6}>
+                      <Row>
+                        <Col >
                         <FormGroup>
               <div className="mb-3">
                 <Label htmlFor="emailadress">{t('Email Address')}</Label>
@@ -150,7 +151,7 @@ const ViewUser = () => {
                         </Col>
                  
                    
-                        <Col md={6}>
+                        <Col >
                           <FormGroup className="mb-3">
                             <Label htmlFor="validationCustom03">{t('Password')}</Label>
                             <Input
@@ -174,8 +175,9 @@ const ViewUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
-
-                        <Col md={6}>
+                        </Row>
+                           <Row>
+                        <Col>
             <FormGroup>
               <div className="mb-3">
                 <Label htmlFor="phonenumberInput">{t('Phone Number')}<span className="text-danger">*</span></Label>
@@ -197,7 +199,7 @@ const ViewUser = () => {
             </FormGroup>
           </Col>
 
-          <Col lg={6}>
+          <Col>
             <Label htmlFor="validationtenantid">{t('Tenant ID')}<span className="text-danger">*</span></Label>
             <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
                     id="validationtenantid"
@@ -219,9 +221,10 @@ const ViewUser = () => {
                   ) : null}
       
           </Col>
+          </Row>
                     
-                     
-          <Col lg={6}>
+                  <Row>   
+          <Col>
             <Label htmlFor="validationtenantid">{t('Organization ID')}<span className="text-danger">*</span></Label>
             <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
                     id="validationtenantid"
@@ -242,7 +245,7 @@ const ViewUser = () => {
                   ) : null}
       
           </Col>
-          <Col lg={6}>
+          <Col>
             <Label htmlFor="validationtenantid">{t('User Role')}<span className="text-danger">*</span></Label>
             <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
                     id="validationtenantid"

@@ -114,7 +114,7 @@ const UserForm = () => {
                 <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Users</h2>
                </div> */}
 
-                  <div className="live-preview">
+                  <div className="live-preview" style={{marginTop:'3.5rem'}}>
                     <Form
                       className="needs-validation"
                       onSubmit={(e) => {
@@ -123,8 +123,8 @@ const UserForm = () => {
                         return false;
                       }}
                     >
-                      <Row>
-                        <Col md={6}>
+                    <Row>
+                     <Col>
                           <FormGroup className="mb-3">
                             <Label htmlFor="firstName">{t("First name")}</Label>
                             <Input
@@ -151,7 +151,7 @@ const UserForm = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
-                        <Col md={6}>
+                        <Col>
                           <FormGroup className="mb-3">
                             <Label htmlFor="lastName">{t("Last Name")}</Label>
                             <Input
@@ -179,7 +179,10 @@ const UserForm = () => {
                           </FormGroup>
                         </Col>
 
-                        <Col md={6}>
+</Row>
+                      
+                      <Row>
+                        <Col>
                           <FormGroup>
                             <div className="mb-3">
                               <Label htmlFor="emailadress">
@@ -240,7 +243,9 @@ const UserForm = () => {
                           </FormGroup>
                         </Col>
 
-                        <Col md={6}>
+</Row>
+<Row>
+                        <Col>
                           <FormGroup>
                             <div className="mb-3">
                               <Label htmlFor="phone">

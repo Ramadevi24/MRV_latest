@@ -134,7 +134,7 @@ const EditUser = () => {
       <div className="page-content">
         <Container fluid>
           <Row>
-            <Col lg={12}>
+            <Col>
               <Card>
                 <CardHeader>
                   <h4
@@ -161,10 +161,12 @@ const EditUser = () => {
                         e.preventDefault();
                         validation.handleSubmit();
                         return false;
-                      }}
+                      }}  style={{marginTop:'3.5rem'}}
                     >
+
                       <Row>
-                        <Col md={6}>
+                  
+                     <Col>
                           <FormGroup className="mb-3">
                             <Label htmlFor="firstName">{t("First name")}</Label>
                             <Input
@@ -191,7 +193,7 @@ const EditUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
-                        <Col md={6}>
+                        <Col >
                           <FormGroup className="mb-3">
                             <Label htmlFor="lastName">{t("Last Name")}</Label>
                             <Input
@@ -218,8 +220,10 @@ const EditUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
-
-                        <Col md={6}>
+</Row>
+                      
+                      <Row>
+                        <Col>
                           <FormGroup>
                             <div className="mb-3">
                               <Label htmlFor="emailadress">
@@ -251,7 +255,7 @@ const EditUser = () => {
                           </FormGroup>
                         </Col>
 
-                        <Col md={6}>
+                        <Col>
                           <FormGroup className="mb-3">
                             <Label htmlFor="validationCustom03">
                               {t("Password")}
@@ -280,7 +284,9 @@ const EditUser = () => {
                           </FormGroup>
                         </Col>
 
-                        <Col md={6}>
+</Row>
+                       <Row>
+                        <Col >
                           <FormGroup>
                             <div className="mb-3">
                               <Label htmlFor="phone">

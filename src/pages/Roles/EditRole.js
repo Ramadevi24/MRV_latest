@@ -52,7 +52,7 @@ const EditRole = () => {
                     onSubmit={(e) => {
                       e.preventDefault();
                       validation.handleSubmit();
-                    }}>
+                    }} >
         <Row>
           <Col lg={12}>
             <Card>
@@ -65,16 +65,16 @@ const EditRole = () => {
                     fontWeight: "bold",
                   }}
                 >
-                 Edit Role
+                 {t('Edit Role')}
                 </h4>
               </CardHeader>
 
               <CardBody>
 
-                <Row>
+                <Row  style={{marginTop:'3.5rem'}}>
                   <Col md={12}>
                     <FormGroup className="mb-3">
-                      <Label htmlFor="firstnameinput">Role Name</Label>
+                      <Label htmlFor="firstnameinput">{t('Role Name')}</Label>
                       <Input
                         name="rolenameinput"
                         placeholder="Enter Role Name"
@@ -101,7 +101,7 @@ const EditRole = () => {
                   </Col>
                   <Col md={12}>
                     <FormGroup className="mb-3">
-                      <Label htmlFor="firstnameinput">Role Description</Label>
+                      <Label htmlFor="firstnameinput">{t('Role Description')}</Label>
                       <Input
                         name="Descriptioninput"
                         placeholder="Enter Role Discription"
@@ -156,7 +156,7 @@ const EditRole = () => {
                     </FormGroup>
                   </Col> */}
                   <Col md={12}>
-                  <Label>Tenant ID</Label>
+                  <Label>{t('Tenant ID')}</Label>
                       <select  aria-label="Default select example" className={`form-select mb-3 ${
                             validation.touched.tenantinput &&
                             validation.errors.tenantinput

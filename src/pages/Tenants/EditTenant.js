@@ -75,7 +75,7 @@ const EditTenant = () => {
       <Form onSubmit={(e) => {
                       e.preventDefault();
                       formik.handleSubmit();
-                    }}>
+                    }} style={{marginTop:'3.5rem'}}>
       <Row>
         <Col md={{ size: 10, offset: 1 }}>
         <FormGroup>

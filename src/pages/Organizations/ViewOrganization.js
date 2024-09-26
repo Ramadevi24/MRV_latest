@@ -112,6 +112,7 @@ const ViewOrganization = () => {
           e.preventDefault();
           validation.handleSubmit();
         }}
+        style={{marginTop:'3.5rem'}}
       >
         <Row>
           <Col lg={6}>
