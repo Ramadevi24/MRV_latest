@@ -26,11 +26,9 @@ export const TenantProvider = ({ children }) => {
   };
 
   const fetchTenantById = async (id) => {
-    console.log(id, 'id');
     try {
       setLoading(true);
       const tenant = await getTenantById(id);
-      console.log(tenant, 'tenant');
       return tenant;
     } catch (error) {
       setError("Error fetching tenant");

@@ -152,23 +152,7 @@ const RoleGrid = ({ userPermissions }) => {
                         >
                           <thead className="table-light">
                             <tr>
-                              <th scope="col" style={{ width: "50px" }}>
-                                <div className="form-check">
-                                  <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="checkAll"
-                                    value="option"
-                                  />
-                                </div>
-                              </th>
-                              <th
-                                onClick={() => handleSort("roleID")}
-                                className="sort"
-                                data-sort="roleID"
-                              >
-                                {t("Role ID")}
-                              </th>
+           
                               <th
                                 onClick={() => handleSort("roleName")}
                                 className="sort"
@@ -204,27 +188,7 @@ const RoleGrid = ({ userPermissions }) => {
                           <tbody className="list form-check-all">
                             {currentItems.map((role) => (
                               <tr key={role.roleID}>
-                                <th scope="row">
-                                  <div className="form-check">
-                                    <input
-                                      className="form-check-input"
-                                      type="checkbox"
-                                      name="chk_child"
-                                      value="option1"
-                                    />
-                                  </div>
-                                </th>
-                                <td className="id" style={{ display: "none" }}>
-                                  <Link
-                                    to="#"
-                                    className="fw-medium link-primary"
-                                  >
-                                    #VZ2101
-                                  </Link>
-                                </td>
-                                <td className="customer_name">
-                                  {role.roleID}
-                                </td>
+                          
                                 <td className="email">
                                   {role.roleName}
                                 </td>

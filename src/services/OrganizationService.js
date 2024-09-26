@@ -10,7 +10,6 @@ export const getOrganizations = async (tenantID = null) => {
         const response = await axios.get(organizationUrl, {
           headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
         });
-        console.log(response, 'response');
         return response.$values;
       } catch (error) {
         throw new Error("Error fetching Organizations");

@@ -15,7 +15,6 @@ import {
   Row,
   Input,
 } from "reactstrap";
-import { Link } from "react-router-dom";
 
 const PermissionGrid = ({ userPermissions }) => {
   document.title = "MRV_PROJECT | PermissionGrid";
@@ -24,7 +23,7 @@ const PermissionGrid = ({ userPermissions }) => {
     permissions,
     loading,
     fetchAllPermissions,
-    savePermission, // This should be your save method in the context
+    updatePermissionProfile, // This should be your save method in the context
   } = useContext(PermissionContext);
   
   const [editingRowId, setEditingRowId] = useState(null);
@@ -38,8 +37,8 @@ const PermissionGrid = ({ userPermissions }) => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
-    fetchAllPermissions(userPermissions?.tenantID);
-  }, [userPermissions]);
+    fetchAllPermissions();
+  }, []);
 
   const handleEdit = (permission) => {
     setEditingRowId(permission.permissionID);
@@ -51,8 +50,12 @@ const PermissionGrid = ({ userPermissions }) => {
     setEditingPermission({});
   };
 
-  const handleSave = () => {
-    savePermission(editingPermission); // Call the save function with the updated data
+  const handleSave = (PermissionID) => {
+    const updatedPermission = { ...editingPermission,
+      permissionID: PermissionID
+     };
+    updatePermissionProfile(PermissionID, updatedPermission); 
+    fetchAllPermissions();
     setEditingRowId(null);
     setEditingPermission({});
   };
@@ -154,16 +157,6 @@ const PermissionGrid = ({ userPermissions }) => {
                         >
                           <thead className="table-light">
                             <tr>
-                              <th scope="col" style={{ width: "50px" }}>
-                                <div className="form-check">
-                                  <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="checkAll"
-                                    value="option"
-                                  />
-                                </div>
-                              </th>
                               <th
                                 onClick={() =>
                                   handleSort("permissionDisplayName")
@@ -198,16 +191,6 @@ const PermissionGrid = ({ userPermissions }) => {
                           <tbody className="list form-check-all">
                             {currentItems.map((permission) => (
                               <tr key={permission.permissionID}>
-                                <th scope="row">
-                                  <div className="form-check">
-                                    <input
-                                      className="form-check-input"
-                                      type="checkbox"
-                                      name="chk_child"
-                                      value="option1"
-                                    />
-                                  </div>
-                                </th>
                                 <td className="email">
                                   {editingRowId === permission.permissionID ? (
                                     <Input
@@ -247,7 +230,7 @@ const PermissionGrid = ({ userPermissions }) => {
                                         <Button
                                           color="success"
                                           size="sm"
-                                          onClick={handleSave}
+                                          onClick={()=>handleSave(permission.permissionID)}
                                         >
                                          <FaCheck color="white"/>
                                         </Button>

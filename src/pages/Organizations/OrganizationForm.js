@@ -223,7 +223,7 @@ const OrganizationForm = () => {
                   >
                     <Row>
                     {!userPermissions.tenantID && (
-                      <Col lg={6}>
+                      <Col>
                         <Label htmlFor="validationtenantid">
                           {t('Tenant ID')}<span className="text-danger">*</span>
                         </Label>
@@ -265,7 +265,7 @@ const OrganizationForm = () => {
                         ) : null}
                       </Col>
                     )}
-                      <Col md={6}>
+                      <Col>
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="validationorganizationname">
@@ -300,7 +300,7 @@ const OrganizationForm = () => {
                     </Row>
 
                     <Row>
-                      <Col md={12}>
+                      <Col>
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="Textarea">
@@ -333,7 +333,7 @@ const OrganizationForm = () => {
                       </Col>
                     </Row>
                     <Row>
-                      <Col md={6}>
+                      <Col>
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="establishdate">
@@ -387,7 +387,7 @@ const OrganizationForm = () => {
               </div>
             </FormGroup>
           </Col> */}
-                      <Col md={6}>
+                      <Col>
                         <label
                           htmlFor="validationDefaultUsername"
                           className="form-label"
@@ -426,7 +426,7 @@ const OrganizationForm = () => {
                       </Col>
                     </Row>
                     <Row>
-                      <Col md={6}>
+                      <Col>
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="phonenumberInput">
@@ -458,7 +458,7 @@ const OrganizationForm = () => {
                         </FormGroup>
                       </Col>
 
-                      {/* <Col xl={6}>
+                      {/* <Col>
                           <div className="mb-3 mb-xl-0">
                             <label htmlFor="cleave-phone" className="form-label">Phone Number<span className="text-danger">*</span></label>
                             <Cleave
@@ -473,7 +473,7 @@ const OrganizationForm = () => {
                             />
                           </div>
                         </Col> */}
-                      <Col lg={6} md={6}>
+                      <Col>
                         <div className="mb-3">
                           <Label
                             htmlFor="choices-multiple-default"
@@ -559,7 +559,7 @@ const OrganizationForm = () => {
                       </Col>
                     </Row>
                     <Row>
-                      <Col md={12}>
+                      <Col>
                         <FormGroup>
                           <div className="mb-3">
                             <Label
@@ -621,12 +621,12 @@ const OrganizationForm = () => {
                                                     </div>
                                                 </Col> */}
                     </Row>
-                    <Col md={4}>
-                      <Label>{t('Location')}:</Label>
+                    <Col>
+                      <Label style={{    fontSize: "18px",fontWeight: 'bold'}}>{t('Location')}:</Label>
                     </Col>
                     {validation.values.locations.map((location, index) => (
                       <Row key={index}>
-                        <Col md={4}>
+                        <Col>
                           <div className="mb-3">
                             <Label
                               htmlFor={`latitude-${index}`}
@@ -665,7 +665,7 @@ const OrganizationForm = () => {
                               )}
                           </div>
                         </Col>
-                        <Col md={4}>
+                        <Col>
                           <div className="mb-3">
                             <Label
                               className="form-label"
@@ -705,7 +705,7 @@ const OrganizationForm = () => {
                               )}
                           </div>
                         </Col>
-                        <Col md={4}>
+                        <Col>
                           <div className="mb-3">
                             <Label
                               htmlFor={`address-${index}`}
@@ -746,7 +746,7 @@ const OrganizationForm = () => {
                         </Col>
                       </Row>
                     ))}
-                    <div className="d-flex justify-content-end">
+                    <div className="d-flex mt-3">
                       <Button
                         type="submit"
                         color="success"

@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader } from 'reactstrap';
+import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader, FormGroup, FormFeedback, Form } from 'reactstrap';
 import { TenantContext } from '../../contexts/TenantContext';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -12,8 +12,6 @@ const EditTenant = () => {
   const { id } = useParams();
   const { editTenant, fetchTenantById } = useContext(TenantContext);
   const navigate = useNavigate();
-  const [tenantName, setTenantName] = useState('');
-  const [description, setDescription] = useState('');
 
   useEffect(() => {
     const loadTenant = async () => {
@@ -21,8 +19,10 @@ const EditTenant = () => {
         const tenant = await fetchTenantById(id);
         console.log('Fetched tenant:', tenant); // Check the tenant data
         if (tenant) {
-          setTenantName(tenant.name || '');
-          setDescription(tenant.description || '');
+          formik.setValues({
+            name: tenant.name || "",
+            description: tenant.description || "",
+          });
         }
       } catch (error) {
         console.error("Error loading tenant:", error);
@@ -31,18 +31,33 @@ const EditTenant = () => {
     loadTenant();
   }, [id]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const updatedTenant = { name: tenantName, description, countryID: 1, regionID: 1 };
-
-    try {
-      await editTenant(id, updatedTenant);
-      toast.success(t("Tenant Updated Successfully"), { autoClose: 3000 });
-      navigate('/tenants');
-    } catch (error) {
-      toast.error(t('Error updating tenant'), { autoClose: 3000 });
-    }
-  };
+  const validationSchema = Yup.object({
+    name: Yup.string()
+      .required(t("Please enter tenant name")),
+    description: Yup.string()
+      .required(t("Please enter description")),
+  });
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      description: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      const updatePayload = {
+        ...values,
+        countryID: 1,
+        regionID: 1,
+      };
+      try {
+        await editTenant(id, updatePayload);
+        toast.success(t('Tenant Updated successfully'), { autoClose: 3000 });
+        navigate('/tenants');
+      } catch (error) {
+        toast.error(t('Error creating tenant'), { autoClose: 3000 });
+      }
+    },
+  });
 
   return (
     <div className="page-content">
@@ -57,45 +72,67 @@ const EditTenant = () => {
               </CardHeader>
 
               <CardBody>
-                <form onSubmit={handleSubmit}  style={{marginTop:'3.5rem'}}>
-                  <Row>
-                    <Col md={{ size: 10, offset: 1 }}>
-                      <div className="mb-3">
-                        <Label htmlFor="tenantName" className="form-label">{t('Tenant Name')}</Label>
+      <Form onSubmit={(e) => {
+                      e.preventDefault();
+                      formik.handleSubmit();
+                    }} style={{marginTop:'3.5rem'}}>
+      <Row>
+        <Col md={{ size: 10, offset: 1 }}>
+        <FormGroup>
+            <Label htmlFor="tenantName" className="form-label">{t('Tenant Name')}</Label>
+            <Input type="text"  id="name" name="name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            className={`form-control ${
+              formik.touched.name && formik.errors.name ? 'is-invalid' : ''
+            }`}
+            placeholder={t("Enter Tenant name")} />
+            {formik.touched.name && formik.errors.name ? (
+                          <FormFeedback>{formik.errors.name}</FormFeedback>
+                        ) : null}
+                      </FormGroup>
+       
+          
+         
+                      <FormGroup>
+                        <Label htmlFor="description" className="form-label">
+                          {t('Description')}
+                        </Label>
                         <Input
-                          type="text"
-                          className="form-control"
-                          id="tenantName"
-                          value={tenantName}
-                          onChange={(e) => setTenantName(e.target.value)}
-                          placeholder={t('Enter Tenant name')}
-                        />
-                      </div>
-
-                      <div className="mb-3">
-                        <Label htmlFor="description" className="form-label">{t('Description')}</Label>
-                        <textarea
-                          className="form-control"
+                          type="textarea"
                           id="description"
+                          name="description"
+                          className={`form-control ${
+                            formik.touched.description && formik.errors.description ? 'is-invalid' : ''
+                          }`}
+                          placeholder={t("Enter your message")}
+                          value={formik.values.description}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                           rows="3"
-                          value={description}
-                          onChange={(e) => setDescription(e.target.value)}
-                          placeholder={t('Enter description')}
-                        ></textarea>
-                      </div>
-
-                      <div className="d-flex justify-content-end">
-                        <Button type="submit" color="success" className="rounded-pill me-2">
-                          {t('Submit')}
-                        </Button>
-                        <Button type="button" color="danger" className="rounded-pill" onClick={() => navigate(-1)}>
-                          {t('Cancel')}
-                        </Button>
-                      </div>
-                    </Col>
-                  </Row>
-                </form>
-              </CardBody>
+                        />
+                        {formik.touched.description && formik.errors.description ? (
+                          <FormFeedback>{formik.errors.description}</FormFeedback>
+                        ) : null}
+                      </FormGroup>
+          <div className="d-flex mt-3">
+                <Button type="submit" color="success" className="rounded-pill me-2">
+                  Submit
+                </Button>
+                <Button
+                  type="button"
+                  color="danger"
+                  className="rounded-pill"
+                  onClick={() => history.back()}
+                >
+                  Cancel
+                </Button>
+                </div>
+        </Col>
+      </Row>
+      </Form>
+      </CardBody>
             </Card>
           </Col>
         </Row>

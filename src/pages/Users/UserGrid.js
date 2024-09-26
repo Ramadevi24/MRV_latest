@@ -18,10 +18,12 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import DeleteModal from "../../Components/Common/DeleteModal";
 
-const UserGrid = ({ userPermissions }) => {
+const UserGrid = () => {
   document.title = "MRV_PROJECT | UserGrid";
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const userPermissions =
+  JSON.parse(localStorage.getItem("UserPermissions")) || [];
   const { users, loading, removeUser, fetchAllUsers } =
     useContext(UserContext);
   const [searchTerm, setSearchTerm] = useState("");
@@ -156,23 +158,6 @@ const UserGrid = ({ userPermissions }) => {
                         >
                           <thead className="table-light">
                             <tr>
-                              <th scope="col" style={{ width: "50px" }}>
-                                <div className="form-check">
-                                  <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="checkAll"
-                                    value="option"
-                                  />
-                                </div>
-                              </th>
-                              <th
-                                onClick={() => handleSort("userID")}
-                                className="sort"
-                                data-sort="userID"
-                              >
-                                {t("User ID")}
-                              </th>
                               <th
                                 onClick={() => handleSort("firstName")}
                                 className="sort"
@@ -216,27 +201,6 @@ const UserGrid = ({ userPermissions }) => {
                           <tbody className="list form-check-all">
                             {currentItems.map((user ) => (
                               <tr key={user.userID}>
-                                <th scope="row">
-                                  <div className="form-check">
-                                    <input
-                                      className="form-check-input"
-                                      type="checkbox"
-                                      name="chk_child"
-                                      value="option1"
-                                    />
-                                  </div>
-                                </th>
-                                <td className="id" style={{ display: "none" }}>
-                                  <Link
-                                    to="#"
-                                    className="fw-medium link-primary"
-                                  >
-                                    #VZ2101
-                                  </Link>
-                                </td>
-                                <td className="customer_name">
-                                  {user.userID}
-                                </td>
                                 <td className="email">
                                   {user.firstName}
                                 </td>

@@ -151,24 +151,7 @@ const OrganizationGrid = ({ userPermissions }) => {
                           id="customerTable"
                         >
                           <thead className="table-light">
-                            <tr>
-                              <th scope="col" style={{ width: "50px" }}>
-                                <div className="form-check">
-                                  <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="checkAll"
-                                    value="option"
-                                  />
-                                </div>
-                              </th>
-                              <th
-                                onClick={() => handleSort("organizationID")}
-                                className="sort"
-                                data-sort="organizationID"
-                              >
-                                {t("Organization ID")}
-                              </th>
+                            <tr>          
                               <th
                                 onClick={() => handleSort("organizationName")}
                                 className="sort"
@@ -196,27 +179,7 @@ const OrganizationGrid = ({ userPermissions }) => {
                           <tbody className="list form-check-all">
                             {currentItems.map((org) => (
                               <tr key={org.organizationID}>
-                                <th scope="row">
-                                  <div className="form-check">
-                                    <input
-                                      className="form-check-input"
-                                      type="checkbox"
-                                      name="chk_child"
-                                      value="option1"
-                                    />
-                                  </div>
-                                </th>
-                                <td className="id" style={{ display: "none" }}>
-                                  <Link
-                                    to="#"
-                                    className="fw-medium link-primary"
-                                  >
-                                    #VZ2101
-                                  </Link>
-                                </td>
-                                <td className="customer_name">
-                                  {org.organizationID}
-                                </td>
+                               
                                 <td className="email">
                                   {org.organizationName}
                                 </td>

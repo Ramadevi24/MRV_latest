@@ -146,23 +146,6 @@ const {t}=useTranslation();
                         >
                           <thead className="table-light">
                             <tr>
-                              <th scope="col" style={{ width: "50px" }}>
-                                <div className="form-check">
-                                  <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="checkAll"
-                                    value="option"
-                                  />
-                                </div>
-                              </th>
-                              <th
-                                onClick={() => handleSort("tenantID")}
-                                className="sort"
-                                data-sort="customer_name"
-                              >
-                                {t("Tenant ID")}
-                              </th>
                               <th
                                 onClick={() => handleSort("name")}
                                 className="sort"
@@ -197,30 +180,9 @@ const {t}=useTranslation();
                           <tbody className="list form-check-all">
                             {currentTenants.map((tenant) => (
                               <tr key={tenant.tenantID}>
-                                <th scope="row">
-                                  <div className="form-check">
-                                    <input
-                                      className="form-check-input"
-                                      type="checkbox"
-                                      name="chk_child"
-                                      value="option1"
-                                    />
-                                  </div>
-                                </th>
-                                <td className="id" style={{ display: "none" }}>
-                                  <Link
-                                    to="#"
-                                    className="fw-medium link-primary"
-                                  >
-                                    #VZ2101
-                                  </Link>
-                                </td>
-                                <td className="customer_name">
-                                  {tenant.tenantID}
-                                </td>
-                                <td className="email">{tenant.name}</td>
-                                <td className="phone">{tenant.description}</td>
-                                <td className="date">
+                                <td className="name">{tenant.name}</td>
+                                <td className="description">{tenant.description}</td>
+                                <td className="createdDate">
                                   {formatDate(tenant.createdDate)}
                                 </td>
                                 <td className="status">
