@@ -100,7 +100,7 @@ const RightSidebar = () => {
 
 
     // open offcanvas
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const toggleLeftCanvas = () => {
         setOpen(!open);
     };
@@ -162,7 +162,7 @@ const RightSidebar = () => {
                     </div>
                 </div>
                 <Offcanvas isOpen={open} toggle={toggleLeftCanvas} direction="end" className="offcanvas-end border-0">
-                    <OffcanvasHeader className="d-flex align-items-center bg-primary bg-gradient p-3 offcanvas-header-dark" toggle={toggleLeftCanvas}>
+                    <OffcanvasHeader className="d-flex align-items-center bg-info bggradient p-3 offcanvas-header-dark" toggle={toggleLeftCanvas}>
                         <span className="m-0 me-2 text-white">Theme Customizer</span>
                     </OffcanvasHeader>
                     <OffcanvasBody className="p-0">
