@@ -82,7 +82,7 @@ const TenantForm = () => {
                   fontWeight: "bold",
                 }}
               >
-   {t('Add Tenant')}
+     {t('Add Tenant')}
               </h4>
             </CardHeader>
 
@@ -145,7 +145,7 @@ const TenantForm = () => {
                       </FormGroup>
           <div className="d-flex mt-3">
                 <Button type="submit" color="success" className="rounded-pill me-2">
-                  Submit
+                  {t('Submit')}
                 </Button>
                 <Button
                   type="button"
@@ -153,7 +153,7 @@ const TenantForm = () => {
                   className="rounded-pill"
                   onClick={() => history.back()}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
                 </div>
         </Col>

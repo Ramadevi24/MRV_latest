@@ -86,5 +86,11 @@
     "Edit User": "Редактировать пользователя",
     "View User": "Просмотр пользователя",
     "Permission DisplayName": "Имя отображения разрешения",
-    "Permission Group": "Группа разрешений"
+    "Permission Group": "Группа разрешений",
+     "Please Enter Location Address": "Пожалуйста, введите адрес местоположения",
+       "Enter Your Address": "Введите ваш адрес",
+      "Organization updated successfully": "Организация успешно обновлена",
+      "Error updating organization": "Ошибка при обновлении организации",
+       "Location": "Местоположение",
+    "Edit Tenant": "Редактировать арендатора"
 }

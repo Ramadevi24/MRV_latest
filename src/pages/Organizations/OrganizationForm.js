@@ -70,23 +70,19 @@ const OrganizationForm = () => {
       categoryIDs: [],
     },
     validationSchema: Yup.object({
-      tenantID: Yup.string().required("Please select a Tenant ID"),
-      organizationName: Yup.string().required("Please enter organization name"),
-      description: Yup.string().required("Please enter a description"),
-      establishedDate: Yup.string().required(
-        "Please enter the established date"
-      ),
-      contactEmail: Yup.string()
-        .email("Invalid email format")
-        .required("Please enter an email address"),
-      contactPhone: Yup.string().required("Please enter a phone number"),
-      address: Yup.string().required("Please enter your address"),
-      categoryIDs: Yup.array().min(1, "Please select at least one category"),
+      tenantID: Yup.string().required(t("Please select a Tenant ID")),
+      organizationName: Yup.string().required(t("Please enter organization name")),
+      description: Yup.string().required(t("Please enter a description")),
+      establishedDate: Yup.string().required(t("Please enter the established date")),
+      contactEmail: Yup.string().email(t("Invalid email format")).required(t("Please enter an email address")),
+      contactPhone: Yup.string().required(t("Please enter a phone number")),
+      address: Yup.string().required(t("Please enter your address")),
+      categoryIDs: Yup.array().min(1, t("Please select at least one category")),
       locations: Yup.array().of(
         Yup.object().shape({
           latitude: Yup.string().required(t("Please enter latitude")),
           longitude: Yup.string().required(t("Please enter longitude")),
-          address: Yup.string().required(t("Please enter location address")),
+          address: Yup.string().required(t("Please Enter Location Address")),
         })
       ),
     }),
@@ -228,7 +224,7 @@ const OrganizationForm = () => {
                     {!userPermissions.tenantID && (
                       <Col>
                         <Label htmlFor="validationtenantid">
-                          Tenant ID <span className="text-danger">*</span>
+                          {t('Tenant ID')}<span className="text-danger">*</span>
                         </Label>
                         <select
                           className={`form-select  ${
@@ -272,13 +268,13 @@ const OrganizationForm = () => {
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="validationorganizationname">
-                              Organization Name
+                              {t('Organization Name')}
                               <span className="text-danger">*</span>
                             </Label>
                             <Input
                               type="text"
                               className="form-control"
-                              placeholder="Enter Organization Name"
+                              placeholder={t("Enter Organization Name")}
                               id="validationorganizationname"
                               name="organizationName"
                               onChange={validation.handleChange}
@@ -307,7 +303,7 @@ const OrganizationForm = () => {
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="Textarea">
-                              Description<span className="text-danger">*</span>
+                              {t('Description')}<span className="text-danger">*</span>
                             </Label>
                             <Input
                               type="textarea"
@@ -340,7 +336,7 @@ const OrganizationForm = () => {
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="establishdate">
-                              Established Date
+                              {t('Established Date')}
                               <span className="text-danger">*</span>
                             </Label>
                             <Input
@@ -395,7 +391,7 @@ const OrganizationForm = () => {
                           htmlFor="validationDefaultUsername"
                           className="form-label"
                         >
-                          Email<span className="text-danger">*</span>
+                          {t('Email')}<span className="text-danger">*</span>
                         </label>
                         <InputGroup>
                           <span
@@ -433,12 +429,12 @@ const OrganizationForm = () => {
                         <FormGroup>
                           <div className="mb-3">
                             <Label htmlFor="phonenumberInput">
-                              Phone Number<span className="text-danger">*</span>
+                              {t('Phone Number')}<span className="text-danger">*</span>
                             </Label>
                             <Input
                               type="tel"
                               className="form-control"
-                              placeholder="Enter phone number"
+                              placeholder={t("Enter phone number")}
                               id="phonenumberInput"
                               name="contactPhone"
                               onChange={validation.handleChange}
@@ -482,7 +478,7 @@ const OrganizationForm = () => {
                             htmlFor="choices-multiple-default"
                             className="form-label "
                           >
-                            categoryIDs<span className="text-danger">*</span>
+                            {t('categoryIDs')}<span className="text-danger">*</span>
                           </Label>
                           <div style={{ margin: "0 auto" }}>
                             <button
@@ -569,12 +565,12 @@ const OrganizationForm = () => {
                               className="form-label"
                               htmlFor="addressinput"
                             >
-                              Address<span className="text-danger">*</span>
+                              {t('Address')}<span className="text-danger">*</span>
                             </Label>
                             <Input
                               type="tel"
                               className="form-control"
-                              placeholder="Enter Your Address"
+                              placeholder={t("Enter Your Address")}
                               id="addressinput"
                               name="address"
                               onChange={validation.handleChange}
@@ -625,7 +621,7 @@ const OrganizationForm = () => {
                                                 </Col> */}
                     </Row>
                     <Col>
-                      <Label style={{    fontSize: "18px",fontWeight: 'bold'}}>Location:</Label>
+                      <Label style={{    fontSize: "18px",fontWeight: 'bold'}}>{t('Location')}:</Label>
                     </Col>
                     {validation.values.locations.map((location, index) => (
                       <Row key={index}>
@@ -635,13 +631,12 @@ const OrganizationForm = () => {
                               htmlFor={`latitude-${index}`}
                               className="form-label"
                             >
-                              Latitude<span className="text-danger">*</span>
+                              {t('Latitude')}<span className="text-danger">*</span>
                             </Label>
                             <Input
                               type="text"
                               className="form-control"
-                              placeholder="Enter your Latitude 
- "
+                              placeholder={t("Enter your Latitude")}
                               id={`latitude-${index}`}
                               onChange={validation.handleChange}
                               name={`locations[${index}].latitude`}
@@ -675,12 +670,12 @@ const OrganizationForm = () => {
                               className="form-label"
                               htmlFor={`longitude-${index}`}
                             >
-                              Longittude<span className="text-danger">*</span>
+                              {t('Longitude')}<span className="text-danger">*</span>
                             </Label>
                             <Input
                               type="text"
                               className="form-control"
-                              placeholder="Enter your Longittude"
+                              placeholder={t("Enter your Longitude")}
                               id={`longitude-${index}`}
                               onChange={validation.handleChange}
                               name={`locations[${index}].longitude`}
@@ -715,13 +710,13 @@ const OrganizationForm = () => {
                               htmlFor={`address-${index}`}
                               className="form-label"
                             >
-                              Location Address
+                              {t('Location Address')}
                               <span className="text-danger">*</span>
                             </Label>
                             <Input
                               type="text"
                               className="form-control"
-                              placeholder="Enter Location Address"
+                              placeholder={t("Enter Location Address")}
                               id={`address-${index}`}
                               onChange={validation.handleChange}
                               onBlur={validation.handleBlur}

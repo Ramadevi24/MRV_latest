@@ -79,5 +79,11 @@
  "Edit User": "Edit User",
     "View User": "View User",
     "Permission DisplayName": "Permission DisplayName",
-    "Permission Group": "Permission Group"
+    "Permission Group": "Permission Group",
+     "please Enter Location Address": "Please enter location address",
+      "Enter Your Address": "Enter Your Address",
+ "Organization updated successfully": "Organization updated successfully",
+ "Error updating organization": "Error updating organization",
+      "Location": "Location",
+   "Edit Tenant": "Edit Tenant"
 }

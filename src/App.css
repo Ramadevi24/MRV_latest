@@ -27,6 +27,14 @@
 .App-link {
   color: #61dafb;
 }
+.role-table{
+  padding: 5px !important;
+}
+.role-table-tr{
+  border: 1px solid gainsboro;
+
+
+}
 
 @keyframes App-logo-spin {
   from {
