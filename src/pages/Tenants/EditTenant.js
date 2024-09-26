@@ -57,7 +57,7 @@ const EditTenant = () => {
               </CardHeader>
 
               <CardBody>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}  style={{marginTop:'3.5rem'}}>
                   <Row>
                     <Col md={{ size: 10, offset: 1 }}>
                       <div className="mb-3">

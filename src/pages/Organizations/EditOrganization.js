@@ -284,6 +284,7 @@ const EditOrganization = () => {
                       e.preventDefault();
                       validation.handleSubmit();
                     }}
+                    style={{marginTop:'3.5rem'}}
                   >
                     <Row>
                     {!userPermissions.tenantID && (

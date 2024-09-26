@@ -39,7 +39,7 @@ const EditUser = () => {
     <div className="page-content">
       <Container fluid>
         <Row>
-          <Col lg={12}>
+          <Col>
             <Card>
               <CardHeader>
                 <h4
@@ -68,10 +68,12 @@ const EditUser = () => {
                         e.preventDefault();
                         validation.handleSubmit();
                         return false;
-                      }}
+                      }}  style={{marginTop:'3.5rem'}}
                     >
-                    <Row>
-                     <Col md={6}>
+
+                      <Row>
+                  
+                     <Col>
                           <FormGroup className="mb-3">
                             <Label htmlFor="firstnameinput">{t('First name')}</Label>
                             <Input
@@ -98,7 +100,7 @@ const EditUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
-                        <Col md={6}>
+                        <Col >
                           <FormGroup className="mb-3">
                             <Label htmlFor="lastnameinput">{t("Last Name")}</Label>
                             <Input
@@ -125,9 +127,10 @@ const EditUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
+                        </Row>
                       
-                      
-                        <Col md={6}>
+                      <Row>
+                        <Col>
                         <FormGroup>
               <div className="mb-3">
                 <Label htmlFor="emailadress">{t('Email Address')}</Label>
@@ -150,7 +153,7 @@ const EditUser = () => {
                         </Col>
                  
                    
-                        <Col md={6}>
+                        <Col >
                           <FormGroup className="mb-3">
                             <Label htmlFor="validationCustom03">{t('Password')}</Label>
                             <Input
@@ -174,8 +177,9 @@ const EditUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
-
-                        <Col md={6}>
+                        </Row>
+                       <Row>
+                        <Col >
             <FormGroup>
               <div className="mb-3">
                 <Label htmlFor="phonenumberInput">{t('Phone Number')}<span className="text-danger">*</span></Label>
@@ -197,7 +201,7 @@ const EditUser = () => {
             </FormGroup>
           </Col>
 
-          <Col lg={6}>
+          <Col >
             <Label htmlFor="validationtenantid">{t('Tenant ID')}<span className="text-danger">*</span></Label>
             <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
                     id="validationtenantid"
@@ -219,9 +223,10 @@ const EditUser = () => {
                   ) : null}
       
           </Col>
+          </Row>
                     
-                     
-          <Col lg={6}>
+             <Row>     
+          <Col>
             <Label htmlFor="validationtenantid">{t('Organization ID')}<span className="text-danger">*</span></Label>
             <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
                     id="validationtenantid"
@@ -242,7 +247,7 @@ const EditUser = () => {
                   ) : null}
       
           </Col>
-          <Col lg={6}>
+          <Col >
             <Label htmlFor="validationtenantid">{t('User Role')}<span className="text-danger">*</span></Label>
             <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
                     id="validationtenantid"
@@ -263,7 +268,8 @@ const EditUser = () => {
                   ) : null}
       
           </Col>
-          </Row>
+          </Row>   
+          
                 
           <div className="d-flex justify-content-end mt-3">
                 <Button type="submit" color="success" className="rounded-pill me-2">
