@@ -140,6 +140,7 @@ const VerticalLayout = (props) => {
                     // item.nextElementSibling.classList.remove("show");
                 }
                 item.setAttribute("aria-expanded", false);
+                
             }
             item.classList.remove("active");
         });
@@ -198,6 +199,7 @@ const VerticalLayout = (props) => {
                                                                     <ul className="nav nav-sm flex-column">
                                                                         {/* child subItms  */}
                                                                         {subItem.childItems && (
+                                                                          
                                                                             (subItem.childItems || []).map((childItem, key) => (
                                                                                 <React.Fragment key={key}>
                                                                                     {!childItem.childItems ?

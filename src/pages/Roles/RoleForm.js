@@ -157,7 +157,7 @@ const RoleForm = () => {
                   </Col> */}
                   <Col md={12}>
                   <Label>Tenant ID</Label>
-                      <select  aria-label="Default select example" className={`form-select mb-3 ${
+                      <select  aria-label="Default select example" className={`form-select mb-2 ${
                             validation.touched.tenantinput &&
                             validation.errors.tenantinput
                               ? "is-invalid"
@@ -180,7 +180,7 @@ const RoleForm = () => {
         <option defaultValue="2">Delivery Error</option>
         <option defaultValue="3">Wrong Amount</option>
     </select>
-    {validation.touched.tenantID &&
+    {validation.touched.tenantinput &&
                         validation.errors.tenantinput ? (
                           <FormFeedback className="d-block">
                             {validation.errors.tenantinput}
