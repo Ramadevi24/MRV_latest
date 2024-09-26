@@ -21,8 +21,9 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 const TenantsGrid = () => {
+
   document.title = "MRV_PROJECT | TenantsGrid";
-  const { t } = useTranslation();
+const {t}=useTranslation();
   const navigate = useNavigate();
   const { tenants, loading, removeTenant, fetchAllTenants } =
     useContext(TenantContext);
@@ -94,7 +95,7 @@ const TenantsGrid = () => {
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  <h4 className="card-title mb-0" style={{color:'#45CB85', fontSize:'20px', fontWeight:'bold'}}>Tenants</h4>
+                  <h4 className="card-title mb-0" style={{color:'#45CB85', fontSize:'20px', fontWeight:'bold'}}>{t('Tenants')}</h4>
                 </CardHeader>
 
                 <CardBody>
@@ -109,7 +110,7 @@ const TenantsGrid = () => {
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>{" "}
-                            Add
+                           {t('Add')}
                           </Button>
                         </div>
                       </Col>
@@ -119,7 +120,7 @@ const TenantsGrid = () => {
                             <input
                               type="text"
                               className="form-control search"
-                              placeholder="Search..."
+                              placeholder={t("Search...")}
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -186,10 +187,10 @@ const TenantsGrid = () => {
                                 {t("Created Date")}
                               </th>
                               <th className="sort" data-sort="status">
-                                Delivery Status
+                             {t('Delivery Status')}
                               </th>
                               <th className="sort" data-sort="action">
-                                Action
+                               {t('Action')}
                               </th>
                             </tr>
                           </thead>

@@ -2,8 +2,10 @@ import React from 'react'
 import { Col, Label, Input, Row, FormGroup, Form, FormFeedback, Button, CardBody ,Container,Card,CardHeader} from 'reactstrap';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 const UserForm = () => {
+  const {t}=useTranslation();
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -19,14 +21,14 @@ const UserForm = () => {
     userrole:''
     },
     validationSchema: Yup.object({
-      firstnameinput: Yup.string().required("Please Enter Your First Name"),
-      tenantid: Yup.string().required('Please select a Tenant ID'), 
-      organizationid: Yup.string().required('Please select a Organization Id'), 
-      lastnameinput: Yup.string().required("Please Enter Your Last Name"),
-      Emailaddress: Yup.string().required("Please Enter Your User Name"),
-      phonenumber: Yup.string().required('Please enter a phone number'),
-      password: Yup.string().required('Please enter a password'),
-      userrole: Yup.string().required('Please select a User Role'), 
+      firstnameinput: Yup.string().required(t("Please Enter Your First Name")),
+      tenantid: Yup.string().required(t('Please select a Tenant ID')), 
+      organizationid: Yup.string().required(t('Please select a Organization Id')), 
+      lastnameinput: Yup.string().required(t("Please Enter Your Last Name")),
+      Emailaddress: Yup.string().required(t("Please Enter Your User Name")),
+      phonenumber: Yup.string().required(t('Please enter a phone number')),
+      password: Yup.string().required(t('Please enter a password')),
+      userrole: Yup.string().required(t('Please select a User Role')), 
     }),
     onSubmit: (values) => {
       console.log("values", values);
@@ -48,7 +50,7 @@ const UserForm = () => {
                     fontWeight: "bold",
                   }}
                 >
-                Add User
+                {t('Add User')}
                 </h4>
               </CardHeader>
 
@@ -58,7 +60,7 @@ const UserForm = () => {
                 {/* <div className="ribbon-box" style={{padding:"2rem"}}>
                 <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Users</h2>
                </div> */}
-
+   
         <div className="live-preview">
                     <Form
                       className="needs-validation"
@@ -69,12 +71,12 @@ const UserForm = () => {
                       }}
                     >
                     <Row>
-                        <Col md={6}>
+                     <Col md={6}>
                           <FormGroup className="mb-3">
-                            <Label htmlFor="firstnameinput">First name</Label>
+                            <Label htmlFor="firstnameinput">{t('First name')}</Label>
                             <Input
                               name="firstnameinput"
-                              placeholder="Enter FirstName"
+                              placeholder={t("Enter FirstName")}
                               type="text"
                               className="form-control"
                               id="firstnameinput"
@@ -98,10 +100,10 @@ const UserForm = () => {
                         </Col>
                         <Col md={6}>
                           <FormGroup className="mb-3">
-                            <Label htmlFor="lastnameinput">Last Name</Label>
+                            <Label htmlFor="lastnameinput">{t("Last Name")}</Label>
                             <Input
                               name="lastnameinput"
-                              placeholder="Enter Lastname"
+                              placeholder={t("Enter Lastname")}
                               type="text"
                               className="form-control"
                               id="lastnameinput"
@@ -128,7 +130,7 @@ const UserForm = () => {
                         <Col md={6}>
                         <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="emailadress">Email Address</Label>
+                <Label htmlFor="emailadress">{t('Email Address')}</Label>
                 <Input
                   type="email"
                   className="form-control"
@@ -150,10 +152,10 @@ const UserForm = () => {
                    
                         <Col md={6}>
                           <FormGroup className="mb-3">
-                            <Label htmlFor="validationCustom03">Password</Label>
+                            <Label htmlFor="validationCustom03">{t('Password')}</Label>
                             <Input
                               name="city"
-                              placeholder="Enter Password"
+                              placeholder={t("Enter Password")}
                               type="text"
                               className="form-control"
                               onChange={validation.handleChange}
@@ -176,11 +178,11 @@ const UserForm = () => {
                         <Col md={6}>
             <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="phonenumberInput">Phone Number<span className="text-danger">*</span></Label>
+                <Label htmlFor="phonenumberInput">{t('Phone Number')}<span className="text-danger">*</span></Label>
                 <Input
                   type="tel"
                   className="form-control"
-                  placeholder="Enter phone number"
+                  placeholder={t("Enter phone number")}
                   id="phonenumberInput"
                   name="phonenumber"
                   onChange={validation.handleChange}
@@ -196,7 +198,7 @@ const UserForm = () => {
           </Col>
 
           <Col lg={6}>
-            <Label htmlFor="validationtenantid">Tenant ID <span className="text-danger">*</span></Label>
+            <Label htmlFor="validationtenantid">{t('Tenant ID')}<span className="text-danger">*</span></Label>
             <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
                     id="validationtenantid"
                     name="tenantid"
@@ -206,7 +208,7 @@ const UserForm = () => {
                     aria-label="Default select example"
                     invalid={validation.touched.tenantid && validation.errors.tenantid ? true : false}  // Validation state
                   >
-            <option >Select your Status </option>
+            <option >{t('Select your Status ')}</option>
             <option defaultValue="1">IST</option>
             <option defaultValue="2">Tenant 1</option>
             <option defaultValue="3">Tenant 2</option>
@@ -220,7 +222,7 @@ const UserForm = () => {
                     
                      
           <Col lg={6}>
-            <Label htmlFor="validationtenantid">Organization ID<span className="text-danger">*</span></Label>
+            <Label htmlFor="validationtenantid">{t('Organization ID')}<span className="text-danger">*</span></Label>
             <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
                     id="validationtenantid"
                     name="tenantid"
@@ -241,7 +243,7 @@ const UserForm = () => {
       
           </Col>
           <Col lg={6}>
-            <Label htmlFor="validationtenantid">User Role<span className="text-danger">*</span></Label>
+            <Label htmlFor="validationtenantid">{t('User Role')}<span className="text-danger">*</span></Label>
             <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
                     id="validationtenantid"
                     name="tenantid"
@@ -265,7 +267,7 @@ const UserForm = () => {
                 
           <div className="d-flex justify-content-end mt-3">
                 <Button type="submit" color="success" className="rounded-pill me-2">
-                  Submit
+                  {t('Submit')}
                 </Button>
                 <Button
                   type="button"
@@ -273,7 +275,7 @@ const UserForm = () => {
                   className="rounded-pill"
                   onClick={() => history.back()}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </div>
                    

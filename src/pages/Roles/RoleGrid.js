@@ -100,7 +100,7 @@ const RoleGrid = ({ userPermissions }) => {
                       fontWeight: "bold",
                     }}
                   >
-                    Roles
+                   {t('Roles')}
                   </h4>
                 </CardHeader>
 
@@ -116,7 +116,7 @@ const RoleGrid = ({ userPermissions }) => {
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>{" "}
-                            Add
+                            {t('Add')}
                           </Button>
                         </div>
                       </Col>
@@ -126,7 +126,7 @@ const RoleGrid = ({ userPermissions }) => {
                             <input
                               type="text"
                               className="form-control search"
-                              placeholder="Search..."
+                              placeholder={t("Search...")}
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -194,10 +194,10 @@ const RoleGrid = ({ userPermissions }) => {
                                 {t("Created Date")}
                               </th>
                               <th className="sort" data-sort="status">
-                                Delivery Status
+                               {t('Delivery Status')}
                               </th>
                               <th className="sort" data-sort="action">
-                                Action
+                                {t('Action')}
                               </th>
                             </tr>
                           </thead>
@@ -236,7 +236,7 @@ const RoleGrid = ({ userPermissions }) => {
                                 </td>
                                 <td className="status">
                                   <span className="badge bg-success-subtle text-success text-uppercase">
-                                    Active
+                                    {t('Active')}
                                   </span>
                                 </td>
                                 <td>
@@ -294,10 +294,9 @@ const RoleGrid = ({ userPermissions }) => {
                               colors="primary:#121331,secondary:#08a88a"
                               style={{ width: "75px", height: "75px" }}
                             ></lord-icon>
-                            <h5 className="mt-2">Sorry! No Result Found</h5>
+                            <h5 className="mt-2">{t('Sorry! No Result Found')}</h5>
                             <p className="text-muted mb-0">
-                              We've searched more than 150+ Orders We did not
-                              find any orders for you search.
+                             {t(" We've searched more than 150+ Orders We did not find any orders for you search.")}
                             </p>
                           </div>
                         </div>

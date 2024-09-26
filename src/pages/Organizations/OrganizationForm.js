@@ -9,8 +9,10 @@ import { Col, Label, Input, Row, FormGroup, Form, FormFeedback, Button,   Card,
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import "cleave.js/dist/addons/cleave-phone.in";
+import { useTranslation } from 'react-i18next';
 
 const customStyles = (hasError) => ({
+ 
   control: (provided, state) => ({
     ...provided,
     borderColor: hasError ? 'red' : provided.borderColor, // Change border color to red if there's an error
@@ -33,6 +35,7 @@ const SingleOptions = [
 
 
 const OrganizationForm = () => {
+  const {t}=useTranslation()
   const [selectedMulti, setselectedMulti] = useState(null);
   const validation = useFormik({
     enableReinitialize: true,
@@ -50,17 +53,17 @@ const OrganizationForm = () => {
       categoryIDs: [],  // Add initial value for category dropdown
     },
     validationSchema: Yup.object({
-      tenantid: Yup.string().required('Please select a Tenant ID'), 
-      organizationname: Yup.string().required('Please enter organization name'),
-      description: Yup.string().required('Please enter a description'),
-      establishedDate: Yup.string().required('Please enter the established date'),
-      Emailaddress: Yup.string().email('Invalid email format').required('Please enter an email address'),
-      phonenumber: Yup.string().required('Please enter a phone number'),
-      lattitudevalidation: Yup.string().required('Please enter latitude'),
-      Longittudevalidation: Yup.string().required('Please enter longitude'),
-      locationvalidation: Yup.string().required('Please enter location'),
-      address: Yup.string().required('Please enter your address'),
-      categoryIDs: Yup.array().min(1, 'Please select at least one category'),  // Validation rule for multi-select
+      tenantid: Yup.string().required(t('Please select a Tenant ID')), 
+      organizationname: Yup.string().required(t('Please enter organization name')),
+      description: Yup.string().required(t('Please enter a description')),
+      establishedDate: Yup.string().required(t('Please enter the established date')),
+      Emailaddress: Yup.string().email(t('Invalid email format')).required(t('Please enter an email address')),
+      phonenumber: Yup.string().required(t('Please enter a phone number')),
+      lattitudevalidation: Yup.string().required(t('Please enter latitude')),
+      Longittudevalidation: Yup.string().required(t('Please enter longitude')),
+      locationvalidation: Yup.string().required(t('Please enter location')),
+      address: Yup.string().required(t('Please enter your address')),
+      categoryIDs: Yup.array().min(1, t('Please select at least one category')),  // Validation rule for multi-select
     }),
     onSubmit: (values) => {
       console.log('Form Submitted:', values);
@@ -90,7 +93,7 @@ const OrganizationForm = () => {
                       fontWeight: "bold",
                     }}
                   >
-                  Add Organization
+                 {t('Add Organization')}
                   </h4>
                 </CardHeader>
 
@@ -112,7 +115,7 @@ const OrganizationForm = () => {
       >
         <Row>
           <Col lg={6}>
-            <Label htmlFor="validationtenantid">Tenant ID <span className="text-danger">*</span></Label>
+            <Label htmlFor="validationtenantid">{t('Tenant ID')}<span className="text-danger">*</span></Label>
             <select          className={`form-select  ${validation.touched.tenantid && validation.errors.tenantid ? 'is-invalid' : ''}`}  // Add red border class if error
                     id="validationtenantid"
                     name="tenantid"
@@ -122,7 +125,7 @@ const OrganizationForm = () => {
                     aria-label="Default select example"
                     invalid={validation.touched.tenantid && validation.errors.tenantid ? true : false}  // Validation state
                   >
-            <option >Select your Status </option>
+            <option >{t('Select your Status')} </option>
             <option defaultValue="1">Declined Payment</option>
             <option defaultValue="2">Delivery Error</option>
             <option defaultValue="3">Wrong Amount</option>
@@ -136,11 +139,11 @@ const OrganizationForm = () => {
           <Col md={6}>
             <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="validationorganizationname">Organization Name<span className="text-danger">*</span></Label>
+                <Label htmlFor="validationorganizationname">{t('Organization Name')}<span className="text-danger">*</span></Label>
                 <Input
                   type="text"
                   className="form-control"
-                  placeholder="Enter Organization Name"
+                  placeholder={t("Enter Organization Name")}
                   id="validationorganizationname"
                   name="organizationname"
                   onChange={validation.handleChange}
@@ -160,7 +163,7 @@ const OrganizationForm = () => {
           <Col md={12}>
             <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="Textarea">Description<span className="text-danger">*</span></Label>
+                <Label htmlFor="Textarea">{t('Description')}<span className="text-danger">*</span></Label>
                 <Input
                   type="textarea"
                   className="form-control"
@@ -183,7 +186,7 @@ const OrganizationForm = () => {
           <Col md={6}>
             <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="establishdate">Established Date<span className="text-danger">*</span></Label>
+                <Label htmlFor="establishdate">{t('Established Date')}<span className="text-danger">*</span></Label>
                 <Input
                   type="date"
                   name="establishedDate"
@@ -225,7 +228,7 @@ const OrganizationForm = () => {
             </FormGroup>
           </Col> */}
           <Col md={6}>
-    <label htmlFor="validationDefaultUsername" className="form-label">Email Address<span className="text-danger">*</span></label>
+    <label htmlFor="validationDefaultUsername" className="form-label">{t('Email Address')}<span className="text-danger">*</span></label>
     <InputGroup>
         <span className="input-group-text" id="inputGroupPrepend2">@</span>
         <Input type="email" className="form-control"  id="emailadress" name="Emailaddress"
@@ -244,11 +247,11 @@ const OrganizationForm = () => {
           <Col md={6}>
             <FormGroup>
               <div className="mb-3">
-                <Label htmlFor="phonenumberInput">Phone Number<span className="text-danger">*</span></Label>
+                <Label htmlFor="phonenumberInput">{t('Phone Number')}<span className="text-danger">*</span></Label>
                 <Input
                   type="tel"
                   className="form-control"
-                  placeholder="Enter phone number"
+                  placeholder={t("Enter phone number")}
                   id="phonenumberInput"
                   name="phonenumber"
                   onChange={validation.handleChange}
@@ -280,7 +283,7 @@ const OrganizationForm = () => {
                         </Col> */}
                         <Col lg={6} md={6}>
                                                     <div className="mb-3">
-                                                        <Label htmlFor="choices-multiple-default" className="form-label ">categoryIDs<span className="text-danger">*</span></Label>                                                        
+                                                        <Label htmlFor="choices-multiple-default" className="form-label ">{t('categoryIDs')}<span className="text-danger">*</span></Label>                                                        
                                                         <Select
                                                              value={validation.values.categoryIDs}
                                                             isMulti={true}                                                            
@@ -299,11 +302,11 @@ const OrganizationForm = () => {
           <Col md={12}>
             <FormGroup>
               <div className="mb-3">
-                <Label className="form-label" htmlFor='addressinput'>Address<span className="text-danger">*</span></Label>
+                <Label className="form-label" htmlFor='addressinput'>{t('Address')}<span className="text-danger">*</span></Label>
                 <Input
                   type="tel"
                   className="form-control"
-                  placeholder="Enter Your Address"
+                  placeholder={t("Enter Your Address")}
                   id="addressinput"
                   name="address"
                   onChange={validation.handleChange}
@@ -349,15 +352,14 @@ const OrganizationForm = () => {
                                                 </Col> */}
         </Row>
         <Col md={4}>
-          <Label>Location:</Label>
+          <Label>{t('Location:')}</Label>
           </Col>
         <Row>
           <Col md={4}>
             <div className="mb-3">
-              <Label for="lattitudeInput" className="form-label">Latitude<span className="text-danger">*</span>
+              <Label for="lattitudeInput" className="form-label">{t('Latitude')}<span className="text-danger">*</span>
               </Label>
-              <Input type="text" className="form-control" placeholder="Enter your Latitude 
- " id="lattitudeInput"
+              <Input type="text" className="form-control" placeholder={t("Enter your Latitude")} id="lattitudeInput"
 
                 onChange={validation.handleChange}
                 name='lattitudevalidation'
@@ -379,9 +381,9 @@ const OrganizationForm = () => {
           </Col>
           <Col md={4}>
             <div className="mb-3">
-              <Label className="form-label" htmlFor='longittudeInput'>Longittude<span className="text-danger">*</span>
+              <Label className="form-label" htmlFor='longittudeInput'>{t('Longitude')}<span className="text-danger">*</span>
               </Label>
-              <Input type="text" className="form-control" placeholder="Enter your Longittude" id="longittudeInput" onChange={validation.handleChange}
+              <Input type="text" className="form-control" placeholder={t("Enter your Longitude")} id="longittudeInput" onChange={validation.handleChange}
                 name='Longittudevalidation'
                 onBlur={validation.handleBlur}
                 value={validation.values.Longittudevalidation || ""}
@@ -401,9 +403,9 @@ const OrganizationForm = () => {
           </Col>
           <Col md={4}>
             <div className="mb-3">
-              <Label htmlFor="locationaddressinput" className="form-label">Location Address<span className="text-danger">*</span>
+              <Label htmlFor="locationaddressinput" className="form-label">{t('Location Address')}<span className="text-danger">*</span>
               </Label>
-              <Input type="text" className="form-control" placeholder="Enter Location Address" id="locationaddressinput"
+              <Input type="text" className="form-control" placeholder={t("Enter Location Address")} id="locationaddressinput"
                 onChange={validation.handleChange}
                 onBlur={validation.handleBlur}
                 name='locationvalidation'
@@ -426,7 +428,7 @@ const OrganizationForm = () => {
 
         <div className="d-flex justify-content-end">
                 <Button type="submit" color="success" className="rounded-pill me-2">
-                  Submit
+                  {t('Submit')}
                 </Button>
                 <Button
                   type="button"
@@ -434,7 +436,7 @@ const OrganizationForm = () => {
                   className="rounded-pill"
                   onClick={() => history.back()}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </div>
      

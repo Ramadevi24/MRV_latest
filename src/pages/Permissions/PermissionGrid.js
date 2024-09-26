@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState, useMemo } from "react";
-import { FaPencilAlt, FaTrashAlt, FaEye } from "react-icons/fa";
-import { toast } from 'react-toastify';
+import React, { useContext, useEffect, useState } from "react";
+import { FaPencilAlt, FaCheck } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../Components/Common/PaginationNumber.js";
-import { formatDate } from "../../utils/formateDate.js";
 import { PermissionContext } from "../../contexts/PermissionContext";
+import { FaXmark } from "react-icons/fa6";
 import {
   Spinner,
   Button,
@@ -14,22 +13,22 @@ import {
   Col,
   Container,
   Row,
+  Input,
 } from "reactstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const PermissionGrid = ({ userPermissions }) => {
   document.title = "MRV_PROJECT | PermissionGrid";
   const { t } = useTranslation();
-  const { permissions,
+  const {
+    permissions,
     loading,
-    editingRowId,
-    editingPermission,
-    setEditingPermission,
     fetchAllPermissions,
-    handleEdit,
-    handleSave,
-    handleCancel } =
-    useContext(PermissionContext);
+    savePermission, // This should be your save method in the context
+  } = useContext(PermissionContext);
+  
+  const [editingRowId, setEditingRowId] = useState(null);
+  const [editingPermission, setEditingPermission] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: "name",
@@ -41,6 +40,22 @@ const PermissionGrid = ({ userPermissions }) => {
   useEffect(() => {
     fetchAllPermissions(userPermissions?.tenantID);
   }, [userPermissions]);
+
+  const handleEdit = (permission) => {
+    setEditingRowId(permission.permissionID);
+    setEditingPermission({ ...permission });
+  };
+
+  const handleCancel = () => {
+    setEditingRowId(null);
+    setEditingPermission({});
+  };
+
+  const handleSave = () => {
+    savePermission(editingPermission); // Call the save function with the updated data
+    setEditingRowId(null);
+    setEditingPermission({});
+  };
 
   const handleInputChange = (e) => {
     setEditingPermission({
@@ -68,7 +83,9 @@ const PermissionGrid = ({ userPermissions }) => {
   });
 
   const filteredPermissions = sortedPermissions.filter((permission) =>
-    permission.permissionDisplayName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    permission.permissionDisplayName
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase()) ||
     permission.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
     permission.permissionGroup.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -98,7 +115,7 @@ const PermissionGrid = ({ userPermissions }) => {
                       fontWeight: "bold",
                     }}
                   >
-                    Permissions
+                    {t('Permissions')}
                   </h4>
                 </CardHeader>
 
@@ -111,7 +128,7 @@ const PermissionGrid = ({ userPermissions }) => {
                             <input
                               type="text"
                               className="form-control search"
-                              placeholder="Search..."
+                              placeholder={t("Search...")}
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -148,11 +165,12 @@ const PermissionGrid = ({ userPermissions }) => {
                                 </div>
                               </th>
                               <th
-                                onClick={() => handleSort("permissionDisplayName")}
+                                onClick={() =>
+                                  handleSort("permissionDisplayName")
+                                }
                                 className="sort"
                                 data-sort="permissionDisplayName"
                               >
-                                {" "}
                                 {t("Permission DisplayName")}
                               </th>
                               <th
@@ -160,7 +178,6 @@ const PermissionGrid = ({ userPermissions }) => {
                                 className="sort"
                                 data-sort="description"
                               >
-                                {" "}
                                 {t("Description")}
                               </th>
                               <th
@@ -168,19 +185,18 @@ const PermissionGrid = ({ userPermissions }) => {
                                 className="sort"
                                 data-sort="permissionGroup"
                               >
-                                {" "}
                                 {t("Permission Group")}
                               </th>
                               <th className="sort" data-sort="status">
-                                Delivery Status
+                                {t("Delivery Status")}
                               </th>
                               <th className="sort" data-sort="action">
-                                Action
+                                {t("Action")}
                               </th>
                             </tr>
                           </thead>
                           <tbody className="list form-check-all">
-                            {currentItems.map((permission ) => (
+                            {currentItems.map((permission) => (
                               <tr key={permission.permissionID}>
                                 <th scope="row">
                                   <div className="form-check">
@@ -192,43 +208,67 @@ const PermissionGrid = ({ userPermissions }) => {
                                     />
                                   </div>
                                 </th>
-                                <td className="id" style={{ display: "none" }}>
-                                  <Link
-                                    to="#"
-                                    className="fw-medium link-primary"
-                                  >
-                                    #VZ2101
-                                  </Link>
-                                </td>
                                 <td className="email">
-                                  {permission.permissionDisplayName}
+                                  {editingRowId === permission.permissionID ? (
+                                    <Input
+                                      type="text"
+                                      name="permissionDisplayName"
+                                      value={editingPermission.permissionDisplayName}
+                                      onChange={handleInputChange}
+                                    />
+                                  ) : (
+                                    permission.permissionDisplayName
+                                  )}
                                 </td>
                                 <td className="description">
-                                {permission.description}
+                                  {editingRowId === permission.permissionID ? (
+                                    <Input
+                                      type="text"
+                                      name="description"
+                                      value={editingPermission.description}
+                                      onChange={handleInputChange}
+                                    />
+                                  ) : (
+                                    permission.description
+                                  )}
                                 </td>
                                 <td className="date">
                                   {permission.permissionGroup}
                                 </td>
                                 <td className="status">
                                   <span className="badge bg-success-subtle text-success text-uppercase">
-                                    Active
+                                    {t("Active")}
                                   </span>
                                 </td>
                                 <td>
                                   <div className="d-flex gap-2">
-                                    <div className="edit">
-                                      <button
+                                    {editingRowId === permission.permissionID ? (
+                                      <>
+                                        <Button
+                                          color="success"
+                                          size="sm"
+                                          onClick={handleSave}
+                                        >
+                                         <FaCheck color="white"/>
+                                        </Button>
+                                        
+                                        <Button
+                                          color="danger"
+                                          size="sm"
+                                          onClick={handleCancel}
+                                        >
+                                        <FaXmark color="white" />
+                                        </Button>
+                                        
+                                      </>
+                                    ) : (
+                                      <Button
                                         className="btn btn-sm btn-info edit-item-btn"
-                                       
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#showModal"
+                                        onClick={() => handleEdit(permission)}
                                       >
-                                        {" "}
                                         <FaPencilAlt color="white" />
-                                      </button>
-                                    </div>
-                            
-                    
+                                      </Button>
+                                    )}
                                   </div>
                                 </td>
                               </tr>
@@ -243,10 +283,13 @@ const PermissionGrid = ({ userPermissions }) => {
                               colors="primary:#121331,secondary:#08a88a"
                               style={{ width: "75px", height: "75px" }}
                             ></lord-icon>
-                            <h5 className="mt-2">Sorry! No Result Found</h5>
+                            <h5 className="mt-2">
+                              {t("Sorry! No Result Found")}
+                            </h5>
                             <p className="text-muted mb-0">
-                              We've searched more than 150+ Orders We did not
-                              find any orders for you search.
+                              {t(
+                                "We've searched more than 150+ Orders We did not find any orders for you search."
+                              )}
                             </p>
                           </div>
                         </div>

@@ -100,7 +100,7 @@ const OrganizationGrid = ({ userPermissions }) => {
                       fontWeight: "bold",
                     }}
                   >
-                    Organizations
+                    {t('Organizations')}
                   </h4>
                 </CardHeader>
 
@@ -116,7 +116,7 @@ const OrganizationGrid = ({ userPermissions }) => {
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>{" "}
-                            Add
+                           {t('Add')}
                           </Button>
                         </div>
                       </Col>
@@ -126,7 +126,7 @@ const OrganizationGrid = ({ userPermissions }) => {
                             <input
                               type="text"
                               className="form-control search"
-                              placeholder="Search..."
+                              placeholder={t("Search...")}
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
                             />
@@ -186,10 +186,10 @@ const OrganizationGrid = ({ userPermissions }) => {
                                 {t("Established date")}
                               </th>
                               <th className="sort" data-sort="status">
-                                Delivery Status
+                              {t('Delivery Status')}
                               </th>
                               <th className="sort" data-sort="action">
-                                Action
+                                {t('Action')}
                               </th>
                             </tr>
                           </thead>
@@ -225,7 +225,7 @@ const OrganizationGrid = ({ userPermissions }) => {
                                 </td>
                                 <td className="status">
                                   <span className="badge bg-success-subtle text-success text-uppercase">
-                                    Active
+                                    {t('Active')}
                                   </span>
                                 </td>
                                 <td>
