@@ -77,7 +77,7 @@ const EditTenant = () => {
                       formik.handleSubmit();
                     }} style={{marginTop:'3.5rem'}}>
       <Row>
-        <Col md={{ size: 10, offset: 1 }}>
+        <Col>
         <FormGroup>
             <Label htmlFor="tenantName" className="form-label">{t('Tenant Name')}</Label>
             <Input type="text"  id="name" name="name"

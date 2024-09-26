@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Label, Row, Col, Input, Container, Button, CardBody, Card, CardHeader, FormGroup, FormFeedback, Table,Form } from 'reactstrap';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import '../../App.css';
+import { TenantContext } from '../../contexts/TenantContext';
+import {PermissionContext} from '../../contexts/PermissionContext';
 
 const RoleForm = () => {
   const { t } = useTranslation();
-
+  const { fetchAllTenants, tenants } = useContext(TenantContext);
+  const { fetchAllPermissions } = useContext(PermissionContext);
+  const userPermissions = JSON.parse(localStorage.getItem("permissions"));
   const [permissions, setPermissions] = useState([
     { name: "CATALOGUE", read: true, write: true, edit: false },
     { name: "ORDERS", read: true, write: true, edit: false },
@@ -21,16 +25,18 @@ const RoleForm = () => {
     enableReinitialize: true,
 
     initialValues: {
-      rolenameinput: "",
-      Descriptioninput: "",
-      tenantinput:""
+      roleName: "",
+      description: "",
+      permissionIds: [],
+      tenantID:""
 
 
     },
     validationSchema: Yup.object({
-      rolenameinput: Yup.string().required("Please Enter Role Name"),
-      Descriptioninput: Yup.string().required("Please Enter Role Description"),
-      tenantinput: Yup.string().required("Please Enter Tenant Description"),
+      roleName: Yup.string().required("Please Enter Role Name"),
+      description: Yup.string().required("Please Enter Role Description"),
+      tenantinput: Yup.string().required("Please Enter Tenant"),
+      permissionIds: Yup.array().required("Please Select Permissions"),
 
     }),
     onSubmit: (values) => {
@@ -38,12 +44,26 @@ const RoleForm = () => {
     },
   });
 
-  const togglePermission = (index, type) => {
-    const updatedPermissions = permissions.map((perm, idx) =>
-      idx === index ? { ...perm, [type]: !perm[type] } : perm
-    );
-    setPermissions(updatedPermissions);
-  };
+  useEffect(() => {
+    fetchAllTenants();
+    fetchAllPermissions();
+  }, []);
+
+  // const togglePermission = (index, type) => {
+  //   const updatedPermissions = permissions.map((perm, idx) =>
+  //     idx === index ? { ...perm, [type]: !perm[type] } : perm
+  //   );
+  //   setPermissions(updatedPermissions);
+  // };
+
+  const groupedPermissions = permissions?.reduce((grouped, permission) => {
+    const group = permission.permissionGroup;
+    if (!grouped[group]) {
+      grouped[group] = [];
+    }
+    grouped[group].push(permission);
+    return grouped;
+  }, {});
 
   return (
     <div className="page-content">
@@ -74,27 +94,27 @@ const RoleForm = () => {
                 <Row  style={{marginTop:'3.5rem'}}>
                   <Col md={12}>
                     <FormGroup className="mb-3">
-                      <Label htmlFor="firstnameinput">Role Name</Label>
+                      <Label htmlFor="roleName">Role Name</Label>
                       <Input
-                        name="rolenameinput"
+                        name="roleName"
                         placeholder="Enter Role Name"
                         type="text"
                         className="form-control"
-                        id="rolenameinput"
+                        id="roleName"
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
-                        value={validation.values.rolenameinput || ""}
+                        value={validation.values.roleName || ""}
                         invalid={
-                          validation.touched.rolenameinput &&
-                            validation.errors.rolenameinput
+                          validation.touched.roleName &&
+                            validation.errors.roleName
                             ? true
                             : false
                         }
                       />
-                      {validation.touched.rolenameinput &&
-                        validation.errors.rolenameinput ? (
+                      {validation.touched.roleName &&
+                        validation.errors.roleName ? (
                         <FormFeedback type="invalid">
-                          {validation.errors.rolenameinput}
+                          {validation.errors.roleName}
                         </FormFeedback>
                       ) : null}
                     </FormGroup>
@@ -103,25 +123,25 @@ const RoleForm = () => {
                     <FormGroup className="mb-3">
                       <Label htmlFor="firstnameinput">Role Description</Label>
                       <Input
-                        name="Descriptioninput"
+                        name="description"
                         placeholder="Enter Role Discription"
                         type="text"
                         className="form-control"
-                        id="Descriptioninput"
+                        id="description"
                         onChange={validation.handleChange}
                         onBlur={validation.handleBlur}
-                        value={validation.values.Descriptioninput || ""}
+                        value={validation.values.description || ""}
                         invalid={
-                          validation.touched.Descriptioninput &&
-                            validation.errors.Descriptioninput
+                          validation.touched.description &&
+                            validation.errors.description
                             ? true
                             : false
                         }
                       />
-                      {validation.touched.Descriptioninput &&
-                        validation.errors.Descriptioninput ? (
+                      {validation.touched.description &&
+                        validation.errors.description ? (
                         <FormFeedback type="invalid">
-                          {validation.errors.Descriptioninput}
+                          {validation.errors.description}
                         </FormFeedback>
                       ) : null}
                     </FormGroup>
@@ -155,38 +175,42 @@ const RoleForm = () => {
                       ) : null}
                     </FormGroup>
                   </Col> */}
+                   {userPermissions && userPermissions.tenantID === null && (
                   <Col md={12}>
                   <Label>Tenant ID</Label>
                       <select  aria-label="Default select example" className={`form-select mb-2 ${
-                            validation.touched.tenantinput &&
-                            validation.errors.tenantinput
+                            validation.touched.tenantID &&
+                            validation.errors.tenantID
                               ? "is-invalid"
                               : ""
                           }`} // Add red border class if error
-                          id="tenantinput"
-                          name="tenantinput"
-                          value={validation.values.tenantinput} // Formik-controlled value
+                          id="tenantID"
+                          name="tenantID"
+                          value={validation.values.tenantID} // Formik-controlled value
                           onChange={validation.handleChange} // Formik change handler
                           onBlur={validation.handleBlur} // Formik blur handler
                      
                           invalid={
-                            validation.touched.tenantinput &&
-                            validation.errors.tenantinput
+                            validation.touched.tenantID &&
+                            validation.errors.tenantID
                               ? true
                               : false
                           }>
-        <option >Select your Status </option>
-        <option defaultValue="1">Declined Payment</option>
-        <option defaultValue="2">Delivery Error</option>
-        <option defaultValue="3">Wrong Amount</option>
+       <option value="">{t("selectTenant")}</option>
+       {tenants.map((tenant) => (
+                    <option key={tenant.tenantID} value={tenant.tenantID}>
+                      {tenant.name}
+                    </option>
+                  ))}
     </select>
-    {validation.touched.tenantinput &&
-                        validation.errors.tenantinput ? (
+    {validation.touched.tenantID &&
+                        validation.errors.tenantID ? (
                           <FormFeedback className="d-block">
-                            {validation.errors.tenantinput}
+                            {validation.errors.tenantID}
                           </FormFeedback>
                         ) : null}
     </Col>
+                   )}
  <Col>
               
       <Table style={{marginTop:'30px'}}>
@@ -271,7 +295,7 @@ const RoleForm = () => {
       </Table>
 
     </Col>
-    <div className="d-flex justify-content-end">
+    <div className="d-flex mt-3">
                       <Button
                         type="submit"
                         color="success"
