@@ -19,6 +19,7 @@ import {
   Row,
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
+import DeleteModal from "../../Components/Common/DeleteModal";
 
 const TenantsGrid = () => {
 
@@ -34,7 +35,7 @@ const {t}=useTranslation();
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [tenantsPerPage, setTenantsPerPage] = useState(10);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
   const [tenantToDelete, setTenantToDelete] = useState(null);
 
   console.log(tenants, "tenants");
@@ -45,13 +46,15 @@ const {t}=useTranslation();
 
   const handleDelete = (id) => {
     setTenantToDelete(id);
-    setShowDeleteModal(true);
+    setDeleteModal(true);
   };
 
   const confirmDelete = async () => {
+    if (tenantToDelete) {
     await removeTenant(tenantToDelete);
-    setShowDeleteModal(false);
+    setDeleteModal(false);
     setTenantToDelete(null);
+    }
   };
 
   const handleSort = (key) => {
@@ -257,6 +260,11 @@ const {t}=useTranslation();
             </Col>
           </Row>
         </Container>
+        <DeleteModal
+        show={deleteModal}
+        onDeleteClick={confirmDelete}
+        onCloseClick={() => setDeleteModal(false)}
+      />
       </div>
     </React.Fragment>
   );
