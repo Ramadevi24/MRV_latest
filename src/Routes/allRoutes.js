@@ -43,13 +43,14 @@ import UserForm from "../pages/Users/UserForm";
 import EditUser from "../pages/Users/EditUser";
 import ViewUser from "../pages/Users/ViewUser";
 import PermissionGrid from "../pages/Permissions/PermissionGrid";
+import Dashboard from "../pages/Dashboard";
 
 const authProtectedRoutes = [
   { path: "/profile", component: <UserProfile /> },
   {
-    path: "/",
+    path: "/dashboard",
     exact: true,
-    component: <Navigate to="/dashboard" />,
+    component: <Dashboard />,
   },
   {path:'/tenants', component: <TenantsGrid /> },
   {path:'/create-tenant', component: <TenantForm />},
