@@ -17,7 +17,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import DeleteModal from "../../Components/Common/DeleteModal";
 
-const OrganizationGrid = ({ userPermissions }) => {
+const OrganizationGrid = () => {
   document.title = "MRV_PROJECT | OrganizationGrid";
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -32,10 +32,12 @@ const OrganizationGrid = ({ userPermissions }) => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [deleteOrgId, setDeleteOrgId] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
+  const userPermissions =
+  JSON.parse(localStorage.getItem("UserPermissions")) || [];
 
   useEffect(() => {
     fetchAllOrganizations(userPermissions?.tenantID);
-  }, [userPermissions]);
+  }, []);
 
   const handleDelete = (id) => {
     setDeleteOrgId(id); // Set the organization ID to delete

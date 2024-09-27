@@ -8,9 +8,29 @@ import navdata from "../LayoutMenuData";
 //i18n
 import { withTranslation } from "react-i18next";
 
+// Permission utilities
+import {
+  hasPermissionForEntity,
+  usersPermissions,
+  tenantsPermissions,
+  organizationsPermissions,
+  rolesPermissions,
+  permissionsPermissions,
+} from "../../utils/useHasPermission";
+
 const HorizontalLayout = (props) => {
   const [isMoreMenu, setIsMoreMenu] = useState(false);
   const navData = navdata().props.children;
+
+  // Get user permissions from local storage
+  let userPermissions =
+    JSON.parse(localStorage.getItem("UserPermissions")) || [];
+  userPermissions =
+    userPermissions.permissions &&
+    userPermissions.permissions?.$values.map(
+      (permission) => permission.permissionName
+    );
+
   let menuItems = [];
   let splitMenuItems = [];
   let menuSplitContainer = 6;
@@ -124,7 +144,7 @@ const HorizontalLayout = (props) => {
           <React.Fragment key={key}>
             {/* Main Header */}
             {!item["isHeader"] ? (
-              item.subItems ? (
+              item.subItems && item.label === "Administration" ? (
                 <li className="nav-item">
                   <Link
                     onClick={item.click}
@@ -144,160 +164,56 @@ const HorizontalLayout = (props) => {
                     isOpen={item.stateVariables}
                     id="sidebarApps"
                   >
-                    {/* subItms  */}
-                    {item.subItems.length > 13 ? (
-                      <React.Fragment>
-                        <Row>
-                          {item.subItems &&
-                            (item.subItems || []).map((subItem, key) => (
-                              <React.Fragment key={key}>
-                                {key % 2 === 0 ? (
-                                  <Col lg={4}>
-                                    <ul className="nav nav-sm flex-column">
-                                      <li className="nav-item">
-                                        <Link
-                                          to={item.subItems[key].link}
-                                          className="nav-link"
-                                        >
-                                          {item.subItems[key].label}
-                                        </Link>
-                                      </li>
-                                    </ul>
-                                  </Col>
-                                ) : (
-                                  <Col lg={4}>
-                                    <ul className="nav nav-sm flex-column">
-                                      <li className="nav-item">
-                                        <Link
-                                          to={item.subItems[key].link}
-                                          className="nav-link"
-                                        >
-                                          {item.subItems[key].label}
-                                        </Link>
-                                      </li>
-                                    </ul>
-                                  </Col>
-                                )}
-                              </React.Fragment>
-                            ))}
-                        </Row>
-                      </React.Fragment>
-                    ) : (
-                      <ul className="nav nav-sm flex-column test">
-                        {item.subItems &&
-                          (item.subItems || []).map((subItem, key) => (
-                            <React.Fragment key={key}>
-                              {!subItem.isChildItem ? (
-                                <li className="nav-item">
-                                  <Link
-                                    to={subItem.link ? subItem.link : "/#"}
-                                    className="nav-link"
-                                  >
-                                    {props.t(subItem.label)}
-                                  </Link>
-                                </li>
-                              ) : (
-                                <li className="nav-item">
-                                  <Link
-                                    onClick={subItem.click}
-                                    className="nav-link"
-                                    to="/#"
-                                    data-bs-toggle="collapse"
-                                  >
-                                    {" "}
-                                    {props.t(subItem.label)}
-                                  </Link>
-                                  <Collapse
-                                    className="menu-dropdown"
-                                    isOpen={subItem.stateVariables}
-                                    id="sidebarEcommerce"
-                                  >
-                                    <ul className="nav nav-sm flex-column">
-                                      {/* child subItms  */}
-                                      {subItem.childItems &&
-                                        (subItem.childItems || []).map(
-                                          (subChildItem, key) => (
-                                            <React.Fragment key={key}>
-                                              {!subChildItem.isChildItem ? (
-                                                <li className="nav-item">
-                                                  <Link
-                                                    to={
-                                                      subChildItem.link
-                                                        ? subChildItem.link
-                                                        : "/#"
-                                                    }
-                                                    className="nav-link"
-                                                  >
-                                                    {props.t(
-                                                      subChildItem.label
-                                                    )}
-                                                  </Link>
-                                                </li>
-                                              ) : (
-                                                <li className="nav-item">
-                                                  <Link
-                                                    onClick={subChildItem.click}
-                                                    className="nav-link"
-                                                    to="/#"
-                                                    data-bs-toggle="collapse"
-                                                  >
-                                                    {" "}
-                                                    {props.t(
-                                                      subChildItem.label
-                                                    )}
-                                                  </Link>
-                                                  <Collapse
-                                                    className="menu-dropdown"
-                                                    isOpen={
-                                                      subChildItem.stateVariables
-                                                    }
-                                                    id="sidebarEcommerce"
-                                                  >
-                                                    <ul className="nav nav-sm flex-column">
-                                                      {/* child subItms  */}
-                                                      {subChildItem.childItems &&
-                                                        (
-                                                          subChildItem.childItems ||
-                                                          []
-                                                        ).map(
-                                                          (
-                                                            subSubChildItem,
-                                                            key
-                                                          ) => (
-                                                            <li
-                                                              className="nav-item apex"
-                                                              key={key}
-                                                            >
-                                                              <Link
-                                                                to={
-                                                                  subSubChildItem.link
-                                                                    ? subSubChildItem.link
-                                                                    : "/#"
-                                                                }
-                                                                className="nav-link"
-                                                              >
-                                                                {props.t(
-                                                                  subSubChildItem.label
-                                                                )}
-                                                              </Link>
-                                                            </li>
-                                                          )
-                                                        )}
-                                                    </ul>
-                                                  </Collapse>
-                                                </li>
-                                              )}
-                                            </React.Fragment>
-                                          )
-                                        )}
-                                    </ul>
-                                  </Collapse>
-                                </li>
-                              )}
-                            </React.Fragment>
-                          ))}
-                      </ul>
-                    )}
+                    {/* Sub-items for Administration */}
+                    <ul className="nav nav-sm flex-column test">
+                      {[
+                        hasPermissionForEntity(
+                          userPermissions,
+                          tenantsPermissions
+                        ) && {
+                          id: "tenants",
+                          label: "Tenants",
+                          link: "/tenants",
+                        },
+                        hasPermissionForEntity(
+                          userPermissions,
+                          organizationsPermissions
+                        ) && {
+                          id: "organizations",
+                          label: "Organizations",
+                          link: "/organizations",
+                        },
+                        hasPermissionForEntity(userPermissions, rolesPermissions) && {
+                          id: "roles",
+                          label: "Roles",
+                          link: "/roles",
+                        },
+                        hasPermissionForEntity(userPermissions, usersPermissions) && {
+                          id: "users",
+                          label: "Users",
+                          link: "/users",
+                        },
+                        hasPermissionForEntity(
+                          userPermissions,
+                          permissionsPermissions
+                        ) && {
+                          id: "permissions",
+                          label: "Permissions",
+                          link: "/permissions",
+                        },
+                      ]
+                        .filter(Boolean) // Remove any invalid entries
+                        .map((subItem, subKey) => (
+                          <li className="nav-item" key={subKey}>
+                            <Link
+                              to={subItem.link ? subItem.link : "/#"}
+                              className="nav-link"
+                            >
+                              {props.t(subItem.label)}
+                            </Link>
+                          </li>
+                        ))}
+                    </ul>
                   </Collapse>
                 </li>
               ) : (
@@ -319,7 +235,6 @@ const HorizontalLayout = (props) => {
           </React.Fragment>
         );
       })}
-      {/* menu Items */}
     </React.Fragment>
   );
 };

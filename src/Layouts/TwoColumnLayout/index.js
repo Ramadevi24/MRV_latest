@@ -5,18 +5,37 @@ import PropTypes from "prop-types";
 import { Collapse, Container } from 'reactstrap';
 import logoSm from "../../assets/images/logo-sm.png";
 
-//i18n
+// i18n
 import { withTranslation } from "react-i18next";
 
 // Import Data
 import navdata from "../LayoutMenuData";
 
-//SimpleBar
+// SimpleBar
 import SimpleBar from "simplebar-react";
 import VerticalLayout from '../VerticalLayouts';
 
+// Permission utilities
+import {
+  hasPermissionForEntity,
+  usersPermissions,
+  tenantsPermissions,
+  organizationsPermissions,
+  rolesPermissions,
+  permissionsPermissions,
+} from "../../utils/useHasPermission";
+
 const TwoColumnLayout = (props) => {
     const navData = navdata().props.children;
+
+    // Get user permissions from local storage
+    let userPermissions =
+        JSON.parse(localStorage.getItem("UserPermissions")) || [];
+    userPermissions =
+        userPermissions.permissions &&
+        userPermissions.permissions?.$values.map(
+            (permission) => permission.permissionName
+        );
 
     const activateParentDropdown = useCallback((item) => {
         item.classList.add("active");
@@ -159,16 +178,14 @@ const TwoColumnLayout = (props) => {
                                                 </li>
 
                                             ) : (
-                                                <>
-                                                    <Link
-                                                        onClick={item.click}
-                                                        to={item.link ? item.link : "/#"}
-                                                        subitems={item.id}
-                                                        className="nav-icon"
-                                                        data-bs-toggle="collapse">
-                                                        <i className={item.icon}></i>
-                                                    </Link>
-                                                </>
+                                                <Link
+                                                    onClick={item.click}
+                                                    to={item.link ? item.link : "/#"}
+                                                    subitems={item.id}
+                                                    className="nav-icon"
+                                                    data-bs-toggle="collapse">
+                                                    <i className={item.icon}></i>
+                                                </Link>
                                             )
                                         )}
                                     </React.Fragment>
@@ -179,81 +196,92 @@ const TwoColumnLayout = (props) => {
                         <SimpleBar id="navbar-nav" className="navbar-nav">
                             {(navData || []).map((item, key) => (
                                 <React.Fragment key={key}>
-                                    {item.subItems ? (
+                                    {item.subItems && item.label === "Administration" ? (
                                         <li className="nav-item">
                                             <Collapse
                                                 className="menu-dropdown"
                                                 isOpen={item.stateVariables}
                                                 id={item.id}>
                                                 <ul className="nav nav-sm flex-column test">
-                                                    {/* subItms  */}
-                                                    {item.subItems && ((item.subItems || []).map((subItem, key) => (
-                                                        <React.Fragment key={key}>
-                                                            {!subItem.isChildItem ? (
-                                                                <li className="nav-item">
-                                                                    <Link
-                                                                        to={subItem.link ? subItem.link : "/#"}
-                                                                        className="nav-link"
-                                                                    >
-                                                                        {props.t(subItem.label)}
-                                                                        {subItem.badgeName ?
-                                                                            <span className={"badge badge-pill bg-" + subItem.badgeColor} data-key="t-new">{subItem.badgeName}</span>
-                                                                            : null}
-                                                                    </Link>
-                                                                </li>
-                                                            ) : (
-                                                                <li className="nav-item">
-                                                                    <Link
-                                                                        onClick={subItem.click}
-                                                                        className="nav-link"
-                                                                        to="/#"
-                                                                        data-bs-toggle="collapse"
-                                                                    > {props.t(subItem.label)}
-                                                                    </Link>
-                                                                    <Collapse className="menu-dropdown" isOpen={subItem.stateVariables} id={item.id}>
-                                                                        <ul className="nav nav-sm flex-column">
-                                                                            {/* child subItms  */}
-                                                                            {subItem.childItems && (
-                                                                                (subItem.childItems || []).map((childItem, key) => (
-                                                                                    <li className="nav-item" key={key}>
-                                                                                        <Link
-                                                                                            to={childItem.link ? childItem.link : "/#"}
-                                                                                            onClick={childItem.click}
-                                                                                            className="nav-link" >
-                                                                                            {props.t(childItem.label)}
-                                                                                        </Link>
-                                                                                        <Collapse className="menu-dropdown" isOpen={childItem.stateVariables} id={item.id}>
-                                                                                            <ul className="nav nav-sm flex-column">
-                                                                                                {/* child subChildItems  */}
-                                                                                                {childItem.isChildItem && (
-                                                                                                    (childItem.childItems || []).map((childItem, key) => (
-                                                                                                        <li className="nav-item" key={key} >
-                                                                                                            <Link
-                                                                                                                to={childItem.link ? childItem.link : "/#"}
-                                                                                                                className="nav-link">
-                                                                                                                {props.t(childItem.label)}
-                                                                                                            </Link>
-                                                                                                        </li>
-                                                                                                    ))
-                                                                                                )}
-                                                                                            </ul>
-                                                                                        </Collapse>
-                                                                                    </li>
-                                                                                ))
-                                                                            )}
-                                                                        </ul>
-                                                                    </Collapse>
-                                                                </li>
-                                                            )}
-                                                        </React.Fragment>
-                                                    ))
-                                                    )}
+                                                    {[
+                                                        hasPermissionForEntity(
+                                                            userPermissions,
+                                                            tenantsPermissions
+                                                        ) && {
+                                                            id: "tenants",
+                                                            label: "Tenants",
+                                                            link: "/tenants",
+                                                        },
+                                                        hasPermissionForEntity(
+                                                            userPermissions,
+                                                            organizationsPermissions
+                                                        ) && {
+                                                            id: "organizations",
+                                                            label: "Organizations",
+                                                            link: "/organizations",
+                                                        },
+                                                        hasPermissionForEntity(
+                                                            userPermissions,
+                                                            rolesPermissions
+                                                        ) && {
+                                                            id: "roles",
+                                                            label: "Roles",
+                                                            link: "/roles",
+                                                        },
+                                                        hasPermissionForEntity(
+                                                            userPermissions,
+                                                            usersPermissions
+                                                        ) && {
+                                                            id: "users",
+                                                            label: "Users",
+                                                            link: "/users",
+                                                        },
+                                                        hasPermissionForEntity(
+                                                            userPermissions,
+                                                            permissionsPermissions
+                                                        ) && {
+                                                            id: "permissions",
+                                                            label: "Permissions",
+                                                            link: "/permissions",
+                                                        },
+                                                    ]
+                                                        .filter(Boolean) // Remove false values
+                                                        .map((subItem, subKey) => (
+                                                            <li className="nav-item" key={subKey}>
+                                                                <Link
+                                                                    to={subItem.link ? subItem.link : "/#"}
+                                                                    className="nav-link"
+                                                                >
+                                                                    {props.t(subItem.label)}
+                                                                </Link>
+                                                            </li>
+                                                        ))}
                                                 </ul>
-
                                             </Collapse>
                                         </li>
-                                    ) : null
-                                    }
+                                    ) : (
+                                        item.subItems && (
+                                            <li className="nav-item">
+                                                <Collapse
+                                                    className="menu-dropdown"
+                                                    isOpen={item.stateVariables}
+                                                    id={item.id}>
+                                                    <ul className="nav nav-sm flex-column test">
+                                                        {item.subItems.map((subItem, subKey) => (
+                                                            <li className="nav-item" key={subKey}>
+                                                                <Link
+                                                                    to={subItem.link ? subItem.link : "/#"}
+                                                                    className="nav-link"
+                                                                >
+                                                                    {props.t(subItem.label)}
+                                                                </Link>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </Collapse>
+                                            </li>
+                                        )
+                                    )}
                                 </React.Fragment>
                             ))}
                         </SimpleBar>

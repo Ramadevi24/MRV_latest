@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import {
   Col,
   Label,
@@ -59,7 +59,7 @@ const OrganizationForm = () => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      tenantID: "",
+      tenantID: userPermissions.tenantID || "",
       organizationName: "",
       description: "",
       establishedDate: "",
@@ -70,7 +70,6 @@ const OrganizationForm = () => {
       categoryIDs: [],
     },
     validationSchema: Yup.object({
-      tenantID: Yup.string().required(t("Please select a Tenant ID")),
       organizationName: Yup.string().required(t("Please enter organization name")),
       description: Yup.string().required(t("Please enter a description")),
       establishedDate: Yup.string().required(t("Please enter the established date")),
@@ -87,6 +86,7 @@ const OrganizationForm = () => {
       ),
     }),
     onSubmit: async (values) => {
+      console.log(values, 'values');
       try {
         await addOrganization(values);
         toast.success(t("Organization created successfully"), {
@@ -106,7 +106,7 @@ const OrganizationForm = () => {
   //     setselectedMulti(selectedMulti);
   // }
 
-  const handleCheck = (category) => {
+  const handleCheck = useCallback((category) => {
     const allChildIds = getAllChildIds(category);
     setCheckedItems((prev) => {
       const newCheckedItems = allChildIds.every((id) => prev.includes(id))
@@ -115,7 +115,8 @@ const OrganizationForm = () => {
       validation.setFieldValue("categoryIDs", newCheckedItems);
       return newCheckedItems;
     });
-  };
+  }, [validation]);
+  
 
   const handleExpand = (categoryId) => {
     setExpandedItems((prev) =>
@@ -213,7 +214,7 @@ const OrganizationForm = () => {
                 <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Organization</h2>
                 </CardHeader> */}
 
-                  <Form
+                  <form
                     className="needs-validation "
                     onSubmit={(e) => {
                       e.preventDefault();
@@ -763,7 +764,7 @@ const OrganizationForm = () => {
                         Cancel
                       </Button>
                     </div>
-                  </Form>
+                  </form>
 
                   {/* </div> */}
                 </CardBody>
