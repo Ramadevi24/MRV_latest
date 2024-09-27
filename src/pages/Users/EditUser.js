@@ -51,7 +51,6 @@ const EditUser = () => {
       },
       validationSchema: Yup.object({
         firstName: Yup.string().required(t("Please Enter Your First Name")),
-        tenantID: Yup.string().required(t("Please select a Tenant")),
         lastName: Yup.string().required(t("Please Enter Your Last Name")),
         email: Yup.string().required(t("Please Enter Your Email")),
         phone: Yup.string().required(t("Please enter a Phone Number")),
@@ -63,9 +62,9 @@ const EditUser = () => {
           toast.error(t("Please select a valid user role"));
           return;
         }
-        const createFormData = { ...values, loginType: "custom", roleID: roleID };
+        const updateFormData = { ...values, loginType: "custom", roleID: roleID };
         try {
-          await updateUserProfile(createFormData);
+          await updateUserProfile(id, updateFormData);
           toast.success(t("User Updated successfully"), { autoClose: 3000 });
           navigate("/users");
         } catch (error) {
@@ -75,17 +74,18 @@ const EditUser = () => {
     });
 
     useEffect(() => {
-      // Fetch all the required data on component mount
-      fetchAllRoles();
-      fetchAllOrganizations();
       fetchAllTenants();
-    }, []);
+      const selectedTenantID = validation.values?.tenantID;
+      const tenantIdToUse = userPermissions.tenantID || selectedTenantID;
+      if (tenantIdToUse) {
+        fetchAllOrganizations(tenantIdToUse);
+        fetchAllRoles(tenantIdToUse);
+      }
+    }, [userPermissions.tenantID, validation.values.tenantID]); // Only keep the values you depend on
     
-    // Ensure organizations, tenants, and roles are available before fetching user data
     useEffect(() => {
       const fetchData = async () => {
         try {
-          // Ensure the organizations, tenants, and roles are fetched before accessing them
           if (organizations.length > 0 && tenants.length > 0 && roles.length > 0) {
             const user = await fetchUserById(id);
     
@@ -105,10 +105,7 @@ const EditUser = () => {
               (role) => role.roleName === user.userRole
             );
             const tenantRoleID = initialUserRole ? initialUserRole.roleID : "";
-            console.log(user, 'user');
-
-            console.log(tenantID, organizationID, tenantRoleID, 'hh');
-    
+            console.log(user, 'user');    
             validation.setValues({
               ...validation.values,
               firstName: user.firstName || "",
@@ -121,9 +118,7 @@ const EditUser = () => {
               userRole: user.userRole || "",
               tenantRoleID: tenantRoleID || "",
             });
-    
-            console.log("validation.values", validation.values);
-          }
+              }
         } catch (error) {
           toast.error(t("Error fetching user data"));
         }
@@ -135,14 +130,6 @@ const EditUser = () => {
       }
     }, [id, organizations, tenants, roles]); // Add organizations, tenants, and roles as dependencies
     
-
-
-
-  const updateRoleID = (userRole) => {
-    const selectedRole = roles.find((role) => role.roleName === userRole);
-    const tenantRoleID = selectedRole ? selectedRole.roleID : "";
-    validation.setValues({ ...values, tenantRoleID });
-  };
 
   const findRoleIdByRoleName = () => {
     const role = roles?.find(

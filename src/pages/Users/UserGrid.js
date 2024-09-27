@@ -38,7 +38,7 @@ const UserGrid = () => {
 
   useEffect(() => {
     fetchAllUsers(userPermissions?.userID);
-  }, [userPermissions]);
+  }, []);
 
   const handleDelete = (id) => {
     setDeleteUserId(id); // Set the organization ID to delete
@@ -48,6 +48,7 @@ const UserGrid = () => {
   const confirmDelete = async () => {
     if (deleteUserId) {
       await removeUser(deleteUserId); // Call your deletion function with the correct org ID
+      fetchAllUsers(userPermissions?.userID);
       setDeleteModal(false); // Close the modal
       setDeleteUserId(null); // Clear the state
     }

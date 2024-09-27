@@ -31,8 +31,7 @@ const UserForm = () => {
     useContext(OrganizationContext);
   const { fetchAllRoles, roles } = useContext(RoleContext);
   const { addUser } = useContext(UserContext);
-  const userPermissions =
-    JSON.parse(localStorage.getItem("UserPermissions")) || [];
+  const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -73,14 +72,20 @@ const UserForm = () => {
   });
 
   useEffect(() => {
+    // Fetch all tenants on component mount or when needed
     fetchAllTenants();
-
-    // Fetch organizations and roles if userPermissions.tenantID exists (skip tenant selection)
-    if (userPermissions.tenantID) {
-      fetchAllOrganizations(userPermissions.tenantID);
-      fetchAllRoles(userPermissions.tenantID);
+    
+    // Determine the tenant ID to use
+    const selectedTenantID = validation.values?.tenantID;
+    const tenantIdToUse = userPermissions.tenantID || selectedTenantID;
+  
+    if (tenantIdToUse) {
+      fetchAllOrganizations(tenantIdToUse);
+      fetchAllRoles(tenantIdToUse);
     }
-  }, []);
+  }, [userPermissions.tenantID, validation.values.tenantID]); // Only keep the values you depend on
+  
+  
 
   const findRoleIdByRoleName = () => {
     const role = roles?.find(
