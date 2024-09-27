@@ -42,7 +42,6 @@ const RoleForm = () => {
     validationSchema: Yup.object({
       roleName: Yup.string().required("Please Enter Role Name"),
       description: Yup.string().required("Please Enter Role Description"),
-      tenantID: Yup.string().required("Please Enter Tenant"),
       permissionIds: Yup.array().required("Please Select Permissions"),
     }),
     onSubmit: async (values) => {

@@ -43,19 +43,20 @@ const EditRole = () => {
     validationSchema: Yup.object({
       roleName: Yup.string().required("Please Enter Role Name"),
       description: Yup.string().required("Please Enter Role Description"),
-      tenantID: Yup.string().required("Please Enter Tenant"),
       permissionIds: Yup.array().required("Please Select Permissions"),
     }),
     onSubmit: async (values) => {
+      console.log("values", values);
       try {
         const roleData = {
+          roleID: id,
           roleName: values.roleName,
           description: values.description,
           permissionIds: selectedPermissions,
           tenantID: Number(values.tenantID) || userPermissions.tenantID,
         };
 
-        await updateRoleProfile(roleData);
+        await updateRoleProfile(id, userPermissions.tenantID, roleData);
         toast.success("Role Updated successfully");
         navigate("/roles");
       } catch (error) {

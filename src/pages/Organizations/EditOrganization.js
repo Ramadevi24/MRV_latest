@@ -29,7 +29,6 @@ const EditOrganization = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
-  const [selectedMulti, setselectedMulti] = useState(null);
   const { fetchAllTenants, tenants } = useContext(TenantContext);
   const { fetchAllCategories, categories, fetchOrganizationById, updateOrganizationProfile } = useContext(OrganizationContext);
   const [checkedItems, setCheckedItems] = useState([]);
@@ -67,9 +66,6 @@ const EditOrganization = () => {
     }),
     onSubmit: async (values) => {
       try {
-        if (!values.categoryIDs || values.categoryIDs.length === 0) {
-          throw new Error(t("Please select at least one category"));
-        }
         const updatedData ={
           ...values,
           organizationID: id
@@ -87,6 +83,12 @@ const EditOrganization = () => {
     fetchAllCategories();
     fetchAllTenants();
   }, []);
+
+  // useEffect(() => {
+  //   if (validation.values.categoryIDs.length) {
+  //     setCheckedItems(validation.values.categoryIDs);
+  //   }
+  // }, [validation.values.categoryIDs]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,11 +129,11 @@ const EditOrganization = () => {
   }, [id, categories, tenants]);
   
 
-  const handleMultiSelectChange = (selectedOptions) => {
-    validation.setFieldValue("categoryIDs", selectedOptions); // Update the form value for multi-select
-  };
-
-  const handleCheck = (category) => {
+  const handleCheck = (category, event) => {
+    // Prevent the checkbox click from triggering the form submission
+    event.preventDefault();
+    event.stopPropagation();
+  
     const allChildIds = getAllChildIds(category);
     setCheckedItems((prev) => {
       const newCheckedItems = allChildIds.every((id) => prev.includes(id))
@@ -141,6 +143,7 @@ const EditOrganization = () => {
       return newCheckedItems;
     });
   };
+  
 
   const handleExpand = (categoryId) => {
     setExpandedItems((prev) =>
@@ -207,7 +210,7 @@ const EditOrganization = () => {
                 <input
                   type="checkbox"
                   checked={checkedItems.includes(item.categoryID)}
-                  onChange={() => handleCheck(item)}
+                  onChange={(e) => handleCheck(item, e)}
                   style={{
                     marginRight: "8px",
                     marginTop: "-5px",

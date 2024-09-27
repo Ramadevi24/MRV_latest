@@ -18,7 +18,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import DeleteModal from "../../Components/Common/DeleteModal";
 
-const RoleGrid = ({ userPermissions }) => {
+const RoleGrid = () => {
   document.title = "MRV_PROJECT | RoleGrid";
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -33,10 +33,12 @@ const RoleGrid = ({ userPermissions }) => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [deleteRoleId, setDeleteRoleId] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
+  const userPermissions =
+  JSON.parse(localStorage.getItem("UserPermissions")) || [];
 
   useEffect(() => {
     fetchAllRoles(userPermissions?.tenantID);
-  }, [userPermissions]);
+  }, []);
 
   const handleDelete = (id) => {
     setDeleteRoleId(id); // Set the organization ID to delete
@@ -45,7 +47,8 @@ const RoleGrid = ({ userPermissions }) => {
   
   const confirmDelete = async () => {
     if (deleteRoleId) {
-      await removeRole(deleteRoleId); // Call your deletion function with the correct org ID
+      await removeRole(deleteRoleId, userPermissions.tenantID); 
+      fetchAllRoles(userPermissions?.tenantID)// Call your deletion function with the correct org ID
       setDeleteModal(false); // Close the modal
       setDeleteRoleId(null); // Clear the state
     }
