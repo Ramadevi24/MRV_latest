@@ -6,6 +6,26 @@
   height: 40vmin;
   pointer-events: none;
 }
+.switch-default .form-check-input {
+  background-color: #e0e0e0; /* Default color when off */
+}
+
+.switch-warning .form-check-input {
+  background-color: yellow;
+}
+
+.switch-primary .form-check-input {
+  background-color: #0d6efd;
+}
+
+.switch-success .form-check-input {
+  background-color: #198754;
+}
+
+.switch-danger .form-check-input {
+  background-color: #dc3545;
+}
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

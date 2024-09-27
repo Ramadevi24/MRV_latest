@@ -26,7 +26,7 @@ import { useNavigate, useParams } from "react-router-dom";
 const EditRole = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { id } = useParams(); 
+  const { id } = useParams();
   const { fetchAllTenants, tenants } = useContext(TenantContext);
   const { fetchAllPermissions, permissions } = useContext(PermissionContext);
   const { updateRoleProfile, fetchRoleById, roles } = useContext(RoleContext);
@@ -75,41 +75,41 @@ const EditRole = () => {
       try {
         const role = await fetchRoleById(id, userPermissions.tenantID);
         console.log("role", role);
-  
+
         // if (tenants && tenants.length > 0) {
         //   const initialTenant = tenants.find(
         //     (tenant) => tenant.tenantID === role.tenantID 
         //   );
-  
+
         //   const tenantID = initialTenant ? initialTenant.tenantID : role.tenantID || "";
-  
-          formik.setValues({
-            roleName: role.roleName || "",
-            description: role.description || "",
-            permissionIds: role.permissions.
+
+        formik.setValues({
+          roleName: role.roleName || "",
+          description: role.description || "",
+          permissionIds: role.permissions.
             $values?.map((p) => p.permissionID) || [],
-            tenantID: role.tenantID, 
-          });
-  
-          setSelectedPermissions(role.permissions.$values?.map((p) => p.permissionID) || []); 
-        } 
-       catch (error) {
+          tenantID: role.tenantID,
+        });
+
+        setSelectedPermissions(role.permissions.$values?.map((p) => p.permissionID) || []);
+      }
+      catch (error) {
         toast.error(t("Error fetching role data"));
       }
     };
-  
+
     fetchData();
   }, [id]);
-  
-  
+
+
 
   const handlePermissionChange = (permissionID) => {
     setSelectedPermissions((prevPermissions) =>
-        prevPermissions.includes(permissionID)
-            ? prevPermissions.filter(id => id !== permissionID) // Remove if already selected
-            : [...prevPermissions, permissionID] // Add if not selected
+      prevPermissions.includes(permissionID)
+        ? prevPermissions.filter(id => id !== permissionID) // Remove if already selected
+        : [...prevPermissions, permissionID] // Add if not selected
     );
-};
+  };
 
 
   const groupedPermissions = permissions?.reduce((grouped, permission) => {
@@ -120,6 +120,25 @@ const EditRole = () => {
     grouped[group].push(permission);
     return grouped;
   }, {});
+
+  // Function to determine the switch color based on permission action
+  const getSwitchColor = (permissionDisplayName, isChecked) => {
+    if (!isChecked) {
+      return "switch-default"; // Default color for switch off
+    }
+
+    if (permissionDisplayName.toLowerCase().includes("create")) {
+      return "switch-warning"; // Yellow for Create when checked
+    } else if (permissionDisplayName.toLowerCase().includes("edit")) {
+      return "switch-primary"; // Primary for Edit when checked
+    } else if (permissionDisplayName.toLowerCase().includes("view")) {
+      return "switch-success"; // Success (green) for View when checked
+    } else if (permissionDisplayName.toLowerCase().includes("delete")) {
+      return "switch-danger"; // Danger (red) for Delete when checked
+    } else {
+      return ""; // Default color if no match
+    }
+  };
 
   return (
     <div className="page-content">
@@ -145,7 +164,7 @@ const EditRole = () => {
                   <Row style={{ marginTop: "3.5rem" }}>
                     <Col md={12}>
                       <FormGroup className="mb-3">
-                        <Label htmlFor="roleName">Role Name</Label>
+                        <Label htmlFor="roleName">{t('Role Name')}</Label>
                         <Input
                           name="roleName"
                           placeholder="Enter Role Name"
@@ -168,7 +187,7 @@ const EditRole = () => {
                     </Col>
                     <Col md={12}>
                       <FormGroup className="mb-3">
-                        <Label htmlFor="description">Role Description</Label>
+                        <Label htmlFor="description">{t('Role Description')}</Label>
                         <Input
                           name="description"
                           placeholder="Enter Role Description"
@@ -184,7 +203,7 @@ const EditRole = () => {
                           }
                         />
                         {formik.touched.description &&
-                        formik.errors.description ? (
+                          formik.errors.description ? (
                           <FormFeedback type="invalid">
                             {formik.errors.description}
                           </FormFeedback>
@@ -194,13 +213,12 @@ const EditRole = () => {
 
                     {!userPermissions.tenantID && (
                       <Col md={12}>
-                        <Label>Tenant ID</Label>
+                        <Label>{('Tenant ID')}</Label>
                         <select
-                          className={`form-select mb-3 ${
-                            formik.touched.tenantID && formik.errors.tenantID
+                          className={`form-select mb-3 ${formik.touched.tenantID && formik.errors.tenantID
                               ? "is-invalid"
                               : ""
-                          }`}
+                            }`}
                           id="tenantID"
                           name="tenantID"
                           value={formik.values.tenantID}
@@ -218,7 +236,7 @@ const EditRole = () => {
                           ))}
                         </select>
                         {formik.touched.tenantID &&
-                        formik.errors.tenantID ? (
+                          formik.errors.tenantID ? (
                           <FormFeedback className="d-block">
                             {formik.errors.tenantID}
                           </FormFeedback>
@@ -236,7 +254,7 @@ const EditRole = () => {
                                 <td style={{ padding: "10px" }}>
                                   <FormGroup check inline>
                                     <Label check>
-                                      <Input type="checkbox" /> {groupName}
+                                     {groupName}
                                     </Label>
                                   </FormGroup>
                                   <div>
@@ -246,27 +264,38 @@ const EditRole = () => {
                                     </a>
                                   </div>
                                 </td>
+                                <td className="role-table" style={{display: "flex",flexWrap: "wrap"}}>
                                 {groupPermissions.map((permission) => (
                                   <div
                                     key={permission.permissionID}
-                                    style={{ display: "flex" }}
+                                    style={{
+                                      display: "flex", flexDirection: "column",
+                                      alignItems: "center",
+                                      marginRight: "20px"
+                                    }}
                                   >
-                                    <td className="role-table">
+                                    
                                       <Label
                                         className="form-check-label"
-                                        for="Readswitch"
+                                        htmlFor={`permission-${permission.permissionID}`}
                                       >
                                         <div>
                                           {permission.permissionDisplayName}
                                         </div>
                                       </Label>
                                       <div
-                                        className="form-check form-switch form-switch-md mb-3 form-switch-success"
+                                        className={`form-check form-switch form-switch-md mb-3 ${getSwitchColor(
+                                          permission.permissionDisplayName,
+                                          selectedPermissions.includes(permission.permissionID)
+                                        )}`}
                                         dir="ltr"
                                       >
                                         <Input
                                           type="checkbox"
-                                          className="form-check-input"
+                                          className={`form-check-input ${getSwitchColor(
+                                            permission.permissionDisplayName,
+                                            selectedPermissions.includes(permission.permissionID)
+                                          )}`}
                                           id={`permission-${permission.permissionID}`}
                                           checked={selectedPermissions.includes(
                                             permission.permissionID
@@ -278,16 +307,17 @@ const EditRole = () => {
                                           }
                                         />
                                       </div>
-                                    </td>
                                   </div>
                                 ))}
+                                    </td>
+
                               </tr>
                             )
                           )}
                         </tbody>
                       </Table>
                     </Col>
-                    <div className="d-flex justify-content-end mt-3" style={{marginRight:'4rem'}}>
+                    <div className="d-flex justify-content-end mt-3" style={{ marginRight: '4rem' }}>
                       <Button
                         type="submit"
                         color="success"
@@ -300,7 +330,7 @@ const EditRole = () => {
                         color="danger"
                         className="rounded-pill"
                         onClick={() => navigate("/roles")}
-                      >
+                        style={{ marginRight: "4rem" }}  >
                         {t('Cancel')}
                       </Button>
                     </div>
