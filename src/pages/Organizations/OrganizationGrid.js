@@ -46,7 +46,8 @@ const OrganizationGrid = () => {
   
   const confirmDelete = async () => {
     if (deleteOrgId) {
-      await removeOrganization(deleteOrgId); // Call your deletion function with the correct org ID
+      await removeOrganization(deleteOrgId);
+      fetchAllOrganizations(userPermissions?.tenantID) // Call your deletion function with the correct org ID
       setDeleteModal(false); // Close the modal
       setDeleteOrgId(null); // Clear the state
     }
