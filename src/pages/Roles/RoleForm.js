@@ -46,7 +46,6 @@ const RoleForm = () => {
       permissionIds: Yup.array().required("Please Select Permissions"),
     }),
     onSubmit: async (values) => {
-      console.log("Form Submitted: ", values); // Debugging to check if submit is triggered
       try {
         const roleData = {
           roleName: values.roleName,
@@ -86,6 +85,25 @@ const RoleForm = () => {
     return grouped;
   }, {});
 
+  // Function to determine the switch color based on permission action
+  const getSwitchColor = (permissionDisplayName, isChecked) => {
+    if (!isChecked) {
+      return "switch-default"; // Default color for switch off
+    }
+
+    if (permissionDisplayName.toLowerCase().includes("create")) {
+      return "switch-warning"; // Yellow for Create when checked
+    } else if (permissionDisplayName.toLowerCase().includes("edit")) {
+      return "switch-primary"; // Primary for Edit when checked
+    } else if (permissionDisplayName.toLowerCase().includes("view")) {
+      return "switch-success"; // Success (green) for View when checked
+    } else if (permissionDisplayName.toLowerCase().includes("delete")) {
+      return "switch-danger"; // Danger (red) for Delete when checked
+    } else {
+      return ""; // Default color if no match
+    }
+  };
+
   return (
     <div className="page-content">
       <Container fluid>
@@ -102,7 +120,7 @@ const RoleForm = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    {t('Add Role')}
+                    {t("Add Role")}
                   </h4>
                 </CardHeader>
 
@@ -110,7 +128,7 @@ const RoleForm = () => {
                   <Row style={{ marginTop: "3.5rem" }}>
                     <Col md={12}>
                       <FormGroup className="mb-3">
-                        <Label htmlFor="roleName">{t('Role Name')}</Label>
+                        <Label htmlFor="roleName">{t("Role Name")}</Label>
                         <Input
                           name="roleName"
                           placeholder={t("Enter Role Name")}
@@ -120,9 +138,7 @@ const RoleForm = () => {
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.roleName}
-                          invalid={
-                            formik.touched.roleName && formik.errors.roleName
-                          }
+                          invalid={formik.touched.roleName && formik.errors.roleName}
                         />
                         {formik.touched.roleName && formik.errors.roleName ? (
                           <FormFeedback type="invalid">
@@ -131,25 +147,22 @@ const RoleForm = () => {
                         ) : null}
                       </FormGroup>
                     </Col>
+
                     <Col md={12}>
                       <FormGroup className="mb-3">
-                        <Label htmlFor="description">{t('Role Description')}</Label>
+                        <Label htmlFor="description">{t("Role Description")}</Label>
                         <Input
                           name="description"
-                          placeholder={t('Enter Role Description')}
+                          placeholder={t("Enter Role Description")}
                           type="text"
                           className="form-control"
                           id="description"
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.description}
-                          invalid={
-                            formik.touched.description &&
-                            formik.errors.description
-                          }
+                          invalid={formik.touched.description && formik.errors.description}
                         />
-                        {formik.touched.description &&
-                        formik.errors.description ? (
+                        {formik.touched.description && formik.errors.description ? (
                           <FormFeedback type="invalid">
                             {formik.errors.description}
                           </FormFeedback>
@@ -159,7 +172,7 @@ const RoleForm = () => {
 
                     {!userPermissions.tenantID && (
                       <Col md={12}>
-                        <Label>{t('Tenant ID')}</Label>
+                        <Label>{t("Tenant ID")}</Label>
                         <select
                           className={`form-select mb-3 ${
                             formik.touched.tenantID && formik.errors.tenantID
@@ -174,16 +187,12 @@ const RoleForm = () => {
                         >
                           <option value="">{t("selectTenant")}</option>
                           {tenants.map((tenant) => (
-                            <option
-                              key={tenant.tenantID}
-                              value={tenant.tenantID}
-                            >
+                            <option key={tenant.tenantID} value={tenant.tenantID}>
                               {tenant.name}
                             </option>
                           ))}
                         </select>
-                        {formik.touched.tenantID &&
-                        formik.errors.tenantID ? (
+                        {formik.touched.tenantID && formik.errors.tenantID ? (
                           <FormFeedback className="d-block">
                             {formik.errors.tenantID}
                           </FormFeedback>
@@ -192,81 +201,91 @@ const RoleForm = () => {
                     )}
 
                     <Col>
-                      <Table style={{ marginTop: "30px" }}>
-                        <thead></thead>
-                        <tbody>
+                      <Table style={{ marginTop: "30px"}}>
+                        
+                        <tbody >
                           {Object?.entries(groupedPermissions)?.map(
                             ([groupName, groupPermissions]) => (
                               <tr key={groupName} className="role-table-tr">
-                                <td style={{ padding: "10px" }}>
+                                <td>
                                   <FormGroup check inline>
                                     <Label check>
-                                      <Input type="checkbox" /> {groupName}
+                                       {groupName}
                                     </Label>
                                   </FormGroup>
                                   <div>
                                     <a href="#">
-                                      Show {groupPermissions.length}{" "}
-                                      sub-categories
+                                      Show {groupPermissions.length} sub-categories
                                     </a>
                                   </div>
                                 </td>
-                                {groupPermissions.map((permission) => (
-                                  <div
-                                    key={permission.permissionID}
-                                    style={{ display: "flex" }}
-                                  >
-                                    <td className="role-table">
+                                <td style={{display: "flex",flexWrap: "wrap"}}>
+                                  {groupPermissions.map((permission) => (
+                                    <div
+                                      key={permission.permissionID}
+                                      style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        marginRight: "20px",
+                                        // marginBottom: "20px",
+                                      }}
+                                    >
                                       <Label
                                         className="form-check-label"
-                                        for="Readswitch"
+                                        htmlFor={`permission-${permission.permissionID}`}
                                       >
-                                        <div>
-                                          {permission.permissionDisplayName}
-                                        </div>
+                                        {permission.permissionDisplayName}
                                       </Label>
                                       <div
-                                        className="form-check form-switch form-switch-md mb-3 form-switch-success"
+                                        className={`form-check form-switch form-switch-md mb-3 ${getSwitchColor(
+                                          permission.permissionDisplayName,
+                                          selectedPermissions.includes(permission.permissionID)
+                                        )}`}
                                         dir="ltr"
                                       >
                                         <Input
                                           type="checkbox"
-                                          className="form-check-input"
+                                          className={`form-check-input ${getSwitchColor(
+                                            permission.permissionDisplayName,
+                                            selectedPermissions.includes(permission.permissionID)
+                                          )}`}
                                           id={`permission-${permission.permissionID}`}
                                           checked={selectedPermissions.includes(
                                             permission.permissionID
                                           )}
                                           onChange={() =>
-                                            handlePermissionChange(
-                                              permission.permissionID
-                                            )
+                                            handlePermissionChange(permission.permissionID)
                                           }
                                         />
                                       </div>
-                                    </td>
-                                  </div>
-                                ))}
+                                    </div>
+                                  ))}
+                                </td>
                               </tr>
                             )
                           )}
                         </tbody>
                       </Table>
                     </Col>
-                    <div className="d-flex justify-content-end  mt-3" style={{marginRight:'4rem'}}>
+                    <div
+                      className="d-flex justify-content-end mt-3"
+                      style={{ marginRight: "4rem" }}
+                    >
                       <Button
                         type="submit"
                         color="success"
                         className="rounded-pill me-2"
                       >
-                        Submit
+                        {t('Submit')}
                       </Button>
                       <Button
                         type="button"
                         color="danger"
                         className="rounded-pill"
                         onClick={() => navigate("/roles")}
-                      >
-                        Cancel
+                        style={{ marginRight: "4rem" }} >
+                        {t('Cancel')}
                       </Button>
                     </div>
                   </Row>
@@ -281,3 +300,7 @@ const RoleForm = () => {
 };
 
 export default RoleForm;
+
+
+
+
