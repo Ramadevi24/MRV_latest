@@ -22,7 +22,6 @@ import { TenantContext } from "../../contexts/TenantContext";
 import { OrganizationContext } from "../../contexts/OrganizationContext";
 import { RoleContext } from "../../contexts/RoleContext";
 import { UserContext } from "../../contexts/UserContext";
-import { values } from "lodash";
 
 const EditUser = () => {
   const { t } = useTranslation();
@@ -112,7 +111,7 @@ const EditUser = () => {
               lastName: user.lastName || "",
               email: user.email || "",
               phone: user.phone,
-              tenantID: tenantID || userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
+              tenantID: userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
               organizationID: organizationID || "",
               roleID: user.roleID || "",
               userRole: user.userRole || "",

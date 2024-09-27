@@ -37,7 +37,7 @@ const RoleForm = () => {
       roleName: "",
       description: "",
       permissionIds: [],
-      tenantID: "",
+      // tenantID: "",
     },
     validationSchema: Yup.object({
       roleName: Yup.string().required("Please Enter Role Name"),
@@ -50,7 +50,7 @@ const RoleForm = () => {
           roleName: values.roleName,
           description: values.description,
           permissionIds: selectedPermissions,
-          tenantID: Number(values.tenantID) || userPermissions.tenantID,
+          // tenantID: Number(values.tenantID) || userPermissions.tenantID,
         };
 
         await addRole(roleData);
@@ -170,7 +170,7 @@ const RoleForm = () => {
                     </Col>
                    
                      
-                    {!userPermissions.tenantID && (
+                    {/* {!userPermissions.tenantID && (
                       <Col md={12}>
                         
                         <Label>{t("Tenant ID")}</Label>
@@ -199,7 +199,7 @@ const RoleForm = () => {
                           </FormFeedback>
                         ) : null}
                       </Col>
-                    )}
+                    )} */}
 
                     <Col>
                     <Label>Permissions:</Label>

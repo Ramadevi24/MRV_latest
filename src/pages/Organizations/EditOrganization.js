@@ -84,11 +84,11 @@ const EditOrganization = () => {
     fetchAllTenants();
   }, []);
 
-  // useEffect(() => {
-  //   if (validation.values.categoryIDs.length) {
-  //     setCheckedItems(validation.values.categoryIDs);
-  //   }
-  // }, [validation.values.categoryIDs]);
+  useEffect(() => {
+    if (validation.values.categoryIDs.length) {
+      setCheckedItems(validation.values.categoryIDs);
+    }
+  }, [validation.values.categoryIDs]);
 
   useEffect(() => {
     const fetchData = async () => {

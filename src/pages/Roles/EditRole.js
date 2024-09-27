@@ -53,7 +53,7 @@ const EditRole = () => {
           roleName: values.roleName,
           description: values.description,
           permissionIds: selectedPermissions,
-          tenantID: Number(values.tenantID) || userPermissions.tenantID,
+          tenantID: userPermissions.tenantID,
         };
 
         await updateRoleProfile(id, userPermissions.tenantID, roleData);
@@ -89,7 +89,7 @@ const EditRole = () => {
           description: role.description || "",
           permissionIds: role.permissions.
             $values?.map((p) => p.permissionID) || [],
-          tenantID: role.tenantID,
+          tenantID: role.tenantID || 0,
         });
 
         setSelectedPermissions(role.permissions.$values?.map((p) => p.permissionID) || []);
@@ -212,7 +212,7 @@ const EditRole = () => {
                       </FormGroup>
                     </Col>
 
-                    {!userPermissions.tenantID && (
+                    {/* {!userPermissions.tenantID && (
                       <Col md={12}>
                         <Label>{('Tenant ID')}</Label>
                         <select
@@ -243,11 +243,10 @@ const EditRole = () => {
                           </FormFeedback>
                         ) : null}
                       </Col>
-                    )}
+                    )} */}
 
                     <Col>
-                    <Label>Permissions:</Label>
-                    <Table>
+                      <Table style={{ marginTop: "30px" }}>
                         <thead></thead>
                         <tbody>
                           {Object?.entries(groupedPermissions)?.map(

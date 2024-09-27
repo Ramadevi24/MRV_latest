@@ -199,7 +199,7 @@ const RoleGrid = () => {
                                 {role.description}
                                 </td>
                                 <td className="date">
-                                  {formatDate(role.date)}
+                                  {formatDate(role.createdDate)}
                                 </td>
                                 <td className="status">
                                   <span className="badge bg-success-subtle text-success text-uppercase">

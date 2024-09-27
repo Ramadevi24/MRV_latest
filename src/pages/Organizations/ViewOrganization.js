@@ -663,8 +663,6 @@ import {
   Row,
   FormGroup,
   Form,
-  FormFeedback,
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -673,8 +671,7 @@ import {
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
-import { useParams, useNavigate } from "react-router-dom";
-import * as Yup from "yup";
+import { useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import "cleave.js/dist/addons/cleave-phone.in";
 import { TenantContext } from "../../contexts/TenantContext";
@@ -683,58 +680,14 @@ import { formatDate } from "../../utils/formateDate";
 
 const ViewOrganization = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { id } = useParams();
   const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
-  const [selectedMulti, setselectedMulti] = useState(null);
   const { fetchAllTenants, tenants } = useContext(TenantContext);
   const { fetchAllCategories, categories, fetchOrganizationById } = useContext(OrganizationContext);
   const [checkedItems, setCheckedItems] = useState([]);
   const [expandedItems, setExpandedItems] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  useEffect(() => {
-    fetchAllCategories();
-    fetchAllTenants();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const organization = await fetchOrganizationById(id);
-        organization.establishedDate = formatDate(organization.establishedDate);
-
-        const initialTenant = tenants && tenants.find(
-          (tenant) => tenant.name === organization.tenantName
-        );
-        const tenantID = initialTenant ? initialTenant.tenantID : "";
-        const categoryIDs = organization.categories.$values
-          .map((categoryName) => findCategoryIds(categoryName, categories))
-          .filter(Boolean);
-
-          console.log('');
-
-        validation.setValues({
-          tenantID: tenantID,
-          organizationName: organization.organizationName || "",
-          description: organization.description || "",
-          establishedDate: organization.establishedDate || "",
-          contactEmail: organization.contactEmail || "",
-          contactPhone: organization.contactPhone || "",
-          address: organization.address || "",
-          locations: organization.locations || [{ latitude: "", longitude: "", address: "" }],
-          categoryIDs: categoryIDs || [],
-        });
-        setCheckedItems(categoryIDs);
-      } catch (error) {
-        toast.error(t("Error fetching organization data"));
-      }
-    };
-    fetchData();
-  }, [id]);
-
- 
-
+  
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -750,11 +703,54 @@ const ViewOrganization = () => {
     },
   });
 
-  console.log(validation.values,'validation');
+  useEffect(() => {
+    fetchAllCategories();
+    fetchAllTenants();
+  }, []);
 
-  const handleMultiSelectChange = (selectedOptions) => {
-    validation.setFieldValue("categoryIDs", selectedOptions);
-  };
+  useEffect(() => {
+    if (validation.values.categoryIDs.length) {
+      setCheckedItems(validation.values.categoryIDs);
+    }
+  }, [validation.values.categoryIDs]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const organization = await fetchOrganizationById(id);
+        organization.establishedDate = formatDate(organization.establishedDate);
+
+        const initialTenant = tenants && tenants.find(
+          (tenant) => tenant.name === organization.tenantName
+        );
+        const tenantID = initialTenant ? initialTenant.tenantID : "";
+        const normalizedLocations = organization.locations?.$values || organization.locations || [];
+        const categoryIDs = organization.categories.$values
+          .map((categoryName) => findCategoryIds(categoryName, categories))
+          .filter(Boolean);
+        validation.setValues({
+          tenantID: tenantID,
+          organizationName: organization.organizationName || "",
+          description: organization.description || "",
+          establishedDate: organization.establishedDate || "",
+          contactEmail: organization.contactEmail || "",
+          contactPhone: organization.contactPhone || "",
+          address: organization.address || "",
+          locations: normalizedLocations,
+          categoryIDs: categoryIDs || [],
+        });
+        setCheckedItems(categoryIDs);
+      } catch (error) {
+        toast.error(t("Error fetching organization data"));
+      }
+    };
+    fetchData();
+  }, [id, categories, tenants]);
+
+ 
+
+
+
 
   const handleCheck = (category) => {
     const allChildIds = getAllChildIds(category);
@@ -1095,8 +1091,8 @@ const ViewOrganization = () => {
                       </Label>
                     </Col>
 
-                    {validation.values.locations &&
-                      validation.values.locations.$values?.map((location, index) => (
+                    {validation.values.locations && validation.values.locations.length > 0 && 
+                      validation.values.locations?.map((location, index) => (
                         <Row key={index}>
                           <Col>
                             <Label>

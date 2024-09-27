@@ -38,12 +38,11 @@ const ViewRole = () => {
       roleName: "",
       description: "",
       permissionIds: [],
-      tenantID: "",
+      // tenantID: "",
     },
     validationSchema: Yup.object({
       roleName: Yup.string().required("Please Enter Role Name"),
       description: Yup.string().required("Please Enter Role Description"),
-      tenantID: Yup.string().required("Please Enter Tenant"),
       permissionIds: Yup.array().required("Please Select Permissions"),
     }),
   });
@@ -66,7 +65,7 @@ const ViewRole = () => {
 
         setSelectedPermissions(role.permissions.$values?.map((p) => p.permissionID) || []);
       } catch (error) {
-        toast.error(t("Error fetching role data"));
+        console.log(t("Error fetching role data"));
       }
     };
 
@@ -150,7 +149,7 @@ const ViewRole = () => {
                       </FormGroup>
                     </Col>
 
-                    {!userPermissions.tenantID && (
+                    {/* {!userPermissions.tenantID && (
                       <Col md={12}>
                         <Label>{('Tenant ID')}</Label>
                         <select
@@ -168,7 +167,7 @@ const ViewRole = () => {
                           ))}
                         </select>
                       </Col>
-                    )}
+                    )} */}
 
                     <Col>
                     <Label>Permissions:</Label>
