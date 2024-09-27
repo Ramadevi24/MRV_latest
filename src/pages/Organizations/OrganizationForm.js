@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Col,
   Label,
@@ -59,7 +59,7 @@ const OrganizationForm = () => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      tenantID: userPermissions.tenantID || "",
+      tenantID: "",
       organizationName: "",
       description: "",
       establishedDate: "",
@@ -70,6 +70,7 @@ const OrganizationForm = () => {
       categoryIDs: [],
     },
     validationSchema: Yup.object({
+      tenantID: Yup.string().required(t("Please select a Tenant ID")),
       organizationName: Yup.string().required(t("Please enter organization name")),
       description: Yup.string().required(t("Please enter a description")),
       establishedDate: Yup.string().required(t("Please enter the established date")),
@@ -86,7 +87,6 @@ const OrganizationForm = () => {
       ),
     }),
     onSubmit: async (values) => {
-      console.log(values, 'values');
       try {
         await addOrganization(values);
         toast.success(t("Organization created successfully"), {
@@ -106,7 +106,7 @@ const OrganizationForm = () => {
   //     setselectedMulti(selectedMulti);
   // }
 
-  const handleCheck = useCallback((category) => {
+  const handleCheck = (category) => {
     const allChildIds = getAllChildIds(category);
     setCheckedItems((prev) => {
       const newCheckedItems = allChildIds.every((id) => prev.includes(id))
@@ -115,8 +115,7 @@ const OrganizationForm = () => {
       validation.setFieldValue("categoryIDs", newCheckedItems);
       return newCheckedItems;
     });
-  }, [validation]);
-  
+  };
 
   const handleExpand = (categoryId) => {
     setExpandedItems((prev) =>
@@ -187,6 +186,33 @@ const OrganizationForm = () => {
     fetchAllCategories();
   }, []);
 
+
+  const findCategoryNameById = (categoryID, categories) => {
+    if (!categories || categories.length === 0) {
+      return null;
+    }
+  
+    for (const category of categories) {
+      // Check if the category ID matches
+      if (category.categoryID === categoryID) {
+        return category.categoryName;
+      }
+  
+      // Recursively search in subcategories
+      if (category.subCategories?.$values?.length) {
+        const subCategoryName = findCategoryNameById(categoryID, category.subCategories.$values);
+        if (subCategoryName) {
+          return subCategoryName; // Return matched subcategory name
+        }
+      }
+    }
+    return null; // Return null if no match found
+  };
+
+  const handleRemoveCategory = (categoryID) => {
+    setCheckedItems((prevItems) => prevItems.filter((id) => id !== categoryID));
+  };
+  
   return (
     <React.Fragment>
       <div className="page-content">
@@ -214,7 +240,7 @@ const OrganizationForm = () => {
                 <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Organization</h2>
                 </CardHeader> */}
 
-                  <form
+                  <Form
                     className="needs-validation "
                     onSubmit={(e) => {
                       e.preventDefault();
@@ -474,90 +500,114 @@ const OrganizationForm = () => {
                             />
                           </div>
                         </Col> */}
-                      <Col>
-                        <div className="mb-3">
-                          <Label
-                            htmlFor="choices-multiple-default"
-                            className="form-label "
-                          >
-                            {t('categoryIDs')}<span className="text-danger">*</span>
-                          </Label>
-                          <div style={{ margin: "0 auto" }}>
-                            <button
-                              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                              style={{
-                                padding: "10px",
-                                width: "100%",
-                                textAlign: "left",
-                                cursor: "pointer",
-                                background: "white",
-                                border: "1px solid #ddd",
-                              }}
-                            >
-                              <div
-                                style={{
-                                  display: "flex",
-                                  justifyContent: "space-between",
-                                }}
-                              >
-                                <div> Select Categories </div>
-                                <div> {isDropdownOpen ? "▲" : "▼"} </div>
-                              </div>
-                            </button>
+<Col>
+  <div className="mb-3">
+    <Label htmlFor="choices-multiple-default" className="form-label">
+      {t('categoryIDs')}<span className="text-danger">*</span>
+    </Label>
 
-                            {isDropdownOpen && (
-                              <div
-                                style={{
-                                  border: "1px solid #ddd",
-                                  padding: "10px",
-                                  maxHeight: "300px",
-                                  overflowY: "auto",
-                                }}
-                              >
-                                <CheckboxTree
-                                  data={categories}
-                                  checkedItems={checkedItems}
-                                  expandedItems={expandedItems}
-                                  handleCheck={handleCheck}
-                                  handleExpand={handleExpand}
-                                />
-                              </div>
-                            )}
-                          </div>
-                          {/* {checkedItems.length > 0 && (
-                            <div className="mt-2">
-                              <strong>Selected Categories:</strong>{" "}
-                              {checkedItems
-                                .map(
-                                  (categoryID) =>
-                                    categories.find(
-                                      (cat) => cat.categoryID === categoryID
-                                    )?.categoryName
-                                )
-                                .join(", ")}
-                            </div>
-                          )} */}
-                          {/* <Select
-                            value={validation.values.categoryIDs}
-                            isMulti={true}
-                            onChange={handleMultiSelectChange}
-                            options={SingleOptions}
-                            styles={customStyles(
-                              !!validation.errors.categoryIDs &&
-                                validation.touched.categoryIDs
-                            )} // Dynamically set border color
-                            onBlur={() =>
-                              validation.setFieldTouched("categoryIDs", true)
-                            } 
-                          /> */}
-                          {validation.touched.categoryIDs &&
-                          validation.errors.categoryIDs ? (
-                            <FormFeedback className="d-block">
-                              {validation.errors.categoryIDs}
-                            </FormFeedback>
-                          ) : null}
-                        </div>
-                      </Col>
+    {/* Dropdown button */}
+    <div style={{ margin: "0 auto" }}>
+      <button
+        type="button"  // Ensures it's not seen as a form submission button
+        onClick={(e) => {
+          e.preventDefault();  // Prevents default form submission behavior
+          setIsDropdownOpen(!isDropdownOpen);
+        }}
+        style={{
+          padding: "10px",
+          width: "100%",
+          textAlign: "left",
+          cursor: "pointer",
+          background: "white",
+          border: "1px solid #ddd",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div>
+            {/* Display selected categories or default text */}
+            {checkedItems.length > 0 ? (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+                {checkedItems.map((categoryID) => {
+                  const categoryName = findCategoryNameById(categoryID, categories);
+                  return (
+                    <span
+                      key={categoryID}
+                      style={{
+                        display: "inline-block",
+                        backgroundColor: "#f0f0f0", // Light background for the category/subcategory
+                        borderRadius: "10px",
+                        padding: "5px 21px",
+                        marginRight: "5px",
+                        marginBottom: "5px",
+                        position: "relative",
+                      }}
+                    >
+                      {categoryName}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemoveCategory(categoryID);
+                        }}
+                        style={{
+                          background: "transparent",
+                          border: "none",
+                          marginLeft: "10px",
+                          cursor: "pointer",
+                          position: "absolute",
+                          top: "7px",
+                          right: "0px",
+                          fontSize: "10px",
+                        }}
+                      >
+                        ✕
+                      </button>
+                    </span>
+                  );
+                })}
+              </div>
+            ) : (
+              <span>{t('Select Categories')}</span>  // Default text if no categories are selected
+            )}
+          </div>
+          <div>{isDropdownOpen ? "▲" : "▼"}</div>
+        </div>
+      </button>
+
+      {/* Dropdown content */}
+      {isDropdownOpen && (
+        <div
+          style={{
+            border: "1px solid #ddd",
+            padding: "10px",
+            maxHeight: "300px",
+            overflowY: "auto",
+          }}
+        >
+          {/* Category selection list */}
+          <CheckboxTree
+            data={categories}
+            checkedItems={checkedItems}
+            expandedItems={expandedItems}
+            handleCheck={handleCheck}
+            handleExpand={handleExpand}
+          />
+        </div>
+      )}
+    </div>
+
+    {/* Validation error display */}
+    {validation.touched.categoryIDs && validation.errors.categoryIDs ? (
+      <FormFeedback className="d-block">
+        {validation.errors.categoryIDs}
+      </FormFeedback>
+    ) : null}
+  </div>
+</Col>
+
+
+
+
                     </Row>
                     <Row>
                       <Col>
@@ -764,7 +814,7 @@ const OrganizationForm = () => {
                         Cancel
                       </Button>
                     </div>
-                  </form>
+                  </Form>
 
                   {/* </div> */}
                 </CardBody>

@@ -840,6 +840,37 @@ const ViewOrganization = () => {
     </div>
   );
 
+  useEffect(() => {
+    fetchAllTenants();
+    fetchAllCategories();
+  }, []);
+
+  const findCategoryNameById = (categoryID, categories) => {
+    if (!categories || categories.length === 0) {
+      return null;
+    }
+  
+    for (const category of categories) {
+      // Check if the category ID matches
+      if (category.categoryID === categoryID) {
+        return category.categoryName;
+      }
+  
+      // Recursively search in subcategories
+      if (category.subCategories?.$values?.length) {
+        const subCategoryName = findCategoryNameById(categoryID, category.subCategories.$values);
+        if (subCategoryName) {
+          return subCategoryName; // Return matched subcategory name
+        }
+      }
+    }
+    return null; // Return null if no match found
+  };
+
+  const handleRemoveCategory = (categoryID) => {
+    setCheckedItems((prevItems) => prevItems.filter((id) => id !== categoryID));
+  };
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -948,12 +979,17 @@ const ViewOrganization = () => {
                       </Col>
 
                       <Col>
+                    
                         <Label>
                           {t('categoryIDs')}<span className="text-danger">*</span>
                         </Label>
                         <div style={{ margin: "0 auto" }}>
-                          <button
-                            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        <button
+        type="button"  // Ensures it's not seen as a form submission button
+        onClick={(e) => {
+          e.preventDefault();  // Prevents default form submission behavior
+          setIsDropdownOpen(!isDropdownOpen);
+        }}
                             style={{
                               padding: "10px",
                               width: "100%",
@@ -965,7 +1001,53 @@ const ViewOrganization = () => {
                             }}
                           >
                             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                              <div> Select Categories </div>
+                              <div>
+                              {/* <div> Select Categories </div> */}
+                               {/* Display selected categories or default text */}
+            {checkedItems.length > 0 ? (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
+                {checkedItems.map((categoryID) => {
+                  const categoryName = findCategoryNameById(categoryID, categories);
+                  return (
+                    <span
+                      key={categoryID}
+                      style={{
+                        display: "inline-block",
+                        backgroundColor: "#f0f0f0", // Light background for the category/subcategory
+                        borderRadius: "10px",
+                        padding: "5px 21px",
+                        marginRight: "5px",
+                        marginBottom: "5px",
+                        position: "relative",
+                      }}
+                    >
+                      {categoryName}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemoveCategory(categoryID);
+                        }}
+                        style={{
+                          background: "transparent",
+                          border: "none",
+                          marginLeft: "10px",
+                          cursor: "pointer",
+                          position: "absolute",
+                          top: "7px",
+                          right: "0px",
+                          fontSize: "10px",
+                        }}
+                      >
+                        ✕
+                      </button>
+                    </span>
+                  );
+                })}
+              </div>
+            ) : (
+              <span>{t('Select Categories')}</span>  // Default text if no categories are selected
+            )}
+            </div>
                               <div> {isDropdownOpen ? "▲" : "▼"} </div>
                             </div>
                           </button>

@@ -57,7 +57,7 @@ const Navdata = () => {
       id: "dashboard",
       label: "Dashboards",
       icon: "mdi mdi-speedometer",
-      link: "/#",
+      link: "/dashboard",
       stateVariables: isDashboard,
       click: function (e) {
         e.preventDefault();

@@ -168,9 +168,11 @@ const RoleForm = () => {
                         ) : null}
                       </FormGroup>
                     </Col>
-
+                   
+                     
                     {!userPermissions.tenantID && (
                       <Col md={12}>
+                        
                         <Label>{t("Tenant ID")}</Label>
                         <select
                           className={`form-select mb-3 ${
@@ -200,7 +202,8 @@ const RoleForm = () => {
                     )}
 
                     <Col>
-                      <Table style={{ marginTop: "30px"}}>
+                    <Label>Permissions:</Label>
+                      <Table>
                         
                         <tbody >
                           {Object?.entries(groupedPermissions)?.map(

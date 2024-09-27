@@ -18,7 +18,7 @@ const CoverSignIn = (props) => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            navigate("/tenants");
+            navigate("/dashboard");
         }
     }, [isAuthenticated, navigate]); 
 
@@ -50,7 +50,7 @@ const CoverSignIn = (props) => {
                 if (data.token) {
                     localStorage.setItem("UserPermissions", JSON.stringify(data));
                     localStorage.setItem("AuthToken", data.token);
-                    navigate("/tenants")
+                    navigate("/dashboard")
                     login(data.token);
                    
                 } else {
