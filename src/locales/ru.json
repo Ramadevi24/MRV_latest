@@ -92,5 +92,15 @@
       "Organization updated successfully": "Организация успешно обновлена",
       "Error updating organization": "Ошибка при обновлении организации",
        "Location": "Местоположение",
-    "Edit Tenant": "Редактировать арендатора"
+    "Edit Tenant": "Редактировать арендатора",
+    "Add Role": "Добавить роль",
+    "Role Description": "Описание роли",
+    "Select Tenant": "Выбрать арендатора",
+  
+    "Module": "Модуль",
+    "Read": "Читать",
+    "Write": "Писать",
+    "Edit": "Редактировать",
+    "Delete": "Удалить",
+    "Show 7 sub-categories": "Показать 7 подкатегорий"
 }

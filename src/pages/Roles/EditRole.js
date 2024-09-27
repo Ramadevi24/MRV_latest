@@ -293,7 +293,7 @@ const EditRole = () => {
                         color="success"
                         className="rounded-pill me-2"
                       >
-                        Submit
+                        {t('Submit')}
                       </Button>
                       <Button
                         type="button"
@@ -301,7 +301,7 @@ const EditRole = () => {
                         className="rounded-pill"
                         onClick={() => navigate("/roles")}
                       >
-                        Cancel
+                        {t('Cancel')}
                       </Button>
                     </div>
                   </Row>

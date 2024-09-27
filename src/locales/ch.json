@@ -93,6 +93,15 @@
     "Organization updated successfully": "组织更新成功",
       "Error updating organization": "更新组织时出错",
             "Location": "位置",
- "Edit Tenant": "编辑租户"
+ "Edit Tenant": "编辑租户",
+ "Add Role": "添加角色",
+ "Role Description": "角色描述",
+ "Select Tenant": "选择租户",
+ "Module": "模块",
+ "Read": "读取",
+ "Write": "写入",
+ "Edit": "编辑",
+ "Delete": "删除",
+ "Show 7 sub-categories": "显示 7 子类别"
     
 }

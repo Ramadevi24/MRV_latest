@@ -92,7 +92,17 @@
     "Organization updated successfully": "Organizzazione aggiornata con successo",
       "Error updating organization": "Errore durante l'aggiornamento dell'organizzazione",
           "Location": "Posizione",
-  "Edit Tenant": "Modifica inquilino"
+  "Edit Tenant": "Modifica inquilino",
+  "Add Role": "Aggiungi ruolo",
+  "Role Description": "Descrizione del ruolo",
+  "Select Tenant": "Seleziona inquilino",
+ 
+  "Module": "Modulo",
+  "Read": "Leggi",
+  "Write": "Scrivi",
+  "Edit": "Modifica",
+  "Delete": "Elimina",
+  "Show 7 sub-categories": "Mostra 7 sottocategorie"
 
 
   

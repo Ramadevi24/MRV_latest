@@ -85,5 +85,14 @@
  "Organization updated successfully": "Organization updated successfully",
  "Error updating organization": "Error updating organization",
       "Location": "Location",
-   "Edit Tenant": "Edit Tenant"
+   "Edit Tenant": "Edit Tenant",
+   "Add Role": "Add Role",
+   "Role Description": "Role Description",
+   "Select Tenant": "Select Tenant",
+   "Module": "Module",
+   "Read": "Read",
+   "Write": "Write",
+   "Edit": "Edit",
+   "Delete": "Delete",
+   "Show 7 sub-categories": "Show 7 sub-categories"
 }
