@@ -171,7 +171,8 @@ const ViewRole = () => {
                     )}
 
                     <Col>
-                      <Table style={{ marginTop: "30px" }}>
+                    <Label>Permissions:</Label>
+                    <Table>
                         <thead></thead>
                         <tbody>
                           {Object?.entries(groupedPermissions)?.map(

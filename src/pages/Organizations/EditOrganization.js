@@ -161,7 +161,7 @@ const EditOrganization = () => {
   const findCategoryIds = (categoryName, categories) => {
     if (!categories || categories.length === 0) {
       return null;
-    }
+    } 
 
     let matchedCategory = null;
     for (const category of categories) {
