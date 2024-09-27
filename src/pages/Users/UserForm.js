@@ -404,7 +404,7 @@ const UserForm = () => {
                         </Col>
                       </Row>
 
-                      <div className="d-flex mt-3">
+                      <div className="d-flex justify-content-end  mt-3" style={{marginRight:'4rem'}}>
                         <Button
                           type="submit"
                           color="success"

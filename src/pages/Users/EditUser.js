@@ -36,83 +36,107 @@ const EditUser = () => {
   const userPermissions =
     JSON.parse(localStorage.getItem("UserPermissions")) || [];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const user = await fetchUserById(id);
-        console.log("user", user);
-        // Ensure tenants data is available before finding the tenant
-        await fetchAllTenants();
+    const validation = useFormik({
+      enableReinitialize: true,
+      initialValues: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        passwordHash: "",
+        phone: "",
+        tenantID: userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
+        organizationID: "",
+        roleID: "",
+        userRole: "",
+      },
+      validationSchema: Yup.object({
+        firstName: Yup.string().required(t("Please Enter Your First Name")),
+        tenantID: Yup.string().required(t("Please select a Tenant")),
+        lastName: Yup.string().required(t("Please Enter Your Last Name")),
+        email: Yup.string().required(t("Please Enter Your Email")),
+        phone: Yup.string().required(t("Please enter a Phone Number")),
+        userRole: Yup.string().required(t("Please select a User Role")),
+      }),
+      onSubmit: async (values) => {
+        const roleID = findRoleIdByRoleName();
+        if (!roleID) {
+          toast.error(t("Please select a valid user role"));
+          return;
+        }
+        const createFormData = { ...values, loginType: "custom", roleID: roleID };
+        try {
+          await updateUserProfile(createFormData);
+          toast.success(t("User Updated successfully"), { autoClose: 3000 });
+          navigate("/users");
+        } catch (error) {
+          toast.error(t("Error Updating user"));
+        }
+      },
+    });
 
-        const initialTenant = tenants.find(
-          (tenant) => tenant.name === user.tenantName
-        );
-        const tenantID = initialTenant ? initialTenant.tenantID : "";
+    useEffect(() => {
+      // Fetch all the required data on component mount
+      fetchAllRoles();
+      fetchAllOrganizations();
+      fetchAllTenants();
+    }, []);
+    
+    // Ensure organizations, tenants, and roles are available before fetching user data
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          // Ensure the organizations, tenants, and roles are fetched before accessing them
+          if (organizations.length > 0 && tenants.length > 0 && roles.length > 0) {
+            const user = await fetchUserById(id);
+    
+            const initialTenant = tenants.find(
+              (tenant) => tenant.name === user.tenantName
+            );
+            const tenantID = initialTenant ? initialTenant.tenantID : "";
+    
+            const initialOrganization = organizations.find(
+              (org) => org.organizationName === user.organizationName
+            );
+            const organizationID = initialOrganization
+              ? initialOrganization.organizationID
+              : "";
+    
+            const initialUserRole = roles.find(
+              (role) => role.roleName === user.userRole
+            );
+            const tenantRoleID = initialUserRole ? initialUserRole.roleID : "";
+            console.log(user, 'user');
 
-        // Set initial values
-        validation.setValues({
-          ...values,
-          firstName: user.firstName || "",
-          lastName: user.lastName || "",
-          email: user.email || "",
-          phone: user.phone,
-          tenantID: tenantID || userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
-          organizationID: user.organizationID || "",
-          roleID: user.roleID || "",
-          userRole: user.roleName || "",
-        });
-
-        console.log("user", user.organizationName, user.roleName);
-
-        // Fetch organizations and roles after user data is available
-        await fetchAllOrganizations(user.organizationName);
-        await fetchAllRoles(user.roleName);
-      } catch (error) {
-        toast.error(t("Error fetching user data"));
-        setLoading(false);
+            console.log(tenantID, organizationID, tenantRoleID, 'hh');
+    
+            validation.setValues({
+              ...validation.values,
+              firstName: user.firstName || "",
+              lastName: user.lastName || "",
+              email: user.email || "",
+              phone: user.phone,
+              tenantID: tenantID || userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
+              organizationID: organizationID || "",
+              roleID: user.roleID || "",
+              userRole: user.userRole || "",
+              tenantRoleID: tenantRoleID || "",
+            });
+    
+            console.log("validation.values", validation.values);
+          }
+        } catch (error) {
+          toast.error(t("Error fetching user data"));
+        }
+      };
+    
+      // Only run the fetchData when organizations, tenants, and roles are available
+      if (organizations.length > 0 && tenants.length > 0 && roles.length > 0) {
+        fetchData();
       }
-    };
+    }, [id, organizations, tenants, roles]); // Add organizations, tenants, and roles as dependencies
+    
 
-    fetchData();
-  }, [id]);
 
-  const validation = useFormik({
-    enableReinitialize: true,
-    initialValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      passwordHash: "",
-      phone: "",
-      tenantID: userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
-      organizationID: "",
-      roleID: "",
-      userRole: "",
-    },
-    validationSchema: Yup.object({
-      firstName: Yup.string().required(t("Please Enter Your First Name")),
-      tenantID: Yup.string().required(t("Please select a Tenant")),
-      lastName: Yup.string().required(t("Please Enter Your Last Name")),
-      email: Yup.string().required(t("Please Enter Your Email")),
-      phone: Yup.string().required(t("Please enter a Phone Number")),
-      userRole: Yup.string().required(t("Please select a User Role")),
-    }),
-    onSubmit: async (values) => {
-      const roleID = findRoleIdByRoleName();
-      if (!roleID) {
-        toast.error(t("Please select a valid user role"));
-        return;
-      }
-      const createFormData = { ...values, loginType: "custom", roleID: roleID };
-      try {
-        await updateUserProfile(createFormData);
-        toast.success(t("User Updated successfully"), { autoClose: 3000 });
-        navigate("/users");
-      } catch (error) {
-        toast.error(t("Error Updating user"));
-      }
-    },
-  });
 
   const updateRoleID = (userRole) => {
     const selectedRole = roles.find((role) => role.roleName === userRole);
@@ -414,7 +438,7 @@ const EditUser = () => {
                         </Col>
                       </Row>
 
-                      <div className="d-flex mt-3">
+                      <div className="d-flex justify-content-end  mt-3" style={{marginRight:'4rem'}}>
                         <Button
                           type="submit"
                           color="success"

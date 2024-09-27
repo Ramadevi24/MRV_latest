@@ -37,7 +37,7 @@ const UserGrid = () => {
   const [deleteModal, setDeleteModal] = useState(false);
 
   useEffect(() => {
-    fetchAllUsers(userPermissions?.tenantID);
+    fetchAllUsers(userPermissions?.userID);
   }, [userPermissions]);
 
   const handleDelete = (id) => {

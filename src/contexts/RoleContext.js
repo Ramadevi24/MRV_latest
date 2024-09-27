@@ -28,9 +28,9 @@ export const RoleProvider = ({ children }) => {
     }
   };
 
-  const fetchRoleById = async (id) => {
+  const fetchRoleById = async (id, tenantID = null) => {
     try {
-      return await getRoleById(id);
+      return await getRoleById(id, tenantID);
     } catch (error) {
       toast.error("Error fetching role");
       throw error;
@@ -43,14 +43,13 @@ export const RoleProvider = ({ children }) => {
       setRoles((prevRoles) => [...prevRoles, newRole]);
       toast.success("Role created successfully");
     } catch (error) {
-      toast.error("Error creating role");
       throw error;
     }
   };
 
-  const updateRoleProfile = async (id, roleData) => {
+  const updateRoleProfile = async (id, tenantID = null, roleData) => {
     try {
-      const updatedRole = await updateRole(id, roleData);
+      const updatedRole = await updateRole(id, tenantID, roleData);
       setRoles((prevRoles) =>
         prevRoles.map((role) => (role.roleId === id ? updatedRole : role))
       );
@@ -61,9 +60,9 @@ export const RoleProvider = ({ children }) => {
     }
   };
 
-  const removeRole = async (id) => {
+  const removeRole = async (id, tenantID = null) => {
     try {
-      await deleteRole(id);
+      await deleteRole(id, tenantID);
       setRoles((prevRoles) => prevRoles.filter((role) => role.roleId !== id));
       toast.success("Role deleted successfully");
     } catch (error) {

@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  hasPermissionForEntity,
+  usersPermissions,
+  tenantsPermissions,
+  organizationsPermissions,
+  rolesPermissions,
+  permissionsPermissions,
+} from "../utils/useHasPermission"; 
 
 const Navdata = () => {
   const history = useNavigate();
@@ -7,6 +15,8 @@ const Navdata = () => {
   const [isDashboard, setIsDashboard] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
+  let userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || []
+  userPermissions = userPermissions.permissions && userPermissions.permissions?.$values.map((permission) => permission.permissionName)
 
 
   function updateIconSidebar(e) {
@@ -81,6 +91,7 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
       subItems: [
+        // hasPermissionForEntity(userPermissions, tenantsPermissions) && 
         {
           id: "tenants",
           label: "Tenants",

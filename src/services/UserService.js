@@ -4,10 +4,10 @@ const API_URL = "https://atlas.smartgeoapps.com/MRVAPI/api/User";
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 
 // Get all Users
-export const getUsers = async (tenantID) => {
-  const userUrl = tenantID ? `${API_URL}?tenantId=${tenantID}` : API_URL;
+export const getUsers = async (loginUserId) => {
+  // const userUrl = tenantID ? `${API_URL}/?tenantId=${tenantID}` : API_URL;
   try {
-    const response = await axios.get(userUrl, {
+    const response = await axios.get(`${API_URL}?loginUserId=${loginUserId}`, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
     return response.$values;

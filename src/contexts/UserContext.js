@@ -17,9 +17,9 @@ export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchAllUsers = async (tenantID = null) => {
+  const fetchAllUsers = async (userID) => {
     try {
-      const data = await getUsers(tenantID);
+      const data = await getUsers(userID);
       setUsers(data);
       setLoading(false);
     } catch (error) {

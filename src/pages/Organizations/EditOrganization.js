@@ -23,6 +23,8 @@ import "cleave.js/dist/addons/cleave-phone.in";
 import { TenantContext } from "../../contexts/TenantContext";
 import { OrganizationContext } from "../../contexts/OrganizationContext";
 import { formatDate } from "../../utils/formateDate";
+import { values } from "lodash";
+import { use } from "i18next";
 
 const customStyles = (hasError) => ({
   control: (provided, state) => ({
@@ -38,13 +40,6 @@ const customStyles = (hasError) => ({
   }),
 });
 
-// const SingleOptions = [
-//   { value: "Choices 1", label: "Choices 1" },
-//   { value: "Choices 2", label: "Choices 2" },
-//   { value: "Choices 3", label: "Choices 3" },
-//   { value: "Choices 4", label: "Choices 4" },
-// ];
-
 const EditOrganization = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -56,40 +51,6 @@ const EditOrganization = () => {
   const [checkedItems, setCheckedItems] = useState([]);
   const [expandedItems, setExpandedItems] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const organization = await fetchOrganizationById(id);
-        organization.establishedDate = formatDate(organization.establishedDate);
-
-        const categoryIDs = organization.categories.$values
-          .map((categoryName) => findCategoryIds(categoryName, categories))
-          .filter(Boolean);
-          validation.setValues({ ...organization, categoryIDs });
-        setCheckedItems(categoryIDs);
-        fetchAllTenants(organization.tenantName); 
-       console.log("organization: ", organization);
-        validation.setValues({
-          tenantID: organization.tenantID || "",
-          organizationName: organization.organizationName || "",
-          description: organization.description || "",
-          establishedDate: organization.establishedDate || "",
-          contactEmail: organization.contactEmail || "",
-          contactPhone: organization.contactPhone || "",
-          address: organization.address || "",
-          locations: organization.locations || [{ latitude: "", longitude: "", address: "" }],
-          categoryIDs: organization.categories.$values || [],
-        });
-        setCheckedItems(organization.categories.$values || []); // Pre-check the categories
-      } catch (error) {
-        toast.error(t("Error fetching organization data"));
-      }
-    };
-    fetchData();
-    fetchAllTenants();
-    fetchAllCategories();
-  }, [id]);
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -138,6 +99,55 @@ const EditOrganization = () => {
     },
   });
 
+  useEffect(() => { 
+    fetchAllCategories();
+    fetchAllTenants();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const organization = await fetchOrganizationById(id);
+        organization.establishedDate = formatDate(organization.establishedDate);
+  
+        const initialTenant = tenants && tenants.find(
+          (tenant) => tenant.name === organization.tenantName
+        );
+        const tenantID = initialTenant ? initialTenant.tenantID : "";
+
+        // Map the categories to IDs
+        const categoryIDs = organization.categories.$values
+          .map((categoryName) => findCategoryIds(categoryName, categories))
+          .filter(Boolean);
+  
+        // Set the form values, including tenantID
+        validation.setValues({
+          tenantID: tenantID, // Set tenantID here
+          organizationName: organization.organizationName || "",
+          description: organization.description || "",
+          establishedDate: organization.establishedDate || "",
+          contactEmail: organization.contactEmail || "",
+          contactPhone: organization.contactPhone || "",
+          address: organization.address || "",
+          locations: organization.locations || [{ latitude: "", longitude: "", address: "" }],
+          categoryIDs: categoryIDs || [],
+        });
+  console.log("validation.values: ", validation.values);
+        setCheckedItems(categoryIDs); // Pre-check categories
+  
+      } catch (error) {
+        toast.error(t("Error fetching organization data"));
+      }
+    };
+    fetchData();
+  }, [id]);
+  
+
+
+  console.log(validation.values, "validation.values");
+
+
+
   const handleMultiSelectChange = (selectedOptions) => {
     validation.setFieldValue("categoryIDs", selectedOptions); // Update the form value for multi-select
   };
@@ -181,8 +191,8 @@ const EditOrganization = () => {
     let matchedCategory = null;
     for (const category of categories) {
       if (category.categoryName === categoryName) {
-        console.log("category: ", category.categoryName);
-        console.log("categoryName: ", categoryName);
+        // console.log("category: ", category.categoryName);
+        // console.log("categoryName: ", categoryName);
         return category.categoryID; // Return matched category ID
       }
 
@@ -753,7 +763,7 @@ const EditOrganization = () => {
                         </Col>
                       </Row>
                     ))}
-                    <div className="d-flex mt-3">
+                    <div className="d-flex justify-content-end  mt-3" style={{marginRight:'4rem'}}>
                       <Button
                         type="submit"
                         color="success"

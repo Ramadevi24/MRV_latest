@@ -21,7 +21,7 @@ const OrganizationGrid = ({ userPermissions }) => {
   document.title = "MRV_PROJECT | OrganizationGrid";
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { organizations, loading, fetchAllOrganizations, deleteOrganization } =
+  const { organizations, loading, fetchAllOrganizations, removeOrganization } =
     useContext(OrganizationContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({
@@ -44,7 +44,7 @@ const OrganizationGrid = ({ userPermissions }) => {
   
   const confirmDelete = async () => {
     if (deleteOrgId) {
-      await deleteOrganization(deleteOrgId); // Call your deletion function with the correct org ID
+      await removeOrganization(deleteOrgId); // Call your deletion function with the correct org ID
       setDeleteModal(false); // Close the modal
       setDeleteOrgId(null); // Clear the state
     }

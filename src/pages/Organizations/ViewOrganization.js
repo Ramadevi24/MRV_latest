@@ -57,21 +57,29 @@ const ViewOrganization = () => {
   const [expandedItems, setExpandedItems] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  useEffect(() => { 
+    fetchAllCategories();
+    fetchAllTenants();
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const organization = await fetchOrganizationById(id);
         organization.establishedDate = formatDate(organization.establishedDate);
-
+  
+        const initialTenant = tenants && tenants.find(
+          (tenant) => tenant.name === organization.tenantName
+        );
+        const tenantID = initialTenant ? initialTenant.tenantID : ""; 
+        // Map the categories to IDs
         const categoryIDs = organization.categories.$values
           .map((categoryName) => findCategoryIds(categoryName, categories))
           .filter(Boolean);
-          validation.setValues({ ...organization, categoryIDs });
-        setCheckedItems(categoryIDs);
-        fetchAllTenants(organization.tenantName); 
-       console.log("organization: ", organization);
+  
+        // Set the form values, including tenantID
         validation.setValues({
-          tenantID: organization.tenantID || "",
+          tenantID: tenantID, // Set tenantID here
           organizationName: organization.organizationName || "",
           description: organization.description || "",
           establishedDate: organization.establishedDate || "",
@@ -79,16 +87,15 @@ const ViewOrganization = () => {
           contactPhone: organization.contactPhone || "",
           address: organization.address || "",
           locations: organization.locations || [{ latitude: "", longitude: "", address: "" }],
-          categoryIDs: organization.categories.$values || [],
+          categoryIDs: categoryIDs || [],
         });
-        setCheckedItems(organization.categories.$values || []); // Pre-check the categories
+        setCheckedItems(categoryIDs); // Pre-check categories
+  
       } catch (error) {
         toast.error(t("Error fetching organization data"));
       }
     };
     fetchData();
-    fetchAllTenants();
-    fetchAllCategories();
   }, [id]);
 
   const validation = useFormik({

@@ -54,7 +54,7 @@ export const deleteOrganization = async (id) => {
     const response = await axios.delete(`${API_BASE_URL}/${id}`, {
         headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
       });
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error("Error delete Organization");
   }

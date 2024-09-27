@@ -38,8 +38,6 @@ const {t}=useTranslation();
   const [deleteModal, setDeleteModal] = useState(false);
   const [tenantToDelete, setTenantToDelete] = useState(null);
 
-  console.log(tenants, "tenants");
-
   useEffect(() => {
     fetchAllTenants();
   }, []);
