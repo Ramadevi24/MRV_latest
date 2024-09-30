@@ -243,7 +243,8 @@ const EditRole = () => {
                     )} */}
 
                     <Col>
-                      <Table style={{ marginTop: "30px" }}>
+                    <Label>{t('Permissions')}:</Label>
+                      <Table >
                         <thead></thead>
                         <tbody>
                           {Object?.entries(groupedPermissions)?.map(

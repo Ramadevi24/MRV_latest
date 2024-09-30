@@ -170,7 +170,7 @@ const ViewRole = () => {
                     )} */}
 
                     <Col>
-                    <Label>Permissions:</Label>
+                    <Label>{t('Permissions')}:</Label>
                     <Table>
                         <thead></thead>
                         <tbody>
