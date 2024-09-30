@@ -38,7 +38,7 @@ const EditRole = () => {
       roleName: "",
       description: "",
       permissionIds: [],
-      tenantID: "",
+      tenantID: userPermissions.tenantID,
     },
     validationSchema: Yup.object({
       roleName: Yup.string().required("Please Enter Role Name"),
@@ -46,14 +46,13 @@ const EditRole = () => {
       permissionIds: Yup.array().required("Please Select Permissions"),
     }),
     onSubmit: async (values) => {
-      console.log("values", values);
       try {
         const roleData = {
           roleID: id,
           roleName: values.roleName,
           description: values.description,
           permissionIds: selectedPermissions,
-          tenantID: userPermissions.tenantID,
+          tenantID: userPermissions.tenantID || null ,
         };
 
         await updateRoleProfile(id, userPermissions.tenantID, roleData);
@@ -75,8 +74,6 @@ const EditRole = () => {
     const fetchData = async () => {
       try {
         const role = await fetchRoleById(id, userPermissions.tenantID);
-        console.log("role", role);
-
         // if (tenants && tenants.length > 0) {
         //   const initialTenant = tenants.find(
         //     (tenant) => tenant.tenantID === role.tenantID 

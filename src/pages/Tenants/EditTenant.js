@@ -17,7 +17,6 @@ const EditTenant = () => {
     const loadTenant = async () => {
       try {
         const tenant = await fetchTenantById(id);
-        console.log('Fetched tenant:', tenant); // Check the tenant data
         if (tenant) {
           formik.setValues({
             name: tenant.name || "",

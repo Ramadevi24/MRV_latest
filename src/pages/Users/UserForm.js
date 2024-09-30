@@ -60,7 +60,8 @@ const UserForm = () => {
         toast.error(t("Please select a valid user role"));
         return;
       }
-      const createFormData = { ...values, loginType: "custom", roleID: roleID };
+      const createFormData = { ...values, loginType: "custom", roleID: roleID ,
+         organizationID: values.organizationID || null };
       try {
         await addUser(createFormData);
         toast.success(t("User created successfully"), { autoClose: 3000 });
@@ -326,7 +327,7 @@ const UserForm = () => {
                             ) : null}
                           </Col>
                         )}
-
+ {userPermissions.tenantID && (
                         <Col lg={6}>
                           <Label htmlFor="organizationID">
                             {t("Organization ID")}
@@ -368,6 +369,7 @@ const UserForm = () => {
                             </FormFeedback>
                           ) : null}
                         </Col>
+ )}
                         <Col lg={6}>
                           <Label htmlFor="userRole">
                             {t("User Role")}

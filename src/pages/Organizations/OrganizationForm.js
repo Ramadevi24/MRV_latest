@@ -59,7 +59,7 @@ const OrganizationForm = () => {
   const validation = useFormik({
     enableReinitialize: true,
     initialValues: {
-      tenantID: "",
+      tenantID: userPermissions.tenantID || "",
       organizationName: "",
       description: "",
       establishedDate: "",
@@ -70,7 +70,6 @@ const OrganizationForm = () => {
       categoryIDs: [],
     },
     validationSchema: Yup.object({
-      tenantID: Yup.string().required(t("Please select a Tenant ID")),
       organizationName: Yup.string().required(t("Please enter organization name")),
       description: Yup.string().required(t("Please enter a description")),
       establishedDate: Yup.string().required(t("Please enter the established date")),

@@ -34,6 +34,7 @@ const EditUser = () => {
   const { updateUserProfile, fetchUserById } = useContext(UserContext);
   const userPermissions =
     JSON.parse(localStorage.getItem("UserPermissions")) || [];
+    // const [loading, setLoading] = useState(true);
 
     const validation = useFormik({
       enableReinitialize: true,
@@ -61,7 +62,7 @@ const EditUser = () => {
           toast.error(t("Please select a valid user role"));
           return;
         }
-        const updateFormData = { ...values, loginType: "custom", roleID: roleID };
+        const updateFormData = { ...values, loginType: "custom", roleID: roleID,  organizationID: values.organizationID || null };
         try {
           await updateUserProfile(id, updateFormData);
           toast.success(t("User Updated successfully"), { autoClose: 3000 });
@@ -80,54 +81,57 @@ const EditUser = () => {
         fetchAllOrganizations(tenantIdToUse);
         fetchAllRoles(tenantIdToUse);
       }
-    }, [userPermissions.tenantID, validation.values.tenantID]); // Only keep the values you depend on
+    }, [userPermissions.tenantID, validation.values?.tenantID]);
+
+    const fetchData = async () => {
+      try {
+        // if (organizations.length > 0 && tenants.length > 0 && roles.length > 0) {
+          const user = await fetchUserById(id);
+  
+          const initialTenant = tenants.find(
+            (tenant) => tenant.name === user.tenantName
+          );
+          const tenantID = initialTenant ? initialTenant.tenantID : "";
+  
+          const initialOrganization = organizations.find(
+            (org) => org.organizationName === user.organizationName
+          );
+          const organizationID = initialOrganization
+            ? initialOrganization.organizationID
+            : "";
+  
+          const initialUserRole = roles.find(
+            (role) => role.roleName === user.userRole
+          );
+          const tenantRoleID = initialUserRole ? initialUserRole.roleID : "";
+          validation.setValues({
+            ...validation.values,
+            firstName: user.firstName || "",
+            lastName: user.lastName || "",
+            email: user.email || "",
+            phone: user.phone,
+            tenantID: userPermissions.tenantID || tenantID,
+            organizationID: organizationID || "",
+            roleID: user.roleID || "",
+            userRole: user.userRole || "",
+            tenantRoleID: tenantRoleID || "",
+          });
+            // }
+      } catch (error) {
+        toast.error(t("Error fetching user data"));
+      }
+
+    };
     
     useEffect(() => {
-      const fetchData = async () => {
-        try {
-          if (organizations.length > 0 && tenants.length > 0 && roles.length > 0) {
-            const user = await fetchUserById(id);
-    
-            const initialTenant = tenants.find(
-              (tenant) => tenant.name === user.tenantName
-            );
-            const tenantID = initialTenant ? initialTenant.tenantID : "";
-    
-            const initialOrganization = organizations.find(
-              (org) => org.organizationName === user.organizationName
-            );
-            const organizationID = initialOrganization
-              ? initialOrganization.organizationID
-              : "";
-    
-            const initialUserRole = roles.find(
-              (role) => role.roleName === user.userRole
-            );
-            const tenantRoleID = initialUserRole ? initialUserRole.roleID : "";
-            console.log(user, 'user');    
-            validation.setValues({
-              ...validation.values,
-              firstName: user.firstName || "",
-              lastName: user.lastName || "",
-              email: user.email || "",
-              phone: user.phone,
-              tenantID: userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
-              organizationID: organizationID || "",
-              roleID: user.roleID || "",
-              userRole: user.userRole || "",
-              tenantRoleID: tenantRoleID || "",
-            });
-              }
-        } catch (error) {
-          toast.error(t("Error fetching user data"));
-        }
-      };
-    
-      // Only run the fetchData when organizations, tenants, and roles are available
-      if (organizations.length > 0 && tenants.length > 0 && roles.length > 0) {
+      if (tenants && organizations && roles) {
         fetchData();
+      } else {
+        console.log("Required data not available yet");
       }
-    }, [id, organizations, tenants, roles]); // Add organizations, tenants, and roles as dependencies
+    }, [id, tenants, organizations, roles]);
+
+
     
 
   const findRoleIdByRoleName = () => {
@@ -342,6 +346,7 @@ const EditUser = () => {
                         )}
                       </Row>
                       <Row>
+                      {userPermissions.tenantID && (
                         <Col>
                           <Label htmlFor="organizationID">
                             {t("Organization ID")}
@@ -383,6 +388,7 @@ const EditUser = () => {
                             </FormFeedback>
                           ) : null}
                         </Col>
+                      )}
                         <Col>
                           <Label htmlFor="userRole">
                             {t("User Role")}

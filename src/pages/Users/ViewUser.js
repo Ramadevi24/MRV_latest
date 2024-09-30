@@ -7,13 +7,11 @@ import {
   FormGroup,
   Form,
   FormFeedback,
-  Button,
   CardBody,
   Container,
   Card,
   CardHeader,
 } from "reactstrap";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -58,52 +56,56 @@ const ViewUser = () => {
         fetchAllOrganizations(tenantIdToUse);
         fetchAllRoles(tenantIdToUse);
       }
-    }, [userPermissions.tenantID, validation.values.tenantID]); // Only keep the values you depend on
+    }, [userPermissions.tenantID, validation.values.tenantID, fetchAllTenants()]); // Only keep the values you depend on
 
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          if (organizations.length > 0 && tenants.length > 0 && roles.length > 0) {
-            const user = await fetchUserById(id);
-    
-            const initialTenant = tenants.find(
-              (tenant) => tenant.name === user.tenantName
-            );
-            const tenantID = initialTenant ? initialTenant.tenantID : "";
-    
-            const initialOrganization = organizations.find(
-              (org) => org.organizationName === user.organizationName
-            );
-            const organizationID = initialOrganization
-              ? initialOrganization.organizationID
-              : "";
-    
-            const initialUserRole = roles.find(
-              (role) => role.roleName === user.userRole
-            );
-            const tenantRoleID = initialUserRole ? initialUserRole.roleID : "";
-            validation.setValues({
-              ...validation.values,
-              firstName: user.firstName || "",
-              lastName: user.lastName || "",
-              email: user.email || "",
-              phone: user.phone,
-              tenantID: tenantID || userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
-              organizationID: organizationID || "",
-              roleID: user.roleID || "",
-              userRole: user.userRole || "",
-              tenantRoleID: tenantRoleID || "",
-            });
-              }
-        } catch (error) {
-        }
-      };
-    
-      // Only run the fetchData when organizations, tenants, and roles are available
-      if (organizations.length > 0 && tenants.length > 0 && roles.length > 0) {
-        fetchData();
+    const fetchData = async () => {
+      try {
+        // if (organizations.length > 0 && tenants.length > 0 && roles.length > 0) {
+          const user = await fetchUserById(id);
+  
+          const initialTenant = tenants.find(
+            (tenant) => tenant.name === user.tenantName
+          );
+          const tenantID = initialTenant ? initialTenant.tenantID : "";
+  
+          const initialOrganization = organizations.find(
+            (org) => org.organizationName === user.organizationName
+          );
+          const organizationID = initialOrganization
+            ? initialOrganization.organizationID
+            : "";
+  
+          const initialUserRole = roles.find(
+            (role) => role.roleName === user.userRole
+          );
+          const tenantRoleID = initialUserRole ? initialUserRole.roleID : "";
+          validation.setValues({
+            ...validation.values,
+            firstName: user.firstName || "",
+            lastName: user.lastName || "",
+            email: user.email || "",
+            phone: user.phone,
+            tenantID: userPermissions.tenantID || tenantID,
+            organizationID: organizationID || "",
+            roleID: user.roleID || "",
+            userRole: user.userRole || "",
+            tenantRoleID: tenantRoleID || "",
+          });
+            // }
+      } catch (error) {
+        toast.error(t("Error fetching user data"));
       }
-    }, [id, organizations, tenants, roles]);
+
+    };
+    
+    useEffect(() => {
+      if (tenants && organizations && roles) {
+        fetchData();
+      } else {
+        console.log("Required data not available yet");
+      }
+    }, [id, tenants, organizations, roles]);
+
 
   return (
     <React.Fragment>
@@ -307,6 +309,7 @@ const ViewUser = () => {
                       </Row>
 
                       <Row>
+                        {userPermissions.tenantID && (
                         <Col>
                           <Label htmlFor="organizationID">
                             {t("Organization ID")}
@@ -343,7 +346,7 @@ const ViewUser = () => {
                             </FormFeedback>
                           ) : null}
                         </Col>
-
+                        )}
                         <Col>
                           <Label htmlFor="userRole">
                             {t("User Role")}
