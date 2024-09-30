@@ -118,7 +118,7 @@ const EditTenant = () => {
                       </FormGroup>
           <div className="d-flex justify-content-end  mt-3" style={{marginRight:'4rem'}}>
                 <Button type="submit" color="success" className="rounded-pill me-2">
-                  Submit
+                  {t('Submit')}
                 </Button>
                 <Button
                   type="button"
@@ -126,7 +126,7 @@ const EditTenant = () => {
                   className="rounded-pill"
                   onClick={() => history.back()}
                 >
-                  Cancel
+                  {t('Cancel')}
                 </Button>
                 </div>
         </Col>

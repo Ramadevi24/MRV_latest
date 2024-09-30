@@ -202,7 +202,7 @@ const RoleForm = () => {
                     )} */}
 
                     <Col>
-                    <Label>Permissions:</Label>
+                    <Label>{t('Permissions')}:</Label>
                       <Table>
                         
                         <tbody >

@@ -65,14 +65,14 @@ const Navdata = () => {
         setIscurrentState("Dashboard");
         updateIconSidebar(e);
       },
-      subItems: [
-        {
-          id: "analytics",
-          label: "Analytics",
-          link: "/dashboard-analytics",
-          parentId: "dashboard",
-        }
-      ],
+      // subItems: [
+      //   {
+      //     id: "analytics",
+      //     label: "Analytics",
+      //     link: "/dashboard-analytics",
+      //     parentId: "dashboard",
+      //   }
+      // ],
     },
     {
       label: "Pages",
