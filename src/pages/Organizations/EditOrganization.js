@@ -51,9 +51,39 @@ const EditOrganization = () => {
     localStorage.setItem("topBorderTab", topBorderTab);
   }, [topBorderTab]);
 
-  const topBordertoggle = (tab) => {
-    if (topBorderTab !== tab) {
-      setTopBorderTab(tab);
+
+  const [isOrganizationTabActive, setIsOrganizationTabActive] = useState(
+    localStorage.getItem("activeTab") === "categories" ? false : true
+  );
+  const [isCategoriesTabActive, setIsCategoriesTabActive] = useState(
+    localStorage.getItem("activeTab") === "categories" ? true : false
+  );
+
+  // const [topBorderTab, setTopBorderTab] = useState(() => {
+  //   return localStorage.getItem("topBorderTab") || "1";
+  // });
+
+  // Sync with localStorage when the state changes
+  // useEffect(() => {
+  //   localStorage.setItem("topBorderTab", topBorderTab);
+  // }, [topBorderTab]);
+
+  // Handle tab click and set the state
+  // const topBordertoggle = (tab) => {
+  //   if (topBorderTab !== tab) {
+  //     setTopBorderTab(tab);
+  //   }
+  // };
+
+  const handleTabChange = (tab) => {
+    if (tab === "organization") {
+      setIsOrganizationTabActive(true);
+      setIsCategoriesTabActive(false);
+      localStorage.setItem("activeTab", "organization");
+    } else if (tab === "categories") {
+      setIsOrganizationTabActive(false);
+      setIsCategoriesTabActive(true);
+      localStorage.setItem("activeTab", "categories");
     }
   };
   const CategoryCheckboxList = ({ categories, categoryIDs, setCategoryIDs }) => {
