@@ -33,9 +33,29 @@ const ViewOrganization = () => {
   const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
   const { fetchAllTenants, tenants } = useContext(TenantContext);
   const { fetchAllCategories, categories, fetchOrganizationById } = useContext(OrganizationContext);
-  const [topBorderTab, setTopBorderTab] = useState(() => {
-    return localStorage.getItem("topBorderTab") || "1";
-  });
+  // const [topBorderTab, setTopBorderTab] = useState(() => {
+  //   return localStorage.getItem("topBorderTab") || "1";
+  // });
+
+  const [isOrganizationTabActive, setIsOrganizationTabActive] = useState(
+    localStorage.getItem("activeTab") === "categories" ? false : true
+  );
+  const [isCategoriesTabActive, setIsCategoriesTabActive] = useState(
+    localStorage.getItem("activeTab") === "categories" ? true : false
+  );
+
+  const handleTabChange = (tab) => {
+    if (tab === "organization") {
+      setIsOrganizationTabActive(true);
+      setIsCategoriesTabActive(false);
+      localStorage.setItem("activeTab", "organization");
+    } else if (tab === "categories") {
+      setIsOrganizationTabActive(false);
+      setIsCategoriesTabActive(true);
+      localStorage.setItem("activeTab", "categories");
+    }
+  };
+
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -133,41 +153,40 @@ const ViewOrganization = () => {
                   </h4>
                 </CardHeader>
                 <CardBody>
-                  <Nav
-                    tabs
-                    className="nav nav-tabs nav-justified nav-border-top nav-border-top-success mb-3"
-                  >
-                    <NavItem>
-                      <NavLink
-                        style={{ cursor: "pointer" }}
-                        className={classnames("nav-link", {
-                          active: topBorderTab === "1",
-                        })}
-                        onClick={() => {
-                          topBordertoggle("1");
-                        }}
-                      >
-                        <i className="ri-home-5-line align-middle me-1"></i>{" "}
-                        Organization Data
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        style={{ cursor: "pointer" }}
-                        className={classnames("nav-link", {
-                          active: topBorderTab === "2",
-                        })}
-                        onClick={() => {
-                          topBordertoggle("2");
-                        }}
-                      >
-                        <i className="ri-user-line me-1 align-middle"></i>{" "}
-                        Categories
-                      </NavLink>
-                    </NavItem>
-                  </Nav>
+                <div className="tabs-container" style={{ display: "flex", marginBottom: "20px" }}>
+                    {/* Organization Data Tab */}
+                    <div
+                      onClick={() => handleTabChange("organization")}
+                      style={{
+                        cursor: "pointer",
+                        padding: "10px 20px",
+                        borderTop: isOrganizationTabActive ? "3px solid #45CB85" : "3px solid transparent",
+                        fontWeight: isOrganizationTabActive ? "bold" : "normal",
+                        color: isOrganizationTabActive ? "#45CB85" : "#000",
+                        background: isOrganizationTabActive ? "#eff2f7":""
+                      }}
+                    >
+                      <i className="ri-home-5-line align-middle me-1"></i> Organization Data
+                    </div>
+                    
+                    {/* Categories Tab */}
+                    <div
+                      onClick={() => handleTabChange("categories")}
+                      style={{
+                        cursor: "pointer",
+                        padding: "10px 20px",
+                        borderTop: isCategoriesTabActive ? "3px solid #45CB85" : "3px solid transparent",
+                        fontWeight: isCategoriesTabActive ? "bold" : "normal",
+                        color: isCategoriesTabActive ? "#45CB85" : "#000",
+                        background: isCategoriesTabActive ? "#eff2f7":""
+                      }}
+                    >
+                      <i className="ri-user-line me-1 align-middle"></i> Categories
+                    </div>
+                  </div>
+                  <TabContent activeTab={isOrganizationTabActive ? "1" : "2"} >
+{isOrganizationTabActive ?
 
-                  <TabContent activeTab={topBorderTab} className="text-muted">
                     <TabPane tabId="1" id="nav-border-justified-home">
                       <Form className="needs-validation" style={{ marginTop: '3.5rem' }}>
                         <Row>
@@ -316,7 +335,7 @@ const ViewOrganization = () => {
                         </Row>
                       ))}
                       </Form>
-                    </TabPane>
+                    </TabPane> :
 
                     <TabPane tabId="2" id="nav-border-justified-profile">
                       <Col>
@@ -329,6 +348,7 @@ const ViewOrganization = () => {
                         </div>
                       </Col>
                     </TabPane>
+}
                   </TabContent>
                 </CardBody>
               </Card>
