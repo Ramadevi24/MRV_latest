@@ -13,6 +13,11 @@ import {
   CardHeader,
   Container,
   InputGroup,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -23,6 +28,7 @@ import "cleave.js/dist/addons/cleave-phone.in";
 import { TenantContext } from "../../contexts/TenantContext";
 import { OrganizationContext } from "../../contexts/OrganizationContext";
 import { formatDate } from "../../utils/formateDate";
+import classnames from "classnames";
 
 const EditOrganization = () => {
   const { t } = useTranslation();
@@ -34,6 +40,145 @@ const EditOrganization = () => {
   const [checkedItems, setCheckedItems] = useState([]);
   const [expandedItems, setExpandedItems] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [topBorderTab, setTopBorderTab] = useState(() => {
+    return localStorage.getItem("topBorderTab") || "1";
+  });
+
+  // Sync with localStorage when the state changes
+  useEffect(() => {
+    localStorage.setItem("topBorderTab", topBorderTab);
+  }, [topBorderTab]);
+
+  // Handle tab click and set the state
+  const topBordertoggle = (tab) => {
+    if (topBorderTab !== tab) {
+      setTopBorderTab(tab);
+    }
+  };
+
+  const CategoryCheckboxList = ({ categories, categoryIDs, setCategoryIDs }) => {
+    const [expandedFolders, setExpandedFolders] = useState({});
+  
+    const handleCheckboxChange = (categoryId, isChecked, subCategories) => {
+      const updatedCategoryIDs = new Set(categoryIDs);
+  
+      if (isChecked) {
+        updatedCategoryIDs.add(categoryId);
+      } else {
+        updatedCategoryIDs.delete(categoryId);
+      }
+  
+      if (subCategories && subCategories.$values.length > 0) {
+        subCategories.$values.forEach((subCategory) => {
+          if (isChecked) {
+            updatedCategoryIDs.add(subCategory.categoryID);
+          } else {
+            updatedCategoryIDs.delete(subCategory.categoryID);
+          }
+        });
+      }
+  
+      setCategoryIDs([...updatedCategoryIDs]);
+    };
+  
+    const handleFolderClick = (categoryId) => {
+      setExpandedFolders((prevExpandedFolders) => ({
+        ...prevExpandedFolders,
+        [categoryId]: !prevExpandedFolders[categoryId],
+      }));
+    };
+  
+    const renderCategories = (categories) => {
+      return categories
+        .filter(
+          (category) => category && category.categoryID && category.categoryName
+        )
+        .map((category) => {
+          const hasSubCategories =
+            category.subCategories &&
+            category.subCategories.$values &&
+            category.subCategories.$values.length > 0;
+  
+          return (
+            <div
+              key={category.categoryID}
+              style={{
+                marginLeft: "20px",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  padding: "5px",
+                  borderRadius: "4px",
+                  transition: "background 0.2s",
+                  width: "fit-content",
+                  userSelect: "none",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "#f0f0f0")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "transparent")
+                }
+              >
+                <span
+                  onClick={() =>
+                    hasSubCategories && handleFolderClick(category.categoryID)
+                  }
+                  style={{
+                    marginRight: "10px",
+                    fontSize: "20px",
+                  }}
+                >
+                  {hasSubCategories
+                    ? expandedFolders[category.categoryID]
+                      ? "▼ 📂"
+                      : "▶ 📁"
+                    : "📄"}
+                </span>
+                <input
+                  type="checkbox"
+                  id={`category-${category.categoryID}`}
+                  checked={categoryIDs.includes(category.categoryID)}
+                  onChange={(e) =>
+                    handleCheckboxChange(
+                      category.categoryID,
+                      e.target.checked,
+                      category.subCategories
+                    )
+                  }
+                  style={{
+                    transform: "scale(1.2)",
+                    marginRight: "10px",
+                    cursor: "pointer",
+                  }}
+                />
+                <label
+                  htmlFor={`category-${category.categoryID}`}
+                  style={{
+                    fontSize: "16px",
+                    cursor: "pointer",
+                  }}
+                >
+                  {category.categoryCode} - {category.categoryName}
+                </label>
+              </div>
+              {hasSubCategories &&
+                expandedFolders[category.categoryID] &&
+                renderCategories(category.subCategories.$values)}
+            </div>
+          );
+        });
+    };
+  
+    return <div>{renderCategories(categories)}</div>;
+  };
+
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -127,6 +272,20 @@ const EditOrganization = () => {
     };
     fetchData();
   }, [id, categories, tenants]);
+
+  const [formData, setFormData] = useState(validation.initialValues);
+
+  const handleNext = () => {
+    setFormData(validation.values);
+    topBordertoggle("2");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    validation.setValues(formData); // Update formik values with latest state
+    validation.handleSubmit(); // Submit the form
+  };
+
   
 
   const handleCheck = (category, event) => {
@@ -289,6 +448,40 @@ const EditOrganization = () => {
                 </CardHeader>
 
                 <CardBody>
+                <Nav
+                    tabs
+                    className="nav nav-tabs nav-justified nav-border-top nav-border-top-success mb-3"
+                  >
+                    <NavItem>
+                      <NavLink
+                        style={{ cursor: "pointer" }}
+                        // className={classnames({ active: topBorderTab === "1" })}
+                        className={classnames("nav-link", { active: topBorderTab === "1" })}
+                        onClick={() => {
+                          topBordertoggle("1");
+                        }}
+                      >
+                        <i className="ri-home-5-line align-middle me-1"></i>{" "}
+                        Organization Data
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        style={{ cursor: "pointer" }}
+                        // className={classnames({ active: topBorderTab === "2" })}
+                        className={classnames("nav-link", { active: topBorderTab === "2" })}
+                        onClick={() => {
+                          topBordertoggle("2");
+                        }}
+                      >
+                        <i className="ri-user-line me-1 align-middle"></i>{" "}
+                        Categories
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+
+                  <TabContent activeTab={topBorderTab} className="text-muted">
+                    <TabPane tabId="1" id="nav-border-justified-home">
                   <Form
                     className="needs-validation "
                     onSubmit={(e) => {
@@ -470,7 +663,7 @@ const EditOrganization = () => {
                           </div>
                         </FormGroup>
                       </Col>
-                      <Col>
+                      {/* <Col>
                         <div className="mb-3">
                           <Label
                             htmlFor="choices-multiple-default"
@@ -499,10 +692,10 @@ const EditOrganization = () => {
                                   justifyContent: "space-between",
                                 }}
                               >
-                                                   <div>
+                                                   <div> */}
                               {/* <div> Select Categories </div> */}
                                {/* Display selected categories or default text */}
-            {checkedItems.length > 0 ? (
+            {/* {checkedItems.length > 0 ? (
               <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
                 {checkedItems.map((categoryID) => {
                   const categoryName = findCategoryNameById(categoryID, categories);
@@ -511,7 +704,7 @@ const EditOrganization = () => {
                       key={categoryID}
                       style={{
                         display: "inline-block",
-                        backgroundColor: "#f0f0f0", // Light background for the category/subcategory
+                        backgroundColor: "#f0f0f0", 
                         borderRadius: "10px",
                         padding: "5px 21px",
                         marginRight: "5px",
@@ -543,7 +736,7 @@ const EditOrganization = () => {
                 })}
               </div>
             ) : (
-              <span>{t('Select Categories')}</span>  // Default text if no categories are selected
+              <span>{t('Select Categories')}</span> 
             )}
             </div>
                                 <div>{isDropdownOpen ? "▲" : "▼"}</div>
@@ -576,9 +769,7 @@ const EditOrganization = () => {
                             </FormFeedback>
                           ) : null}
                         </div>
-                      </Col>
-                    </Row>
-                    <Row>
+                      </Col>  */}
                       <Col>
                         <FormGroup>
                           <div className="mb-3">
@@ -611,108 +802,7 @@ const EditOrganization = () => {
                     <Col>
                       <Label style={{ fontSize: "18px", fontWeight: 'bold' }}>{t('Location')}:</Label>
                     </Col>
-                    {/* {validation.values.locations && validation.values.locations.$values && validation.values.locations.$values.length > 0 && validation.values.locations.$values?.map((location, index) => (
-                      <Row key={index}>
-                        <Col>
-                          <div className="mb-3">
-                            <Label
-                              htmlFor={`latitude-${index}`}
-                              className="form-label"
-                            >
-                              {t('Latitude')}<span className="text-danger">*</span>
-                            </Label>
-                            <Input
-                              type="text"
-                              className="form-control"
-                              placeholder={t("Enter your Latitude")}
-                              id={`latitude-${index}`}
-                              onChange={validation.handleChange}
-                              name={`locations[${index}].latitude`}
-                              onBlur={validation.handleBlur}
-                              value={
-                                validation.values.locations.$values[index].latitude ||
-                                ""
-                              }
-                             
-                            />
-                            {validation.touched.locations &&
-                              validation.touched.locations.$values[index]?.latitude &&
-                              validation.errors.locations &&
-                              validation.errors.locations.$values[index]?.latitude && (
-                                <FormFeedback>
-                                  {validation.errors.locations.$values[index].latitude}
-                                </FormFeedback>
-                              )}
-                          </div>
-                        </Col>
-                        <Col>
-                          <div className="mb-3">
-                            <Label
-                              className="form-label"
-                              htmlFor={`longitude-${index}`}
-                            >
-                              {t('Longitude')}<span className="text-danger">*</span>
-                            </Label>
-                            <Input
-                              type="text"
-                              className="form-control"
-                              placeholder={t("Enter your Longitude")}
-                              id={`longitude-${index}`}
-                              onChange={validation.handleChange}
-                              name={`locations[${index}].longitude`}
-                              onBlur={validation.handleBlur}
-                              value={
-                                validation.values.locations.$values[index].longitude ||
-                                ""
-                              }
-                              
-                            />
-                            {validation.touched.locations &&
-                              validation.touched.locations.$values[index]?.longitude &&
-                              validation.errors.locations &&
-                              validation.errors.locations.$values[index]?.longitude && (
-                                <FormFeedback>
-                                  {validation.errors.locations.$values[index].longitude}
-                                </FormFeedback>
-                              )}
-                          </div>
-                        </Col>
-                        <Col>
-                          <div className="mb-3">
-                            <Label
-                              htmlFor={`address-${index}`}
-                              className="form-label"
-                            >
-                              {t('Location Address')}
-                              <span className="text-danger">*</span>
-                            </Label>
-                            <Input
-                              type="text"
-                              className="form-control"
-                              placeholder={t("Enter Location Address")}
-                              id={`address-${index}`}
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              name={`locations[${index}].address`}
-                              value={
-                                validation.values.locations.$values[index].address || ""
-                              }
-                              
-                            />
-                            {validation.touched.locations &&
-                              validation.touched.locations.$values[index]?.address &&
-                              validation.errors.locations &&
-                              validation.errors.locations.$values[index]?.address && (
-                                <FormFeedback>
-                                  {validation.errors.locations.$values[index].address}
-                                </FormFeedback>
-                              )}
-                          </div>
-                        </Col>
-                      </Row>
-                    ))} */}
-
-                    {/* Render locations */}
+                   
 {validation.values.locations && validation.values.locations.length > 0 && 
   validation.values.locations.map((location, index) => (
     <Row key={index}>
@@ -816,10 +906,11 @@ const EditOrganization = () => {
                     <div className="d-flex justify-content-end  mt-3" style={{ marginRight: '4rem' }}>
                       <Button
                         type="submit"
-                        color="success"
+                        color="primary"
                         className="rounded-pill me-2"
+                        onClick={handleNext}
                       >
-                        {t('Submit')}
+                        {t('Next')}
                       </Button>
                       <Button
                         type="button"
@@ -831,6 +922,36 @@ const EditOrganization = () => {
                       </Button>
                     </div>
                   </Form>
+                  </TabPane>
+
+<TabPane tabId="2" id="nav-border-justified-profile">
+  <Col>
+    <div className="mb-3" style={{ color: "black" }}>
+    <CategoryCheckboxList
+        categories={categories}
+        categoryIDs={validation.values.categoryIDs}
+        setCategoryIDs={(newCategoryIDs) =>
+          validation.setFieldValue("categoryIDs", newCategoryIDs)
+        }
+      />
+    </div>
+  </Col>
+  <div
+    className="d-flex justify-content-end mt-3"
+    style={{ marginRight: "4rem" }}
+  >
+    <Button
+      type="submit"
+      color="success"
+      className="rounded-pill me-2"
+      // onClick={(e) => validation.handleSubmit()}
+      onClick={handleSubmit}
+    >
+      Submit
+    </Button>
+  </div>
+</TabPane>
+</TabContent>
                 </CardBody>
               </Card>
             </Col>
