@@ -102,7 +102,12 @@
   "Write": "Scrivi",
   "Edit": "Modifica",
   "Delete": "Elimina",
-  "Show 7 sub-categories": "Mostra 7 sottocategorie"
+  "Show 7 sub-categories": "Mostra 7 sottocategorie",
+  "AreYouSure":"Sei sicuro?",
+  "Are you sure you want to remove this record": "Sei sicuro di voler rimuovere questo record?",
+  "Close":"Chiudi",
+  "YesDeleteIt":"Sì, eliminalo!"
+
 
 
   

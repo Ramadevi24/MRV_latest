@@ -103,7 +103,11 @@
   "Write": "كتابة",
   "Edit": "تحرير",
   "Delete": "حذف",
-  "Show 7 sub-categories": "إظهار 7 الفئات الفرعية"
+  "Show 7 sub-categories": "إظهار 7 الفئات الفرعية",
+  "Are You Sure":"هل أنت متأكد؟",
+  "Are you sure you want to remove this record": "هل أنت متأكد أنك تريد إزالة هذا السجل؟",
+  "Close":"إغلاق",
+  "Yes Delete It":"نعم، احذفه!"
 
 
 

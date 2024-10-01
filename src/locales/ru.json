@@ -102,5 +102,10 @@
     "Write": "Писать",
     "Edit": "Редактировать",
     "Delete": "Удалить",
-    "Show 7 sub-categories": "Показать 7 подкатегорий"
+    "Show 7 sub-categories": "Показать 7 подкатегорий",
+    "Are You Sure":"Вы уверены?",
+     "Are you sure you want to remove this record":"Вы уверены, что хотите удалить эту запись?",
+     "Close":"Закрыть",
+     "Yes Delete It": "Да, удалите это!"
+
 }

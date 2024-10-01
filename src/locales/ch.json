@@ -102,6 +102,10 @@
  "Write": "写入",
  "Edit": "编辑",
  "Delete": "删除",
- "Show 7 sub-categories": "显示 7 子类别"
+ "Show 7 sub-categories": "显示 7 子类别",
+ "Are You Sure":"你确定吗？",
+ "Are you sure you want to remove this record":"您确定要删除此记录吗？",
+ "Close":"关闭",
+ "Yes Delete It": "是的，删除它！"
     
 }
