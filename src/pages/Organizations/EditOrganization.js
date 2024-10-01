@@ -40,19 +40,35 @@ const EditOrganization = () => {
   const [checkedItems, setCheckedItems] = useState([]);
   const [expandedItems, setExpandedItems] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [topBorderTab, setTopBorderTab] = useState(() => {
-    return localStorage.getItem("topBorderTab") || "1";
-  });
+
+
+
+  const [isOrganizationTabActive, setIsOrganizationTabActive] = useState(true);
+  const [isCategoriesTabActive, setIsCategoriesTabActive] = useState(false);
+
+  // const [topBorderTab, setTopBorderTab] = useState(() => {
+  //   return localStorage.getItem("topBorderTab") || "1";
+  // });
 
   // Sync with localStorage when the state changes
-  useEffect(() => {
-    localStorage.setItem("topBorderTab", topBorderTab);
-  }, [topBorderTab]);
+  // useEffect(() => {
+  //   localStorage.setItem("topBorderTab", topBorderTab);
+  // }, [topBorderTab]);
 
   // Handle tab click and set the state
-  const topBordertoggle = (tab) => {
-    if (topBorderTab !== tab) {
-      setTopBorderTab(tab);
+  // const topBordertoggle = (tab) => {
+  //   if (topBorderTab !== tab) {
+  //     setTopBorderTab(tab);
+  //   }
+  // };
+
+  const handleTabChange = (tab) => {
+    if (tab === "organization") {
+      setIsOrganizationTabActive(true);
+      setIsCategoriesTabActive(false);
+    } else if (tab === "categories") {
+      setIsOrganizationTabActive(false);
+      setIsCategoriesTabActive(true);
     }
   };
 
@@ -277,7 +293,8 @@ const EditOrganization = () => {
 
   const handleNext = () => {
     setFormData(validation.values);
-    topBordertoggle("2");
+    // topBordertoggle("2");
+    handleTabChange("categories");
   };
 
   const handleSubmit = async (e) => {
@@ -448,7 +465,7 @@ const EditOrganization = () => {
                 </CardHeader>
 
                 <CardBody>
-                <Nav
+                {/* <Nav
                     tabs
                     className="nav nav-tabs nav-justified nav-border-top nav-border-top-success mb-3"
                   >
@@ -478,9 +495,41 @@ const EditOrganization = () => {
                         Categories
                       </NavLink>
                     </NavItem>
-                  </Nav>
+                  </Nav> */}
+                  <div className="tabs-container" style={{ display: "flex", marginBottom: "20px" }}>
+                    {/* Organization Data Tab */}
+                    <div
+                      onClick={() => handleTabChange("organization")}
+                      style={{
+                        cursor: "pointer",
+                        padding: "10px 20px",
+                        borderTop: isOrganizationTabActive ? "3px solid #45CB85" : "3px solid transparent",
+                        fontWeight: isOrganizationTabActive ? "bold" : "normal",
+                        color: isOrganizationTabActive ? "#45CB85" : "#000",
+                        background: isOrganizationTabActive ? "#eff2f7":""
+                      }}
+                    >
+                      <i className="ri-home-5-line align-middle me-1"></i> Organization Data
+                    </div>
+                    
+                    {/* Categories Tab */}
+                    <div
+                      onClick={() => handleTabChange("categories")}
+                      style={{
+                        cursor: "pointer",
+                        padding: "10px 20px",
+                        borderTop: isCategoriesTabActive ? "3px solid #45CB85" : "3px solid transparent",
+                        fontWeight: isCategoriesTabActive ? "bold" : "normal",
+                        color: isCategoriesTabActive ? "#45CB85" : "#000",
+                        background: isCategoriesTabActive ? "#eff2f7":""
+                      }}
+                    >
+                      <i className="ri-user-line me-1 align-middle"></i> Categories
+                    </div>
+                  </div>
 
-                  <TabContent activeTab={topBorderTab} className="text-muted">
+                  <TabContent activeTab={isOrganizationTabActive ? "1" : "2"}>
+                  {isOrganizationTabActive ?
                     <TabPane tabId="1" id="nav-border-justified-home">
                   <Form
                     className="needs-validation "
@@ -906,7 +955,7 @@ const EditOrganization = () => {
                     <div className="d-flex justify-content-end  mt-3" style={{ marginRight: '4rem' }}>
                       <Button
                         type="submit"
-                        color="primary"
+                        color="success"
                         className="rounded-pill me-2"
                         onClick={handleNext}
                       >
@@ -922,7 +971,7 @@ const EditOrganization = () => {
                       </Button>
                     </div>
                   </Form>
-                  </TabPane>
+                  </TabPane>:
 
 <TabPane tabId="2" id="nav-border-justified-profile">
   <Col>
@@ -940,6 +989,15 @@ const EditOrganization = () => {
     className="d-flex justify-content-end mt-3"
     style={{ marginRight: "4rem" }}
   >
+     <Button
+                            type="button"
+                            color="danger"
+                            className="rounded-pill"
+                            onClick={() =>     handleTabChange("organization")}
+                            style={{ marginRight: "1rem" }}
+                          >
+                            Cancel
+                          </Button>
     <Button
       type="submit"
       color="success"
@@ -950,7 +1008,7 @@ const EditOrganization = () => {
       Submit
     </Button>
   </div>
-</TabPane>
+</TabPane>}
 </TabContent>
                 </CardBody>
               </Card>
