@@ -100,5 +100,9 @@
    "Write": "Écrire",
    "Edit": "Modifier",
    "Delete": "Supprimer",
-   "Show 7 sub-categories": "Afficher 7 sous-catégories"
+   "Show 7 sub-categories": "Afficher 7 sous-catégories",
+   "Are You Sure": "Êtes-vous sûr?",
+   "Are you sure you want to remove this record":"Êtes-vous sûr de vouloir supprimer cet enregistrement?",
+   "Close":"Fermer",
+   "Yes Delete It": "Oui, supprimez-le!"
 }

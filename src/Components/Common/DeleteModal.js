@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
+import { useTranslation } from "react-i18next";
 
 const DeleteModal = ({ show, onDeleteClick, onCloseClick }) => {
+  const {t}=useTranslation();
   return (
     <Modal isOpen={show} toggle={onCloseClick}>
       <ModalBody className="py-3 px-5">
@@ -15,9 +17,9 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick }) => {
 ></lord-icon>
 
           <div className="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-            <h4>Are you sure ?</h4>
+            <h4>{t('Are You Sure')} ?</h4>
             <p className="text-muted mx-4 mb-0">
-              Are you sure you want to remove this record ?
+              {t('Are you sure you want to remove this record')} ?
             </p>
           </div>
         </div>
@@ -28,7 +30,7 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick }) => {
             data-bs-dismiss="modal"
             onClick={onCloseClick}
           >
-            Close
+            {t('Close')}
           </button>
           <button
             type="button"
@@ -36,7 +38,7 @@ const DeleteModal = ({ show, onDeleteClick, onCloseClick }) => {
             id="delete-record"
             onClick={onDeleteClick}
           >
-            Yes, Delete It!
+           {t('Yes Delete It')}
           </button>
         </div>
       </ModalBody>
