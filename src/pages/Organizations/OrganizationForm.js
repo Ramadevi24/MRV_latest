@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import {
   Col,
   Label,
@@ -35,23 +35,16 @@ const OrganizationForm = () => {
   const userPermissions =
     JSON.parse(localStorage.getItem("UserPermissions")) || [];
   const { fetchAllTenants, tenants } = useContext(TenantContext);
-  const { fetchAllCategories, categories, addOrganization } =
-    useContext(OrganizationContext);
-
-
-
-
+  const { fetchAllCategories, categories, addOrganization } = useContext(OrganizationContext);
 
     const [topBorderTab, setTopBorderTab] = useState(() => {
       return localStorage.getItem("topBorderTab") || "1";
     });
   
-    // Sync with localStorage when the state changes
     useEffect(() => {
       localStorage.setItem("topBorderTab", topBorderTab);
     }, [topBorderTab]);
   
-    // Handle tab click and set the state
     const topBordertoggle = (tab) => {
       if (topBorderTab !== tab) {
         setTopBorderTab(tab);
@@ -61,126 +54,145 @@ const OrganizationForm = () => {
     const CategoryCheckboxList = ({ categories, categoryIDs, setCategoryIDs }) => {
       const [expandedFolders, setExpandedFolders] = useState({});
     
-      const handleCheckboxChange = (categoryId, isChecked, subCategories) => {
-        const updatedCategoryIDs = new Set(categoryIDs);
-    
-        if (isChecked) {
-          updatedCategoryIDs.add(categoryId);
-        } else {
-          updatedCategoryIDs.delete(categoryId);
-        }
-    
-        if (subCategories && subCategories.$values.length > 0) {
-          subCategories.$values.forEach((subCategory) => {
-            if (isChecked) {
-              updatedCategoryIDs.add(subCategory.categoryID);
-            } else {
-              updatedCategoryIDs.delete(subCategory.categoryID);
-            }
+      // Recursively get all subcategory IDs
+      const getAllSubCategoryIDs = (category) => {
+        let ids = [category.categoryID];
+        if (category.subCategories && category.subCategories.$values.length > 0) {
+          category.subCategories.$values.forEach((subCategory) => {
+            ids = ids.concat(getAllSubCategoryIDs(subCategory));
           });
         }
-    
-        setCategoryIDs([...updatedCategoryIDs]);
+        return ids;
       };
     
-      const handleFolderClick = (categoryId) => {
+      // Handle checkbox change
+      const handleCheckboxChange = useCallback(
+        (category, isChecked) => {
+          const updatedCategoryIDs = new Set(categoryIDs);
+    
+          if (isChecked) {
+            // Add the current category and all subcategories
+            const allCategoryIDs = getAllSubCategoryIDs(category);
+            allCategoryIDs.forEach((id) => updatedCategoryIDs.add(id));
+    
+            // Ensure all parent categories are also selected
+            let parent = category.parent;
+            while (parent) {
+              updatedCategoryIDs.add(parent.categoryID);
+              parent = parent.parent;
+            }
+          } else {
+            // Remove the current category and all subcategories
+            const allCategoryIDs = getAllSubCategoryIDs(category);
+            allCategoryIDs.forEach((id) => updatedCategoryIDs.delete(id));
+          }
+    
+          setCategoryIDs([...updatedCategoryIDs]);
+        },
+        [categoryIDs, setCategoryIDs]
+      );
+    
+      // Handle folder (expand/collapse) toggle
+      const handleFolderClick = useCallback((categoryId, e) => {
+        // Prevent checkbox from toggling folder
+        e.stopPropagation();
         setExpandedFolders((prevExpandedFolders) => ({
           ...prevExpandedFolders,
           [categoryId]: !prevExpandedFolders[categoryId],
         }));
-      };
+      }, []);
     
-      const renderCategories = (categories) => {
-        return categories
-          .filter(
-            (category) => category && category.categoryID && category.categoryName
-          )
-          .map((category) => {
-            const hasSubCategories =
-              category.subCategories &&
-              category.subCategories.$values &&
-              category.subCategories.$values.length > 0;
+      // Render the category list recursively
+      const renderCategories = useCallback(
+        (categories) => {
+          return categories
+            .filter((category) => category && category.categoryID && category.categoryName)
+            .map((category) => {
+              const hasSubCategories =
+                category.subCategories && category.subCategories.$values.length > 0;
     
-            return (
-              <div
-                key={category.categoryID}
-                style={{
-                  marginLeft: "20px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
+              return (
                 <div
+                  key={category.categoryID}
                   style={{
+                    marginLeft: "20px",
                     display: "flex",
-                    alignItems: "center",
-                    cursor: "pointer",
-                    padding: "5px",
-                    borderRadius: "4px",
-                    transition: "background 0.2s",
-                    width: "fit-content",
-                    userSelect: "none",
+                    flexDirection: "column",
                   }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "#f0f0f0")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "transparent")
-                  }
                 >
-                  <span
-                    onClick={() =>
-                      hasSubCategories && handleFolderClick(category.categoryID)
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      cursor: hasSubCategories ? "pointer" : "default",
+                      padding: "5px",
+                      borderRadius: "4px",
+                      transition: "background 0.2s",
+                      width: "fit-content",
+                      userSelect: "none",
+                    }}
+                    onClick={(e) =>
+                      hasSubCategories && handleFolderClick(category.categoryID, e)
                     }
-                    style={{
-                      marginRight: "10px",
-                      fontSize: "20px",
-                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "#f0f0f0")}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                   >
-                    {hasSubCategories
-                      ? expandedFolders[category.categoryID]
-                        ? "▼ 📂"
-                        : "▶ 📁"
-                      : "📄"}
-                  </span>
-                  <input
-                    type="checkbox"
-                    id={`category-${category.categoryID}`}
-                    checked={categoryIDs.includes(category.categoryID)}
-                    onChange={(e) =>
-                      handleCheckboxChange(
-                        category.categoryID,
-                        e.target.checked,
-                        category.subCategories
-                      )
-                    }
-                    style={{
-                      transform: "scale(1.2)",
-                      marginRight: "10px",
-                      cursor: "pointer",
-                    }}
-                  />
-                  <label
-                    htmlFor={`category-${category.categoryID}`}
-                    style={{
-                      fontSize: "16px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {category.categoryCode} - {category.categoryName}
-                  </label>
+                    <span
+                      style={{
+                        marginRight: "10px",
+                        fontSize: "20px",
+                      }}
+                    >
+                      {hasSubCategories
+                        ? expandedFolders[category.categoryID]
+                          ? "▼ 📂"
+                          : "▶ 📁"
+                        : "📄"}
+                    </span>
+                    <input
+                      type="checkbox"
+                      id={`category-${category.categoryID}`}
+                      checked={categoryIDs.includes(category.categoryID)}
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent dropdown from closing on checkbox click
+                      }}
+                      onChange={(e) => {
+                        handleCheckboxChange(category, e.target.checked);
+                      }}
+                      style={{
+                        transform: "scale(1.2)",
+                        marginRight: "10px",
+                        cursor: "pointer",
+                      }}
+                    />
+                    <label
+                      htmlFor={`category-${category.categoryID}`}
+                      style={{
+                        fontSize: "16px",
+                        cursor: "pointer",
+                      }}
+                      onClick={(e) => e.stopPropagation()} // Prevent dropdown from closing on label click
+                    >
+                      {category.categoryCode} - {category.categoryName}
+                    </label>
+                  </div>
+                  {hasSubCategories &&
+                    expandedFolders[category.categoryID] &&
+                    renderCategories(category.subCategories.$values)}
                 </div>
-                {hasSubCategories &&
-                  expandedFolders[category.categoryID] &&
-                  renderCategories(category.subCategories.$values)}
-              </div>
-            );
-          });
-      };
+              );
+            });
+        },
+        [expandedFolders, handleFolderClick, handleCheckboxChange, categoryIDs]
+      );
     
       return <div>{renderCategories(categories)}</div>;
     };
     
+    const handleSubmit = async () => {
+      await validation.setFieldValue('categoryIDs', formData.categoryIDs);
+      validation.submitForm();
+    };
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -218,6 +230,15 @@ const OrganizationForm = () => {
       ),
     }),
     onSubmit: async (values) => {
+      console.log("Values before submission:", values.categoryIDs);
+    
+      const updatedValues = {
+        ...values,
+        categoryIDs: values.categoryIDs
+      };
+    
+      console.log("Payload being sent:", updatedValues);
+    
       try {
         await addOrganization(values);
         toast.success(t("Organization created successfully"), {
@@ -236,18 +257,21 @@ const OrganizationForm = () => {
     setFormData(validation.values);
     topBordertoggle("2");
   };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    validation.setValues(formData); // Update formik values with latest state
-    validation.handleSubmit(); // Submit the form
-  };
+ 
+  
+  
   
 
   useEffect(() => {
     fetchAllTenants();
     fetchAllCategories();
   }, []);
+
+  useEffect(() => {
+    if (categories) {
+      validation.setFieldValue("categoryIDs", validation.values.categoryIDs);
+    }
+  }, [categories]);
 
   return (
     <React.Fragment>
@@ -303,7 +327,7 @@ const OrganizationForm = () => {
 
                   <TabContent activeTab={topBorderTab} className="text-muted">
                     <TabPane tabId="1" id="nav-border-justified-home">
-                      <Form
+                      <Form onSubmit={validation.handleSubmit}
                         className="needs-validation"
                         // onSubmit={(e) => {
                         //   e.preventDefault();
@@ -773,9 +797,10 @@ const OrganizationForm = () => {
                         <CategoryCheckboxList
                             categories={categories}
                             categoryIDs={validation.values.categoryIDs}
-                            setCategoryIDs={(newCategoryIDs) =>
-                              validation.setFieldValue("categoryIDs", newCategoryIDs)
-                            }
+                            setCategoryIDs={async (newCategoryIDs) => {
+                              console.log("Updated category IDs:", newCategoryIDs);
+                              await validation.setFieldValue("categoryIDs", newCategoryIDs);
+                            }}
                           />
                         </div>
                       </Col>
@@ -788,7 +813,9 @@ const OrganizationForm = () => {
                           color="success"
                           className="rounded-pill me-2"
                           // onClick={(e) => validation.handleSubmit()}
-                          onClick={handleSubmit}
+                          onClick={() => {
+                            validation.handleSubmit();
+                          }}
                         >
                           Submit
                         </Button>
