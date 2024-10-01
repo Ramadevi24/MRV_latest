@@ -43,8 +43,12 @@ const EditOrganization = () => {
 
 
 
-  const [isOrganizationTabActive, setIsOrganizationTabActive] = useState(true);
-  const [isCategoriesTabActive, setIsCategoriesTabActive] = useState(false);
+  const [isOrganizationTabActive, setIsOrganizationTabActive] = useState(
+    localStorage.getItem("activeTab") === "categories" ? false : true
+  );
+  const [isCategoriesTabActive, setIsCategoriesTabActive] = useState(
+    localStorage.getItem("activeTab") === "categories" ? true : false
+  );
 
   // const [topBorderTab, setTopBorderTab] = useState(() => {
   //   return localStorage.getItem("topBorderTab") || "1";
@@ -66,9 +70,11 @@ const EditOrganization = () => {
     if (tab === "organization") {
       setIsOrganizationTabActive(true);
       setIsCategoriesTabActive(false);
+      localStorage.setItem("activeTab", "organization");
     } else if (tab === "categories") {
       setIsOrganizationTabActive(false);
       setIsCategoriesTabActive(true);
+      localStorage.setItem("activeTab", "categories");
     }
   };
 
