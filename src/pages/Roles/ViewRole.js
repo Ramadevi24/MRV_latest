@@ -83,19 +83,25 @@ const ViewRole = () => {
 
   const getSwitchColor = (permissionDisplayName, isChecked) => {
     if (!isChecked) {
-      return "switch-default";
+      if (permissionDisplayName.toLowerCase()){
+      return "switch-default"; // Default color for switch off
     }
-    if (permissionDisplayName.toLowerCase().includes("create")) {
-      return "switch-warning";
-    } else if (permissionDisplayName.toLowerCase().includes("edit")) {
-      return "switch-primary";
-    } else if (permissionDisplayName.toLowerCase().includes("view")) {
-      return "switch-success";
-    } else if (permissionDisplayName.toLowerCase().includes("delete")) {
-      return "switch-danger";
-    } else {
-      return "";
+  }
+    else{
+      return "switch-success"
     }
+
+    // if (permissionDisplayName.toLowerCase().includes("create")) {
+    //   return "switch-warning";
+    // } else if (permissionDisplayName.toLowerCase().includes("edit")) {
+    //   return "switch-primary";
+    // } else if (permissionDisplayName.toLowerCase().includes("view")) {
+    //   return "switch-success";
+    // } else if (permissionDisplayName.toLowerCase().includes("delete")) {
+    //   return "switch-danger";
+    // } else {
+    //   return "";
+    // }
   };
 
   return (
@@ -177,17 +183,17 @@ const ViewRole = () => {
                           {Object?.entries(groupedPermissions)?.map(
                             ([groupName, groupPermissions]) => (
                               <tr key={groupName} className="role-table-tr">
-                                <td style={{ padding: "10px" }}>
+                                <td style={{ padding: "20px" }}>
                                   <FormGroup check inline>
                                     <Label check>
                                       {groupName} {/* Disabling group checkbox */}
                                     </Label>
                                   </FormGroup>
-                                  <div>
+                                  {/* <div>
                                     <a href="#">
                                       Show {groupPermissions.length} sub-categories
                                     </a>
-                                  </div>
+                                  </div> */}
                                 </td>
                                 <td className="role-table" style={{display: "flex", flexWrap: "wrap"}}>
                                   {groupPermissions.map((permission) => (
@@ -213,6 +219,7 @@ const ViewRole = () => {
                                         dir="ltr"
                                       >
                                         <Input
+                                        style={{marginLeft: "20px"}}
                                           type="checkbox"
                                           className={`form-check-input ${getSwitchColor(
                                             permission.permissionDisplayName,

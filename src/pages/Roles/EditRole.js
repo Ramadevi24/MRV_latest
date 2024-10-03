@@ -122,20 +122,26 @@ const EditRole = () => {
   // Function to determine the switch color based on permission action
   const getSwitchColor = (permissionDisplayName, isChecked) => {
     if (!isChecked) {
+      if (permissionDisplayName.toLowerCase()){
       return "switch-default"; // Default color for switch off
     }
-
-    if (permissionDisplayName.toLowerCase().includes("create")) {
-      return "switch-warning"; // Yellow for Create when checked
-    } else if (permissionDisplayName.toLowerCase().includes("edit")) {
-      return "switch-primary"; // Primary for Edit when checked
-    } else if (permissionDisplayName.toLowerCase().includes("view")) {
-      return "switch-success"; // Success (green) for View when checked
-    } else if (permissionDisplayName.toLowerCase().includes("delete")) {
-      return "switch-danger"; // Danger (red) for Delete when checked
-    } else {
-      return ""; // Default color if no match
+  }
+    else{
+      return "switch-success"
     }
+
+
+    // if (permissionDisplayName.toLowerCase().includes("create")) {
+    //   return "switch-warning"; // Yellow for Create when checked
+    // } else if (permissionDisplayName.toLowerCase().includes("edit")) {
+    //   return "switch-primary"; // Primary for Edit when checked
+    // } else if (permissionDisplayName.toLowerCase().includes("view")) {
+    //   return "switch-success"; // Success (green) for View when checked
+    // } else if (permissionDisplayName.toLowerCase().includes("delete")) {
+    //   return "switch-danger"; // Danger (red) for Delete when checked
+    // } else {
+    //   return ""; // Default color if no match
+    // }
   };
 
   return (
@@ -250,18 +256,18 @@ const EditRole = () => {
                           {Object?.entries(groupedPermissions)?.map(
                             ([groupName, groupPermissions]) => (
                               <tr key={groupName} className="role-table-tr">
-                                <td style={{ padding: "10px" }}>
+                                <td style={{ padding: "20px" }}>
                                   <FormGroup check inline>
                                     <Label check>
                                      {groupName}
                                     </Label>
                                   </FormGroup>
-                                  <div>
+                                  {/* <div>
                                     <a href="#">
                                       Show {groupPermissions.length}{" "}
                                       sub-categories
                                     </a>
-                                  </div>
+                                  </div> */}
                                 </td>
                                 <td className="role-table" style={{display: "flex",flexWrap: "wrap"}}>
                                 {groupPermissions.map((permission) => (
@@ -290,6 +296,7 @@ const EditRole = () => {
                                         dir="ltr"
                                       >
                                         <Input
+                                        style={{marginLeft: "20px"}}
                                           type="checkbox"
                                           className={`form-check-input ${getSwitchColor(
                                             permission.permissionDisplayName,

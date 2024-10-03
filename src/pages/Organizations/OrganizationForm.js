@@ -27,7 +27,6 @@ import { useFormik } from "formik";
 import "cleave.js/dist/addons/cleave-phone.in";
 import { TenantContext } from "../../contexts/TenantContext";
 import { OrganizationContext } from "../../contexts/OrganizationContext";
-import classnames from "classnames";
 
 const OrganizationForm = () => {
   const { t } = useTranslation();
@@ -46,22 +45,6 @@ const OrganizationForm = () => {
       localStorage.getItem("activeTab") === "categories" ? true : false
     );
 
-    // const [topBorderTab, setTopBorderTab] = useState(() => {
-    //   return localStorage.getItem("topBorderTab") || "1";
-    // });
-  
-    // Sync with localStorage when the state changes
-    // useEffect(() => {
-    //   localStorage.setItem("topBorderTab", topBorderTab);
-    // }, [topBorderTab]);
-  
-    // // Handle tab click and set the state
-    // const topBordertoggle = (tab) => {
-    //   if (topBorderTab !== tab) {
-    //     setTopBorderTab(tab);
-    //   }
-    // };
-    // Handle tab change
   const handleTabChange = (tab) => {
     if (tab === "organization") {
       setIsOrganizationTabActive(true);

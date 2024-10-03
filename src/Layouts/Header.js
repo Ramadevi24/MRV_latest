@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import ead_dark from "../assets/images/ead_dark.png";
 import ead_light from "../assets/images/ead_light.png";
 
+import logoicon from '../assets/images/logoicon.png'
+
 //import Components
 import LanguageDropdown from '../Components/Common/LanguageDropdown';
 import FullScreenDropdown from '../Components/Common/FullScreenDropdown';
@@ -74,19 +76,19 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                             <div className="navbar-brand-box horizontal-logo">
                                 <Link to="/" className="logo logo-dark">
                                     <span className="logo-sm">
-                                        <img src={ead_light} alt="" height="60" width="150" />
+                                        <img src={logoicon} alt="" height="60" width="60" style={{marginLeft: "10px",marginTop:"-10px"}} />
                                     </span>
                                     <span className="logo-lg">
-                                        <img src={ead_light} alt="" height="100" width="150" />
+                                        <img src={ead_light} alt="" height="60" width="200" />
                                     </span>
                                 </Link>
 
                                 <Link to="/" className="logo logo-light">
                                     <span className="logo-sm">
-                                        <img src={ead_dark} alt="" height="60" width="150" />
+                                        <img src={logoicon} alt="" height="60" width="60" style={{marginLeft: "10px",marginTop:"-10px"}} />
                                     </span>
                                     <span className="logo-lg">
-                                        <img src={ead_dark} alt="" height="100" width="150" />
+                                        <img src={ead_dark} alt="" height="60" width="200" />
                                     </span>
                                 </Link>
                             </div>
