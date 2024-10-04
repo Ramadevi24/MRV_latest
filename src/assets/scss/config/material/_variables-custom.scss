@@ -63,8 +63,8 @@ $vertical-menu-box-shadow-gradient:               0 2px 4px rgba(15,34,58,0.12);
 $vertical-menu-dropdown-box-shadow-gradient:      0 2px 4px rgba(15,34,58,0.12);
 
 //gradient one
-$vertical-menu-bg-gradient:                       linear-gradient(to right, var(--#{$prefix}primary), var(--#{$prefix}success));
-$vertical-menu-border-gradient:                   var(--#{$prefix}success);
+$vertical-menu-bg-gradient:                       linear-gradient(to top, #036068,rgb(8, 126, 205));
+$vertical-menu-border-gradient:                  #036068;
 $twocolumn-menu-iconview-bg-gradient:             var(--#{$prefix}primary);
 
 //gradient-2
@@ -106,6 +106,16 @@ $dark-header-item-sub-color:                      #a3a6b7;
 $dark-topbar-user-bg:                             #2A2A50;
 $dark-topbar-search-bg:                           rgba($white, .05);
 $dark-topbar-search-color:                        $white;
+
+// Topbar - gradient
+$gradient-header-bg:                               linear-gradient(to right, #036068,rgb(8, 126, 205));
+$gradient-header-border:                            #1199A8;    
+$gradient-header-item-color:                          rgba($white, .85);
+$gradient-header-item-bg:                             #29294e;
+$gradient-header-item-sub-color:                      #a3a6b7; 
+$gradient-topbar-user-bg:                             #2A2A50;
+$gradient-topbar-search-bg:                           rgba($white, .05);
+$gradient-topbar-search-color:                        $white;
 
 // Horizontal Menu
 $horizontal-menu-box-shadow:                      0 2px 4px rgba(15,34,58,0.12);

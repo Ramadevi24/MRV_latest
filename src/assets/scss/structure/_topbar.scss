@@ -8,7 +8,8 @@
     right: 0;
     left: 0;
     z-index: 1002;
-    background-color: var(--#{$prefix}header-bg);
+    background: var(--#{$prefix}header-bg);
+    // background:  linear-gradient(to top, #036068,#1199A8);
     transition: all 0.1s ease-out;
     border-bottom: 1px solid var(--#{$prefix}header-border);
 
@@ -21,6 +22,13 @@
     }
 }
 
+.gradient {
+    background: $gradient-header-bg; // Applying the gradient to header
+}
+
+
+
+  
 .navbar-header {
     display: flex;
     -ms-flex-pack: justify;

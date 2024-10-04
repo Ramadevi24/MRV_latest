@@ -44,7 +44,7 @@ const Sidebar = ({ layoutType }) => {
         <div className="navbar-brand-box">
           <Link to="/" className="logo logo-dark">
             <span className="logo-sm">
-              <img src={logoicon} alt="" height="60" width="60" style={{marginLeft: "10px",marginTop:"-10px"}} />
+              <img src={logoicon} alt="" height="60" width="60" style={{marginLeft: "5px",marginTop:"-10px"}} />
             </span>
             <span className="logo-lg">
               <img src={ead_light} alt="" height="60" width="200" />
@@ -53,7 +53,7 @@ const Sidebar = ({ layoutType }) => {
 
           <Link to="/" className="logo logo-light">
             <span className="logo-sm">
-              <img src={logoicon} alt="" height="60" width="60" style={{marginLeft: "10px",marginTop:"-10px"}} />
+              <img src={logoicon} alt="" height="60" width="60" style={{marginLeft: "5px",marginTop:"-10px"}} />
             </span>
             <span className="logo-lg">
               <img src={ead_dark} alt="" height="60" width="200" />

@@ -31,6 +31,7 @@ const layoutPositionTypes = {
 
 const topbarThemeTypes = {
   LIGHT: "light",
+  GRADIENT:"gradient",
   DARK: "dark",
 };
 

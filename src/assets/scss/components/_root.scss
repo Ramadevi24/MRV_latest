@@ -34,6 +34,18 @@
         --#{$prefix}topbar-search-color:                            #{$dark-topbar-search-color};
         --#{$prefix}header-border:                                  #{$dark-header-border};
     }
+
+        // Topbar - gradient
+        &[data-topbar="gradient"] {
+            --#{$prefix}header-bg:                                      #{$gradient-header-bg};
+            --#{$prefix}header-item-color:                              #{$gradient-header-item-color};
+            --#{$prefix}header-item-bg:                                 #{$gradient-header-item-bg};
+            --#{$prefix}header-item-sub-color:                          #{$gradient-header-item-sub-color};
+            --#{$prefix}topbar-user-bg:                                 #{$gradient-topbar-user-bg};
+            --#{$prefix}topbar-search-bg:                               #{$gradient-topbar-search-bg};
+            --#{$prefix}topbar-search-color:                            #{$gradient-topbar-search-color};
+            --#{$prefix}header-border:                                  #{$gradient-header-border};
+        }
     
     // Horizontal nav
     --#{$prefix}topnav-bg:                                          #{$twocolumn-menu-iconview-bg};
