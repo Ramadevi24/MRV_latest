@@ -136,7 +136,7 @@
                 font-family: $vertical-menu-sub-item-font-family;
 
                 &:before {
-                    content: '';
+                    // content: '';
                     width: 6px;
                     height: 1.5px;
                     background-color: var(--#{$prefix}vertical-menu-sub-item-color);
@@ -288,6 +288,11 @@
 .logo-light {
     display: none;
 }
+
+.nav .test {
+    list-style-type: none !important; /* Remove bullet points from the list */
+    padding-left: 0;       /* Remove padding if needed */
+  }
 
 :is([data-layout="vertical"], [data-layout="semibox"]) {
     .app-menu {

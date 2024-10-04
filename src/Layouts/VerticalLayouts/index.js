@@ -220,7 +220,7 @@ const VerticalLayout = (props) => {
                       isOpen={item.stateVariables}
                       id="sidebarApps"
                     >
-                      <ul className="nav nav-sm flex-column test">
+                      <ul className="nav nav-sm flex-column test sidebar-subitems" style={{marginLeft:"20px"}}>
                         {/* Sub-items */}
                         {item.subItems &&
                           ([
@@ -231,22 +231,26 @@ const VerticalLayout = (props) => {
                               id: "tenants",
                               label: "Tenants",
                               link: "/tenants",
+                              icon: "fas fa-building",  // Add the icon class here
                             },
                             hasPermissionForEntity(
                               userPermissions,
                               organizationsPermissions
                             ) && {
                               id: "organizations",
+                              icon: "fas fa-sitemap", // Add the icon class here
                               label: "Organizations",
                               link: "/organizations",
                             },
                             hasPermissionForEntity(userPermissions, rolesPermissions) && {
                               id: "roles",
+                              icon: "fas fa-user-tag", // Add the icon class here
                               label: "Roles",
                               link: "/roles",
                             },
                             hasPermissionForEntity(userPermissions, usersPermissions) && {
                               id: "users",
+                              icon: "fas fa-users", // Add the icon class here
                               label: "Users",
                               link: "/users",
                             },
@@ -254,18 +258,20 @@ const VerticalLayout = (props) => {
                               userPermissions,
                               permissionsPermissions
                             ) && {
-                              id: "permissions",
+                              id: "permissions", 
+                              icon: "bx bx-user-circle", // Add the icon class here
                               label: "Permissions",
                               link: "/permissions",
                             },
                           ]
                             .filter(Boolean) // Filter out any `false` values
                             .map((subItem, subKey) => (
-                              <li className="nav-item" key={subKey}>
+                              <li className="nav-item" key={subKey} >
                                 <Link
                                   to={subItem.link ? subItem.link : "/#"}
                                   className="nav-link"
                                 >
+                                      {subItem.icon && <i className={subItem.icon}></i>}{" "}
                                   {props.t(subItem.label)}
                                 </Link>
                               </li>

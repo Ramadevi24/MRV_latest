@@ -14,9 +14,18 @@ const CoverSignIn = (props) => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false); 
     const { login, isAuthenticated } = useAuth();
 
     useEffect(() => {
+        const savedEmail = localStorage.getItem('savedEmail');
+        const savedPassword = localStorage.getItem('savedPassword');
+        
+        if (savedEmail && savedPassword) {
+            validation.setFieldValue('email', savedEmail);
+            validation.setFieldValue('password', CryptoJS.AES.decrypt(savedPassword, 'secret-key').toString(CryptoJS.enc.Utf8));
+            setRememberMe(true);
+        }
         if (isAuthenticated) {
             navigate("/dashboard");
         }
@@ -48,6 +57,15 @@ const CoverSignIn = (props) => {
                 const data = await response.json();
 
                 if (data.token) {
+                    if (rememberMe) {
+                        // Encrypt and save credentials in localStorage
+                        localStorage.setItem("savedEmail", values.email);
+                        localStorage.setItem("savedPassword", CryptoJS.AES.encrypt(values.password, 'secret-key').toString());
+                    } else {
+                        // Clear any saved credentials if "Remember Me" is unchecked
+                        localStorage.removeItem("savedEmail");
+                        localStorage.removeItem("savedPassword");
+                    }
                     localStorage.setItem("UserPermissions", JSON.stringify(data));
                     localStorage.setItem("AuthToken", data.token);
                     navigate("/dashboard")
@@ -66,6 +84,9 @@ const CoverSignIn = (props) => {
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
+    };
+    const handleRememberMeChange = (e) => {
+        setRememberMe(e.target.checked);
     };
 
     return (
@@ -144,6 +165,8 @@ const CoverSignIn = (props) => {
                                                                 type="checkbox"
                                                                 value=""
                                                                 id="auth-remember-check"
+                                                                checked={rememberMe}
+                                                                onChange={handleRememberMeChange}
                                                             />
                                                             <Label className="form-check-label" htmlFor="auth-remember-check">
                                                                 Remember me
