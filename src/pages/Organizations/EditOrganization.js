@@ -30,6 +30,158 @@ import { OrganizationContext } from "../../contexts/OrganizationContext";
 import { formatDate } from "../../utils/formateDate";
 import classnames from "classnames";
 
+const CategoryCheckboxList = ({
+  categories,
+  selectedCategoryIds,
+  setSelectedCategoryIds,
+}) => {
+  const [checkedItems, setCheckedItems] = useState({});
+
+  useEffect(() => {
+    const initializeCheckedItems = (categories) => {
+      const initialCheckedItems = {};
+      categories.forEach((category) => {
+        if (selectedCategoryIds.includes(category.categoryID)) {
+          initialCheckedItems[category.categoryID] = true;
+        }
+        if (category.subCategories?.$values?.length > 0) {
+          Object.assign(
+            initialCheckedItems,
+            initializeCheckedItems(category.subCategories.$values)
+          );
+        }
+      });
+      return initialCheckedItems;
+    };
+
+    if (categories) {
+      const initialCheckedItems = initializeCheckedItems(categories);
+      setCheckedItems(initialCheckedItems);
+    }
+  }, [categories, selectedCategoryIds]);
+
+  const handleCheckboxChange = (categoryId, isChecked, subCategories) => {
+    setCheckedItems((prevCheckedItems) => {
+      const updatedCheckedItems = {
+        ...prevCheckedItems,
+        [categoryId]: isChecked,
+      };
+
+      const updateSubCategories = (subCategories, checked) => {
+        if (subCategories && subCategories.$values.length > 0) {
+          subCategories.$values.forEach((subCategory) => {
+            updatedCheckedItems[subCategory.categoryID] = checked;
+            updateSubCategories(subCategory.subCategories, checked);
+          });
+        }
+      };
+
+      if (subCategories) {
+        updateSubCategories(subCategories, isChecked);
+      }
+
+      return updatedCheckedItems;
+    });
+
+    setSelectedCategoryIds((prevSelected) => {
+      let updatedSelected = new Set([...prevSelected]);
+
+      const updateSelectedIds = (categoryId, isChecked, subCategories) => {
+        if (isChecked) {
+          updatedSelected.add(categoryId);
+        } else {
+          updatedSelected.delete(categoryId);
+        }
+
+        if (subCategories && subCategories.$values.length > 0) {
+          subCategories.$values.forEach((subCategory) => {
+            updateSelectedIds(
+              subCategory.categoryID,
+              isChecked,
+              subCategory.subCategories
+            );
+          });
+        }
+      };
+
+      updateSelectedIds(categoryId, isChecked, subCategories);
+
+      return Array.from(updatedSelected);
+    });
+  };
+
+  const renderCategories = (categories) => {
+    return categories
+      .filter(
+        (category) => category && category.categoryID && category.categoryName
+      )
+      .map((category) => {
+        const hasSubCategories =
+          category.subCategories &&
+          category.subCategories.$values &&
+          category.subCategories.$values.length > 0;
+
+        return (
+          <div
+            key={category.categoryID}
+            style={{
+              marginLeft: "20px",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+                padding: "5px",
+                borderRadius: "4px",
+                transition: "background 0.2s",
+                width: "fit-content",
+                userSelect: "none",
+              }}
+            >
+              <input
+                type="checkbox"
+                id={`category-${category.categoryID}`}
+                checked={!!checkedItems[category.categoryID]}
+                onChange={(e) =>
+                  handleCheckboxChange(
+                    category.categoryID,
+                    e.target.checked,
+                    category.subCategories
+                  )
+                }
+                style={{
+                  transform: "scale(1.2)",
+                  marginRight: "10px",
+                  cursor: "pointer",
+                }}
+              />
+              <label
+                htmlFor={`category-${category.categoryID}`}
+                style={{
+                  fontSize: "16px",
+                  cursor: "pointer",
+                }}
+              >
+                {category.categoryCode} - {category.categoryName}
+              </label>
+            </div>
+            {hasSubCategories && renderCategories(category.subCategories.$values)}
+          </div>
+        );
+      });
+  };
+
+  return (
+    <div>
+      {renderCategories(categories)}
+    </div>
+  );
+};
+
 const EditOrganization = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -43,38 +195,14 @@ const EditOrganization = () => {
     fetchOrganizationById,
     updateOrganizationProfile,
   } = useContext(OrganizationContext);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
   
-  // const [topBorderTab, setTopBorderTab] = useState(() => {
-  //   return localStorage.getItem("topBorderTab") || "1";
-  // });
-
-  // useEffect(() => {
-  //   localStorage.setItem("topBorderTab", topBorderTab);
-  // }, [topBorderTab]);
-
-
   const [isOrganizationTabActive, setIsOrganizationTabActive] = useState(
     localStorage.getItem("activeTab") === "categories" ? false : true
   );
   const [isCategoriesTabActive, setIsCategoriesTabActive] = useState(
     localStorage.getItem("activeTab") === "categories" ? true : false
   );
-
-  // const [topBorderTab, setTopBorderTab] = useState(() => {
-  //   return localStorage.getItem("topBorderTab") || "1";
-  // });
-
-  // Sync with localStorage when the state changes
-  // useEffect(() => {
-  //   localStorage.setItem("topBorderTab", topBorderTab);
-  // }, [topBorderTab]);
-
-  // Handle tab click and set the state
-  // const topBordertoggle = (tab) => {
-  //   if (topBorderTab !== tab) {
-  //     setTopBorderTab(tab);
-  //   }
-  // };
 
   const handleTabChange = (tab) => {
     if (tab === "organization") {
@@ -86,142 +214,6 @@ const EditOrganization = () => {
       setIsCategoriesTabActive(true);
       localStorage.setItem("activeTab", "categories");
     }
-  };
-  const CategoryCheckboxList = ({ categories, categoryIDs, setCategoryIDs }) => {
-    const [expandedFolders, setExpandedFolders] = useState({});
-  
-    const getAllSubCategoryIDs = (category) => {
-      let ids = [category.categoryID];
-      if (category.subCategories && category.subCategories.$values.length > 0) {
-        category.subCategories.$values.forEach((subCategory) => {
-          ids = ids.concat(getAllSubCategoryIDs(subCategory));
-        });
-      }
-      return ids;
-    };
-  
-    // Handle checkbox change
-    const handleCheckboxChange = useCallback(
-      (category, isChecked) => {
-        const updatedCategoryIDs = new Set(categoryIDs);
-  
-        if (isChecked) {
-          // Add the current category and all subcategories
-          const allCategoryIDs = getAllSubCategoryIDs(category);
-          allCategoryIDs.forEach((id) => updatedCategoryIDs.add(id));
-  
-          // Ensure all parent categories are also selected
-          let parent = category.parent;
-          while (parent) {
-            updatedCategoryIDs.add(parent.categoryID);
-            parent = parent.parent;
-          }
-        } else {
-          // Remove the current category and all subcategories
-          const allCategoryIDs = getAllSubCategoryIDs(category);
-          allCategoryIDs.forEach((id) => updatedCategoryIDs.delete(id));
-        }
-  
-        setCategoryIDs([...updatedCategoryIDs]);
-      },
-      [categoryIDs, setCategoryIDs]
-    );
-  
-    // Handle folder (expand/collapse) toggle
-    const handleFolderClick = useCallback((categoryId) => {
-      setExpandedFolders((prevExpandedFolders) => ({
-        ...prevExpandedFolders,
-        [categoryId]: !prevExpandedFolders[categoryId],
-      }));
-    }, []);
-  
-    // Render the category list recursively
-    const renderCategories = useCallback(
-      (categories) => {
-        return categories
-          .filter((category) => category && category.categoryID && category.categoryName)
-          .map((category) => {
-            const hasSubCategories =
-              category.subCategories && category.subCategories.$values.length > 0;
-  
-            return (
-              <div
-                key={category.categoryID}
-                style={{
-                  marginLeft: "20px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    cursor: hasSubCategories ? "pointer" : "default",
-                    padding: "5px",
-                    borderRadius: "4px",
-                    transition: "background 0.2s",
-                    width: "fit-content",
-                    userSelect: "none",
-                  }}
-                  onClick={() =>
-                    hasSubCategories && handleFolderClick(category.categoryID)
-                  }
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.background = "#f0f0f0")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.background = "transparent")
-                  }
-                >
-                  <span
-                    style={{
-                      marginRight: "10px",
-                      fontSize: "20px",
-                    }}
-                  >
-                    {hasSubCategories
-                      ? expandedFolders[category.categoryID]
-                        ? "▼ 📂"
-                        : "▶ 📁"
-                      : "📄"}
-                  </span>
-                  <input
-                    type="checkbox"
-                    id={`category-${category.categoryID}`}
-                    checked={categoryIDs.includes(category.categoryID)}
-                    onChange={(e) => {
-                      e.stopPropagation(); // Prevent dropdown from closing on checkbox click
-                      handleCheckboxChange(category, e.target.checked);
-                    }}
-                    style={{
-                      transform: "scale(1.2)",
-                      marginRight: "10px",
-                      cursor: "pointer",
-                    }}
-                  />
-                  <label
-                    htmlFor={`category-${category.categoryID}`}
-                    style={{
-                      fontSize: "16px",
-                      cursor: "pointer",
-                    }}
-                    onClick={(e) => e.stopPropagation()} // Prevent dropdown from closing on label click
-                  >
-                    {category.categoryCode} - {category.categoryName}
-                  </label>
-                </div>
-                {hasSubCategories &&
-                  expandedFolders[category.categoryID] &&
-                  renderCategories(category.subCategories.$values)}
-              </div>
-            );
-          });
-      },
-      [expandedFolders, handleCheckboxChange, categoryIDs]
-    );
-  
-    return <div>{renderCategories(categories)}</div>;
   };
 
   const validation = useFormik({
@@ -265,7 +257,7 @@ const EditOrganization = () => {
           ...values,
           organizationID: id,
         };
-        await updateOrganizationProfile(id, updatedData); // Send the updated data to the backend
+        await updateOrganizationProfile(id, updatedData); 
         toast.success(t("Organization updated successfully"), {
           autoClose: 2000,
         });
@@ -283,9 +275,11 @@ const EditOrganization = () => {
 
   useEffect(() => {
     if (validation.values.categoryIDs.length) {
-      setFormData(validation.values.categoryIDs);
+      validation.setFieldValue("categoryIDs", validation.values.categoryIDs);
     }
   }, [validation.values.categoryIDs]);
+
+ 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -301,13 +295,13 @@ const EditOrganization = () => {
         const normalizedLocations =
           organization.locations?.$values || organization.locations || [];
 
-        // Check categories and map IDs
         const categoryIDs = organization.categories?.$values
           ?.map((categoryName) => findCategoryIds(categoryName, categories))
-          .filter(Boolean); // Filter out undefined values
+          .filter(Boolean);
+          setSelectedCategoryIds(categoryIDs);
 
         validation.setValues({
-          tenantID: userPermissions.tenantID || "", // Default to empty string
+          tenantID: userPermissions.tenantID || "", 
           organizationName: organization.organizationName || "",
           description: organization.description || "",
           establishedDate: organization.establishedDate || "",
@@ -315,10 +309,9 @@ const EditOrganization = () => {
           contactPhone: organization.contactPhone || "",
           address: organization.address || "",
           locations: normalizedLocations,
-          categoryIDs: categoryIDs || [], // Ensure categoryIDs are never undefined
+          categoryIDs: categoryIDs || [],
         });
 
-        setFormData(categoryIDs || []); // Set initial checked categories
       } catch (error) {
         toast.error(t("Error fetching organization data"));
       }
@@ -326,12 +319,14 @@ const EditOrganization = () => {
     fetchData();
   }, [id, categories, tenants]);
 
-  const [formData, setFormData] = useState(validation.initialValues);
 
   const handleNext = () => {
-    setFormData(validation.values);
-    // topBordertoggle("2");
     handleTabChange("categories");
+  };
+
+  const handleCategorySubmit = () => {
+    validation.setFieldValue("categoryIDs", selectedCategoryIds, false);
+    validation.handleSubmit();
   };
 
  
@@ -867,16 +862,11 @@ const EditOrganization = () => {
                     <TabPane tabId="2" id="nav-border-justified-profile">
                       <Col>
                         <div className="mb-3" style={{ color: "black" }}>
-                          <CategoryCheckboxList
-                            categories={categories}
-                            categoryIDs={validation.values.categoryIDs}
-                            setCategoryIDs={(newCategoryIDs) =>
-                              validation.setFieldValue(
-                                "categoryIDs",
-                                newCategoryIDs
-                              )
-                            }
-                          />
+                        <CategoryCheckboxList
+                              categories={categories}
+                              selectedCategoryIds={selectedCategoryIds}
+                              setSelectedCategoryIds={setSelectedCategoryIds}
+                            />
                         </div>
                       </Col>
                       <div
@@ -887,9 +877,7 @@ const EditOrganization = () => {
                           type="submit"
                           color="success"
                           className="rounded-pill me-2"
-                          onClick={() => {
-                            validation.handleSubmit();
-                          }}
+                          onClick={handleCategorySubmit}
                         >
                           Submit
                         </Button>

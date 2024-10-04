@@ -11,21 +11,113 @@ import {
   CardHeader,
   Container,
   InputGroup,
-  Nav,
-  NavItem,
-  NavLink,
   TabContent,
   TabPane,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
-import classnames from "classnames";
 import { useFormik } from "formik";
 import "cleave.js/dist/addons/cleave-phone.in";
 import { TenantContext } from "../../contexts/TenantContext";
 import { OrganizationContext } from "../../contexts/OrganizationContext";
 import { formatDate } from "../../utils/formateDate";
+
+const CategoryCheckboxList = ({
+  categories,
+  selectedCategoryIds,
+  setSelectedCategoryIds,
+}) => {
+  const [checkedItems, setCheckedItems] = useState({});
+
+  useEffect(() => {
+    const initializeCheckedItems = (categories) => {
+      const initialCheckedItems = {};
+      categories.forEach((category) => {
+        if (selectedCategoryIds.includes(category.categoryID)) {
+          initialCheckedItems[category.categoryID] = true;
+        }
+        if (category.subCategories?.$values?.length > 0) {
+          Object.assign(
+            initialCheckedItems,
+            initializeCheckedItems(category.subCategories.$values)
+          );
+        }
+      });
+      return initialCheckedItems;
+    };
+
+    if (categories) {
+      const initialCheckedItems = initializeCheckedItems(categories);
+      setCheckedItems(initialCheckedItems);
+    }
+  }, [categories, selectedCategoryIds]);
+
+
+  const renderCategories = (categories) => {
+    return categories
+      .filter(
+        (category) => category && category.categoryID && category.categoryName
+      )
+      .map((category) => {
+        const hasSubCategories =
+          category.subCategories &&
+          category.subCategories.$values &&
+          category.subCategories.$values.length > 0;
+
+        return (
+          <div
+            key={category.categoryID}
+            style={{
+              marginLeft: "20px",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+                padding: "5px",
+                borderRadius: "4px",
+                transition: "background 0.2s",
+                width: "fit-content",
+                userSelect: "none",
+              }}
+            >
+              <input
+                type="checkbox"
+                id={`category-${category.categoryID}`}
+                checked={!!checkedItems[category.categoryID]}
+                style={{
+                  transform: "scale(1.2)",
+                  marginRight: "10px",
+                  cursor: "pointer",
+                }}
+              />
+              <label
+                htmlFor={`category-${category.categoryID}`}
+                style={{
+                  fontSize: "16px",
+                  cursor: "pointer",
+                }}
+              >
+                {category.categoryCode} - {category.categoryName}
+              </label>
+            </div>
+            {hasSubCategories && renderCategories(category.subCategories.$values)}
+          </div>
+        );
+      });
+  };
+
+  return (
+    <div>
+      {renderCategories(categories)}
+    </div>
+  );
+};
 
 const ViewOrganization = () => {
   const { t } = useTranslation();
@@ -36,6 +128,7 @@ const ViewOrganization = () => {
   // const [topBorderTab, setTopBorderTab] = useState(() => {
   //   return localStorage.getItem("topBorderTab") || "1";
   // });
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState([]);
 
   const [isOrganizationTabActive, setIsOrganizationTabActive] = useState(
     localStorage.getItem("activeTab") === "categories" ? false : true
@@ -55,7 +148,6 @@ const ViewOrganization = () => {
       localStorage.setItem("activeTab", "categories");
     }
   };
-
 
   const validation = useFormik({
     enableReinitialize: true,
@@ -92,17 +184,19 @@ const ViewOrganization = () => {
           ?.map((categoryName) => findCategoryIds(categoryName, categories))
           .filter(Boolean);
 
-        validation.setValues({
-          tenantID: tenantID,
-          organizationName: organization.organizationName || "",
-          description: organization.description || "",
-          establishedDate: organization.establishedDate || "",
-          contactEmail: organization.contactEmail || "",
-          contactPhone: organization.contactPhone || "",
-          address: organization.address || "",
-          locations: normalizedLocations,
-          categoryIDs: categoryIDs || [],
-        });
+          setSelectedCategoryIds(categoryIDs);
+
+          validation.setValues({
+            tenantID,
+            organizationName: organization.organizationName || "",
+            description: organization.description || "",
+            establishedDate: organization.establishedDate || "",
+            contactEmail: organization.contactEmail || "",
+            contactPhone: organization.contactPhone || "",
+            address: organization.address || "",
+            locations: normalizedLocations,
+            categoryIDs: categoryIDs || [],
+          });
       } catch (error) {
         toast.error(t("Error fetching organization data"));
       }
@@ -132,12 +226,6 @@ const ViewOrganization = () => {
       }
     }
     return null;
-  };
-
-  const topBordertoggle = (tab) => {
-    if (topBorderTab !== tab) {
-      setTopBorderTab(tab);
-    }
   };
 
   return (
@@ -342,8 +430,7 @@ const ViewOrganization = () => {
                         <div className="mb-3" style={{ color: "black" }}>
                           <CategoryCheckboxList
                             categories={categories}
-                            categoryIDs={validation.values.categoryIDs}
-                            setCategoryIDs={() => {}} // Disabled, no updates to categories
+                            selectedCategoryIds={selectedCategoryIds}
                           />
                         </div>
                       </Col>
@@ -360,90 +447,5 @@ const ViewOrganization = () => {
   );
 };
 
-// CategoryCheckboxList Component for View (with disabled checkboxes)
-const CategoryCheckboxList = ({ categories, categoryIDs }) => {
-  const [expandedFolders, setExpandedFolders] = useState({});
-
-  // Handle folder (expand/collapse) toggle
-  const handleFolderClick = (categoryId) => {
-    setExpandedFolders((prevExpandedFolders) => ({
-      ...prevExpandedFolders,
-      [categoryId]: !prevExpandedFolders[categoryId],
-    }));
-  };
-
-  // Render the category list recursively
-  const renderCategories = (categories) => {
-    return categories
-      .filter((category) => category && category.categoryID && category.categoryName)
-      .map((category) => {
-        const hasSubCategories =
-          category.subCategories && category.subCategories.$values.length > 0;
-
-        return (
-          <div
-            key={category.categoryID}
-            style={{
-              marginLeft: "20px",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                cursor: hasSubCategories ? "pointer" : "default",
-                padding: "5px",
-                borderRadius: "4px",
-                transition: "background 0.2s",
-                width: "fit-content",
-                userSelect: "none",
-              }}
-              onClick={() =>
-                hasSubCategories && handleFolderClick(category.categoryID)
-              }
-            >
-              <span
-                style={{
-                  marginRight: "10px",
-                  fontSize: "20px",
-                }}
-              >
-                {hasSubCategories
-                  ? expandedFolders[category.categoryID]
-                    ? "▼ 📂"
-                    : "▶ 📁"
-                  : "📄"}
-              </span>
-              <input
-                type="checkbox"
-                id={`category-${category.categoryID}`}
-                checked={categoryIDs.includes(category.categoryID)}
-                style={{
-                  transform: "scale(1.2)",
-                  marginRight: "10px",
-                  cursor: "not-allowed",
-                }}
-              />
-              <label
-                htmlFor={`category-${category.categoryID}`}
-                style={{
-                  fontSize: "16px",
-                }}
-              >
-                {category.categoryCode} - {category.categoryName}
-              </label>
-            </div>
-            {hasSubCategories &&
-              expandedFolders[category.categoryID] &&
-              renderCategories(category.subCategories.$values)}
-          </div>
-        );
-      });
-  };
-
-  return <div>{renderCategories(categories)}</div>;
-};
 
 export default ViewOrganization;
