@@ -44,6 +44,7 @@ import EditUser from "../pages/Users/EditUser";
 import ViewUser from "../pages/Users/ViewUser";
 import PermissionGrid from "../pages/Permissions/PermissionGrid";
 import Dashboard from "../pages/Dashboard";
+import SamplePage from "../pages/SamplePage";
 
 const authProtectedRoutes = [
   { path: "/profile", component: <UserProfile /> },
@@ -69,6 +70,7 @@ const authProtectedRoutes = [
   {path:'/edit-user/:id', component: <EditUser />},
   {path:'/view-user/:id', component: <ViewUser />},
   {path:'/permissions', component: <PermissionGrid />},
+  {path:'/sample', component: <SamplePage />},
   { path: "*", component: <Navigate to="/dashboard" /> },
 ];
 

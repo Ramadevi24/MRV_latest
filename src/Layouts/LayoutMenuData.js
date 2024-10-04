@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  hasPermissionForEntity,
-  usersPermissions,
-  tenantsPermissions,
-  organizationsPermissions,
-  rolesPermissions,
-  permissionsPermissions,
-} from "../utils/useHasPermission"; 
 
 const Navdata = () => {
   const history = useNavigate();
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
+  const [isSample, setIsSample] = useState(false);
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
   let userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || []
   userPermissions = userPermissions.permissions && userPermissions.permissions?.$values.map((permission) => permission.permissionName)
@@ -40,6 +33,9 @@ const Navdata = () => {
     }
      if (iscurrentState !== "Auth") {
       setIsAuth(false);
+    }
+    if (iscurrentState !== "Sample") {
+      setIsSample(false);
     }
   }, [
     history,
@@ -75,6 +71,19 @@ const Navdata = () => {
       // ],
     },
     {
+      id: "sample",
+      label: "Sample Page",
+      icon: "mdi mdi-file-document",
+      link: "/sample",
+      stateVariables: isSample,
+      click: function (e) {
+        e.preventDefault();
+        setIsSample(!isSample);
+        setIscurrentState("Sample");
+        updateIconSidebar(e);
+      },
+    },
+    {
       label: "Pages",
       isHeader: true,
     },
@@ -96,6 +105,7 @@ const Navdata = () => {
           id: "tenants",
           label: "Tenants",
           link: "/tenants",
+          icon: "bx bx-building-house",
           parentId: "administration",
         },
         {
@@ -103,6 +113,7 @@ const Navdata = () => {
           label: "Organizations",
           link: "/organizations",
           parentId: "administration",
+          icon: "bx bx-building-house",
         },
         {
           id: "roles",
