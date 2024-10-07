@@ -90,7 +90,7 @@ const Navdata = () => {
     {
       id: "administration",
       label: "Administration",
-      icon: "bx bx-user-circle",
+      icon: "ri-user-add-line",
       link: "/#",
       stateVariables: isAuth,
       click: function (e) {

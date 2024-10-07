@@ -220,7 +220,7 @@ const VerticalLayout = (props) => {
                       isOpen={item.stateVariables}
                       id="sidebarApps"
                     >
-                      <ul className="nav nav-sm flex-column test sidebar-subitems" style={{marginLeft:"20px"}}>
+                      <ul className="nav nav-sm flex-column test sidebar-subitems">
                         {/* Sub-items */}
                         {item.subItems &&
                           ([
@@ -238,19 +238,19 @@ const VerticalLayout = (props) => {
                               organizationsPermissions
                             ) && {
                               id: "organizations",
-                              icon: "fas fa-sitemap", // Add the icon class here
+                              icon: "ri-team-line", // Add the icon class here
                               label: "Organizations",
                               link: "/organizations",
                             },
                             hasPermissionForEntity(userPermissions, rolesPermissions) && {
                               id: "roles",
-                              icon: "fas fa-user-tag", // Add the icon class here
+                              icon: " ri-parent-line", // Add the icon class here
                               label: "Roles",
                               link: "/roles",
                             },
                             hasPermissionForEntity(userPermissions, usersPermissions) && {
                               id: "users",
-                              icon: "fas fa-users", // Add the icon class here
+                              icon: "bx bx-user", // Add the icon class here
                               label: "Users",
                               link: "/users",
                             },
@@ -259,7 +259,7 @@ const VerticalLayout = (props) => {
                               permissionsPermissions
                             ) && {
                               id: "permissions", 
-                              icon: "bx bx-user-circle", // Add the icon class here
+                              icon: " ri-admin-fill", // Add the icon class here
                               label: "Permissions",
                               link: "/permissions",
                             },
