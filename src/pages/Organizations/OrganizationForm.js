@@ -272,22 +272,17 @@ const OrganizationForm = () => {
     },
   });
 
-  const [formData, setFormData] = useState(validation.initialValues);
-
   const handleNext = () => {
     handleTabChange("categories");
   };
 
-  const handleCategorySubmit = () => {
+  const handleCategorySubmit = (e) => {
+    e.preventDefault();
     // Set the categoryIDs field to selectedCategoryIds before submitting
     validation.setFieldValue("categoryIDs", selectedCategoryIds, false);
     validation.handleSubmit();
   };
  
-  
-  
-  
-
   useEffect(() => {
     fetchAllTenants();
     fetchAllCategories();
@@ -869,13 +864,13 @@ const OrganizationForm = () => {
                             type="button"
                             color="danger"
                             className="rounded-pill"
-                            onClick={() =>     handleTabChange("organization")}
+                            onClick={() =>handleTabChange("organization")}
                             style={{ marginRight: "1rem" }}
                           >
                             Cancel
                           </Button>
                         <Button
-                          type="submit"
+                          type="button"
                           color="success"
                           className="rounded-pill me-2"
                           // onClick={(e) => validation.handleSubmit()}
