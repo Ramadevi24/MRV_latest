@@ -231,7 +231,7 @@ const VerticalLayout = (props) => {
                               id: "tenants",
                               label: "Tenants",
                               link: "/tenants",
-                              icon: "fas fa-building",  // Add the icon class here
+                              icon: "ri-key-2-line",  // Add the icon class here
                             },
                             hasPermissionForEntity(
                               userPermissions,
