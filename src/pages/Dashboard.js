@@ -16,6 +16,7 @@ import {
   } from "reactstrap";
   import { useTranslation } from 'react-i18next';
 function Dashboard() {
+  document.title = "MRV_PROJECT | Dashboard";
     const {t}=useTranslation();
   return (
     <div className="page-content">
