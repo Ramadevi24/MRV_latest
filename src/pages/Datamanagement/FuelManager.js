@@ -77,7 +77,8 @@ const FuelManager = () => {
   };
 
   const handleSave = async (fuelID) => {
-    const updatedFuel = { ...editingFuel, fuelID: fuelID };
+    console.log("editingFuel", editingFuel);
+    const updatedFuel = { ...editingFuel, fuelID: fuelID , isPrimaryFuel: editingFuel.isPrimaryFuel === "Yes" ? true : false};
 
     try {
       await updateExistingFuel(fuelID, updatedFuel);
