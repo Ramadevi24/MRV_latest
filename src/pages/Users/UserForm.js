@@ -22,6 +22,7 @@ import { TenantContext } from "../../contexts/TenantContext";
 import { OrganizationContext } from "../../contexts/OrganizationContext";
 import { RoleContext } from "../../contexts/RoleContext";
 import { UserContext } from "../../contexts/UserContext";
+import CryptoJS from "crypto-js"; 
 
 const UserForm = () => {
   const { t } = useTranslation();
@@ -60,7 +61,7 @@ const UserForm = () => {
         toast.error(t("Please select a valid user role"));
         return;
       }
-      const createFormData = { ...values, loginType: "custom", roleID: roleID ,
+      const createFormData = { ...values, loginType: "custom", roleID: roleID , passwordHash:CryptoJS.SHA256(values.passwordHash).toString(),
          organizationID: values.organizationID || null };
       try {
         await addUser(createFormData);

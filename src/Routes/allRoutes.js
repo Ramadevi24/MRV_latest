@@ -45,6 +45,8 @@ import ViewUser from "../pages/Users/ViewUser";
 import PermissionGrid from "../pages/Permissions/PermissionGrid";
 import Dashboard from "../pages/Dashboard";
 import SamplePage from "../pages/SamplePage";
+import FuelManager from "../pages/Datamanagement/FuelManager";
+import AddFuel from "../pages/Datamanagement/AddFuel";
 
 const authProtectedRoutes = [
   { path: "/profile", component: <UserProfile /> },
@@ -71,6 +73,8 @@ const authProtectedRoutes = [
   {path:'/view-user/:id', component: <ViewUser />},
   {path:'/permissions', component: <PermissionGrid />},
   {path:'/sample', component: <SamplePage />},
+  {path:'/fuelmanager', component: <FuelManager/>},
+  {path:'/create-fuel', component: <AddFuel />},
   { path: "*", component: <Navigate to="/dashboard" /> },
 ];
 

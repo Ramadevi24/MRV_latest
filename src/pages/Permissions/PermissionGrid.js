@@ -16,14 +16,14 @@ import {
   Input,
 } from "reactstrap";
 
-const PermissionGrid = ({ userPermissions }) => {
+const PermissionGrid = () => {
   document.title = "MRV_PROJECT | PermissionGrid";
   const { t } = useTranslation();
   const {
     permissions,
     loading,
     fetchAllPermissions,
-    updatePermissionProfile, // This should be your save method in the context
+    updatePermissionProfile,
   } = useContext(PermissionContext);
   
   const [editingRowId, setEditingRowId] = useState(null);

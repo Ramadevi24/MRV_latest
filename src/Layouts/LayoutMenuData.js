@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 
 const Navdata = () => {
   const history = useNavigate();
-  //state data
   const [isDashboard, setIsDashboard] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
   const [isSample, setIsSample] = useState(false);
+  const [isDataManagement, setIsDataManagement] = useState(false);
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
   let userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || []
   userPermissions = userPermissions.permissions && userPermissions.permissions?.$values.map((permission) => permission.permissionName)
@@ -37,11 +37,16 @@ const Navdata = () => {
     if (iscurrentState !== "Sample") {
       setIsSample(false);
     }
+    if (iscurrentState !== "DataManagement") {
+      setIsDataManagement(false);
+    }
   }, [
     history,
     iscurrentState,
     isDashboard,
     isAuth,
+    isSample,
+    isDataManagement,
   ]);
 
   const menuItems = [
@@ -100,7 +105,6 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
       subItems: [
-        // hasPermissionForEntity(userPermissions, tenantsPermissions) && 
         {
           id: "tenants",
           label: "Tenants",
@@ -134,7 +138,28 @@ const Navdata = () => {
           parentId: "administration",
         }
       ],
-    }
+    },
+    {
+      id: "datamanagement",
+      label: "Data Management",
+      icon: "ri-user-add-line",
+      link: "/fuelmanager",
+      stateVariables: isDataManagement,
+      click: function (e) {
+        e.preventDefault();
+        setIsDataManagement(!isDataManagement);
+        setIscurrentState("DataManagement");
+        updateIconSidebar(e);
+      },
+      subItems: [
+        {
+          id: "fuelmanager",
+          label: "Fuel Manager",
+          link: "/fuelmanager",
+          icon: "bx bx-building-house",
+          parentId: "datamanagement",
+        }]
+      }
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };

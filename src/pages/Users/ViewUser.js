@@ -56,7 +56,7 @@ const ViewUser = () => {
         fetchAllOrganizations(tenantIdToUse);
         fetchAllRoles(tenantIdToUse);
       }
-    }, [userPermissions.tenantID, validation.values.tenantID, fetchAllTenants()]); // Only keep the values you depend on
+    }, [userPermissions.tenantID, validation.values.tenantID]); // Only keep the values you depend on
 
     const fetchData = async () => {
       try {
@@ -104,7 +104,7 @@ const ViewUser = () => {
       } else {
         console.log("Required data not available yet");
       }
-    }, [id, tenants, organizations, roles]);
+    }, []);
 
 
   return (

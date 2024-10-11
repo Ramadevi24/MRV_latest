@@ -14,6 +14,8 @@ import { UserProvider } from './contexts/UserContext';
 import { PermissionProvider } from './contexts/PermissionContext';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import { AlertProvider } from './contexts/AlertContext';
+import { FuelProvider } from './contexts/FuelContext';
 
 const store = configureStore({ reducer: rootReducer, devTools: true });
 
@@ -30,7 +32,11 @@ root.render(
             <UserProvider>
               <PermissionProvider>
               <ToastContainer closeButton={false} limit={1}  />
+              <AlertProvider>
+                <FuelProvider>
         <App />
+        </FuelProvider>
+        </AlertProvider>
         </PermissionProvider>
         </UserProvider>
         </AuthProvider>

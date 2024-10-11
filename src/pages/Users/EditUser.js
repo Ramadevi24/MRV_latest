@@ -42,7 +42,6 @@ const EditUser = () => {
         firstName: "",
         lastName: "",
         email: "",
-        passwordHash: "",
         phone: "",
         tenantID: userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
         organizationID: "",

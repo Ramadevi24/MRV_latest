@@ -6,10 +6,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useAlert } from '../../contexts/AlertContext';
 
 const EditTenant = () => {
   const { t } = useTranslation();
   const { id } = useParams();
+  const { triggerSuccessAlert, triggerErrorAlert } = useAlert();
   const { editTenant, fetchTenantById } = useContext(TenantContext);
   const navigate = useNavigate();
 

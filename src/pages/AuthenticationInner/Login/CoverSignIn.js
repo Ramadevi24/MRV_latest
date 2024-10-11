@@ -42,8 +42,8 @@ const CoverSignIn = (props) => {
             password: Yup.string().required("Please enter your password"),
         }),
         onSubmit: async (values) => {
-            setError(null); // Clear any previous errors
-            setLoading(true); // Start loading spinner
+            setError(null);
+            setLoading(true);
             try {
                 const encryptedPassword = CryptoJS.SHA256(values.password).toString();
                 const response = await fetch("https://atlas.smartgeoapps.com/MRVAPI/api/Authentication/login", {
@@ -55,14 +55,11 @@ const CoverSignIn = (props) => {
                 });
 
                 const data = await response.json();
-
                 if (data.token) {
                     if (rememberMe) {
-                        // Encrypt and save credentials in localStorage
                         localStorage.setItem("savedEmail", values.email);
                         localStorage.setItem("savedPassword", CryptoJS.AES.encrypt(values.password, 'secret-key').toString());
                     } else {
-                        // Clear any saved credentials if "Remember Me" is unchecked
                         localStorage.removeItem("savedEmail");
                         localStorage.removeItem("savedPassword");
                     }
@@ -71,13 +68,11 @@ const CoverSignIn = (props) => {
                     navigate("/dashboard")
                     login(data.token);
                    
-                } else {
-                    setError("Invalid login credentials");
                 }
             } catch (err) {
                 setError("Invalid login credentials.");
             } finally {
-                setLoading(false); // Stop loading spinner
+                setLoading(false); 
             }
         }
     });
