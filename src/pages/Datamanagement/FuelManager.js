@@ -275,7 +275,7 @@ const FuelManager = () => {
                             toggle={toggleDropdown}
                             className="btn-success"
                           >
-                            <DropdownToggle caret>
+                            <DropdownToggle caret   style={{background: '#299cdb' ,border:'none'}}>
                               {selectedFuelType}
                             </DropdownToggle>
                             <DropdownMenu>
