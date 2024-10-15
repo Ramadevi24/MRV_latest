@@ -68,7 +68,7 @@ const FuelManager = () => {
 
   const handleEdit = (fuel) => {
     setEditingRowId(fuel.fuelID);
-    setEditingFuel({ ...fuel });
+    setEditingFuel({ ...fuel, isPrimaryFuel: fuel.isPrimaryFuel === true ? "Yes" : "No" });
   };
 
   const handleCancel = () => {
@@ -77,9 +77,7 @@ const FuelManager = () => {
   };
 
   const handleSave = async (fuelID) => {
-    console.log("editingFuel", editingFuel);
     const updatedFuel = { ...editingFuel, fuelID: fuelID , isPrimaryFuel: editingFuel.isPrimaryFuel === "Yes" ? true : false};
-
     try {
       await updateExistingFuel(fuelID, updatedFuel);
       setFuels((prevFuels) =>
@@ -369,9 +367,13 @@ const FuelManager = () => {
                                       ))}
                                     </select>
                                   ) : fuel?.isPrimaryFuel ? (
-                                    "Yes"
+                                    <span className="badge bg-success-subtle text-success text-uppercase">
+                                      {t('Yes')}
+                                    </span>
                                   ) : (
-                                    "No"
+                                    <span className="badge bg-danger-subtle text-danger text-uppercase">
+                                    {t('No')}
+                                  </span>
                                   )}
                                 </td>
                                 <td>

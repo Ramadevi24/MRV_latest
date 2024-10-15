@@ -143,7 +143,7 @@ const Navdata = () => {
       id: "datamanagement",
       label: "Data Management",
       icon: "ri-user-add-line",
-      link: "/fuelmanager",
+      link: "/#",
       stateVariables: isDataManagement,
       click: function (e) {
         e.preventDefault();

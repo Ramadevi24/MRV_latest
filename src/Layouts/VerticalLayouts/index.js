@@ -4,10 +4,7 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import withRouter from "../../Components/Common/withRouter";
 import { Collapse } from 'reactstrap';
-
-// Import Data
 import navdata from "../LayoutMenuData";
-// i18n
 import { withTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { createSelector } from 'reselect';
@@ -112,10 +109,7 @@ const VerticalLayout = (props) => {
     { subPath: "/Mrv/create-user", mainPath: "/Mrv/users" },
     { subPath: "/Mrv/edit-user", mainPath: "/Mrv/users" },
     { subPath: "/Mrv/view-user", mainPath: "/Mrv/users" },
-
-   
-    
-    // Add more sublinks as needed
+    { subPath: "/Mrv/fuelmanager", mainPath: "/Mrv/fuelmanager" },
   ];
 
   const initMenu = () => {
@@ -276,6 +270,39 @@ const VerticalLayout = (props) => {
                                 </Link>
                               </li>
                             )))}
+                      </ul>
+                    </Collapse>
+                  </li>
+                ) : item.subItems ? (
+                  <li className="nav-item">
+                    <Link
+                      onClick={item.click}
+                      className="nav-link menu-link"
+                      to={item.link ? item.link : "/#"}
+                      data-bs-toggle="collapse"
+                      // aria-expanded={item.stateVariables ? "true" : "false"}
+                    >
+                      <i className={item.icon}></i>{" "}
+                      <span data-key="t-apps">{props.t(item.label)}</span>
+                    </Link>
+                    <Collapse
+                      className="menu-dropdown"
+                      isOpen={item.stateVariables}
+                      id="sidebarApps"
+                      // id={`sidebar-${item.label.replace(/\s+/g, "-").toLowerCase()}`}
+                    >
+                      <ul className="nav nav-sm flex-column sidebar-subitems">
+                        {item.subItems.map((subItem, subKey) => (
+                          <li className="nav-item" key={subKey}>
+                            <Link
+                              to={subItem.link ? subItem.link : "/#"}
+                              className="nav-link"
+                            >
+                              {subItem.icon && <i className={subItem.icon}></i>}{" "}
+                              {props.t(subItem.label)}
+                            </Link>
+                          </li>
+                        ))}
                       </ul>
                     </Collapse>
                   </li>
