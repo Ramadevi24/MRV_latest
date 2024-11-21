@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaPencilAlt, FaTrashAlt, FaEye } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import Pagination from "../../Components/Common/PaginationNumber.js";
+import Pagination from "../../Components/CommonComponents/PaginationNumber.js";
 import { formatDate } from "../../utils/formateDate.js";
 import { OrganizationContext } from "../../contexts/OrganizationContext";
 import {
@@ -15,7 +15,7 @@ import {
   Row,
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
-import DeleteModal from "../../Components/Common/DeleteModal";
+import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
 
 const OrganizationGrid = () => {
   document.title = "MRV_PROJECT | OrganizationGrid";

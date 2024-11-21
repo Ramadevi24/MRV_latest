@@ -47,6 +47,12 @@ import Dashboard from "../pages/Dashboard";
 import SamplePage from "../pages/SamplePage";
 import FuelManager from "../pages/Datamanagement/FuelManager";
 import AddFuel from "../pages/Datamanagement/AddFuel";
+import C02equivalents from "../pages/Datamanagement/C02equivalents";
+import CreateGas from "../pages/Datamanagement/CreateGas";
+import Gastype from "../pages/Datamanagement/Gastype";
+import FacilityGrid from "../pages/EntityInformations/FacilityGrid";
+import AddFacility from "../pages/EntityInformations/AddFacility";
+
 
 const authProtectedRoutes = [
   { path: "/profile", component: <UserProfile /> },
@@ -75,6 +81,11 @@ const authProtectedRoutes = [
   {path:'/sample', component: <SamplePage />},
   {path:'/fuelmanager', component: <FuelManager/>},
   {path:'/create-fuel', component: <AddFuel />},
+  {path:'/c02equivalents', component: <C02equivalents />},
+  {path:'/create-gas', component: <CreateGas />},
+  {path:'/add-gasType', component: <Gastype />},
+  {path:'/facility', component: <FacilityGrid/>},
+  {path:'/add-facility', component: <AddFacility/>},
   { path: "*", component: <Navigate to="/dashboard" /> },
 ];
 

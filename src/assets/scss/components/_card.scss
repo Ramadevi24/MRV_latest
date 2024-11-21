@@ -9,6 +9,8 @@
 
 .card-header {
     border-bottom: 1px solid var(--#{$prefix}border-color);
+    background: none !important;
+    padding:1rem !important;
 }
 
 //Card Header Dropdown

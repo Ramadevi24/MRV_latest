@@ -7,7 +7,7 @@
     top: 0;
     right: 0;
     left: 0;
-    z-index: 1002;
+    z-index: 999;
     background: var(--#{$prefix}header-bg);
     // background:  linear-gradient(to top, #036068,#1199A8);
     transition: all 0.1s ease-out;

@@ -1,0 +1,66 @@
+.toggle-switch {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    padding: 15px 12px 15px 12px;
+    border: 1px solid #CED0DA;
+    border-radius: 8px;
+    height: 48px;
+  }
+
+.toggle-label {
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 16.41px;
+    color: #3B3F45;
+  }
+
+  .switch-container {
+    display: flex;
+    align-items: center;
+  }
+  .switch-label.active {
+    font-weight: bold;
+    color: #3B3F45;
+  }
+  
+  .switch-label {
+    font-size: 14px;
+    font-weight: Roboto;
+    line-height: 16.41px;
+    color: #8C8D8E;
+    font-weight: 500;
+  }
+  
+  .switch {
+    width: 36px;
+    height: 20px;
+    margin: 5px;
+    border-radius: 15px;
+    background-color: #ccc;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .switch.checked {
+    background-color: #0066A4;
+  }
+  
+  .toggle-circle {
+    width: 16px;
+    height: 16px;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 1px;
+    transition: left 0.3s;
+  }
+  
+  .switch.checked .toggle-circle {
+    left: 19px;
+  }
+  

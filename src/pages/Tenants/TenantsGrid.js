@@ -5,7 +5,7 @@ import {
   FaEye
 } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import Pagination from "../../Components/Common/PaginationNumber.js";
+import Pagination from "../../Components/CommonComponents/PaginationNumber.js";
 import { formatDate } from "../../utils/formateDate.js";
 import { TenantContext } from "../../contexts/TenantContext";
 import {
@@ -19,7 +19,7 @@ import {
   Row,
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
-import DeleteModal from "../../Components/Common/DeleteModal";
+import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
 
 const TenantsGrid = () => {
 

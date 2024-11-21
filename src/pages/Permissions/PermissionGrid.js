@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaPencilAlt, FaCheck } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import Pagination from "../../Components/Common/PaginationNumber.js";
+import Pagination from "../../Components/CommonComponents/PaginationNumber.js";
 import { PermissionContext } from "../../contexts/PermissionContext";
 import { FaXmark } from "react-icons/fa6";
 import {

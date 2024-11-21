@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { FaPencilAlt, FaTrashAlt, FaEye } from "react-icons/fa";
 import { toast } from 'react-toastify';
 import { useTranslation } from "react-i18next";
-import Pagination from "../../Components/Common/PaginationNumber.js";
+import Pagination from "../../Components/CommonComponents/PaginationNumber.js";
 import { formatDate } from "../../utils/formateDate.js";
 import { RoleContext } from "../../contexts/RoleContext";
 import {
@@ -16,7 +16,7 @@ import {
   Row,
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
-import DeleteModal from "../../Components/Common/DeleteModal";
+import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
 
 const RoleGrid = () => {
   document.title = "MRV_PROJECT | RoleGrid";
@@ -118,7 +118,7 @@ const RoleGrid = () => {
                             onClick={() => navigate("/create-role")}
                             id="create-btn"
                           >
-                            <i className="ri-add-line align-bottom me-1"></i>{" "}
+                            <i className="ri-add-line align-bottom me-1"></i>
                             {t('Add')}
                           </Button>
                         </div>
@@ -161,7 +161,7 @@ const RoleGrid = () => {
                                 className="sort"
                                 data-sort="roleName"
                               >
-                                {" "}
+                                
                                 {t("Role Name")}
                               </th>
                               <th
@@ -169,7 +169,7 @@ const RoleGrid = () => {
                                 className="sort"
                                 data-sort="description"
                               >
-                                {" "}
+                                
                                 {t("Description")}
                               </th>
                               <th
@@ -177,7 +177,7 @@ const RoleGrid = () => {
                                 className="sort"
                                 data-sort="createdDate"
                               >
-                                {" "}
+                                
                                 {t("Created Date")}
                               </th>
                               <th className="sort" data-sort="status">
@@ -219,7 +219,7 @@ const RoleGrid = () => {
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
-                                        {" "}
+                                        
                                         <FaPencilAlt color="white" />
                                       </button>
                                     </div>
@@ -243,7 +243,7 @@ const RoleGrid = () => {
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
-                                        {" "}
+                                        
                                         <FaEye color="white" />
                                       </button>
                                     </div>

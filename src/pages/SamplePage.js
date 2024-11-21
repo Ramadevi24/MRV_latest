@@ -12,7 +12,7 @@ import {
   UncontrolledAlert,
 } from "reactstrap";
 import { useTranslation } from "react-i18next";
-import Pagination from "../Components/Common/PaginationNumber.js";
+import Pagination from "../Components/CommonComponents/PaginationNumber.js";
 import { PermissionContext } from "../contexts/PermissionContext";
 
 const SamplePage = () => {

@@ -7,6 +7,7 @@ const Navdata = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [isSample, setIsSample] = useState(false);
   const [isDataManagement, setIsDataManagement] = useState(false);
+  const [isMasterData, setIsMasterData] = useState(false);
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
   let userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || []
   userPermissions = userPermissions.permissions && userPermissions.permissions?.$values.map((permission) => permission.permissionName)
@@ -40,6 +41,9 @@ const Navdata = () => {
     if (iscurrentState !== "DataManagement") {
       setIsDataManagement(false);
     }
+    if (iscurrentState !== "MasterData") {
+      setIsMasterData(false);
+    }
   }, [
     history,
     iscurrentState,
@@ -47,6 +51,7 @@ const Navdata = () => {
     isAuth,
     isSample,
     isDataManagement,
+    isMasterData,
   ]);
 
   const menuItems = [
@@ -66,14 +71,6 @@ const Navdata = () => {
         setIscurrentState("Dashboard");
         updateIconSidebar(e);
       },
-      // subItems: [
-      //   {
-      //     id: "analytics",
-      //     label: "Analytics",
-      //     link: "/dashboard-analytics",
-      //     parentId: "dashboard",
-      //   }
-      // ],
     },
     {
       id: "sample",
@@ -158,8 +155,36 @@ const Navdata = () => {
           link: "/fuelmanager",
           icon: "bx bx-building-house",
           parentId: "datamanagement",
+        },
+        {
+          id: "c02equivalents",
+          label: "C02 Equivalents",
+          link: "/c02equivalents",
+          icon: "bx bx-building-house",
+          parentId: "datamanagement",
         }]
-      }
+      },
+      {
+        id: "masterData",
+        label: "Master Data",
+        icon: "ri-user-add-line",
+        link: "/#",
+        stateVariables: isMasterData,
+        click: function (e) {
+          e.preventDefault();
+          setIsMasterData(!isMasterData);
+          setIscurrentState("MasterData");
+          updateIconSidebar(e);
+        },
+        subItems: [
+          {
+            id: "facility",
+            label: "Facility/Company Information",
+            link: "/facility",
+            icon: "bx bx-building-house",
+            parentId: "masterData",
+          }]
+        }
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };

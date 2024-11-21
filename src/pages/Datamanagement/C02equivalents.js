@@ -15,6 +15,8 @@ import {
   Container,
   Row,
   Input,
+  Label,
+  FormGroup,
   Dropdown,
   DropdownToggle,
   DropdownMenu,
@@ -26,7 +28,7 @@ import { useNavigate } from "react-router-dom";
 import { FaXmark } from "react-icons/fa6";
 import { fuelTypesData, isPrimaryFuelTypes } from "../../utils/FuelData.js";
 
-const FuelManager = () => {
+const C02equivalents = () => {
   document.title = "MRV_PROJECT | Fuel Manager";
   const { t } = useTranslation();
   const Navigate = useNavigate();
@@ -171,82 +173,57 @@ const FuelManager = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    {t("Fuel Manager")}
+                    {t("C02  EQUIVALENTS")}
                   </h4>
                 </CardHeader>
                 <CardBody>
                   <div className="listjs-table" id="customerList">
-                    <Row className="g-4 mb-3">
-                      <Col className="col-sm">
+                    <Row className="g-4">
+                      <Col className="col">
                         <div className="d-flex justify-content-between align-items-center">
-                          <div>
+                            <Label htmlFor="fuelType" style={{marginRight:'10px'}}>{t("Type")}</Label>
+                              <select
+                              className='form-select'
+                              id="fuelType"
+                              name="fuelType"
+                              aria-label="Default select example"
+                            >
+                              <option value="">{t("Select Type")}</option>
+                              {fuelTypesData.map((fuel) => (
+                                <option
+                                  key={fuel.name}
+                                  value={fuel.name}
+                                >
+                                  {fuel.name}
+                                </option>
+                              ))}
+                            </select>
+                          
+                        </div>
+                        </Col>
+                        <Col className="col">
+                        <div style={{float:'right', marginBottom:'10px'}}>
                             <Button
-                              color="success"
+                              color="default"
                               className="add-btn me-1"
-                              onClick={() => Navigate("/create-fuel")}
                               id="create-btn"
+                              style={{border:'1px solid #ced4da'}}
+                              onClick={() => Navigate("/add-gasType")}
                             >
                               <i className="ri-add-line align-bottom me-1"></i>{" "}
-                              {t("Add")}
+                              {t("Add Type")}
                             </Button>
-                          </div>
-                          <div className="d-flex justify-content-between">
-                            <div className="button-box">
-                              <input
-                                type="checkbox"
-                                id="userDefined"
-                                checked={showUserDefined}
-                                onChange={handleCheckboxChange}
-                                style={{
-                                  transform: "scale(1.5)",
-                                  marginRight: "10px",
-                                  width: "auto",
-                                }}
-                              />
-                              <label
-                                htmlFor="userDefined"
-                                className="userdefined-label"
-                              >
-                                {t("Show user-defined fuels only")}
-                              </label>
-                            </div>
-                            <div
-                              className="side-button-box toggle-button"
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                marginRight: "20px",
-                              }}
+                            <Button 
+                              color="default"
+                              className="add-btn me-1"
+                              id="create-btn"
+                              style={{border:'1px solid #ced4da'}}
+                              onClick={() => Navigate("/create-gas")}
                             >
-                              <label className="conversionfactor">
-                                {t("Conversion Factor Type")} :
-                              </label>
-                              <span>{t("NCV")}</span>
-                              <div className="form-check form-switch custom-switch">
-                                <input
-                                  className="form-check-input form-switch"
-                                  type="checkbox"
-                                  role="switch"
-                                  id="flexSwitchCheckChecked"
-                                  checked={conversionFactorType === "GCV"}
-                                  onChange={handleToggleClick}
-                                />
-                              </div>
-                              <span>{t("GCV")}</span>
+                              <i className="ri-add-line align-bottom me-1"></i>{" "}
+                              {t("Add Gases")}
+                            </Button>
                             </div>
-
-                            <div className="search-box ms-2">
-                              <input
-                                type="text"
-                                className="form-control search"
-                                placeholder={t("Search...")}
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                              />
-                              <i className="ri-search-line search-icon"></i>
-                            </div>
-                          </div>
-                        </div>
                       </Col>
                     </Row>
                     {loading ? (
@@ -260,47 +237,20 @@ const FuelManager = () => {
                       </div>
                     ) : (
                       <div
-                        className="table-responsive table-card mt-3 mb-1"
+                        className="table-responsive table-card"
                         style={{ padding: "20px" }}
                       >
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "end",
-                            marginBottom: "20px",
-                          }}
-                        >
-                          <Dropdown
-                            isOpen={dropdownOpen}
-                            toggle={toggleDropdown}
-                            className="btn-success"
-                          >
-                            <DropdownToggle caret   style={{background: '#299cdb' ,border:'none'}}>
-                              {selectedFuelType}
-                            </DropdownToggle>
-                            <DropdownMenu>
-                              <DropdownItem
-                                onClick={() =>
-                                  handleFuelTypeChange(t("All Fuels"))
-                                }
-                              >
-                                {t("All Fuels")}
-                              </DropdownItem>
-                              <DropdownItem
-                                onClick={() =>
-                                  handleFuelTypeChange(t("Liquid"))
-                                }
-                              >
-                                {t("Liquid Fuels")}
-                              </DropdownItem>
-                              <DropdownItem
-                                onClick={() => handleFuelTypeChange(t("Solid"))}
-                              >
-                                {t("Solid Fuels")}
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </Dropdown>
-                        </div>
+                        <div style={{float:'right', marginBottom:'10px'}}>
+                            <Button
+                              color="success"
+                              className="add-btn me-1"
+                              onClick={() => Navigate("/create-fuel")}
+                              id="create-btn"
+                            >
+                              <i className="ri-add-line align-bottom me-1"></i>{" "}
+                              {t("Add")}
+                            </Button>
+                            </div>
                         <table
                           className="table align-middle table-nowrap"
                           id="customerTable"
@@ -511,4 +461,4 @@ const FuelManager = () => {
   );
 };
 
-export default FuelManager;
+export default C02equivalents;
