@@ -5,6 +5,20 @@ import { Col, Container, Row } from "reactstrap";
 import FormField from "../../../Components/CommonComponents/FormField";
 
 const CategoryModal = ({open, onClose}) => {
+  const [Uncertainty, setUncertainty] = useState(false);
+  const [QAQC, setQAQC] = useState(false);
+  const [ActivityQAQC, setActivityQAQC] = useState(false);
+
+  const handleUncertainty = () => {
+    setUncertainty(!Uncertainty);
+  }
+  const handleQAQC = () => {
+    setQAQC(!QAQC);
+  }
+  const handleActivityQAQC = () => {
+    setActivityQAQC(!ActivityQAQC);
+  }
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -39,21 +53,22 @@ const CategoryModal = ({open, onClose}) => {
             <div className="category-sub-modal">
             <h4 className="category-sub-title">Upload Documents</h4>
             <Col md={12}>
-          <FileUpload label="Uncertainty Guidance?" />
+          <FileUpload label="Uncertainty Guidance?" toggleClick={handleUncertainty} conditionData={Uncertainty}/>
             </Col>
             <Col md={12}>
-          <FileUpload label="Is QA/QC for emission data?" />
+          <FileUpload label="Is QA/QC for emission data?" toggleClick={handleQAQC} conditionData={QAQC}/>
             </Col>
             <Col md={12}>
-          <FileUpload label="Is QA/QC for activity data?" />
+          <FileUpload label="Is QA/QC for activity data?" toggleClick={handleActivityQAQC} conditionData={ActivityQAQC}/>
           </Col>
           </div>
-          <div className="form-actions">
-            <button type="button" onClick={onClose}>
-              Cancel
-            </button>
-            <button type="submit">Add Details</button>
-          </div>
+          <div className="d-flex justify-content-end mt-3" style={{ marginRight: '4rem' }}>
+          <button type="submit"  className="add-details-btn rounded-pill me-2" > Add Details
+    </button>
+    <button type="submit" color="danger" className="cancel-details-btn rounded-pill"  onClick={() => history.back()}>Cancel
+    </button>
+                 
+                </div>
         </form>
       </Modal>
       </Container>

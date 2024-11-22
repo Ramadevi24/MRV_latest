@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
+import DownloadIcon from "../../assets/images/Power Sector--- Data Entry/basil_upload-solid.png"
 
-const FileUpload = ({ label }) => {
+const FileUpload = ({ label, toggleClick, conditionData }) => {
   const [file, setFile] = useState(null);
 
   const handleFileChange = (event) => {
@@ -16,21 +17,29 @@ const FileUpload = ({ label }) => {
     <div className="file-upload">
       <div className="file-upload-header">
         {/* <span>{label}</span> */}
-        <ToggleSwitch label={label}  />
+        <ToggleSwitch label={label}  toggleDivClassName="toggle-switch-modal" toggleLabelClassName="toggle-label-modal" onToggle={toggleClick} isCheckedData = {false}/>
       </div>
-      <div className="file-upload-body">
+      {conditionData && <div className="file-upload-body">
         {!file ? (
-          <>
+          <div className="file-upload-align">
+          <div>
             <input
               type="file"
               id={`upload-${label}`}
               onChange={handleFileChange}
               hidden
             />
+            <img src={DownloadIcon}/>
             <label htmlFor={`upload-${label}`} className="upload-placeholder">
-              Drag and drop files here or click to upload
+            Drag and drop files here or upload
             </label>
-          </>
+            </div>
+            <div>
+            <label htmlFor={`upload-${label}`} className="upload-button">
+              Upload
+            </label>
+            </div>
+          </div>
         ) : (
           <div className="uploaded-file">
             <span className="file-name">{file.name}</span>
@@ -39,7 +48,7 @@ const FileUpload = ({ label }) => {
             </button>
           </div>
         )}
-      </div>
+      </div>}
     </div>
   );
 };

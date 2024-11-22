@@ -1,11 +1,21 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { useTranslation } from "react-i18next";
 import DataTable from '../../../Components/CommonComponents/DataTable';
 import Button from '../../../Components/CommonComponents/Button';
 import addIcon from '../../../assets/images/Power Sector--- Data Entry/Plus.png'
+import SubPlantModal from './SubPlantModal';
 
 const SubPlantDetails = () => {
   const { t } = useTranslation();
+  const [isSubPlantOpen, setIsSubPlantOpen] = useState(false);
+
+  const handleSubPlantClick = () => {
+    setIsSubPlantOpen(true);
+  };
+
+  const handleSubPlantCloseModal = () => {
+    setIsSubPlantOpen(false);
+  };
   // const headers = ["Sub Plant", "Location Coordinates", "Technology", "Configuration", "Fuel Type"];
   const columns = [
     { key: "Sub Plant", label: t("Sub Plant"), sortable: true },
@@ -41,10 +51,10 @@ const SubPlantDetails = () => {
 
   return (
     <div className="sub-plant-details">
-            <div className='facility-subheadings'>
+        <div className='facility-subheadings'>
         <h2 className='add_facility_subtitle'>Sub Plant Details</h2>
         <Button label="Add Sub Plants" width="12.5" height="12.5"
-        icon={addIcon} onClick={() => {}} className="category-button">
+        icon={addIcon} onClick={handleSubPlantClick} className="category-button">
         </Button>
       </div>
       <DataTable
@@ -56,6 +66,9 @@ const SubPlantDetails = () => {
           if (action === "delete") handleDelete(item.roleID);
         }}
       />
+      {isSubPlantOpen && (
+        <SubPlantModal open={isSubPlantOpen} onClose={handleSubPlantCloseModal} />
+      )}
     </div>
   );
 };

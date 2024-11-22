@@ -1,11 +1,21 @@
-import React from "react";
+import React,{useState} from "react";
 import { useTranslation } from "react-i18next";
 import DataTable from '../../../Components/CommonComponents/DataTable';
 import Button from '../../../Components/CommonComponents/Button';
 import addIcon from '../../../assets/images/Power Sector--- Data Entry/Plus.png'
+import EmissionSourceModal from "./EmissionSourceModal";
 
 const EmissionSourceDetails = () => {
   const { t } = useTranslation();
+  const [isEmissionOpen, setIsEmissionOpen] = useState(false);
+
+  const handleEmissionClick = () => {
+    setIsEmissionOpen(true);
+  };
+
+  const handleEmissionCloseModal = () => {
+    setIsEmissionOpen(false);
+  };
   const columns = [
     { key: "Sub Plant", label: t("Sub Plant"), sortable: true },
     { key: "Stack ID", label: "Stack ID", sortable: true },
@@ -43,7 +53,7 @@ const EmissionSourceDetails = () => {
         <div className='facility-subheadings'>
         <h2 className='add_facility_subtitle'>Emission Source Details</h2>
         <Button label="Add Emission" width="12.5" height="12.5"
-        icon={addIcon} onClick={() => {}} className="category-button">
+        icon={addIcon} onClick={handleEmissionClick} className="category-button">
         </Button>
       </div>
       <DataTable
@@ -55,6 +65,9 @@ const EmissionSourceDetails = () => {
           if (action === "delete") handleDelete(item.roleID);
         }}
       />
+      {isEmissionOpen && (
+        <EmissionSourceModal open={isEmissionOpen} onClose={handleEmissionCloseModal} />
+      )}
     </div>
   );
 };

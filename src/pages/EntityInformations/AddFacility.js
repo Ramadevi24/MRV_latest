@@ -31,7 +31,7 @@ function AddFacility() {
               <CardBody>
                 <FacilityInfo />
                 <Col md={4}>
-                <ToggleSwitch label="Contact Person is same as Entity" onToggle={handleToggle} />
+                <ToggleSwitch label="Contact Person is same as Entity" onToggle={handleToggle} toggleDivClassName="toggle-switch" toggleLabelClassName="toggle-label" isCheckedData = {true}/>
                 </Col>
                 {!isContactDetailsVisible && <ContactDetails />}
                 <CategoryDetails />
