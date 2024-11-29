@@ -401,14 +401,14 @@ const AddFuel = () => {
                         <Button
                           type="submit"
                           color="success"
-                          className="rounded-pill me-2"
+                          className=" me-2"
                         >
                           {t("Submit")}
                         </Button>
                         <Button
                           type="button"
                           color="danger"
-                          className="rounded-pill"
+                          className=""
                           onClick={() => history.back()}
                         >
                           {t("Cancel")}

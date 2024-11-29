@@ -130,13 +130,13 @@ const TenantForm = () => {
                         ) : null}
                       </FormGroup>
           <div className="d-flex justify-content-end  mt-3" style={{marginRight:'4rem'}}>
-                <Button type="submit" color="success" className="rounded-pill me-2">
+                <Button type="submit" color="success" className=" me-2">
                   {t('Submit')}
                 </Button>
                 <Button
                   type="button"
                   color="danger"
-                  className="rounded-pill"
+                  className=""
                   onClick={() => history.back()}
                 >
                   {t('Cancel')}

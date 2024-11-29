@@ -842,7 +842,7 @@ const EditOrganization = () => {
                           <Button
                             type="submit"
                             color="success"
-                            className="rounded-pill me-2"
+                            className=" me-2"
                             onClick={handleNext}
                           >
                             {t("Next")}
@@ -850,7 +850,7 @@ const EditOrganization = () => {
                           <Button
                             type="button"
                             color="danger"
-                            className="rounded-pill"
+                            className=""
                             onClick={() => history.back()}
                           >
                             {t("Cancel")}
@@ -876,7 +876,7 @@ const EditOrganization = () => {
                         <Button
                           type="submit"
                           color="success"
-                          className="rounded-pill me-2"
+                          className=" me-2"
                           onClick={handleCategorySubmit}
                         >
                           Submit
@@ -884,7 +884,7 @@ const EditOrganization = () => {
                         <Button
                             type="button"
                             color="danger"
-                            className="rounded-pill"
+                            className=""
                             onClick={() =>     handleTabChange("organization")}
                             style={{ marginRight: "1rem" }}
                           >

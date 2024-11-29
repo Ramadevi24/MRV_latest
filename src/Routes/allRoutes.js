@@ -84,9 +84,11 @@ const authProtectedRoutes = [
   {path:'/c02equivalents', component: <C02equivalents />},
   {path:'/create-gas', component: <CreateGas />},
   {path:'/add-gasType', component: <Gastype />},
-  {path:'/facility', component: <FacilityGrid/>},
-  {path:'/add-facility', component: <AddFacility/>},
-  { path: "*", component: <Navigate to="/dashboard" /> },
+  {path:'/facility/:power', component: <FacilityGrid/>},
+  {path:'/add-facility/:power', component: <AddFacility/>},
+  {path:'/facility/:petroleum', component: <FacilityGrid/>},
+  {path:'/add-facility/:petroleum', component: <AddFacility/>},
+  {path: "*", component: <Navigate to="/dashboard" /> },
 ];
 
 const publicRoutes = [

@@ -4,6 +4,7 @@ import React from 'react';
 import './assets/scss/themes.scss';
 import './assets/scss/CSS/Oraganizationform.css'
 import CustomAlert from './Components/Common/CustomAlert';
+import './assets/scss/CSS/responsive.css';
 
 //imoprt Route
 import Route from './Routes';

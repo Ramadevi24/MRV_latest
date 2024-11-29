@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "../../../Components/CommonComponents/Modal";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Container, Row, Card } from "reactstrap";
 import FormField from "../../../Components/CommonComponents/FormField";
 import deleteIcon from "../../../assets/images/Power Sector--- Data Entry/Vector.png";
+import {MenuContext} from "../../../contexts/MenuContext";
+import { useParams } from "react-router-dom";
 
 const EmissionSourceModal = ({ open, onClose }) => {
+  const {power} = useParams();
     const [rows, setRows] = useState([
         { name: "CO", value: 30 },
         { name: "CH4", value: 21 },
@@ -40,7 +43,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
                   <FormField label="Sub Plant Name" isDropdown options={[{ label: "GT/HRSG 41", value: "GT/HRSG 41" }]}/>
                 </Col>
               </Row>      
-                    <div className="category-sub-modal" style={{marginTop:'10px'}}>
+                    <div className="category-sub-modal" style={{margin:'10px 0px 10px 0px'}}>
                         <Row>
                             <Col md={6}>
                             <h4 className="modal-subhead">Emission Details</h4>
@@ -74,7 +77,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
                   </Col>
                 </Row>
                 </div>
-                <Row>
+                <div>
                     <Row>
                 <Col md={6}>
                   <FormField label="Fuel Type" isDropdown options={[{ label: "Natural Gas, Diesel, Gas Oil", value: "Natural Gas, Diesel, Gas Oil" }]}/>
@@ -84,8 +87,15 @@ const EmissionSourceModal = ({ open, onClose }) => {
       <FormField label="Configuration" placeholder="Combined Cycle"/>
       </Col>
       </Row>
-              </Row>     
-              <div className="category-sub-modal" style={{marginTop:'10px'}}>
+      {power === ":petroleum" && (
+      <Row>
+      <Col md={6}>
+                  <FormField label="Fuel Produced" isDropdown options={[{ label: "Naphtha, Diesel", value: "Naphtha, Diesel" }]}/>
+                </Col>
+      </Row>
+      )}
+      </div>
+              <div className="category-sub-modal" style={{marginTop:'10px 0px 10px 0px'}}>
                         <Row>
                             <Col md={6}>
                             <h4 className="modal-subhead">Technologies</h4>
@@ -103,30 +113,50 @@ const EmissionSourceModal = ({ open, onClose }) => {
       <div className="efficiency-section">
       <h4 className="emission-subtitle">Abatement Efficiency</h4>
       <Row>
-        <Col md={12}>
-       
-          <FormField label="NOX (%)" placeholder="23" style={{width:"65px"}}/>
+        <Col md={6}>
+        <label className="emission-modal-label">NOX (%)</label>
+       </Col>
+       <Col md={6}>
+        <div className="input-with-icon" >
+          <input type="number" value="" onChange="" placeholder="23" className="emission-modal-input"/>
+        </div>
           </Col>
         </Row>
-        <Row>
-        <Col md={12}>
-          <FormField label="SOX (%)" placeholder="23" style={{width:"65px"}}/>
+        <Row style={{marginTop:'10px'}}>
+        <Col md={6}>
+        <label className="emission-modal-label">SOX (%)</label>
+        </Col>
+        <Col md={6}>
+        <div className="input-with-icon">
+          <input type="number" value="" onChange="" placeholder="23"  className="emission-modal-input"/>
+        </div>
             </Col>
         </Row>
+        {power === ":petroleum" && (<Row style={{marginTop:'10px'}}>
+        <Col md={6}>
+        <label className="emission-modal-label">CO (%)</label>
+        </Col>
+        <Col md={6}>
+        <div className="input-with-icon">
+          <input type="number" value="" onChange="" placeholder="24"  className="emission-modal-input"/>
+        </div>
+            </Col>
+        </Row>)}
       </div>
     </Col>
     <Col md={7}>
       <div className="other-efficiency-section">
         <h4 className="emission-subtitle">Other Abatement Efficiency</h4>
+        <Card>
         <div className="abatement-table-container">
       <table className="abatement-table">
         <thead>
           <tr>
             <th>Name</th>
             <th>Value (%)</th>
-            <th>  <button onClick={addRow} className="add-emission-modalbtn">
+            <button onClick={addRow} className="add-emission-modalbtn">
         + Add other
-      </button></th>
+      </button>
           </tr>
         </thead>
         <tbody>
@@ -160,8 +190,8 @@ const EmissionSourceModal = ({ open, onClose }) => {
           ))}
         </tbody>
       </table>
-     
     </div>
+    </Card>
       </div>
       </Col>
     </Row>
@@ -179,7 +209,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
               >
                 <button
                   type="submit"
-                  className="add-details-btn rounded-pill me-2"
+                  className="add-details-btn  me-2"
                 >
                   {" "}
                   Add Details
@@ -187,7 +217,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
                 <button
                   type="submit"
                   color="danger"
-                  className="cancel-details-btn rounded-pill"
+                  className="cancel-details-btn "
                   onClick={() => history.back()}
                 >
                   Cancel

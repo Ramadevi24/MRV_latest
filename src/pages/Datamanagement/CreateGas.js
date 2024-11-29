@@ -164,7 +164,7 @@ const CreateGas = () => {
                         <Button
                           type="submit"
                           color="success"
-                          className="rounded-pill me-2"
+                          className=" me-2"
                           onClick={handleAddItem}
                         >
                           {t("Submit")}

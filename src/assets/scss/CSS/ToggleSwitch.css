@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 16px;
+    /* font-size: 16px; */
     padding: 15px 12px 15px 12px;
     border: 1px solid #CED0DA;
     border-radius: 8px;
@@ -24,19 +24,19 @@
   }
 
 .toggle-label {
-    font-family: Roboto;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 16.41px;
-    color: #3B3F45;
+    /* font-family: Roboto;
+    font-size: 14px; */
+    font-weight: 500;
+    /* line-height: 16.41px;
+    color: #3B3F45; */
   }
 
   .toggle-label-modal {
-    font-family: Roboto;
-    font-size: 14px;
+    /* font-family: Roboto; */
+    font-size: 13px;
     font-weight: 400;
     line-height: 16.41px;
-    color: #646464;
+    /* color: #646464; */
   }
 
   .switch-container {

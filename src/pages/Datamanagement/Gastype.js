@@ -131,7 +131,7 @@ const Gastype = () => {
                                 type="submit"
                                 color="success"
                                 onClick={handleAddItem}
-                                className="rounded-pill me-2"
+                                className=" me-2"
                               >
                                 {t("Submit")}
                               </Button>

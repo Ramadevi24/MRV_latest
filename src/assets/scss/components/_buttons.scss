@@ -8,9 +8,9 @@ a {
   
 }
 
-.btn {
-    box-shadow: $element-shadow;
-}
+// .btn {
+//     box-shadow: $element-shadow;
+// }
 
 :is(.btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active) {
     border-color: transparent;

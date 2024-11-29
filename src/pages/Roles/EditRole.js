@@ -327,14 +327,14 @@ const EditRole = () => {
                       <Button
                         type="submit"
                         color="success"
-                        className="rounded-pill me-2"
+                        className=" me-2"
                       >
                         {t('Submit')}
                       </Button>
                       <Button
                         type="button"
                         color="danger"
-                        className="rounded-pill"
+                        className=""
                         onClick={() => navigate("/roles")}
                         style={{ marginRight: "4rem" }}  >
                         {t('Cancel')}

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useContext } from 'react';
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import withRouter from "../../Components/Common/withRouter";
@@ -16,7 +16,6 @@ import {
     rolesPermissions,
     permissionsPermissions,
   } from "../../utils/useHasPermission";
-import { helper } from 'echarts';
 
 const VerticalLayout = (props) => {
     const navData = navdata().props.children;
@@ -28,9 +27,6 @@ const VerticalLayout = (props) => {
       (permission) => permission.permissionName
     );
 
-    /*
-     layout settings
-    */
     const selectLayoutState = (state) => state.Layout;
     const selectLayoutProperties = createSelector(
         selectLayoutState,
@@ -110,6 +106,10 @@ const VerticalLayout = (props) => {
     { subPath: "/Mrv/edit-user", mainPath: "/Mrv/users" },
     { subPath: "/Mrv/view-user", mainPath: "/Mrv/users" },
     { subPath: "/Mrv/fuelmanager", mainPath: "/Mrv/fuelmanager" },
+    { subPath: '/Mrv/facility/:power', mainPath: '/Mrv/facility/:power'},
+    { subPath: '/Mrv/add-facility/:power', mainPath: '/Mrv/facility/:power' },
+    { subPath: '/Mrv/facility/:petroleum', mainPath: '/Mrv/facility/:petroleum'},
+    { subPath: '/Mrv/add-facility/:petroleum', mainPath: '/Mrv/facility/:petroleum' }
   ];
 
   const initMenu = () => {
@@ -260,7 +260,7 @@ const VerticalLayout = (props) => {
                           ]
                             .filter(Boolean) // Filter out any `false` values
                             .map((subItem, subKey) => (
-                              <li className="nav-item" key={subKey} >
+                              <li className="nav-item" key={subKey}>
                                 <Link
                                   to={subItem.link ? subItem.link : "/#"}
                                   className="nav-link"
@@ -274,6 +274,7 @@ const VerticalLayout = (props) => {
                     </Collapse>
                   </li>
                 ) : item.subItems ? (
+                
                   <li className="nav-item">
                     <Link
                       onClick={item.click}
@@ -293,6 +294,7 @@ const VerticalLayout = (props) => {
                     >
                       <ul className="nav nav-sm flex-column sidebar-subitems">
                         {item.subItems.map((subItem, subKey) => (
+                        
                           <li className="nav-item" key={subKey}>
                             <Link
                               to={subItem.link ? subItem.link : "/#"}

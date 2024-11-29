@@ -828,7 +828,7 @@ const OrganizationForm = () => {
                           <Button
                             type="button"
                             color="success"
-                            className="rounded-pill me-2"
+                            className=" me-2"
                             onClick={handleNext}
                           >
                             Next
@@ -836,7 +836,7 @@ const OrganizationForm = () => {
                           <Button
                             type="button"
                             color="danger"
-                            className="rounded-pill"
+                            className=""
                             onClick={() => navigate(-1)}
                           >
                             Cancel
@@ -863,7 +863,7 @@ const OrganizationForm = () => {
                              <Button
                             type="button"
                             color="danger"
-                            className="rounded-pill"
+                            className=""
                             onClick={() =>handleTabChange("organization")}
                             style={{ marginRight: "1rem" }}
                           >
@@ -872,7 +872,7 @@ const OrganizationForm = () => {
                         <Button
                           type="button"
                           color="success"
-                          className="rounded-pill me-2"
+                          className=" me-2"
                           // onClick={(e) => validation.handleSubmit()}
                           onClick={handleCategorySubmit}
                         >

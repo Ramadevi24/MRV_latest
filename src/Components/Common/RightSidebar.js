@@ -998,7 +998,7 @@ const RightSidebar = () => {
                                                         <label className="form-check-label p-0 avatar-md w-100" htmlFor="sidebar-color-dark">
                                                             <span className="d-flex gap-1 h-100">
                                                                 <span className="flex-shrink-0">
-                                                                    <span className="bg-primary d-flex h-100 flex-column gap-1 p-1">
+                                                                    <span className="bg-dark d-flex h-100 flex-column gap-1 p-1">
                                                                         <span className="d-block p-1 px-2 bg-white bg-opacity-10 rounded mb-2"></span>
                                                                         <span className="d-block p-1 px-2 pb-0 bg-white bg-opacity-10"></span>
                                                                         <span className="d-block p-1 px-2 pb-0 bg-white bg-opacity-10"></span>

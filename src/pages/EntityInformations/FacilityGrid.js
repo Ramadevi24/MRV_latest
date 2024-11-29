@@ -9,12 +9,16 @@ import { RoleContext } from "../../contexts/RoleContext";
 import { Spinner, Button, Card, CardBody, Col, Container, Row, CardHeader } from "reactstrap";
 import { formatDate } from "../../utils/formateDate";
 import '../../assets/scss/CSS/styles.css';
+import { useParams } from 'react-router-dom';
 
 const FacilityGrid = () => {
   document.title = "MRV_PROJECT | Facility Grid";
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { power} = useParams();
+  console.log(power, 'useParams');
   const { roles, loading, removeRole, fetchAllRoles } = useContext(RoleContext);
+
 
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "name", direction: "ascending" });
@@ -23,7 +27,6 @@ const FacilityGrid = () => {
   const [deleteRoleId, setDeleteRoleId] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
   const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
-
   useEffect(() => {
     fetchAllRoles(userPermissions?.tenantID);
   }, []);
@@ -59,22 +62,19 @@ const FacilityGrid = () => {
       return 0;
     });
 
-  const currentItems = filteredRoles.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+  const currentItems = filteredRoles?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const columns = [
-    { key: "Facility(Plant Name)", label: t("Role Name"), sortable: true },
-    { key: "Sector", label: t("Description"), sortable: true },
-    { key: "Category", label: t("Created Date"), sortable: true, render: (val) => formatDate(val) },
-    { key: "Actions", label: t("Action"), render: (val, item) => (
+    { key: "Facility(Plant Name)", label: t("Facility(Plant Name)"), sortable: true },
+    { key: "Sector", label: t("Sector"), sortable: true },
+    { key: "Category", label: t("Category"), sortable: true},
+    { key: "Actions", label: t("Actions"), render: (val, item) => (
       <div className="d-flex gap-2">
-        <button className="btn btn-sm btn-info" onClick={() => navigate(`/edit-role/${item.roleID}`)}>
+        <button className="btn btn-sm btn-info" onClick={() => {}}>
           <i className="ri-pencil-line" />
         </button>
-        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item.roleID)}>
+        <button className="btn btn-sm btn-danger" onClick={() =>{} }>
           <i className="ri-delete-bin-line" />
-        </button>
-        <button className="btn btn-sm btn-success" onClick={() => navigate(`/view-role/${item.roleID}`)}>
-          <i className="ri-eye-line" />
         </button>
       </div>
     ) },
@@ -105,7 +105,7 @@ const FacilityGrid = () => {
                           <Button
                             color="success"
                             className="add-btn me-1"
-                            onClick={() => navigate("/add-facility")}
+                            onClick={() => navigate(`/add-facility/${power}`)}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>
@@ -128,6 +128,7 @@ const FacilityGrid = () => {
                   data={currentItems}
                   columns={columns}
                   onSort={handleSort}
+                  sortConfig={sortConfig}
                   onAction={(action, item) => {
                     if (action === "edit") navigate(`/edit-role/${item.roleID}`);
                     if (action === "delete") handleDelete(item.roleID);

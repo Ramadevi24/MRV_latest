@@ -63,9 +63,9 @@ const CategoryModal = ({open, onClose}) => {
           </Col>
           </div>
           <div className="d-flex justify-content-end mt-3" style={{ marginRight: '4rem' }}>
-          <button type="submit"  className="add-details-btn rounded-pill me-2" > Add Details
+          <button type="submit"  className="add-details-btn  me-2" > Add Details
     </button>
-    <button type="submit" color="danger" className="cancel-details-btn rounded-pill"  onClick={() => history.back()}>Cancel
+    <button type="submit" color="danger" className="cancel-details-btn "  onClick={() => history.back()}>Cancel
     </button>
                  
                 </div>

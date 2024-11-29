@@ -16,11 +16,11 @@ import {
 
 export const initialState = {
   layoutType: layoutTypes.VERTICAL,
-  leftSidebarType: leftSidebarTypes.DARK,
+  leftSidebarType: leftSidebarTypes.GRADIENT,
   layoutModeType: layoutModeTypes.LIGHTMODE,
   layoutWidthType: layoutWidthTypes.FLUID,
   layoutPositionType: layoutPositionTypes.FIXED,
-  topbarThemeType: topbarThemeTypes.DARK,
+  topbarThemeType: topbarThemeTypes.GRADIENT,
   leftsidbarSizeType: leftsidbarSizeTypes.DEFAULT,
   leftSidebarViewType: leftSidebarViewTypes.DEFAULT,
   leftSidebarImageType: leftSidebarImageTypes.NONE,

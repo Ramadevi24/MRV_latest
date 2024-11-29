@@ -12,7 +12,6 @@ const Navdata = () => {
   let userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || []
   userPermissions = userPermissions.permissions && userPermissions.permissions?.$values.map((permission) => permission.permissionName)
 
-
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute("subitems")) {
       const ul = document.getElementById("two-column-menu");
@@ -139,7 +138,7 @@ const Navdata = () => {
     {
       id: "datamanagement",
       label: "Data Management",
-      icon: "ri-user-add-line",
+      icon: "ri-database-fill",
       link: "/#",
       stateVariables: isDataManagement,
       click: function (e) {
@@ -165,9 +164,9 @@ const Navdata = () => {
         }]
       },
       {
-        id: "masterData",
-        label: "Master Data",
-        icon: "ri-user-add-line",
+        id: "energy",
+        label: "Energy",
+        icon: "ri-ai-generate",
         link: "/#",
         stateVariables: isMasterData,
         click: function (e) {
@@ -178,11 +177,18 @@ const Navdata = () => {
         },
         subItems: [
           {
-            id: "facility",
-            label: "Facility/Company Information",
-            link: "/facility",
-            icon: "bx bx-building-house",
-            parentId: "masterData",
+            id: "powersector",
+            label: "1.A Power Sector",
+            link: "/facility/:power",
+            // icon: "bx bx-building-house",
+            parentId: "energy",
+          },
+          {
+            id: "petroleumrefining",
+            label: "1.A.1 Petroleum Refining",
+            link: "/facility/:petroleum",
+            // icon: "bx bx-building-house",
+            parentId: "energy",
           }]
         }
   ];

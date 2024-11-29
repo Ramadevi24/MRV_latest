@@ -86,7 +86,7 @@ const CoverSignIn = (props) => {
 
     return (
         <React.Fragment>
-            <div className="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
+            <div className="auth-page-wrapper auth-bg-cover d-flex justify-content-center align-items-center min-vh-100">
                 <div className="bg-overlay"></div>
                 <div className="auth-page-content overflow-hidden pt-lg-5">
                     <Container>
@@ -202,7 +202,7 @@ const CoverSignIn = (props) => {
                                                                 >
                                                                     <i className="ri-google-fill fs-16" />
                                                                 </Link>
-                                                                <Button color="dark" className="btn-icon">
+                                                                <Button color="dark" className="btn-icon me-1">
                                                                     <i className="ri-github-fill fs-16"></i>
                                                                 </Button>
                                                                 <Button color="info" className="btn-icon">

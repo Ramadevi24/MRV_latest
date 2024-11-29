@@ -206,7 +206,7 @@ const Login = (props) => {
                                                             >
                                                             <i className="ri-google-fill fs-16" />
                                                         </Link>
-                                                        <Button color="dark" className="btn-icon"><i className="ri-github-fill fs-16"></i></Button>{" "}
+                                                        <Button color="dark" className="btn-icon me-1"><i className="ri-github-fill fs-16"></i></Button>{" "}
                                                         <Button color="info" className="btn-icon"><i className="ri-twitter-fill fs-16"></i></Button>
                                                     </div>
                                                 </div>

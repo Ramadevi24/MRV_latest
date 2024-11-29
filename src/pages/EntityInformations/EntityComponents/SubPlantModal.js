@@ -33,7 +33,7 @@ const SubPlantModal = ({ open, onClose }) => {
                   <FormField label="Sub Plant Name" placeholder="GT/HRSG 41" />
                 </Col>
               </Row>
-              <Col md={12}>
+              <Col md={12} className="mt-3">
                 <ToggleSwitch
                   label="Location Coordinates is same as facility "
                   toggleDivClassName="toggle-switch-modal"
@@ -41,7 +41,7 @@ const SubPlantModal = ({ open, onClose }) => {
                   onToggle={handleLocation}
                   isCheckedData={true}
                 />
-                {!isLocation && (<Row>
+                {!isLocation && (<Row className="mt-2">
                   <Col md={6}>
                     <FormField
                       label="Location Coordinates"
@@ -57,7 +57,7 @@ const SubPlantModal = ({ open, onClose }) => {
                   </Col>
                 </Row>)}
               </Col>
-              <Col md={12}>
+              <Col md={12} className="mt-3">
                 <ToggleSwitch
                   label="Contact Details is same as facility"
                   toggleDivClassName="toggle-switch-modal"
@@ -98,7 +98,7 @@ const SubPlantModal = ({ open, onClose }) => {
               >
                 <button
                   type="submit"
-                  className="add-details-btn rounded-pill me-2"
+                  className="add-details-btn  me-2"
                 >
                   {" "}
                   Add Details
@@ -106,7 +106,7 @@ const SubPlantModal = ({ open, onClose }) => {
                 <button
                   type="submit"
                   color="danger"
-                  className="cancel-details-btn rounded-pill"
+                  className="cancel-details-btn "
                   onClick={() => history.back()}
                 >
                   Cancel
