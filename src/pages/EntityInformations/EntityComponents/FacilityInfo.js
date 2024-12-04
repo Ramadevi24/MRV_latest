@@ -28,15 +28,6 @@ const FacilityInfo = () => {
       <FormField label="Street Address" placeholder="Sultan Bin Zayed Street"/>
       </Col>
       </Row>
-{/* <Row>
-       <div className="col-md-4">
-          <label>Contact Person is same as Entity</label>
-          <div>
-            <input type="radio" name="contact" value="Yes" /> Yes
-            <input type="radio" name="contact" value="No" className="ms-2" /> No
-          </div>
-        </div>
-        </Row> */}
     </div>
     
   );

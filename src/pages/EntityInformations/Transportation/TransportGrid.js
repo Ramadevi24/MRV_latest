@@ -1,19 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Pagination from "../../Components/CommonComponents/PaginationNumber";
-import SearchBar from "../../Components/CommonComponents/SearchBar";
-import DataTable from "../../Components/CommonComponents/DataTable";
-import DeleteModal from "../../Components/CommonComponents/DeleteModal";
-import { RoleContext } from "../../contexts/RoleContext";
+import Pagination from "../../../Components/CommonComponents/PaginationNumber";
+import SearchBar from "../../../Components/CommonComponents/SearchBar";
+import DataTable from "../../../Components/CommonComponents/DataTable";
+import DeleteModal from "../../../Components/CommonComponents/DeleteModal";
+import { RoleContext } from "../../../contexts/RoleContext";
 import { Spinner, Button, Card, CardBody, Col, Container, Row, CardHeader } from "reactstrap";
-import { formatDate } from "../../utils/formateDate";
-import '../../assets/scss/CSS/styles.css';
+import '../../../assets/scss/CSS/styles.css';
+import { useParams } from 'react-router-dom';
 
-const FacilityGrid = () => {
+const TransportGrid = () => {
   document.title = "MRV_PROJECT | Facility Grid";
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { transport} = useParams();
   const { roles, loading, removeRole, fetchAllRoles } = useContext(RoleContext);
 
 
@@ -62,7 +63,7 @@ const FacilityGrid = () => {
   const currentItems = filteredRoles?.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   const columns = [
-    { key: "Facility(Plant Name)", label: t("Facility(Plant Name)"), sortable: true },
+    { key: "Emirate", label: t("Emirate"), sortable: true },
     { key: "Sector", label: t("Sector"), sortable: true },
     { key: "Category", label: t("Category"), sortable: true},
     { key: "Actions", label: t("Actions"), render: (val, item) => (
@@ -88,7 +89,7 @@ const FacilityGrid = () => {
                   <h4
                     className="card-title mb-0 cardTitle"
                   >
-                   {t('Facility/Company Information')}
+                   {t('Aviation')}
                   </h4>
                 </CardHeader>
             <CardBody>
@@ -102,7 +103,7 @@ const FacilityGrid = () => {
                           <Button
                             color="success"
                             className="add-btn me-1"
-                            onClick={() => navigate(`/add-facility/${power}`)}
+                            onClick={() => navigate(`/add-transportation/${transport}`)}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>
@@ -153,4 +154,4 @@ const FacilityGrid = () => {
   );
 };
 
-export default FacilityGrid;
+export default TransportGrid;

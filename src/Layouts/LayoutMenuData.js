@@ -7,10 +7,29 @@ const Navdata = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [isSample, setIsSample] = useState(false);
   const [isDataManagement, setIsDataManagement] = useState(false);
-  const [isMasterData, setIsMasterData] = useState(false);
+  const [isEnergy, setIsEnergy] = useState(false);
+  const [isEmissionEnergy, setIsEmissionEnergy] = useState(false);
+  const [isViewEnergy, setIsViewEnergy] = useState(false);
+  const [isFacilityConfiguration, setIsFacilityConfiguration] = useState(false);
+  const [isEmissionData, setIsEmissionData] = useState(false);
+  const [isViewEmission, setIsViewEmission] = useState(false);
+  const [isFuelCombustion, setIsFuelCombustion] = useState(false);
+  const [isViewFuelCombustion, setIsViewFuelCombustion] = useState(false);
+  const [isEmissionFuelCombustion, setIsEmissionFuelCombustion] = useState(false);
+  const [isManufacturing, setIsManufacturing] = useState(false);
+  const [isViewManufacturing, setIsViewManufacturing] = useState(false);
+  const [isEmissionManufacturing, setIsEmissionManufacturing] = useState(false);
+  const [isTransportation, setIsTransportation] = useState(false);
+  const [isViewTransportation, setIsViewTransportation] = useState(false);
+  const [isEmissionTransportation, setIsEmissionTransportation] = useState(false);
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
-  let userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || []
-  userPermissions = userPermissions.permissions && userPermissions.permissions?.$values.map((permission) => permission.permissionName)
+  let userPermissions =
+    JSON.parse(localStorage.getItem("UserPermissions")) || [];
+  userPermissions =
+    userPermissions.permissions &&
+    userPermissions.permissions?.$values.map(
+      (permission) => permission.permissionName
+    );
 
   function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute("subitems")) {
@@ -31,7 +50,7 @@ const Navdata = () => {
     if (iscurrentState !== "Dashboard") {
       setIsDashboard(false);
     }
-     if (iscurrentState !== "Auth") {
+    if (iscurrentState !== "Auth") {
       setIsAuth(false);
     }
     if (iscurrentState !== "Sample") {
@@ -40,8 +59,50 @@ const Navdata = () => {
     if (iscurrentState !== "DataManagement") {
       setIsDataManagement(false);
     }
-    if (iscurrentState !== "MasterData") {
-      setIsMasterData(false);
+    if (iscurrentState !== "FacilityConfiguration") {
+      setIsFacilityConfiguration(false);
+    }
+    if (iscurrentState !== "FuelCombustion") {
+      setIsFuelCombustion(false);
+    }
+    if (iscurrentState !== "Energy") {
+      setIsEnergy(false);
+    }
+    if (iscurrentState !== "Manufacturing") {
+      setIsManufacturing(false);
+    }
+    if (iscurrentState !== "Transportation") {
+      setIsTransportation(false);
+    }
+    if (iscurrentState !== "EmissionData") {
+      setIsEmissionData(false);
+    }
+    if (iscurrentState !== "EmissionFuelCombustion") {
+      setIsEmissionFuelCombustion(false);
+    }
+    if (iscurrentState !== "EmissionEnergy") {
+      setIsEmissionEnergy(false);
+    }
+    if(iscurrentState !== "EmissionManufacturing"){
+      setIsEmissionManufacturing(false);
+    }
+    if(iscurrentState !== "EmissionTransportation"){
+      setIsEmissionTransportation(false);
+    }
+    if(iscurrentState !== "ViewEmission"){
+      setIsViewEmission(false);
+    }
+    if(iscurrentState !== "ViewFuelCombustion"){
+      setIsViewFuelCombustion(false);
+    }
+    if(iscurrentState !== "ViewEnergy"){
+      setIsViewEnergy(false);
+    }
+    if(iscurrentState !== "ViewManufacturing"){
+      setIsViewManufacturing(false);
+    }
+    if(iscurrentState !== "ViewTransportation"){
+      setIsViewTransportation(false);
     }
   }, [
     history,
@@ -50,7 +111,21 @@ const Navdata = () => {
     isAuth,
     isSample,
     isDataManagement,
-    isMasterData,
+    isEmissionData,
+    isFuelCombustion,
+    isEnergy,
+    isManufacturing,
+    isTransportation,
+    isFacilityConfiguration,
+    isEmissionFuelCombustion,
+    isEmissionEnergy,
+    isEmissionManufacturing,
+    isEmissionTransportation,
+    isViewEmission,
+    isViewFuelCombustion,
+    isViewEnergy,
+    isViewManufacturing,
+    isViewTransportation
   ]);
 
   const menuItems = [
@@ -84,9 +159,411 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
     },
+    // {
+    //   label: "Pages",
+    //   isHeader: true,
+    // },
+    
     {
-      label: "Pages",
-      isHeader: true,
+      id: "datamanagement",
+      label: "Data Management",
+      icon: "ri-database-fill",
+      link: "/#",
+      stateVariables: isDataManagement,
+      click: function (e) {
+        e.preventDefault();
+        setIsDataManagement(!isDataManagement);
+        setIscurrentState("DataManagement");
+        updateIconSidebar(e);
+      },
+      subItems: [
+        {
+          id: "fuelmanager",
+          label: "Fuel Manager",
+          link: "/fuelmanager",
+          icon: "bx bx-building-house",
+          parentId: "datamanagement",
+        },
+        {
+          id: "c02equivalents",
+          label: "C02 Equivalents",
+          link: "/c02equivalents",
+          icon: "bx bx-building-house",
+          parentId: "datamanagement",
+        },
+      ],
+    },
+    {
+      id: "facilityconfiguration",
+      label: "Facility Configuration",
+      icon: "ri-ai-generate",
+      link: "/#",
+      stateVariables: isFacilityConfiguration,
+      click: function (e) {
+        e.preventDefault();
+        setIsEmissionData(!isFacilityConfiguration);
+        setIscurrentState("FacilityConfiguration");
+        updateIconSidebar(e);
+      },
+      subItems: [
+        {
+          id: "fuelcombustion",
+          label: "1.A Fuel Combustion Activity",
+          link: "/#",
+          parentId: "facilityconfiguration",
+          stateVariables: isFuelCombustion,
+          click: function (e) {
+            e.preventDefault();
+            setIsFuelCombustion(!isFuelCombustion);
+            setIscurrentState("FuelCombustion");
+            updateIconSidebar(e);
+          },
+          subItems: [
+            {
+              id: "energy",
+              label: "1.A.1 Energy Industries",
+              link: "/#",
+              parentId: "fuelcombustion",
+              stateVariables: isEnergy,
+              click: function (e) {
+                e.preventDefault();
+                setIsEnergy(!isEnergy);
+                setIscurrentState("Energy");
+                updateIconSidebar(e);
+              },
+              subItems: [
+                {
+                  id: "powergeneration",
+                  label: "1.A.1.a Power Generation",
+                  link: "/add-facility/:power",
+                  parentId: "energy",
+                },
+                {
+                  id: "petroleumrefining",
+                  label: "1.A.1.b Petroleum Refining",
+                  link: "/add-facility/:petroleum",
+                  parentId: "energy",
+                },
+              ],
+            },
+            {
+              id: "manufacturing&construction",
+              label: "1.A.2 Manufacturing & Construction",
+              link: "/#",
+              parentId: "fuelcombustion",
+              stateVariables: isManufacturing,
+              click: function (e) {
+                e.preventDefault();
+                setIsManufacturing(!isManufacturing);
+                setIscurrentState("Manufacturing");
+                updateIconSidebar(e);
+              },
+              subItems: [
+                {
+                  id: "construction",
+                  label: "1.A.2.a Manufacturing",
+                  link: "/add-facility/:construction",
+                  parentId: "manufacturing&construction",
+                },
+              ],
+            },
+            {
+              id: "transportation",
+              label: "1.A.3 Transportation",
+              link: "/#",
+              parentId: "fuelcombustion",
+              stateVariables: isTransportation,
+              click: function (e) {
+                e.preventDefault();
+                setIsTransportation(!isTransportation);
+                setIscurrentState("Transportation");
+                updateIconSidebar(e);
+              },
+              subItems: [
+                {
+                  id: "aviation",
+                  label: "1.A.3.a Domestic aviation",
+                  link: "/add-transportation/:aviation",
+                  parentId: "transportation",
+                },
+                {
+                  id: "roadtransportation",
+                  label: "1.A.3.b Road transportation",
+                  link: "/add-transportation/:road",
+                  parentId: "transportation",
+                },
+                {
+                  id: "navigation",
+                  label: "1.A.3.c Domestic navigation",
+                  link: "/add-transportation/:navigation",
+                  parentId: "transportation",
+                },
+              ],
+            },
+            {
+              id: "otherupdates",
+              label: "1.A.4 Other Updates",
+              link: "/#",
+              parentId: "fuelcombustion",
+            },
+          ],
+        },
+        {
+          id: "fugitivesemission",
+          label: "1.B Fugitives Emission",
+          link: "/#",
+          parentId: "facilityconfiguration",
+          subItems: [],
+        },
+      ],
+    },
+    {
+      id: "emissiondata",
+      label: "Emission Data",
+      icon: "ri-ai-generate",
+      link: "/#",
+      stateVariables: isEmissionData,
+      click: function (e) {
+        e.preventDefault();
+        setIsEmissionData(!isEmissionData);
+        setIscurrentState("EmissionData");
+        updateIconSidebar(e);
+      },
+      subItems: [
+        {
+          id: "Emissionfuelcombustion",
+          label: "1.A Fuel Combustion Activity",
+          link: "/#",
+          parentId: "emissiondata",
+          stateVariables: isEmissionFuelCombustion,
+          click: function (e) {
+            e.preventDefault();
+            setIsEmissionFuelCombustion(!isEmissionFuelCombustion);
+            setIscurrentState("EmissionFuelCombustion");
+            updateIconSidebar(e);
+          },
+          subItems: [
+            {
+              id: "Emissionenergy",
+              label: "1.A.1 Energy Industries",
+              link: "/#",
+              parentId: "Emissionfuelcombustion",
+              stateVariables: isEmissionEnergy,
+              click: function (e) {
+                e.preventDefault();
+                setIsEmissionEnergy(!isEmissionEnergy);
+                setIscurrentState("EmissionEnergy");
+                updateIconSidebar(e);
+              },
+              subItems: [
+                {
+                  id: "powergeneration",
+                  label: "1.A.1.a Power Generation",
+                  link: "/emission-data/:power",
+                  parentId: "Emissionenergy",
+                },
+                {
+                  id: "petroleumrefining",
+                  label: "1.A.1.b Petroleum Refining",
+                  link: "/emission-data/:petroleum",
+                  parentId: "Emissionenergy",
+                },
+              ],
+            },
+            {
+              id: "Emissionmanufacturing&construction",
+              label: "1.A.2 Manufacturing & Construction",
+              link: "/#",
+              parentId: "Emissionfuelcombustion",
+              stateVariables: isEmissionManufacturing,
+              click: function (e) {
+                e.preventDefault();
+                setIsEmissionManufacturing(!isEmissionManufacturing);
+                setIscurrentState("EmissionManufacturing");
+                updateIconSidebar(e);
+              },
+              subItems: [
+                {
+                  id: "construction",
+                  label: "1.A.2.a Manufacturing",
+                  link: "/emission-data/:construction",
+                  parentId: "Emissionmanufacturing&construction",
+                },
+              ],
+            },
+            {
+              id: "Emissiontransportation",
+              label: "1.A.3 Transportation",
+              link: "/#",
+              parentId: "Emissionfuelcombustion",
+              stateVariables: isEmissionTransportation,
+              click: function (e) {
+                e.preventDefault();
+                setIsEmissionTransportation(!isEmissionTransportation);
+                setIscurrentState("Transportation");
+                updateIconSidebar(e);
+              },
+              subItems: [
+                {
+                  id: "avaition",
+                  label: "1.A.3.a Domestic aviation",
+                  link: "emission-data/transportation/:aviation",
+                  parentId: "Emissiontransportation",
+                },
+                {
+                  id: "roadtransportation",
+                  label: "1.A.3.b Road transportation",
+                  link: "emission-data/transportation/:road",
+                  parentId: "Emissiontransportation",
+                },
+                {
+                  id: "navigation",
+                  label: "1.A.3.c Domestic navigation",
+                  link: "emission-data/transportation/:navigation",
+                  parentId: "Emissiontransportation",
+                },
+              ],
+            },
+            {
+              id: "otherupdates",
+              label: "1.A.4 Other Updates",
+              link: "/#",
+              parentId: "Emissionfuelcombustion",
+            },
+          ],
+        },
+        {
+          id: "fugitivesemission",
+          label: "1.B Fugitives Emission",
+          link: "/#",
+          parentId: "emissiondata",
+          subItems: [],
+        },
+      ],
+    },
+    {
+      id: "viewemission",
+      label: "View Emission",
+      icon: "ri-ai-generate",
+      link: "/#",
+      stateVariables: isViewEmission,
+      click: function (e) {
+        e.preventDefault();
+        setIsViewEmission(!isViewEmission);
+        setIscurrentState("ViewEmission");
+        updateIconSidebar(e);
+      },
+      subItems: [
+        {
+          id: "ViewFuelCombustion",
+          label: "1.A Fuel Combustion Activity",
+          link: "/#",
+          parentId: "viewemission",
+          stateVariables: isViewFuelCombustion,
+          click: function (e) {
+            e.preventDefault();
+            setIsViewFuelCombustion(!isViewFuelCombustion);
+            setIscurrentState("ViewFuelCombustion");
+            updateIconSidebar(e);
+          },
+          subItems: [
+            {
+              id: "viewenergy",
+              label: "1.A.1 Energy Industries",
+              link: "/#",
+              parentId: "ViewFuelCombustion",
+              stateVariables: isViewEnergy,
+              click: function (e) {
+                e.preventDefault();
+                setIsViewEnergy(!isViewEnergy);
+                setIscurrentState("ViewEnergy");
+                updateIconSidebar(e);
+              },
+              subItems: [
+                {
+                  id: "powergeneration",
+                  label: "1.A.1.a Power Generation",
+                  link: "/view-emission/:power",
+                  parentId: "viewenergy",
+                },
+                {
+                  id: "petroleumrefining",
+                  label: "1.A.1.b Petroleum Refining",
+                  link: "/view-emission/:petroleum",
+                  parentId: "viewenergy",
+                },
+              ],
+            },
+            {
+              id: "viewmanufacturing&construction",
+              label: "1.A.2 Manufacturing & Construction",
+              link: "/#",
+              parentId: "ViewFuelCombustion",
+              stateVariables: isViewManufacturing,
+              click: function (e) {
+                e.preventDefault();
+                setIsViewManufacturing(!isViewManufacturing);
+                setIscurrentState("viewManufacturing");
+                updateIconSidebar(e);
+              },
+              subItems: [
+                {
+                  id: "construction",
+                  label: "1.A.2.a Manufacturing",
+                  link: "/view-emission/:construction",
+                  parentId: "viewmanufacturing&construction",
+                },
+              ],
+            },
+            {
+              id: "viewtransportation",
+              label: "1.A.3 Transportation",
+              link: "/#",
+              parentId: "ViewFuelCombustion",
+              stateVariables: isViewTransportation,
+              click: function (e) {
+                e.preventDefault();
+                setIsViewTransportation(!isViewTransportation);
+                setIscurrentState("Transportation");
+                updateIconSidebar(e);
+              },
+              subItems: [
+                {
+                  id: "avaition",
+                  label: "1.A.3.a Domestic aviation",
+                  link: "/transportation/:aviation",
+                  parentId: "viewtransportation",
+                },
+                {
+                  id: "roadtransportation",
+                  label: "1.A.3.b Road transportation",
+                  link: "/transportation/:road",
+                  parentId: "viewtransportation",
+                },
+                {
+                  id: "navigation",
+                  label: "1.A.3.c Domestic navigation",
+                  link: "/transportation/:navigation",
+                  parentId: "viewtransportation",
+                },
+              ],
+            },
+            {
+              id: "otherupdates",
+              label: "1.A.4 Other Updates",
+              link: "/#",
+              parentId: "ViewFuelCombustion",
+            },
+          ],
+        },
+        {
+          id: "fugitivesemission",
+          label: "1.B Fugitives Emission",
+          link: "/#",
+          parentId: "viewemission",
+          subItems: [],
+        },
+      ],
     },
     {
       id: "administration",
@@ -132,65 +609,9 @@ const Navdata = () => {
           label: "Permissions",
           link: "/permissions",
           parentId: "administration",
-        }
+        },
       ],
-    },
-    {
-      id: "datamanagement",
-      label: "Data Management",
-      icon: "ri-database-fill",
-      link: "/#",
-      stateVariables: isDataManagement,
-      click: function (e) {
-        e.preventDefault();
-        setIsDataManagement(!isDataManagement);
-        setIscurrentState("DataManagement");
-        updateIconSidebar(e);
-      },
-      subItems: [
-        {
-          id: "fuelmanager",
-          label: "Fuel Manager",
-          link: "/fuelmanager",
-          icon: "bx bx-building-house",
-          parentId: "datamanagement",
-        },
-        {
-          id: "c02equivalents",
-          label: "C02 Equivalents",
-          link: "/c02equivalents",
-          icon: "bx bx-building-house",
-          parentId: "datamanagement",
-        }]
-      },
-      {
-        id: "energy",
-        label: "Energy",
-        icon: "ri-ai-generate",
-        link: "/#",
-        stateVariables: isMasterData,
-        click: function (e) {
-          e.preventDefault();
-          setIsMasterData(!isMasterData);
-          setIscurrentState("MasterData");
-          updateIconSidebar(e);
-        },
-        subItems: [
-          {
-            id: "powersector",
-            label: "1.A Power Sector",
-            link: "/facility/:power",
-            // icon: "bx bx-building-house",
-            parentId: "energy",
-          },
-          {
-            id: "petroleumrefining",
-            label: "1.A.1 Petroleum Refining",
-            link: "/facility/:petroleum",
-            // icon: "bx bx-building-house",
-            parentId: "energy",
-          }]
-        }
+    }
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
 };

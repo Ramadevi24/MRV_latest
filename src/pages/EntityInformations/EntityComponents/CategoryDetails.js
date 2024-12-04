@@ -4,8 +4,12 @@ import Button from '../../../Components/CommonComponents/Button';
 import { useTranslation } from "react-i18next";
 import addIcon from '../../../assets/images/Power Sector--- Data Entry/Plus.png'
 import CategoryModal from './CategoryModal';
+import { useParams } from 'react-router-dom';
 
 const CategoryDetails = () => {
+  const {power, transport} = useParams();
+  console.log(power, 'power');
+  console.log(transport, 'transport');
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -34,6 +38,25 @@ const CategoryDetails = () => {
       </div>
     ) },
   ];
+
+  const Aviationcolumns = [
+    { key: "Aircraft Category", label: t("Aircraft Category"), sortable: true },
+    { key: "Aircraft Type-Model", label: t("Aircraft Type-Model"), sortable: true },
+    { key: "Configuration", label: t("Configuration"), sortable: true },
+    { key: "Estimation Approach", label: t("Estimation Approach"), sortable: true },
+    { key: "Fuel Type", label: t("Fuel Type"), sortable: true },
+    { key: "Actions", label: t("Action"), render: (val, item) => (
+      <div className="d-flex gap-2">
+        <button className="btn btn-sm btn-info" onClick={() => navigate(`/edit-role/${item.roleID}`)}>
+          <i className="ri-pencil-line" />
+        </button>
+        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item.roleID)}>
+          <i className="ri-delete-bin-line" />
+        </button>
+      </div>
+    ) },
+  ];
+
   const data = [
     {
       Sector: "Energy",
@@ -57,7 +80,7 @@ const CategoryDetails = () => {
         icon={addIcon} onClick={handleButtonClick} className="category-button">
         </Button>
       </div>
-      <DataTable
+      {(power !== "undefined" && transport !== ":aviation") &&(<DataTable
         data={data}
         columns={columns}
         onSort={handleSort}
@@ -65,7 +88,17 @@ const CategoryDetails = () => {
           if (action === "edit") navigate(`/edit-role/${item.roleID}`);
           if (action === "delete") handleDelete(item.roleID);
         }}
-      />
+      />)}
+
+{transport === ":aviation" && ( <DataTable
+        data={data}
+        columns={Aviationcolumns}
+        onSort={handleSort}
+        onAction={(action, item) => {
+          if (action === "edit") navigate(`/edit-role/${item.roleID}`);
+          if (action === "delete") handleDelete(item.roleID);
+        }}
+      />)}
       {isModalOpen && (
         <CategoryModal open={isModalOpen} onClose={handleCloseModal} />
       )}

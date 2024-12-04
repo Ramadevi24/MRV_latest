@@ -52,6 +52,9 @@ import CreateGas from "../pages/Datamanagement/CreateGas";
 import Gastype from "../pages/Datamanagement/Gastype";
 import FacilityGrid from "../pages/EntityInformations/FacilityGrid";
 import AddFacility from "../pages/EntityInformations/AddFacility";
+import TransportGrid from "../pages/EntityInformations/Transportation/TransportGrid";
+import AddTransportFacility from "../pages/EntityInformations/Transportation/AddTransportFacility";
+import PowerEmission from "../pages/EmissionData/PowerEmission";
 
 
 const authProtectedRoutes = [
@@ -84,10 +87,11 @@ const authProtectedRoutes = [
   {path:'/c02equivalents', component: <C02equivalents />},
   {path:'/create-gas', component: <CreateGas />},
   {path:'/add-gasType', component: <Gastype />},
-  {path:'/facility/:power', component: <FacilityGrid/>},
+  {path:'/view-emission/:power', component: <FacilityGrid/>},
   {path:'/add-facility/:power', component: <AddFacility/>},
-  {path:'/facility/:petroleum', component: <FacilityGrid/>},
-  {path:'/add-facility/:petroleum', component: <AddFacility/>},
+  {path:'/transportation/:transport', component: <TransportGrid/>},
+  {path:'/add-transportation/:transport', component: <AddTransportFacility/>},
+  {path:'/emission-data/:emission', component: <PowerEmission/>},
   {path: "*", component: <Navigate to="/dashboard" /> },
 ];
 

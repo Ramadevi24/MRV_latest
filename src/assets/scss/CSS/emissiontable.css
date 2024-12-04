@@ -1,0 +1,34 @@
+
+.fuel-details {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: rgba(246, 252, 255, 0.5);
+  }
+  
+  .emission-table{
+    width:60% !important
+  }
+
+  .emission-table-title{
+  color: rgba(0, 102, 164, 1);
+font-size: 16px;
+font-weight: 600;
+line-height: 31.68px;
+text-align: left;
+  }
+
+  .emission-thead th{
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+  }
+
+  select,
+  input {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    height: 36px;
+    border: 1px solid #ccc;
+  }
+  
