@@ -9,6 +9,88 @@ const EmissionTable = ({ headers, parameters, title, showParametersRow, subHead,
     setTableData(updatedData);
   };
 
+  const renderInputField = (key, value, rowIndex) => {
+    const getDefaultValue = (value, options) => {
+      return options.includes(value) ? value : options[0];
+    };
+
+    // Dropdown for Fuel Purpose
+    if (key === "Fuel Purpose") {
+      const options = ["Energy", "Non Energy"];
+      const selectedValue = getDefaultValue(value, options);
+      return (
+        <select
+          value={selectedValue}
+          onChange={(e) => handleInputChange(rowIndex, key, e.target.value)}
+          className="form-control"
+          style={{ appearance: 'auto' }}
+        >
+          {options.map(option => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+      );
+    }
+
+    // Dropdown for Is N2O Monitored?
+    if (key === "Is N2O Monitored?") {
+      const options = ["Yes", "No"];
+      const selectedValue = getDefaultValue(value, options);
+      return (
+        <select
+          value={selectedValue}
+          onChange={(e) => handleInputChange(rowIndex, key, e.target.value)}
+          className="form-control"
+          style={{ appearance: 'auto' }}
+        >
+          {options.map(option => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+      );
+    }
+
+    // Dropdown for Fuel Unit
+    if (key === "Fuel Unit") {
+      const options = ["m³", "liters", "gallons"];
+      const selectedValue = getDefaultValue(value, options);
+      return (
+        <select
+          value={selectedValue}
+          onChange={(e) => handleInputChange(rowIndex, key, e.target.value)}
+          className="form-control"
+          style={{ appearance: 'auto' }}
+        >
+          {options.map(option => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+      );
+    }
+
+    // Number input
+    if (typeof value === "number") {
+      return (
+        <input
+          type="number"
+          value={value}
+          onChange={(e) => handleInputChange(rowIndex, key, e.target.value)}
+          className="form-control"
+        />
+      );
+    }
+
+    // Default text input for other strings
+    return (
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => handleInputChange(rowIndex, key, e.target.value)}
+        className="form-control"
+      />
+    );
+  };
+
   return (
     <div className="fuel-details">
       <h3 className="modal-subhead">{title}</h3>
@@ -18,23 +100,26 @@ const EmissionTable = ({ headers, parameters, title, showParametersRow, subHead,
           id="customerTable"
         >
           <thead className="emission-thead">
-          {showParametersRow && (
-            <tr>
-              <th
-                colSpan={headers.length}
-                style={{
-                  backgroundColor: "rgba(235, 235, 235, 0.4)",
-                  height: "34px",
-                }}
-              >
-                {subHead}
-              </th>
-            </tr>)}
-            {showHeaderRow && (<tr>
-            {subHeaders.map((header, index) => (
-                <th key={index}>{header}</th>
-              ))}
-            </tr>)}
+            {showParametersRow && (
+              <tr>
+                <th
+                  colSpan={headers.length}
+                  style={{
+                    backgroundColor: "rgba(235, 235, 235, 0.4)",
+                    height: "34px",
+                  }}
+                >
+                  {subHead}
+                </th>
+              </tr>
+            )}
+            {showHeaderRow && (
+              <tr>
+                {subHeaders.map((header, index) => (
+                  <th key={index}>{header}</th>
+                ))}
+              </tr>
+            )}
             <tr>
               {headers.map((header, index) => (
                 <th key={index}>{header}</th>
@@ -49,32 +134,7 @@ const EmissionTable = ({ headers, parameters, title, showParametersRow, subHead,
                   <td>{key.charAt(0).toUpperCase() + key.slice(1)}</td>
                   {tableData.map((row, colIndex) => (
                     <td key={colIndex}>
-                      {typeof row[key] === "number" ? (
-                        <input
-                          type="number"
-                          value={row[key]}
-                          onChange={(e) =>
-                            handleInputChange(colIndex, key, e.target.value)
-                          }
-                        />
-                      ) :  (typeof row[key] === "string" )? (
-                        // Render text input for string fields except "purpose"
-                        <input
-                          type="text"
-                          value={row[key]}
-                          onChange={(e) => handleInputChange(colIndex, key, e.target.value)}
-                        />
-                      ) :(
-                        <select
-                          value={row[key]}
-                          onChange={(e) =>
-                            handleInputChange(colIndex, key, e.target.value)
-                          }
-                        >
-                          <option value="Energy">Energy</option>
-                          <option value="Non Energy">Non Energy</option>
-                        </select>
-                      )}
+                      {renderInputField(key, row[key], colIndex, rowIndex)}
                     </td>
                   ))}
                 </tr>
