@@ -49,7 +49,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
                   <FormField
                     label="Sub Plant Name"
                     isDropdown
-                    options={[{ label: "GT/HRSG 41", value: "GT/HRSG 41" }]}
+                    options={[{ name: "GT/HRSG 41", value: "GT/HRSG 41" }]}
                   />
                 </Col>
               </Row>
@@ -92,7 +92,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
                       isDropdown
                       options={[
                         {
-                          label: "Natural Gas, Diesel, Gas Oil",
+                          name: "Natural Gas, Diesel, Gas Oil",
                           value: "Natural Gas, Diesel, Gas Oil",
                         },
                       ]}
@@ -114,7 +114,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
                         isDropdown
                         options={[
                           {
-                            label: "Naphtha, Diesel",
+                            name: "Naphtha, Diesel",
                             value: "Naphtha, Diesel",
                           },
                         ]}

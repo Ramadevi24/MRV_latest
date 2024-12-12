@@ -64,7 +64,10 @@ const FacilityGrid = () => {
   const columns = [
     { key: "Facility(Plant Name)", label: t("Facility(Plant Name)"), sortable: true },
     { key: "Sector", label: t("Sector"), sortable: true },
-    { key: "Category", label: t("Category"), sortable: true},
+    { key: "Sub Category", label: t("Sub Category"), sortable: true},
+    { key: "Calendar Year", label: t("Calendar Year"), sortable: true},
+    { key: "Calculation Approach", label: t("Calculation Approach"), sortable: true},
+    { key: "Status", label: t("Status"), sortable: true},
     { key: "Actions", label: t("Actions"), render: (val, item) => (
       <div className="d-flex gap-2">
         <button className="btn btn-sm btn-info" onClick={() => {}}>

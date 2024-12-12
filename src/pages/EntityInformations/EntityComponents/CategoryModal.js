@@ -31,10 +31,10 @@ const CategoryModal = ({open, onClose}) => {
         <form>
             <Row>
             <Col md={6}>
-            <FormField label="Sector" isDropdown options={[{ label: "1. Energy", value: "1. Energy"}]} />
+            <FormField label="Sector" isDropdown options={[{ name: "1. Energy", value: "1. Energy"}]} />
             </Col>
             <Col md={6}>
-            <FormField label="Sub Sector / Category" isDropdown options={[{ label: "1.A Fuel Combustion Activities", value: "1.A Fuel Combustion Activities" }]} />
+            <FormField label="Sub Sector / Category" isDropdown options={[{ name: "1.A Fuel Combustion Activities", value: "1.A Fuel Combustion Activities" }]} />
             </Col>
           </Row>
           <Row>
@@ -42,7 +42,7 @@ const CategoryModal = ({open, onClose}) => {
             <FormField label="Emission Source Type" placeholder="Steam Turbine"/>
             </Col>
             <Col md={6}>
-            <FormField label="Calculation Approach" isDropdown options={[{ label: "T1,T2,T3", value: "T1,T2,T3" }]}/>
+            <FormField label="Calculation Approach" isDropdown options={[{ name: "T1,T2,T3", value: "T1,T2,T3" }]}/>
             </Col>
             </Row>
             <Row>

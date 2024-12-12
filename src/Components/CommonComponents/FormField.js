@@ -7,8 +7,8 @@ const FormField = ({ label, type = "text", value, onChange, options, isDropdown,
       {isDropdown ? (
         <select value={value} onChange={onChange}>
           {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
+            <option key={option.name} value={option.name}>
+              {option.name}
             </option>
           ))}
         </select>

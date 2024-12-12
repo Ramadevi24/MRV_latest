@@ -1,22 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./slices";
-import { TenantProvider } from './contexts/TenantContext';
-import { OrganizationProvider } from './contexts/OrganizationContext';
-import { RoleProvider } from './contexts/RoleContext';
-import { AuthProvider } from './contexts/AuthContext';
-import { UserProvider } from './contexts/UserContext';
-import { PermissionProvider } from './contexts/PermissionContext';
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
-import { AlertProvider } from './contexts/AlertContext';
-import { FuelProvider } from './contexts/FuelContext';
-import { MenuProvider } from './contexts/MenuContext';
+import { TenantProvider } from "./contexts/TenantContext";
+import { OrganizationProvider } from "./contexts/OrganizationContext";
+import { RoleProvider } from "./contexts/RoleContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import { UserProvider } from "./contexts/UserContext";
+import { PermissionProvider } from "./contexts/PermissionContext";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import { AlertProvider } from "./contexts/AlertContext";
+import { FuelProvider } from "./contexts/FuelContext";
+import { MenuProvider } from "./contexts/MenuContext";
+import { EmiratesProvider } from "./contexts/EmiratesContext";
+import { EntityProvider } from "./contexts/EntityContext";
+import { CoverageAreaProvider } from "./contexts/CoverageAreaContext";
 
 const store = configureStore({ reducer: rootReducer, devTools: true });
 
@@ -26,25 +29,31 @@ root.render(
   <Provider store={store}>
     <React.Fragment>
       <BrowserRouter basename={process.env.PUBLIC_URL}>
-      <TenantProvider>
-        <RoleProvider>
-        <OrganizationProvider>
-          <AuthProvider>
-            <UserProvider>
-              <PermissionProvider>
-              <ToastContainer closeButton={false} limit={1}  />
-              <AlertProvider>
-                <FuelProvider>
-                  <MenuProvider>
-        <App />
-        </MenuProvider>
-        </FuelProvider>
-        </AlertProvider>
-        </PermissionProvider>
-        </UserProvider>
-        </AuthProvider>
-        </OrganizationProvider>
-        </RoleProvider>
+        <TenantProvider>
+          <RoleProvider>
+            <OrganizationProvider>
+              <AuthProvider>
+                <UserProvider>
+                  <PermissionProvider>
+                    <ToastContainer closeButton={false} limit={1} />
+                    <AlertProvider>
+                      <FuelProvider>
+                        <MenuProvider>
+                          <EmiratesProvider>
+                            <EntityProvider>
+                              <CoverageAreaProvider>
+                                <App />
+                              </CoverageAreaProvider>
+                            </EntityProvider>
+                          </EmiratesProvider>
+                        </MenuProvider>
+                      </FuelProvider>
+                    </AlertProvider>
+                  </PermissionProvider>
+                </UserProvider>
+              </AuthProvider>
+            </OrganizationProvider>
+          </RoleProvider>
         </TenantProvider>
       </BrowserRouter>
     </React.Fragment>

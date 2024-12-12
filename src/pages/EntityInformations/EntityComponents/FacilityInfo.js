@@ -1,23 +1,29 @@
-import React from "react";
+import React, {useContext, useEffect} from "react";
 import FormField from "../../../Components/CommonComponents/FormField";
 import { Col, Row } from "reactstrap";
 import locationIcon from "../../../assets/images/Power Sector--- Data Entry/pin 1.png";
+import { EmiratesContext } from "../../../contexts/EmiratesContext";
+import { EntityContext } from "../../../contexts/EntityContext";
+import { CoverageAreaContext } from "../../../contexts/CoverageAreaContext";
 
 const FacilityInfo = () => {
+  const {emirates} = useContext(EmiratesContext)
+  const {entity} = useContext(EntityContext)
+  const {coverageArea} = useContext(CoverageAreaContext)
   return (
     <div>
       <Row>
         <Col md={3}>
-     <FormField label="Emirate" isDropdown options={[{ label: "Abu Dhabi", value: "Abu Dhabi" }]} />
+     <FormField label="Emirate" isDropdown options={emirates} />
      </Col>
      <Col md={3}>
-      <FormField label="Entity" isDropdown options={[{ label: "DOE", value: "DOE" }]}/>
+      <FormField label="Entity" isDropdown options={[{ name: "DOE", value: "DOE" }]}/>
       </Col>
       <Col md={3}>
       <FormField label="Facility" placeholder="IB11/Taweelah"/>
       </Col>
       <Col md={3}>
-      <FormField label="Coverage Area of the Data" isDropdown options={[{ label: "Central Abu Dhabi", value: "Central Abu Dhabi" }]} />
+      <FormField label="Coverage Area of the Data" isDropdown options={[{ name: "Central Abu Dhabi", value: "Central Abu Dhabi" }]} />
       </Col>
       </Row>
       <Row>

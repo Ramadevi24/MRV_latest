@@ -301,14 +301,14 @@ function PowerEmission() {
                     <FormField
                       label="Facility / Plant Name"
                       isDropdown
-                      options={[{ label: "Taweela A1", value: "Taweela A1" }]}
+                      options={[{ name: "Taweela A1", value: "Taweela A1" }]}
                     />
                   </Col>
                   <Col md={2}>
                     <FormField
                       label="Calendar Year"
                       isDropdown
-                      options={[{ label: "2024", value: "2024" }]}
+                      options={[{ name: "2024", value: "2024" }]}
                     />
                   </Col>
                   <Col md={2}>
@@ -316,9 +316,9 @@ function PowerEmission() {
                       label="Tier Level"
                       isDropdown
                       options={[
-                        { label: "T1", value: "T1" },
-                        { label: "T2", value: "T2" },
-                        { label: "T3", value: "T3" },
+                        { name: "T1", name: "T1" },
+                        { name: "T2", name: "T2" },
+                        { name: "T3", name: "T3" },
                       ]}
                       onChange={handleTierChange}
                       value={tierLevel}

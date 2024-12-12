@@ -8,8 +8,6 @@ import { useParams } from 'react-router-dom';
 
 const CategoryDetails = () => {
   const {power, transport} = useParams();
-  console.log(power, 'power');
-  console.log(transport, 'transport');
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
