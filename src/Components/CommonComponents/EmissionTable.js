@@ -105,10 +105,12 @@ const EmissionTable = ({ headers, parameters, title, showParametersRow, subHead,
                 <th
                   colSpan={headers.length}
                   style={{
-                    backgroundColor: "rgba(235, 235, 235, 0.4)",
+                    backgroundColor: "rgba(235, 247, 255, 1)",
                     height: "34px",
                   }}
-                >
+                  // onClick={() => handleSort("name")}
+                  className="sort"
+                  data-sort="parameters">
                   {subHead}
                 </th>
               </tr>
@@ -128,10 +130,10 @@ const EmissionTable = ({ headers, parameters, title, showParametersRow, subHead,
           </thead>
           <tbody>
             {Object.keys(parameters[0]).map((key, rowIndex) => {
-              if (key === "type") return null; // Skip the type column for rows
+              if (key === "type") return null;
               return (
                 <tr key={rowIndex}>
-                  <td>{key.charAt(0).toUpperCase() + key.slice(1)}</td>
+                  <td style={{color:'rgba(102, 112, 133, 1)', fontWeight:'600'}}>{key.charAt(0).toUpperCase() + key.slice(1)}</td>
                   {tableData.map((row, colIndex) => (
                     <td key={colIndex}>
                       {renderInputField(key, row[key], colIndex, rowIndex)}

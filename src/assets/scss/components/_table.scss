@@ -2,23 +2,23 @@
 // _table.scss
 // 
 
-.table {
-    >thead {
-        border-color: $table-border-color;
-    }
-    >:not(:first-child) {
-        border-top-width: $table-border-width;
-    }
-}
+// .table {
+//     >thead {
+//         border-color: $table-border-color;
+//     }
+//     >:not(:first-child) {
+//         border-top-width: $table-border-width;
+//     }
+// }
 
 
-.table-nowrap {
+// .table-nowrap {
 
-    th,
-    td {
-        white-space: nowrap;
-    }
-}
+//     th,
+//     td {
+//         white-space: nowrap;
+//     }
+// }
 
 // card table
 
@@ -87,7 +87,7 @@ $value in $theme-colors {
         }
         &::after {
             position:absolute;
-            right: 0.5rem;
+            // right: 0.5rem;
             content: "\f0360";
             font-family: "Material Design Icons";
             font-size: 0.8rem;

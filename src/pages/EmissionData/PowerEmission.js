@@ -169,6 +169,7 @@ function PowerEmission() {
   ];
 
   const stackPowerheaders = [
+    "",
     "Parameters",
     "ST12345",
     "ST12346",
@@ -176,26 +177,44 @@ function PowerEmission() {
     "ST12348",
   ];
   const stackPowerparameters = [
-    { type: "CH4(%)", ST12345: 34, ST12346: 25, ST12347: 12, ST12348: 45 },
-    { type: "PFC (%)", ST12345: 32, ST12346: 31, ST12347: 34, ST12348: 14 },
-    { type: "CO2(%)", ST12345: 21, ST12346: 38, ST12347: 45, ST12348: 17 },
-    { type: "Other 1(%)", ST12345: 23, ST12346: 25, ST12347: 24, ST12348: 16 },
-    { type: "Other 2(%)", ST12345: 34, ST12346: 22, ST12347: 36, ST12348: 28 },
     {
-      type: "Velocity (m/s)",
-      ST12345: 32,
-      ST12346: 26,
-      ST12347: 24,
-      ST12348: 26,
+      group: "Abatement Efficiency",
+      rows: [
+        { parameter: "CH4 (%)", values: [34, 25, 12, 45] },
+        { parameter: "PFC (%)", values: [32, 31, 34, 14] },
+        { parameter: "CO2-Captured(%)", values: [45, 28, 45, 17] },
+        { parameter: "Other 1(%)", values: [21, 25, 24, 16] },
+        { parameter: "Other 2(%)", values: [24, 34, 17, 36] },
+      ],
     },
     {
-      type: "Temperature (C0)",
-      ST12345: 31,
-      ST12346: 34,
-      ST12347: 27,
-      ST12348: 21,
-    },
-  ];
+      group: "Stack Details",
+      rows: [
+        { parameter: "Velocity (m/s)", values: [34, 13, 24, 26] },
+        { parameter: "Temperature (°C)", values: [32, 24, 27, 21] },
+      ],
+    }]
+  // [
+  //   { type: "CH4(%)", ST12345: 34, ST12346: 25, ST12347: 12, ST12348: 45 },
+  //   { type: "PFC (%)", ST12345: 32, ST12346: 31, ST12347: 34, ST12348: 14 },
+  //   { type: "CO2(%)", ST12345: 21, ST12346: 38, ST12347: 45, ST12348: 17 },
+  //   { type: "Other 1(%)", ST12345: 23, ST12346: 25, ST12347: 24, ST12348: 16 },
+  //   { type: "Other 2(%)", ST12345: 34, ST12346: 22, ST12347: 36, ST12348: 28 },
+  //   {
+  //     type: "Velocity (m/s)",
+  //     ST12345: 32,
+  //     ST12346: 26,
+  //     ST12347: 24,
+  //     ST12348: 26,
+  //   },
+  //   {
+  //     type: "Temperature (C0)",
+  //     ST12345: 31,
+  //     ST12346: 34,
+  //     ST12347: 27,
+  //     ST12348: 21,
+  //   },
+  // ];
 
   const stackPowerT3parameters = [
     { type: "CH4(%)", ST12345: 34, ST12346: 25, ST12347: 12, ST12348: 45 },
@@ -332,7 +351,7 @@ function PowerEmission() {
                         <EmissionTable
                           headers={FuelPowerheaders}
                           parameters={FuelPowerparameters}
-                          title="Fuel Details"
+                          title="Fuel Consumption Details"
                           showParametersRow={true}
                           subHead="Parameters"
                         />
@@ -340,37 +359,38 @@ function PowerEmission() {
                     )}
                     {tierLevel === "T2" && (
                       <>
-                        <VerticalEmissionTable
-                          headers={stackPowerheaders}
-                          parameters={stackPowerparameters}
-                          title="Stack Parameter Details"
-                          showParametersRow={false}
-                        />
-                        <EmissionTable
+                      <EmissionTable
                           headers={FuelPowerheaders}
                           parameters={FuelPowerparameters}
                           subHeaders={FuelT2Powerheaders}
                           showHeaderRow={true}
-                          title="Fuel Details"
+                          title="Fuel Consumption Details"
                           showParametersRow={true}
                           subHead="Parameters"
                         />
+                        <VerticalEmissionTable
+                          headers={stackPowerheaders}
+                          parameters={stackPowerparameters}
+                          title="Abatement & Stack Parameter Details"
+                          showParametersRow={false}
+                        />
+                        
                       </>
                     )}
                     {tierLevel === "T3" && (
                       <>
-                        <VerticalEmissionTable
-                          headers={stackPowerheaders}
-                          parameters={stackPowerT3parameters}
-                          title="Abatement & Stack Parameter Details"
-                          showParametersRow={false}
-                        />
-                        <VerticalEmissionTable
+                       <VerticalEmissionTable
                           headers={FuelPowerT3headers}
                           parameters={fuelPowerT3Parameters}
                           subHeaders={FuelT3Powerheaders}
                           showHeaderRow={true}
-                          title="Fuel Details"
+                          title="Fuel Consumption Details"
+                          showParametersRow={false}
+                        />
+                        <VerticalEmissionTable
+                          headers={stackPowerheaders}
+                          parameters={stackPowerT3parameters}
+                          title="Abatement & Stack Parameter Details"
                           showParametersRow={false}
                         />
                       </>
