@@ -14,6 +14,7 @@ import "../../assets/scss/CSS/emissiontable.css";
 import DownloadIcon from "../../assets/images/Power Sector--- Data Entry/basil_upload-solid.png";
 import EmissionTable from "../../Components/CommonComponents/EmissionTable";
 import VerticalEmissionTable from "../../Components/CommonComponents/VerticalEmissionTable";
+import VerticalEmissionTable2 from "../../Components/CommonComponents/VerticalEmissionTable2";
 import { useParams } from "react-router-dom";
 
 function PowerEmission() {
@@ -379,15 +380,24 @@ function PowerEmission() {
                     )}
                     {tierLevel === "T3" && (
                       <>
-                       <VerticalEmissionTable
+                       {/* <EmissionTable
                           headers={FuelPowerT3headers}
                           parameters={fuelPowerT3Parameters}
                           subHeaders={FuelT3Powerheaders}
                           showHeaderRow={true}
                           title="Fuel Consumption Details"
                           showParametersRow={false}
+                        /> */}
+                          <EmissionTable
+                          headers={FuelPowerheaders}
+                          parameters={FuelPowerparameters}
+                          subHeaders={FuelT2Powerheaders}
+                          showHeaderRow={false}
+                          title="Fuel Consumption Details"
+                          showParametersRow={true}
+                          subHead="Parameters"
                         />
-                        <VerticalEmissionTable
+                        <VerticalEmissionTable2
                           headers={stackPowerheaders}
                           parameters={stackPowerT3parameters}
                           title="Abatement & Stack Parameter Details"

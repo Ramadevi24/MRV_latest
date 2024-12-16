@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const VerticalEmissionTable = ({
+const VerticalEmissionTable2 = ({
   headers,
   parameters,
   title,
@@ -200,4 +200,4 @@ const VerticalEmissionTable = ({
   );
 };
 
-export default VerticalEmissionTable;
+export default VerticalEmissionTable2;
