@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../Components/CommonComponents/PaginationNumber";
 import SearchBar from "../../Components/CommonComponents/SearchBar";
@@ -15,6 +15,7 @@ const FacilityGrid = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { roles, loading, removeRole, fetchAllRoles } = useContext(RoleContext);
+  const {power} = useParams();
 
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -76,6 +77,9 @@ const FacilityGrid = () => {
         <button className="btn btn-sm btn-danger" onClick={() =>{} }>
           <i className="ri-delete-bin-line" />
         </button>
+        <button className="btn btn-sm btn-danger" onClick={() =>{} }>
+          <i className="ri-delete-bin-line" />
+        </button>
       </div>
     ) },
   ];
@@ -100,7 +104,7 @@ const FacilityGrid = () => {
                       <Col className="col-sm">
                   <SearchBar searchTerm={searchTerm} onChange={setSearchTerm} placeholder={t("Search...")} />
                 </Col>
-                {/* <Col className="col-sm-auto">
+                <Col className="col-sm-auto">
                         <div>
                           <Button
                             color="success"
@@ -112,7 +116,7 @@ const FacilityGrid = () => {
                             {t('Add Facility')}
                           </Button>
                         </div>
-                      </Col> */}
+                      </Col>
               </Row>
               {loading ? (
                 <div

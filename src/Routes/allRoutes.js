@@ -55,6 +55,15 @@ import AddFacility from "../pages/EntityInformations/AddFacility";
 import TransportGrid from "../pages/EntityInformations/Transportation/TransportGrid";
 import AddTransportFacility from "../pages/EntityInformations/Transportation/AddTransportFacility";
 import PowerEmission from "../pages/EmissionData/PowerEmission";
+import EmirateGrid from "../pages/MasterScreens/Emirate/EmirateGrid";
+import EmirateForm from "../pages/MasterScreens/Emirate/EmirateForm";
+import EditEmirateForm from "../pages/MasterScreens/Emirate/EditEmirateForm";
+import EntityGrid from "../pages/MasterScreens/Entity/EntityGrid";
+import EntityForm from "../pages/MasterScreens/Entity/EntityForm";
+import EditEntityForm from "../pages/MasterScreens/Entity/EditEntityForm";
+import GasGrid from "../pages/MasterScreens/Gases/GasGrid";
+import GasForm from "../pages/MasterScreens/Gases/GasForm";
+import EditGas from "../pages/MasterScreens/Gases/EditGas";
 
 
 const authProtectedRoutes = [
@@ -88,10 +97,20 @@ const authProtectedRoutes = [
   {path:'/create-gas', component: <CreateGas />},
   {path:'/add-gasType', component: <Gastype />},
   {path:'/view-emission/:power', component: <FacilityGrid/>},
+  {path:'/facility/:power', component: <FacilityGrid/>},
   {path:'/add-facility/:power', component: <AddFacility/>},
   {path:'/transportation/:transport', component: <TransportGrid/>},
   {path:'/add-transportation/:transport', component: <AddTransportFacility/>},
   {path:'/emission-data/:emission', component: <PowerEmission/>},
+  {path:'/emirate', component:<EmirateGrid/>},
+  {path:'/add-emirate', component:<EmirateForm/>},
+  {path:'/edit-emirate/:id', component: <EditEmirateForm />},
+  {path:'/entity', component:<EntityGrid/>},
+  {path:'/add-entity', component:<EntityForm/>},
+  {path:'/edit-entity/:id', component: <EditEntityForm />},
+  {path:'/gases', component:<GasGrid/>},
+  {path:'/add-gases', component:<GasForm/>},
+  {path:'/edit-gases/:id', component: <EditGas />},
   {path: "*", component: <Navigate to="/dashboard" /> },
 ];
 

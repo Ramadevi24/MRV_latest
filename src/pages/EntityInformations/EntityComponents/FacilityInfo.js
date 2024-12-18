@@ -23,7 +23,7 @@ const FacilityInfo = () => {
       <FormField label="Facility" placeholder="IB11/Taweelah"/>
       </Col>
       <Col md={3}>
-      <FormField label="Coverage Area of the Data" isDropdown options={[{ name: "Central Abu Dhabi", value: "Central Abu Dhabi" }]} />
+      <FormField label="Coverage Area of the Data" isDropdown options={coverageArea} />
       </Col>
       </Row>
       <Row>

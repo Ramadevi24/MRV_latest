@@ -281,8 +281,8 @@ color: #909090;
   
   .file-upload-body {
     margin-top: 10px;
-    border: 1px dashed #F8FAF9;
-    background-color: #F8FAF9;
+    border: 1px dashed #CED0DA;
+    /* background-color: #F8FAF9; */
     padding: 6px 10px 6px 10px;
     text-align: center;
     border-radius: 8px;
@@ -448,6 +448,12 @@ border: 1px solid #CED0DA;
     font-size: 12px;
   }
   
+  .error-text{
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #f06548;
+  }
   
 
   

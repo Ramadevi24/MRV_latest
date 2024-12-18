@@ -22,6 +22,7 @@ const Navdata = () => {
   const [isTransportation, setIsTransportation] = useState(false);
   const [isViewTransportation, setIsViewTransportation] = useState(false);
   const [isEmissionTransportation, setIsEmissionTransportation] = useState(false);
+  const [isMasterScreens, setIsMasterScreens] = useState(false);
   const [iscurrentState, setIscurrentState] = useState("Dashboard");
   let userPermissions =
     JSON.parse(localStorage.getItem("UserPermissions")) || [];
@@ -104,6 +105,9 @@ const Navdata = () => {
     if(iscurrentState !== "ViewTransportation"){
       setIsViewTransportation(false);
     }
+    if (iscurrentState !== "MasterScreens") {
+      setIsMasterScreens(false);
+    }
   }, [
     history,
     iscurrentState,
@@ -125,7 +129,8 @@ const Navdata = () => {
     isViewFuelCombustion,
     isViewEnergy,
     isViewManufacturing,
-    isViewTransportation
+    isViewTransportation,
+    isMasterScreens,
   ]);
 
   const menuItems = [
@@ -178,13 +183,6 @@ const Navdata = () => {
       },
       subItems: [
         {
-          id: "fuelmanager",
-          label: "Fuel Manager",
-          link: "/fuelmanager",
-          icon: "bx bx-building-house",
-          parentId: "datamanagement",
-        },
-        {
           id: "c02equivalents",
           label: "C02 Equivalents",
           link: "/c02equivalents",
@@ -235,13 +233,13 @@ const Navdata = () => {
                 {
                   id: "powergeneration",
                   label: "1.A.1.a Power Generation",
-                  link: "/add-facility/:power",
+                  link: "/facility/:power",
                   parentId: "energy",
                 },
                 {
                   id: "petroleumrefining",
                   label: "1.A.1.b Petroleum Refining",
-                  link: "/add-facility/:petroleum",
+                  link: "/facility/:power",
                   parentId: "energy",
                 },
               ],
@@ -566,6 +564,45 @@ const Navdata = () => {
       ],
     },
     {
+      id: "adminmasterScreens",
+      label: "Master Screens",
+      link: "/#",
+      icon: "ri-user-add-line",
+      stateVariables: isMasterScreens,
+      click: function (e) {
+        e.preventDefault();
+        setIsMasterScreens(!isMasterScreens);
+        setIscurrentState("MasterScreens");
+        updateIconSidebar(e);
+      },
+      subItems: [
+        {
+          id: "Emirate",
+          label: "Emirate",
+          link: "/emirate",
+          parentId: "adminmasterScreens",
+        },
+        {
+          id: "Entity",
+          label: "Entity",
+          link: "/entity",
+          parentId: "adminmasterScreens",
+        },
+        {
+          id: "Gases",
+          label: "Gases",
+          link: "/gases",
+          parentId: "adminmasterScreens",
+        },
+        {
+          id: "fuelmanager",
+          label: "Fuel Manager",
+          link: "/fuelmanager",
+          parentId: "adminmasterScreens",
+        },
+      ],
+    },
+    {
       id: "administration",
       label: "Administration",
       icon: "ri-user-add-line",
@@ -611,6 +648,7 @@ const Navdata = () => {
           parentId: "administration",
         },
       ],
+
     }
   ];
   return <React.Fragment>{menuItems}</React.Fragment>;
