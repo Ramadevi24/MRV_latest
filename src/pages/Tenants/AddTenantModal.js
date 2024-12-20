@@ -94,7 +94,7 @@ const AddTenantModal = ({ isOpen, onClose }) => {
           </FormGroup>
         </ModalBody>
         <div className="modal-footer">
-          <Button color="success" type="submit">
+          <Button color="success" type="submit" className="me-2">
             Save
           </Button>
           <Button color="danger" type="button" onClick={onClose}>
