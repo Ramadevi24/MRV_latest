@@ -314,26 +314,19 @@ console.log("viewRoleId",viewRoleId)
           </Row>
         </Container>
         <DeleteModal
-          show={deleteModal}
-          onDeleteClick={confirmDelete}
-          onCloseClick={() => setDeleteModal(false)}
-        />
-        <RoleFormModal open={addRole} onClose={handleRoleCloseModal} />
-        <EditRoleModal
-          open={editRole}
-          onClose={handleEditCloseModal}
-          id={editRoleId}
-        />
-        {console.log("viewRole", viewRole)}
-        {console.log("OUTSIDE", viewRoleId)}
-       {viewRole && (
-        <>
-        {console.log("INSIDE", viewRoleId)}
-
-       <ViewRoleModal open={viewRole} onClose={handleViewCloseModal} id={viewRoleId}/>
-
-        </>
-       )}
+        show={deleteModal}
+        onDeleteClick={confirmDelete}
+        onCloseClick={() => setDeleteModal(false)}
+      />
+      <RoleFormModal open={addRole} onClose={handleRoleCloseModal} />
+      <EditRoleModal open={editRole} onClose={handleEditCloseModal} id={editRoleId}  />
+      {viewRole &&
+    <ViewRoleModal
+      open={viewRole}
+      onClose={handleViewCloseModal}
+      id={viewRoleId}
+    />
+}
       </div>
     </React.Fragment>
   );
