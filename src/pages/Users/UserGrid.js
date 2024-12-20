@@ -45,29 +45,29 @@ const UserGrid = () => {
   const [selectedUser, setSelectedUser] = useState(null);
 
 
-  function handleAddUser() {
+  const handleAddUser = () => {
     setAddUser(true);
   }
 
-  function handleAddUserClose() {
+  const handleAddUserClose = () =>{
     setAddUser(false);
   }
 
-  function handleEditUser(id) {
+  const handleEditUser = (id) => {
     setEditUserId(id);
     setEditUser(true);
   }
 
-  function handleEditUserClose() {
+  const handleEditUserClose = () => {
     setEditUser(false);
   }
 
-  function handleViewUser(id) {
+  const handleViewUser = (id) =>{
     setSelectedUser(id);
     setViewUser(true);
   }
 
-  function handleViewUserClose() {
+  const handleViewUserClose = () =>{
     setViewUser(false);
   }
 
@@ -344,7 +344,7 @@ const UserGrid = () => {
       />
       <UserFormModal isOpen={addUser} onClose={handleAddUserClose} />
       <EditUserModal isOpen={editUser} onClose={handleEditUserClose} id={editUserID} />
-      <ViewUserModal isOpen={viewUser} onClose={handleViewUserClose} user={selectedUser} />
+      <ViewUserModal isOpen={viewUser} onClose={handleViewUserClose} id={selectedUser} />
 
       </div>
     </React.Fragment>

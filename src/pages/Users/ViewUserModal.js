@@ -22,9 +22,9 @@ import { RoleContext } from "../../contexts/RoleContext";
 import { UserContext } from "../../contexts/UserContext";
 import Modal from "../../Components/CommonComponents/Modal";
 
-const ViewUser = ({ isOpen, onClose, user }) => {
+const ViewUserModal = ({ isOpen, onClose, id }) => {
   const { t } = useTranslation();
-  const { id } = useParams();
+  // const { id } = useParams();
   const navigate = useNavigate();
   const { fetchAllTenants, tenants } = useContext(TenantContext);
   const { fetchAllOrganizations, organizations } =
@@ -105,7 +105,7 @@ const ViewUser = ({ isOpen, onClose, user }) => {
       } else {
         console.log("Required data not available yet");
       }
-    }, []);
+    }, [id]);
 
 
   return (
@@ -128,7 +128,6 @@ const ViewUser = ({ isOpen, onClose, user }) => {
                         validation.handleSubmit();
                         return false;
                       }}
-                      style={{ marginTop: "3.5rem" }}
                     >
                       <Row>
                         <Col>
@@ -386,4 +385,4 @@ const ViewUser = ({ isOpen, onClose, user }) => {
     </React.Fragment>
   );
 };
-export default ViewUser;
+export default ViewUserModal;

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaPencilAlt, FaTrashAlt, FaEye } from "react-icons/fa";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../Components/CommonComponents/PaginationNumber.js";
 import { formatDate } from "../../utils/formateDate.js";
@@ -25,8 +25,7 @@ const RoleGrid = () => {
   document.title = "MRV_PROJECT | RoleGrid";
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { roles, loading, removeRole, fetchAllRoles } =
-    useContext(RoleContext);
+  const { roles, loading, removeRole, fetchAllRoles } = useContext(RoleContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: "name",
@@ -41,54 +40,52 @@ const RoleGrid = () => {
   const [editRole, setEditRole] = useState(false);
   const [editRoleId, setEditRoleId] = useState(null);
   const [viewRole, setViewRole] = useState(false);
-  const [viewRoleData, setViewRoleData] = useState(null);
+  const [viewRoleId, setViewRoleId] = useState(null);
 
   const userPermissions =
-  JSON.parse(localStorage.getItem("UserPermissions")) || [];
+    JSON.parse(localStorage.getItem("UserPermissions")) || [];
 
   const handleAddRoleClick = () => {
     setAddRole(true);
   };
 
-  const handleRoleCloseModal =() =>{
+  const handleRoleCloseModal = () => {
     setAddRole(false);
   };
 
-
-  const handleEditRoleClick =(id) => {
+  const handleEditRoleClick = (id) => {
     setEditRoleId(id);
     setEditRole(true);
   };
 
-  const handleEditCloseModal= () =>{
+  const handleEditCloseModal = () => {
     setEditRoleId(null);
     setEditRole(false);
   };
 
-  const handleViewRoleClick = (id) =>{
-    setViewRoleData(id); 
+  const handleViewRoleClick = (id) => {
+    setViewRoleId(id);
     setViewRole(true);
-  }
+  };
 
-  const handleViewCloseModal = () =>{
-    setViewRole(false); 
-    setViewRoleData(null); 
-  }
+  const handleViewCloseModal = () => {
+    setViewRoleId(null);
+    setViewRole(false);
+  };
 
   useEffect(() => {
     fetchAllRoles();
-  
   }, []);
 
   const handleDelete = (id) => {
     setDeleteRoleId(id); // Set the organization ID to delete
     setDeleteModal(true); // Show the modal
   };
-  
+
   const confirmDelete = async () => {
     if (deleteRoleId) {
-      await removeRole(deleteRoleId, userPermissions.tenantID); 
-      fetchAllRoles(userPermissions?.tenantID)// Call your deletion function with the correct org ID
+      await removeRole(deleteRoleId, userPermissions.tenantID);
+      fetchAllRoles(userPermissions?.tenantID); // Call your deletion function with the correct org ID
       setDeleteModal(false); // Close the modal
       setDeleteRoleId(null); // Clear the state
     }
@@ -104,29 +101,27 @@ const RoleGrid = () => {
 
   const sortedRoles = [...roles].sort((a, b) => {
     if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === 'ascending' ? -1 : 1;
+      return sortConfig.direction === "ascending" ? -1 : 1;
     }
     if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === 'ascending' ? 1 : -1;
+      return sortConfig.direction === "ascending" ? 1 : -1;
     }
     return 0;
   });
 
- const filteredRoles = sortedRoles.filter((role) =>
-    role.roleName.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    role.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    role.createdDate.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredRoles = sortedRoles.filter(
+    (role) =>
+      role.roleName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      role.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      role.createdDate.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredRoles.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  const currentItems = filteredRoles.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
+console.log("viewRoleId",viewRoleId)
   return (
     <React.Fragment>
       <div className="page-content">
@@ -143,14 +138,13 @@ const RoleGrid = () => {
                       fontWeight: "bold",
                     }}
                   >
-                   {t('Roles')}
+                    {t("Roles")}
                   </h4>
                 </CardHeader>
 
                 <CardBody>
                   <div className="listjs-table" id="customerList">
                     <Row className="g-4 mb-3">
-                      
                       <Col className="col-sm">
                         <div className="d-flex justify-content-sm-start">
                           <div className="search-box ms-2">
@@ -176,7 +170,7 @@ const RoleGrid = () => {
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>
-                            {t('Add')}
+                            {t("Add")}
                           </Button>
                         </div>
                       </Col>
@@ -198,13 +192,11 @@ const RoleGrid = () => {
                         >
                           <thead className="table-light">
                             <tr>
-           
                               <th
                                 onClick={() => handleSort("roleName")}
                                 className="sort"
                                 data-sort="roleName"
                               >
-                                
                                 {t("Role Name")}
                               </th>
                               <th
@@ -212,7 +204,6 @@ const RoleGrid = () => {
                                 className="sort"
                                 data-sort="description"
                               >
-                                
                                 {t("Description")}
                               </th>
                               <th
@@ -220,33 +211,29 @@ const RoleGrid = () => {
                                 className="sort"
                                 data-sort="createdDate"
                               >
-                                
                                 {t("Created Date")}
                               </th>
                               <th className="sort" data-sort="status">
-                               {t('Delivery Status')}
+                                {t("Delivery Status")}
                               </th>
                               <th className="sort" data-sort="action">
-                                {t('Action')}
+                                {t("Action")}
                               </th>
                             </tr>
                           </thead>
                           <tbody className="list form-check-all">
                             {currentItems.map((role) => (
                               <tr key={role.roleID}>
-                          
-                                <td className="email">
-                                  {role.roleName}
-                                </td>
+                                <td className="email">{role.roleName}</td>
                                 <td className="description">
-                                {role.description}
+                                  {role.description}
                                 </td>
                                 <td className="date">
                                   {formatDate(role.createdDate)}
                                 </td>
                                 <td className="status">
                                   <span className="badge bg-success-subtle text-success text-uppercase">
-                                    {t('Active')}
+                                    {t("Active")}
                                   </span>
                                 </td>
                                 <td>
@@ -255,11 +242,12 @@ const RoleGrid = () => {
                                       <button
                                         className="btn btn-sm btn-info edit-item-btn"
                                         // onClick={handleEditRoleClick}
-                                        onClick={() => handleEditRoleClick(role.roleID)}
+                                        onClick={() =>
+                                          handleEditRoleClick(role.roleID)
+                                        }
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
-                                        
                                         <FaPencilAlt color="white" />
                                       </button>
                                     </div>
@@ -267,7 +255,8 @@ const RoleGrid = () => {
                                       <button
                                         className="btn btn-sm btn-danger remove-item-btn"
                                         onClick={() =>
-                                          handleDelete(role.roleID)}
+                                          handleDelete(role.roleID)
+                                        }
                                       >
                                         <FaTrashAlt color="white" />
                                       </button>
@@ -275,11 +264,12 @@ const RoleGrid = () => {
                                     <div className="view">
                                       <button
                                         className="btn btn-sm btn-success view-item-btn"
-                                        onClick={() => handleViewRoleClick(role.roleID)}
+                                        onClick={() =>
+                                          handleViewRoleClick(role.roleID)
+                                        }
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
-                                        
                                         <FaEye color="white" />
                                       </button>
                                     </div>
@@ -297,9 +287,13 @@ const RoleGrid = () => {
                               colors="primary:#121331,secondary:#08a88a"
                               style={{ width: "75px", height: "75px" }}
                             ></lord-icon>
-                            <h5 className="mt-2">{t('Sorry! No Result Found')}</h5>
+                            <h5 className="mt-2">
+                              {t("Sorry! No Result Found")}
+                            </h5>
                             <p className="text-muted mb-0">
-                             {t(" We've searched more than 150+ Orders We did not find any orders for you search.")}
+                              {t(
+                                " We've searched more than 150+ Orders We did not find any orders for you search."
+                              )}
                             </p>
                           </div>
                         </div>
@@ -320,22 +314,29 @@ const RoleGrid = () => {
           </Row>
         </Container>
         <DeleteModal
-        show={deleteModal}
-        onDeleteClick={confirmDelete}
-        onCloseClick={() => setDeleteModal(false)}
-      />
-      <RoleFormModal open={addRole} onClose={handleRoleCloseModal} />
-      <EditRoleModal open={editRole} onClose={handleEditCloseModal} id={editRoleId}  />
-      {console.log(viewRoleData, 'viewRoleData')}
-  <ViewRoleModal
-    open={viewRole}
-    onClose={handleViewCloseModal}
-    id={viewRoleData}
-  />
+          show={deleteModal}
+          onDeleteClick={confirmDelete}
+          onCloseClick={() => setDeleteModal(false)}
+        />
+        <RoleFormModal open={addRole} onClose={handleRoleCloseModal} />
+        <EditRoleModal
+          open={editRole}
+          onClose={handleEditCloseModal}
+          id={editRoleId}
+        />
+        {console.log("viewRole", viewRole)}
+        {console.log("OUTSIDE", viewRoleId)}
+       {viewRole && (
+        <>
+        {console.log("INSIDE", viewRoleId)}
 
+       <ViewRoleModal open={viewRole} onClose={handleViewCloseModal} id={viewRoleId}/>
+
+        </>
+       )}
       </div>
     </React.Fragment>
   );
-};  
+};
 
 export default RoleGrid;

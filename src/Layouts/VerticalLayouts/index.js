@@ -238,10 +238,10 @@ import {
                         icon: "ri-key-2-line", // Add the icon class here
                       },
                       hasPermissionForEntity(userPermissions, organizationsPermissions) && {
-                        id: "organizations",
+                        id: "Entity",
                         icon: "ri-team-line", // Add the icon class here
-                        label: "Organizations",
-                        link: "/organizations",
+                        label: "Entity",
+                        link: "/entity",
                       },
                       hasPermissionForEntity(userPermissions, rolesPermissions) && {
                         id: "roles",

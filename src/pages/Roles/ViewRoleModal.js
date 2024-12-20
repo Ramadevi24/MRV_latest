@@ -118,7 +118,7 @@ const ViewRoleModal = (open, onClose, id) => {
             <Col lg={12}>
               <Card>
                 <CardBody>
-                  <Row style={{ marginTop: "3.5rem" }}>
+                  <Row>
                     <Col md={12}>
                       <FormGroup className="mb-3">
                         <Label htmlFor="roleName">{t('Role Name')}</Label>

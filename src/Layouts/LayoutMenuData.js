@@ -583,12 +583,6 @@ const Navdata = () => {
           parentId: "adminmasterScreens",
         },
         {
-          id: "Entity",
-          label: "Entity",
-          link: "/entity",
-          parentId: "adminmasterScreens",
-        },
-        {
           id: "Gases",
           label: "Gases",
           link: "/gases",
@@ -622,10 +616,17 @@ const Navdata = () => {
           icon: "bx bx-building-house",
           parentId: "administration",
         },
+        // {
+        //   id: "organizations",
+        //   label: "Organizations",
+        //   link: "/organizations",
+        //   parentId: "administration",
+        //   icon: "bx bx-building-house",
+        // },
         {
-          id: "organizations",
-          label: "Organizations",
-          link: "/organizations",
+          id: "Entity",
+          label: "Entity",
+          link: "/entity",
           parentId: "administration",
           icon: "bx bx-building-house",
         },

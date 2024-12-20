@@ -9,6 +9,7 @@ import { RoleContext } from "../../contexts/RoleContext";
 import { Spinner, Button, Card, CardBody, Col, Container, Row, CardHeader } from "reactstrap";
 import { formatDate } from "../../utils/formateDate";
 import '../../assets/scss/CSS/styles.css';
+import { FaEye } from "react-icons/fa";
 
 const FacilityGrid = () => {
   document.title = "MRV_PROJECT | Facility Grid";
@@ -16,8 +17,6 @@ const FacilityGrid = () => {
   const navigate = useNavigate();
   const { roles, loading, removeRole, fetchAllRoles } = useContext(RoleContext);
   const {power} = useParams();
-
-
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "name", direction: "ascending" });
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,9 +76,12 @@ const FacilityGrid = () => {
         <button className="btn btn-sm btn-danger" onClick={() =>{} }>
           <i className="ri-delete-bin-line" />
         </button>
-        <button className="btn btn-sm btn-danger" onClick={() =>{} }>
-          <i className="ri-delete-bin-line" />
-        </button>
+                                             <button
+                                               className="btn btn-sm btn-success view-item-btn"
+                                               onClick={() => {}}                                          
+                                             >
+                                               <FaEye color="white" />
+                                             </button>
       </div>
     ) },
   ];
