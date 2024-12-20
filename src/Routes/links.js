@@ -27,4 +27,13 @@ export const linkMappings = [
     { subPath: '/Mrv/emission-data/:power', mainPath: '/Mrv/emission-data/:power'},
     { subPath: '/Mrv/emission-data/:petroleum', mainPath: '/Mrv/emission-data/:petroleum'},
     { subPath: '/Mrv/emission-data/:construction', mainPath: '/Mrv/emission-data/:construction'},
+    {subPath:'/Mrv/emirate', mainPath:'/Mrv/emirate'},
+    {subPath:'/Mrv/add-emirate', mainPath:'/Mrv/emirate'},
+    {subPath:'/Mrv/edit-emirate/:id', mainPath: '/Mrv/emirate'},
+    {subPath:'/Mrv/entity', mainPath:'/Mrv/entity'},
+    {subPath:'/Mrv/add-entity', mainPath:'/Mrv/entity'},
+    {subPath:'/Mrv/edit-entity/:id', mainPath: '/Mrv/entity'},
+    {subPath:'/Mrv/gases', mainPath:'/Mrv/gases'},
+    {subPath:'/Mrv/add-gases', mainPath:'/Mrv/gases'},
+    {subPath:'/Mrv/edit-gases/:id', mainPath:'/Mrv/gases'},
   ];

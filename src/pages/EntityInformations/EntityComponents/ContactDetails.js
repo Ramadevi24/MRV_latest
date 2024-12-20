@@ -10,16 +10,16 @@ const ContactDetails = () => {
       </div>
       <Row>
      <Col md={3}>
-      <FormField label="Name" placeholder="Enter Name"/>
+      <FormField label="Name" placeholder="Enter Name" type="text"/>
       </Col>
       <Col md={3}>
-      <FormField label="Title" placeholder="Enter Title"/>
+      <FormField label="Title" placeholder="Enter Title" type="text"/>
       </Col>
       <Col md={3}>
-      <FormField label="Email" placeholder="Enter Email"/>
+      <FormField label="Email" placeholder="Enter Email" type="email"/>
       </Col>
       <Col md={3}>
-      <FormField label="Phone Number" placeholder="Enter Phone number"/>
+      <FormField label="Phone Number" placeholder="Enter Phone number" type="number"/>
       </Col>
       </Row>
     </div>

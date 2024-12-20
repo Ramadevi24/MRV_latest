@@ -16,11 +16,25 @@ import EmissionTable from "../../Components/CommonComponents/EmissionTable";
 import VerticalEmissionTable from "../../Components/CommonComponents/VerticalEmissionTable";
 import VerticalEmissionTable2 from "../../Components/CommonComponents/VerticalEmissionTable2";
 import { useParams } from "react-router-dom";
+import FileUpload from "../../Components/CommonComponents/FileUpload";
 
 function PowerEmission() {
   const [file, setFile] = useState(null);
   const [tierLevel, setTierLevel] = useState("T1");
   const { emission } = useParams();
+    const [Uncertainty, setUncertainty] = useState(false);
+    const [QAQC, setQAQC] = useState(false);
+    const [ActivityQAQC, setActivityQAQC] = useState(false);
+  
+    const handleUncertainty = () => {
+      setUncertainty(!Uncertainty);
+    }
+    const handleQAQC = () => {
+      setQAQC(!QAQC);
+    }
+    const handleActivityQAQC = () => {
+      setActivityQAQC(!ActivityQAQC);
+    }
   const FuelPowerheaders = [
     "Fuel Type",
     "Natural Gas",
@@ -41,13 +55,17 @@ function PowerEmission() {
     "Diesel",
   ];
   const FuelPowerT3headers = [
-    "Parameters",
-    "Natural Gas",
-    "Diesel",
-    "Natural Gas",
-    "Natural Gas",
+      "Stack Name/ID",
+      "Parameters",
+      "C02",
+      "CH4",
+      "N20",
+      "HFCs",
+      "PFCs",
+      "SF6",
+      "NF3"
   ];
-  const FuelT2Powerheaders = [
+  const FuelT2SubPowerheaders = [
     "Sub Plant",
     "T-Al_HRSG 13",
     "T-Al_HRSG 13",
@@ -66,28 +84,142 @@ function PowerEmission() {
     {
       type: "Natural Gas",
       "Fuel Purpose": "Energy",
+      "Fuel Purchased Quantity": 500,
+      "Fuel Consumed Quantity": 324,
+      "Fuel Unit": "m³",
+    },
+    {
+      type: "Diesel",
+      "Fuel Purpose": "Energy",
+      "Fuel Purchased Quantity": 700,
+      "Fuel Consumed Quantity": 562,
+      "Fuel Unit": "m³",
+    },
+    {
+      type: "Gasoline",
+      "Fuel Purpose": "Energy",
+      "Fuel Purchased Quantity": 200,
+      "Fuel Consumed Quantity": 129,
+      "Fuel Unit": "m³",
+    },
+    {
+      type: "Fuel Oil",
+      "Fuel Purpose": "Non Energy",
+      "Fuel Purchased Quantity": 350,
+      "Fuel Consumed Quantity": 284,
+      "Fuel Unit": "m³",
+    },
+  ];
+
+  const FuelPowerT2parameters = [
+    {
+      type: "Natural Gas",
+      "Fuel Purpose": "Energy",
+      "Fuel Quantity": 500,
+      "Fuel Unit": "m³",
+      "Configuration": "Simple Cycle",
+      "Country/Plant GHG Emission Factor(kg/Tg)": "350-500 Kg/TJ",
+      "Country/Plant Precursors Emission Factor(Kg/Tg)": "0.1-0.3 Kg/TJ",
+    },
+    {
+      type: "Diesel",
+      "Fuel Purpose": "Energy",
+      "Fuel Quantity": 700,
+      "Fuel Unit": "m³",
+      "Configuration": "Simple Cycle",
+      "Country/Plant GHG Emission Factor(kg/Tg)": "350-500 Kg/TJ",
+      "Country/Plant Precursors Emission Factor(Kg/Tg)": "0.1-0.3 Kg/TJ",
+    },
+    {
+      type: "Gasoline",
+      "Fuel Purpose": "Energy",
+      "Fuel Quantity": 200,
+      "Fuel Unit": "m³",
+      "Configuration": "Simple Cycle",
+      "Country/Plant GHG Emission Factor(kg/Tg)": "350-500 Kg/TJ",
+      "Country/Plant Precursors Emission Factor(Kg/Tg)": "0.1-0.3 Kg/TJ",
+    },
+    {
+      type: "Fuel Oil",
+      "Fuel Purpose": "Non Energy",
+      "Fuel Quantity": 350,
+      "Fuel Unit": "m³",
+      "Configuration": "Simple Cycle",
+      "Country/Plant GHG Emission Factor(kg/Tg)": "350-500 Kg/TJ",
+      "Country/Plant Precursors Emission Factor(Kg/Tg)": "0.1-0.3 Kg/TJ",
+    },
+  ];
+
+  const FuelPowerT3parameters = [
+    {
+      type: "Natural Gas",
+      "Fuel Purpose": "Energy",
       "Fuel Quantity": 324,
       "Fuel Unit": "m³",
+      "Configuration": "Simple Cycle",
+      "Technology Specific GHG Emission Factor (Kg/TJ)": "350–500 Kg/TJ",
+      "Technology Specific Precursors Emission Factor (Kg/TJ)": "0.1–0.3 Kg/TJ",
+      "Source of Emission Factor": "IPCC",
+      "Technology": "Stream Turbine",
+      "Control Technology": "Dry Low NOX",
+      "Combustion Technology": "NGCC",
+      "Operating Condition": "Gas Turbine",
+      "Quality Of Maintenance": "Reliability-Centre",
+      "Age Of Equipment(Years)": 3,
+      "Co2 Capture Efficiency(%)": 20,
     },
     {
       type: "Diesel",
       "Fuel Purpose": "Energy",
       "Fuel Quantity": 562,
       "Fuel Unit": "m³",
+      "Configuration": "Combined Cycle",
+      "Technology Specific GHG Emission Factor (Kg/TJ)": "350–500 Kg/TJ",
+      "Technology Specific Precursors Emission Factor (Kg/TJ)": "0.1–0.3 Kg/TJ",
+      "Source of Emission Factor": "IPCC",
+      "Technology": "Gas Turbine",
+      "Control Technology": "FGD",
+      "Combustion Technology": "IGCC",
+      "Operating Condition": "Gas Turbine",
+      "Quality Of Maintenance": "Reliability-Centre",
+      "Age Of Equipment(Years)": 4,
+      "Co2 Capture Efficiency(%)": 22,
     },
     {
       type: "Gasoline",
       "Fuel Purpose": "Energy",
-      "Fuel Quantity": 129,
+      "Fuel Quantity": 321,
       "Fuel Unit": "m³",
+      "Configuration": "Simple Cycle",
+      "Technology Specific GHG Emission Factor (Kg/TJ)": "350–500 Kg/TJ",
+      "Technology Specific Precursors Emission Factor (Kg/TJ)": "0.1–0.3 Kg/TJ",
+      "Source of Emission Factor": "IPCC",
+      "Technology": "Stream Turbine",
+      "Control Technology": "Dry Low NOX",
+      "Combustion Technology": "NGCC",
+      "Operating Condition": "Gas Turbine",
+      "Quality Of Maintenance": "Reliability-Centre",
+      "Age Of Equipment(Years)": 2,
+      "Co2 Capture Efficiency(%)": 16,
     },
     {
       type: "Fuel Oil",
       "Fuel Purpose": "Non Energy",
-      "Fuel Quantity": 284,
+      "Fuel Quantity": 454,
       "Fuel Unit": "m³",
-    },
-  ];
+      "Configuration": "Combined Cycle",
+      "Technology Specific GHG Emission Factor (Kg/TJ)": "350–500 Kg/TJ",
+      "Technology Specific Precursors Emission Factor (Kg/TJ)": "0.1–0.3 Kg/TJ",
+      "Source of Emission Factor": "IPCC",
+      "Technology": "Gas Turbine",
+      "Control Technology": "FGD",
+      "Combustion Technology": "NGCC",
+      "Operating Condition": "Gas Turbine",
+      "Quality Of Maintenance": "Reliability-Centre",
+      "Age Of Equipment(Years)": 3,
+      "Co2 Capture Efficiency(%)": 19,
+    }]
+  
 
   const FuelPetroleumparameters = [
     { type: "Naphtha", "Fuel Quantity": 324, "Fuel Unit": "m³" },
@@ -170,7 +302,6 @@ function PowerEmission() {
   ];
 
   const stackPowerheaders = [
-    "",
     "Parameters",
     "ST12345",
     "ST12346",
@@ -195,91 +326,75 @@ function PowerEmission() {
         { parameter: "Temperature (°C)", values: [32, 24, 27, 21] },
       ],
     }]
-  // [
+  const stackPowerT3parameters = [
+    { parameter: "Velocity (m/s)", values:[24, 34,17,36]},
+    {parameter: "Temperature (°C)",values:[34,13,17,24]},
+    {parameter: "Flow Rate(m3/hrs)",values:[24, 23,17,46]}
+  ];
+
+  // const stackPowerT3parameters = [
   //   { type: "CH4(%)", ST12345: 34, ST12346: 25, ST12347: 12, ST12348: 45 },
   //   { type: "PFC (%)", ST12345: 32, ST12346: 31, ST12347: 34, ST12348: 14 },
-  //   { type: "CO2(%)", ST12345: 21, ST12346: 38, ST12347: 45, ST12348: 17 },
-  //   { type: "Other 1(%)", ST12345: 23, ST12346: 25, ST12347: 24, ST12348: 16 },
-  //   { type: "Other 2(%)", ST12345: 34, ST12346: 22, ST12347: 36, ST12348: 28 },
+  //   { type: "CO2(%)", ST12345: 45, ST12346: 28, ST12347: 45, ST12348: 17 },
+  //   { type: "Other 1(%)", ST12345: 21, ST12346: 25, ST12347: 24, ST12348: 16 },
+  //   { type: "Other 2(%)", ST12345: 23, ST12346: 17, ST12347: 36, ST12348: 28 },
+  //   {
+  //     type: "CO2 Capture Efficiency (%)",
+  //     ST12345: 45,
+  //     ST12346: 25,
+  //     ST12347: 31,
+  //     ST12348: 17,
+  //   },
+  //   {
+  //     type: "Technology",
+  //     ST12345: "Stream Turbine",
+  //     ST12346: "Gas Turbine",
+  //     ST12347: "Stream Turbine",
+  //     ST12348: "Gas Turbine",
+  //   },
+  //   {
+  //     type: "Combustion Technology",
+  //     ST12345: "CCGT",
+  //     ST12346: "Gas Combustion",
+  //     ST12347: "PCC",
+  //     ST12348: "CCGT",
+  //   },
+  //   {
+  //     type: "Control Technology",
+  //     ST12345: "Dry Low NOX",
+  //     ST12346: "FGD",
+  //     ST12347: "Dry Low NOX",
+  //     ST12348: "FGD",
+  //   },
+  //   {
+  //     type: "Quality Of Maintenance",
+  //     ST12345: "Reliability-Centre",
+  //     ST12346: "Reliability-Centre",
+  //     ST12347: "Reliability-Centre",
+  //     ST12348: "Reliability-Centre",
+  //   },
+  //   {
+  //     type: "Age of equipment (years)",
+  //     ST12345: 3,
+  //     ST12346: 2,
+  //     ST12347: 4,
+  //     ST12348: 3,
+  //   },
   //   {
   //     type: "Velocity (m/s)",
-  //     ST12345: 32,
-  //     ST12346: 26,
+  //     ST12345: 34,
+  //     ST12346: 13,
   //     ST12347: 24,
   //     ST12348: 26,
   //   },
   //   {
   //     type: "Temperature (C0)",
-  //     ST12345: 31,
-  //     ST12346: 34,
+  //     ST12345: 32,
+  //     ST12346: 24,
   //     ST12347: 27,
   //     ST12348: 21,
   //   },
   // ];
-
-  const stackPowerT3parameters = [
-    { type: "CH4(%)", ST12345: 34, ST12346: 25, ST12347: 12, ST12348: 45 },
-    { type: "PFC (%)", ST12345: 32, ST12346: 31, ST12347: 34, ST12348: 14 },
-    { type: "CO2(%)", ST12345: 45, ST12346: 28, ST12347: 45, ST12348: 17 },
-    { type: "Other 1(%)", ST12345: 21, ST12346: 25, ST12347: 24, ST12348: 16 },
-    { type: "Other 2(%)", ST12345: 23, ST12346: 17, ST12347: 36, ST12348: 28 },
-    {
-      type: "CO2 Capture Efficiency (%)",
-      ST12345: 45,
-      ST12346: 25,
-      ST12347: 31,
-      ST12348: 17,
-    },
-    {
-      type: "Technology",
-      ST12345: "Stream Turbine",
-      ST12346: "Gas Turbine",
-      ST12347: "Stream Turbine",
-      ST12348: "Gas Turbine",
-    },
-    {
-      type: "Combustion Technology",
-      ST12345: "CCGT",
-      ST12346: "Gas Combustion",
-      ST12347: "PCC",
-      ST12348: "CCGT",
-    },
-    {
-      type: "Control Technology",
-      ST12345: "Dry Low NOX",
-      ST12346: "FGD",
-      ST12347: "Dry Low NOX",
-      ST12348: "FGD",
-    },
-    {
-      type: "Quality Of Maintenance",
-      ST12345: "Reliability-Centre",
-      ST12346: "Reliability-Centre",
-      ST12347: "Reliability-Centre",
-      ST12348: "Reliability-Centre",
-    },
-    {
-      type: "Age of equipment (years)",
-      ST12345: 3,
-      ST12346: 2,
-      ST12347: 4,
-      ST12348: 3,
-    },
-    {
-      type: "Velocity (m/s)",
-      ST12345: 34,
-      ST12346: 13,
-      ST12347: 24,
-      ST12348: 26,
-    },
-    {
-      type: "Temperature (C0)",
-      ST12345: 32,
-      ST12346: 24,
-      ST12347: 27,
-      ST12348: 21,
-    },
-  ];
 
   const handleTierChange = (event) => {
     setTierLevel(event.target.value);
@@ -317,21 +432,21 @@ function PowerEmission() {
               </CardHeader>
               <CardBody>
                 <Row>
-                  <Col md={2}>
+                  <Col md={3}>
                     <FormField
                       label="Facility / Plant Name"
                       isDropdown
                       options={[{ name: "Taweela A1", value: "Taweela A1" }]}
                     />
                   </Col>
-                  <Col md={2}>
+                  <Col md={3}>
                     <FormField
                       label="Calendar Year"
                       isDropdown
                       options={[{ name: "2024", value: "2024" }]}
                     />
                   </Col>
-                  <Col md={2}>
+                  <Col md={3}>
                     <FormField
                       label="Tier Level"
                       isDropdown
@@ -344,6 +459,18 @@ function PowerEmission() {
                       value={tierLevel}
                     />
                   </Col>
+
+                </Row>
+                <Row>
+                <Col md={3}>
+          <FileUpload label="Uncertainty Guidance?" toggleClick={handleUncertainty} conditionData={Uncertainty}/>
+            </Col>
+            <Col md={3}>
+          <FileUpload label="Is QA/QC for emission data?" toggleClick={handleQAQC} conditionData={QAQC}/>
+            </Col>
+            <Col md={3}>
+          <FileUpload label="Is QA/QC for activity data?" toggleClick={handleActivityQAQC} conditionData={ActivityQAQC}/>
+          </Col>
                 </Row>
                 {emission === ":power" && (
                   <>
@@ -362,45 +489,44 @@ function PowerEmission() {
                       <>
                       <EmissionTable
                           headers={FuelPowerheaders}
-                          parameters={FuelPowerparameters}
-                          subHeaders={FuelT2Powerheaders}
+                          parameters={FuelPowerT2parameters}
+                          subHeaders={FuelT2SubPowerheaders}
                           showHeaderRow={true}
                           title="Fuel Consumption Details"
                           showParametersRow={true}
                           subHead="Parameters"
                         />
-                        <VerticalEmissionTable
+                        {/* <VerticalEmissionTable
                           headers={stackPowerheaders}
                           parameters={stackPowerparameters}
                           title="Abatement & Stack Parameter Details"
                           showParametersRow={false}
-                        />
+                        /> */}
                         
                       </>
                     )}
                     {tierLevel === "T3" && (
                       <>
-                       {/* <EmissionTable
-                          headers={FuelPowerT3headers}
-                          parameters={fuelPowerT3Parameters}
-                          subHeaders={FuelT3Powerheaders}
-                          showHeaderRow={true}
-                          title="Fuel Consumption Details"
-                          showParametersRow={false}
-                        /> */}
                           <EmissionTable
                           headers={FuelPowerheaders}
-                          parameters={FuelPowerparameters}
-                          subHeaders={FuelT2Powerheaders}
-                          showHeaderRow={false}
+                          parameters={FuelPowerT3parameters}
+                          subHeaders={FuelT2SubPowerheaders}
+                          showHeaderRow={true}
                           title="Fuel Consumption Details"
                           showParametersRow={true}
                           subHead="Parameters"
                         />
-                        <VerticalEmissionTable2
+                           <VerticalEmissionTable2
                           headers={stackPowerheaders}
                           parameters={stackPowerT3parameters}
-                          title="Abatement & Stack Parameter Details"
+                          title="Stack Details"
+                          showHeaderRow={false}
+                          showParametersRow={false}
+                        />
+                        <VerticalEmissionTable2
+                          headers={FuelPowerT3headers}
+                          parameters={stackPowerT3parameters}
+                          title="Emission Details"
                           showParametersRow={false}
                         />
                       </>
@@ -523,7 +649,7 @@ function PowerEmission() {
                         <EmissionTable
                           headers={FuelPowerheaders}
                           parameters={FuelPowerparameters}
-                          subHeaders={FuelT2Powerheaders}
+                          subHeaders={FuelT2SubPowerheaders}
                           showHeaderRow={true}
                           title="Fuel Details"
                           showParametersRow={true}

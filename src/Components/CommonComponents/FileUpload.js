@@ -22,14 +22,14 @@ const FileUpload = ({ label, toggleClick, conditionData }) => {
       {conditionData && <div className="file-upload-body">
         {!file ? (
           <div className="file-upload-align">
-          <div>
+          <div style={{display: "flex"}}>
             <input
               type="file"
               id={`upload-${label}`}
               onChange={handleFileChange}
               hidden
             />
-            <img src={DownloadIcon}/>
+            <img src={DownloadIcon} style={{width:'15px', height:"15px"}}/>
             <label htmlFor={`upload-${label}`} className="upload-placeholder">
             Drag and drop files here or upload
             </label>

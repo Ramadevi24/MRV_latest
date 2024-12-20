@@ -16,6 +16,7 @@ import {
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
+import AddOrganizationModal from "./AddOrganizationModal.js";
 
 const OrganizationGrid = () => {
   document.title = "MRV_PROJECT | OrganizationGrid";
@@ -32,6 +33,17 @@ const OrganizationGrid = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [deleteOrgId, setDeleteOrgId] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [isOrganizationModelOpen, setIsOrganizationModelOpen] = useState(false);
+
+  const handleCreateOrganization = () => {
+    setIsOrganizationModelOpen(true);
+  };
+
+  const handleCloseOrganization = () => {
+    setIsOrganizationModelOpen(false);
+  };
+
+
   const userPermissions =
   JSON.parse(localStorage.getItem("UserPermissions")) || [];
 
@@ -115,7 +127,7 @@ const OrganizationGrid = () => {
                           <Button
                             color="success"
                             className="add-btn me-1"
-                            onClick={() => navigate("/create-organization")}
+                            onClick={handleCreateOrganization}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>{" "}
@@ -277,6 +289,7 @@ const OrganizationGrid = () => {
         onDeleteClick={confirmDelete}
         onCloseClick={() => setDeleteModal(false)}
       />
+      <AddOrganizationModal open={isOrganizationModelOpen} onClose={handleCloseOrganization}/>
       </div>
     </React.Fragment>
   );

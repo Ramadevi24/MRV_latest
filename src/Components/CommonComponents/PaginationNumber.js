@@ -81,7 +81,6 @@ PaginationNumber.propTypes = {
   totalItems: PropTypes.number.isRequired,
   paginate: PropTypes.func.isRequired,
   setItemsPerPage: PropTypes.func.isRequired,
-  t: PropTypes.func.isRequired,
 };
 
 export default PaginationNumber;

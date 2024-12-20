@@ -77,14 +77,14 @@ $value in $theme-colors {
     }
     .sort {
         position: relative;
-        &::before {
-            content: "\f035d";
-            position: absolute;
-            right: 0.5rem;
-            top: 18px;
-            font-size: 0.8rem;
-            font-family: "Material Design Icons";
-        }
+        // &::before {
+        //     content: "\f035d";
+        //     position: absolute;
+        //     right: 0.5rem;
+        //     top: 18px;
+        //     font-size: 0.8rem;
+        //     font-family: "Material Design Icons";
+        // }
         &::after {
             position:absolute;
             // right: 0.5rem;

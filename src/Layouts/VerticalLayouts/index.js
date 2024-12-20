@@ -149,8 +149,6 @@ import {
             });
         };
     
-  
-    // State for managing active dropdowns
     const [activeDropdown, setActiveDropdown] = React.useState({});
   
     // Toggle function for dropdowns

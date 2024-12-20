@@ -20,6 +20,7 @@ import { MenuProvider } from "./contexts/MenuContext";
 import { EmiratesProvider } from "./contexts/EmiratesContext";
 import { EntityProvider } from "./contexts/EntityContext";
 import { CoverageAreaProvider } from "./contexts/CoverageAreaContext";
+import { GasProvider } from "./contexts/GasContext";
 
 const store = configureStore({ reducer: rootReducer, devTools: true });
 
@@ -42,7 +43,9 @@ root.render(
                           <EmiratesProvider>
                             <EntityProvider>
                               <CoverageAreaProvider>
+                                <GasProvider>
                                 <App />
+                                </GasProvider>
                               </CoverageAreaProvider>
                             </EntityProvider>
                           </EmiratesProvider>
