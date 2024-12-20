@@ -1,137 +1,89 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from 'react';
 import {
-  Col,
-  Label,
-  Input,
-  Row,
-  FormGroup,
-  Form,
-  FormFeedback,
+  ModalHeader,
+  ModalBody,
   Button,
-  CardBody,
-  Container,
-  Card,
-  CardHeader,
-} from "reactstrap";
-import * as Yup from "yup";
-import { useFormik } from "formik";
+  FormGroup,
+  Input,
+  Label,
+  FormFeedback,
+  Form,
+  Row,
+  Col
+} from 'reactstrap';
+import Modal from '../../Components/CommonComponents/Modal';
+import { useFormik } from 'formik';
 import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
-import { useParams, useNavigate } from "react-router-dom";
-import { TenantContext } from "../../contexts/TenantContext";
-import { OrganizationContext } from "../../contexts/OrganizationContext";
-import { RoleContext } from "../../contexts/RoleContext";
-import { UserContext } from "../../contexts/UserContext";
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
+import { TenantContext } from '../../contexts/TenantContext';
+import { OrganizationContext } from '../../contexts/OrganizationContext';
+import { RoleContext } from '../../contexts/RoleContext';
+import { UserContext } from '../../contexts/UserContext';
+import CryptoJS from 'crypto-js';
 
-const EditUser = () => {
+const UserFormModal = ({ isOpen, onClose, userId }) => {
   const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const { fetchAllTenants, tenants } = useContext(TenantContext);
-  const { fetchAllOrganizations, organizations } =
-    useContext(OrganizationContext);
+  const { fetchAllOrganizations, organizations } = useContext(OrganizationContext);
   const { fetchAllRoles, roles } = useContext(RoleContext);
-  const { updateUserProfile, fetchUserById } = useContext(UserContext);
-  const userPermissions =
-    JSON.parse(localStorage.getItem("UserPermissions")) || [];
-    // const [loading, setLoading] = useState(true);
+  const { addUser} = useContext(UserContext);
+  const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
 
-    const validation = useFormik({
-      enableReinitialize: true,
-      initialValues: {
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        tenantID: userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
-        organizationID: "",
-        roleID: "",
-        userRole: "",
-      },
-      validationSchema: Yup.object({
-        firstName: Yup.string().required(t("Please Enter Your First Name")),
-        lastName: Yup.string().required(t("Please Enter Your Last Name")),
-        email: Yup.string().required(t("Please Enter Your Email")),
-        phone: Yup.string().required(t("Please enter a Phone Number")),
-        userRole: Yup.string().required(t("Please select a User Role")),
-      }),
-      onSubmit: async (values) => {
-        const roleID = findRoleIdByRoleName();
-        if (!roleID) {
-          toast.error(t("Please select a valid user role"));
-          return;
-        }
-        const updateFormData = { ...values, loginType: "custom", roleID: roleID,  organizationID: values.organizationID || null };
-        try {
-          await updateUserProfile(id, updateFormData);
-          toast.success(t("User Updated successfully"), { autoClose: 3000 });
-          navigate("/users");
-        } catch (error) {
-          toast.error(t("Error Updating user"));
-        }
-      },
-    });
-
-    useEffect(() => {
-      fetchAllTenants();
-      const selectedTenantID = validation.values?.tenantID;
-      const tenantIdToUse = userPermissions.tenantID || selectedTenantID;
-      if (tenantIdToUse) {
-        fetchAllOrganizations(tenantIdToUse);
-        fetchAllRoles(tenantIdToUse);
+  const validation = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      passwordHash: "",
+      phone: "",
+      tenantID: userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
+      organizationID: "",
+      roleID: "",
+      userRole: "",
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required(t("Please Enter Your First Name")),
+      tenantID: Yup.string().required(t("Please select a Tenant")),
+      lastName: Yup.string().required(t("Please Enter Your Last Name")),
+      email: Yup.string().required(t("Please Enter Your Email")),
+      phone: Yup.string().required(t("Please enter a Phone Number")),
+      passwordHash: Yup.string().required(t("Please enter a password")),
+      userRole: Yup.string().required(t("Please select a User Role")),
+    }),
+    onSubmit: async (values) => {
+      const roleID = findRoleIdByRoleName();
+      if (!roleID) {
+        toast.error(t("Please select a valid user role"));
+        return;
       }
-    }, [userPermissions.tenantID, validation.values?.tenantID]);
-
-    const fetchData = async () => {
+      const createFormData = { ...values, loginType: "custom", roleID: roleID , passwordHash:CryptoJS.SHA256(values.passwordHash).toString(),
+         organizationID: values.organizationID || null };
       try {
-        // if (organizations.length > 0 && tenants.length > 0 && roles.length > 0) {
-          const user = await fetchUserById(id);
-  
-          const initialTenant = tenants.find(
-            (tenant) => tenant.name === user.tenantName
-          );
-          const tenantID = initialTenant ? initialTenant.tenantID : "";
-  
-          const initialOrganization = organizations.find(
-            (org) => org.organizationName === user.organizationName
-          );
-          const organizationID = initialOrganization
-            ? initialOrganization.organizationID
-            : "";
-  
-          const initialUserRole = roles.find(
-            (role) => role.roleName === user.userRole
-          );
-          const tenantRoleID = initialUserRole ? initialUserRole.roleID : "";
-          validation.setValues({
-            ...validation.values,
-            firstName: user.firstName || "",
-            lastName: user.lastName || "",
-            email: user.email || "",
-            phone: user.phone,
-            tenantID: userPermissions.tenantID || tenantID,
-            organizationID: organizationID || "",
-            roleID: user.roleID || "",
-            userRole: user.userRole || "",
-            tenantRoleID: tenantRoleID || "",
-          });
-            // }
+        await addUser(createFormData);
+        toast.success(t("User created successfully"), { autoClose: 3000 });
+        // navigate("/users");
+        onClose();
       } catch (error) {
-        // toast.error(t("Error fetching user data"));
+        toast.error(t("Error creating user"));
       }
+    },
+  });
 
-    };
+  useEffect(() => {
+    // Fetch all tenants on component mount or when needed
+    fetchAllTenants();
     
-    useEffect(() => {
-      if (tenants && organizations && roles) {
-        fetchData();
-      } else {
-        console.log("Required data not available yet");
-      }
-    }, [id, tenants, organizations, roles]);
-
-
-    
+    // Determine the tenant ID to use
+    const selectedTenantID = validation.values?.tenantID;
+    const tenantIdToUse = userPermissions.tenantID || selectedTenantID;
+  
+    if (tenantIdToUse) {
+      fetchAllOrganizations(tenantIdToUse);
+      fetchAllRoles(tenantIdToUse);
+    }
+  }, [userPermissions.tenantID, validation.values.tenantID]); // Only keep the values you depend on
 
   const findRoleIdByRoleName = () => {
     const role = roles?.find(
@@ -140,43 +92,47 @@ const EditUser = () => {
     return role ? role.roleID : null; // Ensure you return roleID here
   };
 
+  // useEffect(() => {
+  //   fetchAllTenants();
+  //   if (validation.values.tenantID) {
+  //     fetchAllOrganizations(validation.values.tenantID);
+  //     fetchAllRoles(validation.values.tenantID);
+  //   }
+  //   if (isOpen && userId) {
+  //     const loadUser = async () => {
+  //       try {
+  //         const user = await fetchUserById(userId);
+  //         if (user) {
+  //           validation.setValues({
+  //             firstName: user.firstName || '',
+  //             lastName: user.lastName || '',
+  //             email: user.email || '',
+  //             passwordHash: '',
+  //             phone: user.phone || '',
+  //             tenantID: user.tenantID || '',
+  //             organizationID: user.organizationID || '',
+  //             userRole: user.userRole || '',
+  //           });
+  //         }
+  //       } catch (error) {
+  //         console.error("Error loading user:", error);
+  //       }
+  //     };
+  //     loadUser();
+  //   }
+  // }, [isOpen, userId, validation.values.tenantID]);
+
   return (
-    <React.Fragment>
-      <div className="page-content">
-        <Container fluid>
-          <Row>
-            <Col>
-              <Card>
-                <CardHeader>
-                  <h4
-                    className="card-title mb-0"
-                    style={{
-                      color: "#45CB85",
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {t("Edit User")}
-                  </h4>
-                </CardHeader>
-
-                <CardBody>
-                  {/* <div className="ribbon-box" style={{padding:"2rem"}}>
-                <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Users</h2>
-               </div> */}
-
-                  <div className="live-preview">
-                    <Form
-                      className="needs-validation"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
-                      }}
-                      style={{ marginTop: "3.5rem" }}
-                    >
-                      <Row>
-                        <Col>
+    <Modal
+      size="lg"
+    //   title={userId ? "Edit User" : "Add User"}
+    title="Add User"
+      isOpen={isOpen}
+      onClose={onClose}
+    >
+      <Form onSubmit={validation.handleSubmit}>
+      <Row>
+                     <Col>
                           <FormGroup className="mb-3">
                             <Label htmlFor="firstName">{t("First name")}</Label>
                             <Input
@@ -230,8 +186,9 @@ const EditUser = () => {
                             ) : null}
                           </FormGroup>
                         </Col>
-                      </Row>
 
+</Row>
+                      
                       <Row>
                         <Col>
                           <FormGroup>
@@ -265,6 +222,37 @@ const EditUser = () => {
                           </FormGroup>
                         </Col>
 
+                        <Col md={6}>
+                          <FormGroup className="mb-3">
+                            <Label htmlFor="validationCustom03">
+                              {t("Password")}
+                            </Label>
+                            <Input
+                              name="passwordHash"
+                              placeholder={t("Enter Password")}
+                              type="password"
+                              className="form-control"
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              value={validation.values.passwordHash || ""}
+                              invalid={
+                                validation.touched.passwordHash &&
+                                validation.errors.passwordHash
+                                  ? true
+                                  : false
+                              }
+                            />
+                            {validation.touched.passwordHash &&
+                            validation.errors.passwordHash ? (
+                              <FormFeedback type="invalid">
+                                {validation.errors.passwordHash}
+                              </FormFeedback>
+                            ) : null}
+                          </FormGroup>
+                        </Col>
+
+</Row>
+<Row>
                         <Col>
                           <FormGroup>
                             <div className="mb-3">
@@ -297,10 +285,8 @@ const EditUser = () => {
                             </div>
                           </FormGroup>
                         </Col>
-                      </Row>
-                      <Row>
                         {!userPermissions.tenantID && (
-                          <Col lg={12}>
+                          <Col lg={6}>
                             <Label htmlFor="tenantID">
                               {t("Tenant ID")}
                               <span className="text-danger">*</span>
@@ -343,10 +329,8 @@ const EditUser = () => {
                             ) : null}
                           </Col>
                         )}
-                      </Row>
-                      <Row>
-                      {userPermissions.tenantID && (
-                        <Col>
+ {userPermissions.tenantID && (
+                        <Col lg={6}>
                           <Label htmlFor="organizationID">
                             {t("Organization ID")}
                           </Label>
@@ -387,8 +371,8 @@ const EditUser = () => {
                             </FormFeedback>
                           ) : null}
                         </Col>
-                      )}
-                        <Col>
+ )}
+                        <Col lg={6}>
                           <Label htmlFor="userRole">
                             {t("User Role")}
                             <span className="text-danger">*</span>
@@ -428,34 +412,17 @@ const EditUser = () => {
                           ) : null}
                         </Col>
                       </Row>
-
-                      <div className="d-flex justify-content-end  mt-3" style={{marginRight:'4rem'}}>
-                        <Button
-                          type="submit"
-                          color="success"
-                          className=" me-2"
-                        >
-                          {t("Submit")}
-                        </Button>
-                        <Button
-                          type="button"
-                          color="danger"
-                          className=""
-                          onClick={() => history.back()}
-                        >
-                          {t("Cancel")}
-                        </Button>
-                      </div>
-                    </Form>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </React.Fragment>
+        <div className="modal-footer">
+          <Button color="success" type="submit">
+            Save
+          </Button>
+          <Button color="danger" type="button" onClick={onClose}>
+            Cancel
+          </Button>
+        </div>
+      </Form>
+    </Modal>
   );
 };
 
-export default EditUser;
+export default UserFormModal;

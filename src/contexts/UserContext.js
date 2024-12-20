@@ -23,7 +23,7 @@ export const UserProvider = ({ children }) => {
       setUsers(data);
       setLoading(false);
     } catch (error) {
-      toast.error("Error fetching users");
+      // toast.error("Error fetching users");
       setLoading(false);
     }
   };
@@ -32,7 +32,7 @@ export const UserProvider = ({ children }) => {
     try {
       return await getUserById(id);
     } catch (error) {
-      toast.error("Error fetching user");
+      // toast.error("Error fetching user");
       throw error;
     }
   };

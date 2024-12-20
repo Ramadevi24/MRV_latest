@@ -93,7 +93,7 @@ const ViewUser = () => {
           });
             // }
       } catch (error) {
-        toast.error(t("Error fetching user data"));
+        // toast.error(t("Error fetching user data"));
       }
 
     };

@@ -21,12 +21,14 @@ import { toast } from "react-toastify";
 import { TenantContext } from "../../contexts/TenantContext";
 import { PermissionContext } from "../../contexts/PermissionContext";
 import { RoleContext } from "../../contexts/RoleContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Modal from "../../Components/CommonComponents/Modal";
 
-const ViewRole = () => {
+const ViewRoleModal = (open, onClose, id) => {
+  console.log(id, "id");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { id } = useParams();
+  // const { id } = useParams();
   const { fetchAllTenants, tenants } = useContext(TenantContext);
   const { fetchAllPermissions, permissions } = useContext(PermissionContext);
   const { fetchRoleById } = useContext(RoleContext);
@@ -56,7 +58,6 @@ const ViewRole = () => {
     const fetchData = async () => {
       try {
         const role = await fetchRoleById(id, userPermissions.tenantID);
-        console.log(role, 'role')
         formik.setValues({
           roleName: role.roleName || "",
           description: role.description || "",
@@ -108,23 +109,14 @@ const ViewRole = () => {
   return (
     <div className="page-content">
       <Container fluid>
+        <Modal isOpen={open}
+        onClose={onClose}
+        title = "View Role"
+        size = "lg" >
         <form>
           <Row>
             <Col lg={12}>
               <Card>
-                <CardHeader>
-                  <h4
-                    className="card-title mb-0"
-                    style={{
-                      color: "#45CB85",
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {t("View Role")}
-                  </h4>
-                </CardHeader>
-
                 <CardBody>
                   <Row style={{ marginTop: "3.5rem" }}>
                     <Col md={12}>
@@ -248,9 +240,10 @@ const ViewRole = () => {
             </Col>
           </Row>
         </form>
+        </Modal>
       </Container>
     </div>
   );
 };
 
-export default ViewRole;
+export default ViewRoleModal;

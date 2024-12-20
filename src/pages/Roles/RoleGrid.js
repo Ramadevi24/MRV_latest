@@ -17,6 +17,9 @@ import {
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
+import RoleFormModal from "./RoleFormModal.js";
+import EditRoleModal from "./EditRoleModal.js";
+import ViewRoleModal from "./ViewRoleModal.js";
 
 const RoleGrid = () => {
   document.title = "MRV_PROJECT | RoleGrid";
@@ -33,11 +36,48 @@ const RoleGrid = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [deleteRoleId, setDeleteRoleId] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
+  const [addRole, setAddRole] = useState(false);
+  const [editRole, setEditRole] = useState(false);
+  const [editRoleId, setEditRoleId] = useState(null);
+  const [viewRole, setViewRole] = useState(false);
+  const [viewRoleData, setViewRoleData] = useState(null);
+
   const userPermissions =
   JSON.parse(localStorage.getItem("UserPermissions")) || [];
 
+  const handleAddRoleClick = () => {
+    setAddRole(true);
+  };
+
+  const handleRoleCloseModal =() =>{
+    setAddRole(false);
+  };
+
+
+  const handleEditRoleClick =(id) => {
+    setEditRoleId(id);
+    setEditRole(true);
+  };
+
+  const handleEditCloseModal= () =>{
+    setEditRoleId(null);
+    setEditRole(false);
+  };
+
+  const handleViewRoleClick = (id) =>{
+    setViewRoleData(id); 
+    setViewRole(true);
+  }
+
+  const handleViewCloseModal = () =>{
+    setViewRole(false); 
+    setViewRoleData(null); 
+  }
+
   useEffect(() => {
-    fetchAllRoles(userPermissions?.tenantID);
+    fetchAllRoles();
+  
   }, []);
 
   const handleDelete = (id) => {
@@ -115,7 +155,9 @@ const RoleGrid = () => {
                           <Button
                             color="success"
                             className="add-btn me-1"
-                            onClick={() => navigate("/create-role")}
+                            // onClick={() => navigate("/create-role")}
+                            // onClick={handleAddRoleClick}
+                            onClick={handleAddRoleClick}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>
@@ -211,11 +253,8 @@ const RoleGrid = () => {
                                     <div className="edit">
                                       <button
                                         className="btn btn-sm btn-info edit-item-btn"
-                                        onClick={() =>
-                                          navigate(
-                                            `/edit-role/${role.roleID}`
-                                          )
-                                        }
+                                        // onClick={handleEditRoleClick}
+                                        onClick={() => handleEditRoleClick(role.roleID)}
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
@@ -235,11 +274,7 @@ const RoleGrid = () => {
                                     <div className="view">
                                       <button
                                         className="btn btn-sm btn-success view-item-btn"
-                                        onClick={() =>
-                                          navigate(
-                                            `/view-role/${role.roleID}`
-                                          )
-                                        }
+                                        onClick={() => handleViewRoleClick(role.roleID)}
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
@@ -288,9 +323,18 @@ const RoleGrid = () => {
         onDeleteClick={confirmDelete}
         onCloseClick={() => setDeleteModal(false)}
       />
+      <RoleFormModal open={addRole} onClose={handleRoleCloseModal} />
+      <EditRoleModal open={editRole} onClose={handleEditCloseModal} id={editRoleId}  />
+      {console.log(viewRoleData, 'viewRoleData')}
+  <ViewRoleModal
+    open={viewRole}
+    onClose={handleViewCloseModal}
+    id={viewRoleData}
+  />
+
       </div>
     </React.Fragment>
   );
-};
+};  
 
 export default RoleGrid;

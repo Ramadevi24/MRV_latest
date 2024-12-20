@@ -20,6 +20,8 @@ import {
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
+import AddTenantModal from "./AddTenantModal.js";
+import EditTenantModal from "./EditTenantModal.js";
 
 const TenantsGrid = () => {
 
@@ -37,6 +39,26 @@ const {t}=useTranslation();
   const [tenantsPerPage, setTenantsPerPage] = useState(10);
   const [deleteModal, setDeleteModal] = useState(false);
   const [tenantToDelete, setTenantToDelete] = useState(null);
+  const [editTenant, setEditTenant] = useState(false);
+  const [addTenant, setAddTenant] = useState(false);
+  const [editTenantId, setEditTenantId] = useState(null);
+
+  const handleEditTenantClick = (id) => {
+    setEditTenantId(id)
+    setEditTenant(true);
+  };
+
+  const handleTenantCloseModal = () => {
+    setEditTenant(false);
+  };
+
+  const handleAddTenantClick = () => {
+    setAddTenant(true);
+  };
+
+  const handleAddTenantCloseModal = () => {
+    setAddTenant(false);
+  };
 
   useEffect(() => {
     fetchAllTenants();
@@ -107,7 +129,8 @@ const {t}=useTranslation();
                           <Button
                             color="success"
                             className="add-btn me-1"
-                            onClick={() => navigate("/create-tenant")}
+                            // onClick={() => navigate("/create-tenant")}
+                            onClick={handleAddTenantClick} onClose={handleAddTenantCloseModal}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>{" "}
@@ -196,11 +219,8 @@ const {t}=useTranslation();
                                     <div className="edit">
                                       <button
                                         className="btn btn-sm btn-info edit-item-btn"
-                                        onClick={() =>
-                                          navigate(
-                                            `/edit-tenant/${tenant.tenantID}`
-                                          )
-                                        }
+                                        onClick={() => handleEditTenantClick(tenant.tenantID)
+                                        } onClose={handleTenantCloseModal}
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
@@ -263,6 +283,8 @@ const {t}=useTranslation();
         onDeleteClick={confirmDelete}
         onCloseClick={() => setDeleteModal(false)}
       />
+      <AddTenantModal isOpen={addTenant} onClose={handleAddTenantCloseModal}/>
+      <EditTenantModal isOpen={editTenant} onClose={handleTenantCloseModal} tenantId={editTenantId}/>
       </div>
     </React.Fragment>
   );

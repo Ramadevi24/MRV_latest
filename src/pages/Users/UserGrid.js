@@ -17,6 +17,9 @@ import {
 } from "reactstrap";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
+import UserFormModal from "./UserFormModal.js";
+import EditUserModal from "./EditUserModal.js";
+import ViewUserModal from "./ViewUserModal.js";
 
 const UserGrid = () => {
   document.title = "MRV_PROJECT | UserGrid";
@@ -35,6 +38,38 @@ const UserGrid = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [deleteUserId, setDeleteUserId] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [addUser, setAddUser] = useState(false);
+  const [editUser, setEditUser] = useState(false);
+  const [editUserID, setEditUserId] = useState(null);
+  const [viewUser, setViewUser] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+
+
+  function handleAddUser() {
+    setAddUser(true);
+  }
+
+  function handleAddUserClose() {
+    setAddUser(false);
+  }
+
+  function handleEditUser(id) {
+    setEditUserId(id);
+    setEditUser(true);
+  }
+
+  function handleEditUserClose() {
+    setEditUser(false);
+  }
+
+  function handleViewUser(id) {
+    setSelectedUser(id);
+    setViewUser(true);
+  }
+
+  function handleViewUserClose() {
+    setViewUser(false);
+  }
 
   useEffect(() => {
     fetchAllUsers(userPermissions?.userID);
@@ -119,7 +154,8 @@ const UserGrid = () => {
                           <Button
                             color="success"
                             className="add-btn me-1"
-                            onClick={() => navigate("/create-user")}
+                            // onClick={() => navigate("/create-user")}
+                            onClick={handleAddUser} onClose={handleAddUserClose}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>{" "}
@@ -224,11 +260,13 @@ const UserGrid = () => {
                                     <div className="edit">
                                       <button
                                         className="btn btn-sm btn-info edit-item-btn"
-                                        onClick={() =>
-                                          navigate(
-                                            `/edit-user/${user.userID}`
-                                          )
-                                        }
+                                        // onClick={() =>
+                                        //   navigate(
+                                        //     `/edit-user/${user.userID}`
+                                        //   )
+                                        // }
+                                        onClick={() => handleEditUser(user.userID) }
+                                        onClose={handleEditUserClose}
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
@@ -248,11 +286,13 @@ const UserGrid = () => {
                                     <div className="view">
                                       <button
                                         className="btn btn-sm btn-success view-item-btn"
-                                        onClick={() =>
-                                          navigate(
-                                            `/view-user/${user.userID}`
-                                          )
-                                        }
+                                        onClick={() => handleViewUser(user.userID)}
+                                        onClose={handleViewUserClose}
+                                        // onClick={() =>
+                                        //   navigate(
+                                        //     `/view-user/${user.userID}`
+                                        //   )
+                                        // }
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
@@ -301,6 +341,10 @@ const UserGrid = () => {
         onDeleteClick={confirmDelete}
         onCloseClick={() => setDeleteModal(false)}
       />
+      <UserFormModal isOpen={addUser} onClose={handleAddUserClose} />
+      <EditUserModal isOpen={editUser} onClose={handleEditUserClose} id={editUserID} />
+      <ViewUserModal isOpen={viewUser} onClose={handleViewUserClose} user={selectedUser} />
+
       </div>
     </React.Fragment>
   );

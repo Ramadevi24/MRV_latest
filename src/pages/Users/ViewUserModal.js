@@ -7,13 +7,11 @@ import {
   FormGroup,
   Form,
   FormFeedback,
-  Button,
   CardBody,
   Container,
   Card,
   CardHeader,
 } from "reactstrap";
-import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -22,8 +20,9 @@ import { TenantContext } from "../../contexts/TenantContext";
 import { OrganizationContext } from "../../contexts/OrganizationContext";
 import { RoleContext } from "../../contexts/RoleContext";
 import { UserContext } from "../../contexts/UserContext";
+import Modal from "../../Components/CommonComponents/Modal";
 
-const EditUser = () => {
+const ViewUser = ({ isOpen, onClose, user }) => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -34,7 +33,6 @@ const EditUser = () => {
   const { updateUserProfile, fetchUserById } = useContext(UserContext);
   const userPermissions =
     JSON.parse(localStorage.getItem("UserPermissions")) || [];
-    // const [loading, setLoading] = useState(true);
 
     const validation = useFormik({
       enableReinitialize: true,
@@ -42,34 +40,13 @@ const EditUser = () => {
         firstName: "",
         lastName: "",
         email: "",
+        passwordHash: "",
         phone: "",
-        tenantID: userPermissions.tenantID || "", // Default to userPermissions.tenantID if available
+        tenantID: userPermissions.tenantID || "",
         organizationID: "",
         roleID: "",
         userRole: "",
-      },
-      validationSchema: Yup.object({
-        firstName: Yup.string().required(t("Please Enter Your First Name")),
-        lastName: Yup.string().required(t("Please Enter Your Last Name")),
-        email: Yup.string().required(t("Please Enter Your Email")),
-        phone: Yup.string().required(t("Please enter a Phone Number")),
-        userRole: Yup.string().required(t("Please select a User Role")),
-      }),
-      onSubmit: async (values) => {
-        const roleID = findRoleIdByRoleName();
-        if (!roleID) {
-          toast.error(t("Please select a valid user role"));
-          return;
-        }
-        const updateFormData = { ...values, loginType: "custom", roleID: roleID,  organizationID: values.organizationID || null };
-        try {
-          await updateUserProfile(id, updateFormData);
-          toast.success(t("User Updated successfully"), { autoClose: 3000 });
-          navigate("/users");
-        } catch (error) {
-          toast.error(t("Error Updating user"));
-        }
-      },
+      }
     });
 
     useEffect(() => {
@@ -80,7 +57,7 @@ const EditUser = () => {
         fetchAllOrganizations(tenantIdToUse);
         fetchAllRoles(tenantIdToUse);
       }
-    }, [userPermissions.tenantID, validation.values?.tenantID]);
+    }, [userPermissions.tenantID, validation.values.tenantID]); // Only keep the values you depend on
 
     const fetchData = async () => {
       try {
@@ -128,43 +105,21 @@ const EditUser = () => {
       } else {
         console.log("Required data not available yet");
       }
-    }, [id, tenants, organizations, roles]);
+    }, []);
 
-
-    
-
-  const findRoleIdByRoleName = () => {
-    const role = roles?.find(
-      (role) => role.roleName === validation.values.userRole
-    );
-    return role ? role.roleID : null; // Ensure you return roleID here
-  };
 
   return (
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
+        <Modal isOpen={isOpen}
+        onClose={onClose}
+        title = "View User"
+        size = "lg" >
           <Row>
             <Col>
               <Card>
-                <CardHeader>
-                  <h4
-                    className="card-title mb-0"
-                    style={{
-                      color: "#45CB85",
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {t("Edit User")}
-                  </h4>
-                </CardHeader>
-
                 <CardBody>
-                  {/* <div className="ribbon-box" style={{padding:"2rem"}}>
-                <h2 className="ribbon ribbon-success ribbon-shape" style={{fontSize:'20px', padding:"10px"}}>Add Users</h2>
-               </div> */}
-
                   <div className="live-preview">
                     <Form
                       className="needs-validation"
@@ -188,6 +143,7 @@ const EditUser = () => {
                               onChange={validation.handleChange}
                               onBlur={validation.handleBlur}
                               value={validation.values.firstName || ""}
+                              readOnly // Disable input
                               invalid={
                                 validation.touched.firstName &&
                                 validation.errors.firstName
@@ -215,6 +171,7 @@ const EditUser = () => {
                               onChange={validation.handleChange}
                               onBlur={validation.handleBlur}
                               value={validation.values.lastName || ""}
+                              readOnly // Disable input
                               invalid={
                                 validation.touched.lastName &&
                                 validation.errors.lastName
@@ -248,6 +205,7 @@ const EditUser = () => {
                                 onChange={validation.handleChange}
                                 onBlur={validation.handleBlur}
                                 value={validation.values.email || ""}
+                                readOnly // Disable input
                                 invalid={
                                   validation.touched.email &&
                                   validation.errors.email
@@ -281,6 +239,7 @@ const EditUser = () => {
                                 onChange={validation.handleChange}
                                 onBlur={validation.handleBlur}
                                 value={validation.values.phone || ""}
+                                readOnly // Disable input
                                 invalid={
                                   validation.touched.phone &&
                                   validation.errors.phone
@@ -298,6 +257,7 @@ const EditUser = () => {
                           </FormGroup>
                         </Col>
                       </Row>
+
                       <Row>
                         {!userPermissions.tenantID && (
                           <Col lg={12}>
@@ -311,19 +271,14 @@ const EditUser = () => {
                                 validation.errors.tenantID
                                   ? "is-invalid"
                                   : ""
-                              }`} // Add red border class if error
+                              }`}
                               id="tenantID"
                               name="tenantID"
-                              value={validation.values.tenantID} // Formik-controlled value
-                              onChange={validation.handleChange} // Formik change handler
-                              onBlur={validation.handleBlur} // Formik blur handler
+                              value={validation.values.tenantID}
+                              onChange={validation.handleChange}
+                              onBlur={validation.handleBlur}
+                              disabled // Disable the select
                               aria-label="Default select example"
-                              invalid={
-                                validation.touched.tenantID &&
-                                validation.errors.tenantID
-                                  ? true
-                                  : false
-                              } // Validation state
                             >
                               <option value="">{t("Select Tenant")}</option>
                               {tenants.map((tenant) => (
@@ -344,8 +299,9 @@ const EditUser = () => {
                           </Col>
                         )}
                       </Row>
+
                       <Row>
-                      {userPermissions.tenantID && (
+                        {userPermissions.tenantID && (
                         <Col>
                           <Label htmlFor="organizationID">
                             {t("Organization ID")}
@@ -356,19 +312,14 @@ const EditUser = () => {
                               validation.errors.organizationID
                                 ? "is-invalid"
                                 : ""
-                            }`} // Add red border class if error
+                            }`}
                             id="organizationID"
                             name="organizationID"
-                            value={validation.values.organizationID} // Formik-controlled value
-                            onChange={validation.handleChange} // Formik change handler
-                            onBlur={validation.handleBlur} // Formik blur handler
+                            value={validation.values.organizationID}
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            disabled // Disable the select
                             aria-label="Default select example"
-                            invalid={
-                              validation.touched.organizationID &&
-                              validation.errors.organizationID
-                                ? true
-                                : false
-                            } // Validation state
                           >
                             <option value="">{t("Select Organization")}</option>
                             {organizations.map((org) => (
@@ -387,7 +338,7 @@ const EditUser = () => {
                             </FormFeedback>
                           ) : null}
                         </Col>
-                      )}
+                        )}
                         <Col>
                           <Label htmlFor="userRole">
                             {t("User Role")}
@@ -399,19 +350,14 @@ const EditUser = () => {
                               validation.errors.userRole
                                 ? "is-invalid"
                                 : ""
-                            }`} // Add red border class if error
+                            }`}
                             id="userRole"
                             name="userRole"
-                            value={validation.values.userRole} // Formik-controlled value
-                            onChange={validation.handleChange} // Formik change handler
-                            onBlur={validation.handleBlur} // Formik blur handler
+                            value={validation.values.userRole}
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            disabled // Disable the select
                             aria-label="Default select example"
-                            invalid={
-                              validation.touched.userRole &&
-                              validation.errors.userRole
-                                ? true
-                                : false
-                            } // Validation state
                           >
                             <option value="">{t("Select User Role")}</option>
                             {roles.map((role) => (
@@ -428,34 +374,16 @@ const EditUser = () => {
                           ) : null}
                         </Col>
                       </Row>
-
-                      <div className="d-flex justify-content-end  mt-3" style={{marginRight:'4rem'}}>
-                        <Button
-                          type="submit"
-                          color="success"
-                          className=" me-2"
-                        >
-                          {t("Submit")}
-                        </Button>
-                        <Button
-                          type="button"
-                          color="danger"
-                          className=""
-                          onClick={() => history.back()}
-                        >
-                          {t("Cancel")}
-                        </Button>
-                      </div>
                     </Form>
                   </div>
                 </CardBody>
               </Card>
             </Col>
           </Row>
+          </Modal>
         </Container>
       </div>
     </React.Fragment>
   );
 };
-
-export default EditUser;
+export default ViewUser;
