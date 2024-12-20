@@ -20,7 +20,7 @@ import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
 import RoleFormModal from "./RoleFormModal.js";
 import EditRoleModal from "./EditRoleModal.js";
 import ViewRoleModal from "./ViewRoleModal.js";
-
+ 
 const RoleGrid = () => {
   document.title = "MRV_PROJECT | RoleGrid";
   const { t } = useTranslation();
@@ -41,47 +41,47 @@ const RoleGrid = () => {
   const [editRoleId, setEditRoleId] = useState(null);
   const [viewRole, setViewRole] = useState(false);
   const [viewRoleId, setViewRoleId] = useState(null);
-
+ 
   const userPermissions =
     JSON.parse(localStorage.getItem("UserPermissions")) || [];
-
+ 
   const handleAddRoleClick = () => {
     setAddRole(true);
   };
-
+ 
   const handleRoleCloseModal = () => {
     setAddRole(false);
   };
-
+ 
   const handleEditRoleClick = (id) => {
     setEditRoleId(id);
     setEditRole(true);
   };
-
+ 
   const handleEditCloseModal = () => {
     setEditRoleId(null);
     setEditRole(false);
   };
-
+ 
   const handleViewRoleClick = (id) => {
     setViewRoleId(id);
     setViewRole(true);
   };
-
+ 
   const handleViewCloseModal = () => {
     setViewRoleId(null);
     setViewRole(false);
   };
-
+ 
   useEffect(() => {
     fetchAllRoles();
   }, []);
-
+ 
   const handleDelete = (id) => {
     setDeleteRoleId(id); // Set the organization ID to delete
     setDeleteModal(true); // Show the modal
   };
-
+ 
   const confirmDelete = async () => {
     if (deleteRoleId) {
       await removeRole(deleteRoleId, userPermissions.tenantID);
@@ -90,7 +90,7 @@ const RoleGrid = () => {
       setDeleteRoleId(null); // Clear the state
     }
   };
-
+ 
   const handleSort = (key) => {
     let direction = "ascending";
     if (sortConfig.key === key && sortConfig.direction === "ascending") {
@@ -98,7 +98,7 @@ const RoleGrid = () => {
     }
     setSortConfig({ key, direction });
   };
-
+ 
   const sortedRoles = [...roles].sort((a, b) => {
     if (a[sortConfig.key] < b[sortConfig.key]) {
       return sortConfig.direction === "ascending" ? -1 : 1;
@@ -108,18 +108,18 @@ const RoleGrid = () => {
     }
     return 0;
   });
-
+ 
   const filteredRoles = sortedRoles.filter(
     (role) =>
       role.roleName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       role.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
       role.createdDate.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+ 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredRoles.slice(indexOfFirstItem, indexOfLastItem);
-
+ 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 console.log("viewRoleId",viewRoleId)
   return (
@@ -141,7 +141,7 @@ console.log("viewRoleId",viewRoleId)
                     {t("Roles")}
                   </h4>
                 </CardHeader>
-
+ 
                 <CardBody>
                   <div className="listjs-table" id="customerList">
                     <Row className="g-4 mb-3">
@@ -331,5 +331,5 @@ console.log("viewRoleId",viewRoleId)
     </React.Fragment>
   );
 };
-
+ 
 export default RoleGrid;

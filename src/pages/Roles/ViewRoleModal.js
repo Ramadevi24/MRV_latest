@@ -23,7 +23,7 @@ import { PermissionContext } from "../../contexts/PermissionContext";
 import { RoleContext } from "../../contexts/RoleContext";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../Components/CommonComponents/Modal";
-
+ 
 const ViewRoleModal = ({open, onClose, id}) => {
   console.log(id, "id");
   const { t } = useTranslation();
@@ -34,7 +34,7 @@ const ViewRoleModal = ({open, onClose, id}) => {
   const { fetchRoleById } = useContext(RoleContext);
   const [selectedPermissions, setSelectedPermissions] = useState([]);
   const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
-
+ 
   const formik = useFormik({
     initialValues: {
       roleName: "",
@@ -48,12 +48,12 @@ const ViewRoleModal = ({open, onClose, id}) => {
       permissionIds: Yup.array().required("Please Select Permissions"),
     }),
   });
-
+ 
   useEffect(() => {
     fetchAllTenants();
     fetchAllPermissions();
   }, []);
-
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -64,16 +64,16 @@ const ViewRoleModal = ({open, onClose, id}) => {
           permissionIds: role.permissions.$values?.map((p) => p.permissionID) || [],
           tenantID: role.tenantID,
         });
-
+ 
         setSelectedPermissions(role.permissions.$values?.map((p) => p.permissionID) || []);
       } catch (error) {
         console.log(t("Error fetching role data"));
       }
     };
-
+ 
     fetchData();
   }, [id]);
-
+ 
   const groupedPermissions = permissions?.reduce((grouped, permission) => {
     const group = permission.permissionGroup;
     if (!grouped[group]) {
@@ -82,7 +82,7 @@ const ViewRoleModal = ({open, onClose, id}) => {
     grouped[group].push(permission);
     return grouped;
   }, {});
-
+ 
   const getSwitchColor = (permissionDisplayName, isChecked) => {
     if (!isChecked) {
       if (permissionDisplayName.toLowerCase()){
@@ -92,7 +92,7 @@ const ViewRoleModal = ({open, onClose, id}) => {
     else{
       return "switch-success"
     }
-
+ 
     // if (permissionDisplayName.toLowerCase().includes("create")) {
     //   return "switch-warning";
     // } else if (permissionDisplayName.toLowerCase().includes("edit")) {
@@ -105,7 +105,7 @@ const ViewRoleModal = ({open, onClose, id}) => {
     //   return "";
     // }
   };
-
+ 
   return (
     <div className="page-content">
       <Container fluid>
@@ -147,7 +147,7 @@ const ViewRoleModal = ({open, onClose, id}) => {
                         />
                       </FormGroup>
                     </Col>
-
+ 
                     {/* {!userPermissions.tenantID && (
                       <Col md={12}>
                         <Label>{('Tenant ID')}</Label>
@@ -167,7 +167,7 @@ const ViewRoleModal = ({open, onClose, id}) => {
                         </select>
                       </Col>
                     )} */}
-
+ 
                     <Col>
                     <Label>{t('Permissions')}:</Label>
                     <Table>
@@ -232,8 +232,6 @@ const ViewRoleModal = ({open, onClose, id}) => {
                         </tbody>
                       </Table>
                     </Col>
-
-         
                   </Row>
                 </CardBody>
               </Card>
@@ -245,5 +243,5 @@ const ViewRoleModal = ({open, onClose, id}) => {
     </div>
   );
 };
-
+ 
 export default ViewRoleModal;
