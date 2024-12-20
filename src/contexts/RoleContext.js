@@ -23,7 +23,7 @@ export const RoleProvider = ({ children }) => {
       setRoles(data);
       setLoading(false);
     } catch (error) {
-      toast.error("Error fetching roles");
+      console.error("Error fetching roles");
       setLoading(false);
     }
   };
@@ -32,7 +32,7 @@ export const RoleProvider = ({ children }) => {
     try {
       return await getRoleById(id, tenantID);
     } catch (error) {
-      toast.error("Error fetching role");
+      console.error("Error fetching role");
       throw error;
     }
   };

@@ -129,7 +129,7 @@ const SamplePage = () => {
                   <div className="listjs-table" id="customerList">
                     <Row className="g-4 mb-3">
                       <Col className="col-sm">
-                        <div className="d-flex justify-content-sm-end">
+                        <div className="d-flex justify-content-sm-start">
                           <div className="search-box ms-2">
                             <input
                               type="text"

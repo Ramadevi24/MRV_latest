@@ -17,7 +17,7 @@ export const EmiratesProvider = ({ children }) => {
       const data = await getEmirates();
       setEmirates(data);
     } catch (error) {
-      toast.error('Error fetching Emirates');
+      console.error('Error fetching Emirates');
     }
   };
 
@@ -25,7 +25,7 @@ export const EmiratesProvider = ({ children }) => {
     try {
       return await getEmiratesById(id);
     } catch (error) {
-      toast.error('Error fetching Emirate');
+      console.error('Error fetching Emirate');
       throw error;
     }
   };

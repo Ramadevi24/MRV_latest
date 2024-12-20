@@ -16,7 +16,7 @@ export const CoverageAreaProvider = ({ children }) => {
       const data = await getCoverageArea();
       setCoverageArea(data);
     } catch (error) {
-      toast.error('Error fetching CoverageAreas');
+      console.error('Error fetching CoverageAreas');
     }
   };
 
@@ -24,7 +24,7 @@ export const CoverageAreaProvider = ({ children }) => {
     try {
       return await getCoveargeAreaById(id);
     } catch (error) {
-      toast.error('Error fetching CoverageArea');
+      console.error('Error fetching CoverageArea');
       throw error;
     }
   };

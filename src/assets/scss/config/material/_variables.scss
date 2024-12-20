@@ -2,7 +2,8 @@
 
 // Google Font
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 //
 // custom-variables
 //
@@ -13,8 +14,8 @@ $variable-prefix:             vz-; // Deprecated in v5.2.0 for the shorter `$pre
 $prefix:                      $variable-prefix;
 
 // Font Family
-$font-family-primary:                             'Inter', sans-serif;
-$font-family-secondary:                           'Inter', sans-serif;
+$font-family-primary:                             'Roboto', sans-serif;
+$font-family-secondary:                           'Roboto', sans-serif;
 
 //custom variables managed by
 //light mode

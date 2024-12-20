@@ -55,22 +55,22 @@ const FuelManager = () => {
   });
   const [isFuelModal, setIsFuelModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
-      const [FuelToDelete, setFuelToDelete] = useState(null);
-     
-          const confirmDelete = async () => {
-            if (FuelToDelete) {
-            await removeFuel(FuelToDelete);
-            await fetchFuels(); 
-            setDeleteModal(false);
-            setFuelToDelete(null);
-            }
-          };
+  const [FuelToDelete, setFuelToDelete] = useState(null);
+
+  const confirmDelete = async () => {
+    if (FuelToDelete) {
+      await removeFuel(FuelToDelete);
+      await fetchFuels();
+      setDeleteModal(false);
+      setFuelToDelete(null);
+    }
+  };
 
   const handleCreateFuel = () => {
     setIsFuelModal(true);
   };
 
-  const handleCloseFuel = () => { 
+  const handleCloseFuel = () => {
     setIsFuelModal(false);
   };
 
@@ -90,7 +90,10 @@ const FuelManager = () => {
 
   const handleEdit = (fuel) => {
     setEditingRowId(fuel.fuelID);
-    setEditingFuel({ ...fuel, isPrimaryFuel: fuel.isPrimaryFuel === true ? "Yes" : "No" });
+    setEditingFuel({
+      ...fuel,
+      isPrimaryFuel: fuel.isPrimaryFuel === true ? "Yes" : "No",
+    });
   };
 
   const handleCancel = () => {
@@ -99,7 +102,11 @@ const FuelManager = () => {
   };
 
   const handleSave = async (fuelID) => {
-    const updatedFuel = { ...editingFuel, fuelID: fuelID , isPrimaryFuel: editingFuel.isPrimaryFuel === "Yes" ? true : false};
+    const updatedFuel = {
+      ...editingFuel,
+      fuelID: fuelID,
+      isPrimaryFuel: editingFuel.isPrimaryFuel === "Yes" ? true : false,
+    };
     try {
       await updateExistingFuel(fuelID, updatedFuel);
       setFuels((prevFuels) =>
@@ -196,73 +203,63 @@ const FuelManager = () => {
                   <div className="listjs-table" id="customerList">
                     <Row className="g-4 mb-3">
                       <Col className="col-sm">
-                        <div className="d-flex justify-content-between align-items-center">
-                          <div>
+                        <div className="d-flex justify-content-between align-items-center flex-wrap">
+                          <div className="search-box ms-2 me-3 d-flex align-items-center">
+                            <input
+                              type="text"
+                              className="form-control search"
+                              placeholder={t("Search...")}
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                            <i className="ri-search-line search-icon"></i>
+                          </div>
+                          <div className="button-box d-flex align-items-center me-3">
+                            <input
+                              type="checkbox"
+                              id="userDefined"
+                              checked={showUserDefined}
+                              onChange={handleCheckboxChange}
+                              style={{
+                                transform: "scale(1.5)",
+                                marginRight: "10px",
+                                width: "auto",
+                              }}
+                            />
+                            <label
+                              htmlFor="userDefined"
+                              className="userdefined-label"
+                            >
+                              {t("Show user-defined fuels only")}
+                            </label>
+                          </div>
+                          <div className="side-button-box toggle-button d-flex align-items-center me-3">
+                            <label className="conversionfactor">
+                              {t("Conversion Factor Type")} :
+                            </label>
+                            <span className="me-2">{t("NCV")}</span>
+                            <div className="form-check form-switch custom-switch">
+                              <input
+                                className="form-check-input form-switch"
+                                type="checkbox"
+                                role="switch"
+                                id="flexSwitchCheckChecked"
+                                checked={conversionFactorType === "GCV"}
+                                onChange={handleToggleClick}
+                              />
+                            </div>
+                            <span>{t("GCV")}</span>
+                          </div>
+                          <div className="d-flex align-items-center me-3">
                             <Button
                               color="success"
-                              className="add-btn me-1"
+                              className="add-btn"
                               onClick={handleCreateFuel}
                               id="create-btn"
                             >
                               <i className="ri-add-line align-bottom me-1"></i>{" "}
                               {t("Add")}
                             </Button>
-                          </div>
-                          <div className="d-flex justify-content-between">
-                            <div className="button-box">
-                              <input
-                                type="checkbox"
-                                id="userDefined"
-                                checked={showUserDefined}
-                                onChange={handleCheckboxChange}
-                                style={{
-                                  transform: "scale(1.5)",
-                                  marginRight: "10px",
-                                  width: "auto",
-                                }}
-                              />
-                              <label
-                                htmlFor="userDefined"
-                                className="userdefined-label"
-                              >
-                                {t("Show user-defined fuels only")}
-                              </label>
-                            </div>
-                            <div
-                              className="side-button-box toggle-button"
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                marginRight: "20px",
-                              }}
-                            >
-                              <label className="conversionfactor">
-                                {t("Conversion Factor Type")} :
-                              </label>
-                              <span>{t("NCV")}</span>
-                              <div className="form-check form-switch custom-switch">
-                                <input
-                                  className="form-check-input form-switch"
-                                  type="checkbox"
-                                  role="switch"
-                                  id="flexSwitchCheckChecked"
-                                  checked={conversionFactorType === "GCV"}
-                                  onChange={handleToggleClick}
-                                />
-                              </div>
-                              <span>{t("GCV")}</span>
-                            </div>
-
-                            <div className="search-box ms-2">
-                              <input
-                                type="text"
-                                className="form-control search"
-                                placeholder={t("Search...")}
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                              />
-                              <i className="ri-search-line search-icon"></i>
-                            </div>
                           </div>
                         </div>
                       </Col>
@@ -293,7 +290,10 @@ const FuelManager = () => {
                             toggle={toggleDropdown}
                             className="btn-success"
                           >
-                            <DropdownToggle caret   style={{background: '#299cdb' ,border:'none'}}>
+                            <DropdownToggle
+                              caret
+                              style={{ background: "#299cdb", border: "none" }}
+                            >
                               {selectedFuelType}
                             </DropdownToggle>
                             <DropdownMenu>
@@ -386,12 +386,12 @@ const FuelManager = () => {
                                     </select>
                                   ) : fuel?.isPrimaryFuel ? (
                                     <span className="badge bg-success-subtle text-success text-uppercase">
-                                      {t('Yes')}
+                                      {t("Yes")}
                                     </span>
                                   ) : (
                                     <span className="badge bg-danger-subtle text-danger text-uppercase">
-                                    {t('No')}
-                                  </span>
+                                      {t("No")}
+                                    </span>
                                   )}
                                 </td>
                                 <td>
@@ -525,12 +525,12 @@ const FuelManager = () => {
           </Row>
         </Container>
       </div>
-      <AddFuelModal open={isFuelModal} onClose ={handleCloseFuel}/>
-       <DeleteModal
-                     show={deleteModal}
-                     onDeleteClick={confirmDelete}
-                     onCloseClick={() => setDeleteModal(false)}
-                   />
+      <AddFuelModal open={isFuelModal} onClose={handleCloseFuel} />
+      <DeleteModal
+        show={deleteModal}
+        onDeleteClick={confirmDelete}
+        onCloseClick={() => setDeleteModal(false)}
+      />
     </React.Fragment>
   );
 };

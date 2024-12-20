@@ -109,7 +109,7 @@ const EditRoleModal = ({open, onClose, id }) => {
         setSelectedPermissions(role.permissions.$values?.map((p) => p.permissionID) || []);
       }
       catch (error) {
-        toast.error(t("Error fetching role data"));
+        console.error(t("Error fetching role data"));
       }
     };
 

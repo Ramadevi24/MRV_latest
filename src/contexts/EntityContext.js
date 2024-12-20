@@ -16,7 +16,7 @@ export const EntityProvider = ({ children }) => {
       const data = await getEntities();
       setEntity(data);
     } catch (error) {
-      toast.error('Error fetching Entities');
+      console.error('Error fetching Entities');
     }
   };
 
@@ -24,7 +24,7 @@ export const EntityProvider = ({ children }) => {
     try {
       return await getEntitiesById(id);
     } catch (error) {
-      toast.error('Error fetching Entity');
+      console.error('Error fetching Entity');
       throw error;
     }
   };
