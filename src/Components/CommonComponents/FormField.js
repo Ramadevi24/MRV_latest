@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FormField = ({ label, type = "text", value, onChange, options, isDropdown, placeholder, icon, error }) => {
+const FormField = ({ label, type, value, onChange, options, isDropdown, placeholder, icon, error }) => {
   return (
     <div className="form-field">
       <label>{label}</label>
@@ -13,7 +13,6 @@ const FormField = ({ label, type = "text", value, onChange, options, isDropdown,
             </option>
           ))}
         </select>
-          {error && <span className="error-text">{error}</span>}
           </div>
       ) : (
         <div className="input-with-icon">

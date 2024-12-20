@@ -64,23 +64,23 @@ const EmissionSourceModal = ({ open, onClose }) => {
                 </Row>
                 <Row>
                   <Col md={6}>
-                    <FormField label="Stack ID" placeholder="GT12345" />
+                    <FormField label="Stack ID" placeholder="GT12345" type="number"/>
                   </Col>
                   <Col md={6}>
-                    <FormField label="Diameter (m)" placeholder="1.5" />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
-                    <FormField label="Height (m)" placeholder="60" />
-                  </Col>
-                  <Col md={6}>
-                    <FormField label="Velocity (m/s)" placeholder="120" />
+                    <FormField label="Diameter (m)" placeholder="1.5" type="number"/>
                   </Col>
                 </Row>
                 <Row>
                   <Col md={6}>
-                    <FormField label="Temperature (c0)" placeholder="178" />
+                    <FormField label="Height (m)" placeholder="60" type="number"/>
+                  </Col>
+                  <Col md={6}>
+                    <FormField label="Velocity (m/s)" placeholder="120" type="number"/>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={6}>
+                    <FormField label="Temperature (c0)" placeholder="178" type="number"/>
                   </Col>
                 </Row>
               </div>
@@ -103,6 +103,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
                     <FormField
                       label="Configuration"
                       placeholder="Combined Cycle"
+                      type="text"
                     />
                   </Col>
                 </Row>
@@ -134,12 +135,14 @@ const EmissionSourceModal = ({ open, onClose }) => {
                     <FormField
                       label="Technology Used"
                       placeholder="Gas Turbines"
+                      type="text"
                     />
                   </Col>
                   <Col md={6}>
                     <FormField
                       label="CO2 Capture Efficiency (%)"
                       placeholder="23"
+                      type="number"
                     />
                   </Col>
                   <Row>
@@ -294,6 +297,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
                       <FormField
                         label="CO2 Capture Efficiency (%)"
                         placeholder="23"
+                        type="number"
                       />
                     </Col>
                     <Row>

@@ -39,7 +39,7 @@ const CategoryModal = ({open, onClose}) => {
           </Row>
           <Row>
             <Col md={6}>
-            <FormField label="Emission Source Type" placeholder="Steam Turbine"/>
+            <FormField label="Emission Source Type" placeholder="Steam Turbine" type="text"/>
             </Col>
             <Col md={6}>
             <FormField label="Calculation Approach" isDropdown options={[{ name: "T1,T2,T3", value: "T1,T2,T3" }]}/>
@@ -47,7 +47,7 @@ const CategoryModal = ({open, onClose}) => {
             </Row>
             <Row>
             <Col md={6}>
-            <FormField label="GHG Gases Covered" placeholder="N2O, CH4"/>
+            <FormField label="GHG Gases Covered" placeholder="N2O, CH4" type="text"/>
             </Col>
             </Row>
             <div className="category-sub-modal">

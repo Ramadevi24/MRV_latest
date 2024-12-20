@@ -10,6 +10,7 @@ import {
   Col,
   Container,
   Row,
+  Input
 } from "reactstrap";
 import DeleteModal from "../../../Components/CommonComponents/DeleteModal.js";
 
@@ -22,6 +23,11 @@ const TableGrid = ({
   onEdit,
   onView,
   onDelete,
+  editingRowId,
+  editingEmirate,
+  handleInputChange,
+  handleSaveRow,
+  handleCancelEdit,
   title,
   pageTitle,
   addbtn,
@@ -44,14 +50,9 @@ const TableGrid = ({
   }, []);
 
   const getValueByKey = (obj, key) => {
-    console.log("obj", obj);
     return key.split('.').reduce((o, k) => (o ? o[k] : null), obj);
   };
 
-  const handleDelete = (id) => {
-    setItemToDelete(id);
-    setDeleteModal(true);
-  };
 
   const confirmDelete = async () => {
     if (itemToDelete && removeItem) {
@@ -191,10 +192,27 @@ const TableGrid = ({
                           <tbody className="list form-check-all">
                             {getPaginatedData().map((item) => (
                               <tr key={item.id}>
-                               { console.log("item", item)}
                                 {columns.map((column) => (
                                   <td key={column.key}>
-                                  {column.key === "actions"
+                                  {editingRowId === item.id ? (
+                                      column.key === "actions" ? (
+                                        column.render(item)
+                                      ) : (
+                                        <Input
+                                          type="text"
+                                          value={
+                                            editingEmirate[column.key] || ""
+                                          }
+                                          onChange={(e) =>
+                                            handleInputChange(
+                                              column.key,
+                                              e.target.value
+                                            )
+                                          }
+                                          className="form-control"
+                                        />
+                                      )
+                                    ): column.key === "actions"
                                     ? column.render(item)
                                     : getValueByKey(item, column.key)}
                                 </td>

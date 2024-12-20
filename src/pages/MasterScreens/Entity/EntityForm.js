@@ -93,13 +93,14 @@ const EntityForm = () => {
                     >
                       <Row>
                         <Col>
-                          <FormField label="Entity" placeholder="DOE" />
+                          <FormField label="Entity" placeholder="DOE"  type="text"/>
                         </Col>
                         <Col>
                           <FormField
                             label="Location Coordinates"
                             placeholder="23.44, 56.37"
                             icon={locationIcon}
+                             type="text"
                           />
                         </Col>
                       </Row>
@@ -109,6 +110,7 @@ const EntityForm = () => {
                           <FormField
                             label="Street Address"
                             placeholder="Sultan Bin Zayed Street"
+                            type="text"
                           />
                         </Col>
                       </Row>
@@ -126,6 +128,7 @@ const EntityForm = () => {
                             <FormField
                               label="Email"
                               placeholder="Enter Email"
+                              type="email"
                             />
                           </Col>
                         </Row>
@@ -134,6 +137,7 @@ const EntityForm = () => {
                             <FormField
                               label="Phone Number"
                               placeholder="Enter Phone number"
+                              type="number"
                             />
                           </Col>
                         </Row>

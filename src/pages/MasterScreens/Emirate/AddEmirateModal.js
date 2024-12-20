@@ -46,8 +46,9 @@ const AddEmirateModal = ({ open, onClose }) => {
 
     try {
       await createEmirate(createFormData);
+      await fetchAllEmirates();
+      onClose();
       toast.success("Emirate created successfully", { autoClose: 3000 });
-      fetchAllEmirates();
       navigate("/emirate");
     } catch (error) {
       toast.error("Error creating emirate");
@@ -73,6 +74,7 @@ const AddEmirateModal = ({ open, onClose }) => {
                       value={formValues.name}
                       onChange={handleChange("name")}
                       error={errors.name}
+                      type="text"
                     />
                     </Col>
                     </Row>

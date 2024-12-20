@@ -5,11 +5,12 @@ import FormField from "../../../Components/CommonComponents/FormField";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {EntityContext} from "../../../contexts/EntityContext"
+import { useTranslation } from "react-i18next";
 
 const AddEntityModal = ({ open, onClose }) => {
  const navigate = useNavigate();
    const {createNewEntity, fetchAllEntity} = useContext(EntityContext);
-
+   const { t } = useTranslation();
    const [formValues, setFormValues] = useState({
     name: "",
     contactDetails: {
@@ -81,9 +82,9 @@ const AddEntityModal = ({ open, onClose }) => {
          };
          try {
            await createNewEntity(createFormData);
+           await fetchAllEntity();
+           onClose();
            toast.success(t("Entity created successfully"), { autoClose: 3000 });
-           fetchAllEntity();
-           navigate("/entity");
          } catch (error) {
            toast.error(t("Error creating entity"));
          }
@@ -109,6 +110,7 @@ const AddEntityModal = ({ open, onClose }) => {
                       value={formValues.name}
                       onChange={handleChange("name")}
                       error={errors.name}
+                      type="text"
                     />
                     </Col>
                     </Row>
@@ -126,6 +128,7 @@ const AddEntityModal = ({ open, onClose }) => {
       value={formValues.contactDetails.name}
       onChange={handleChange("name", true)} // Pass true for nested fields
       error={errors.contactName}
+      type="text"
     />
   </Col>
   <Col md={6}>
@@ -135,6 +138,7 @@ const AddEntityModal = ({ open, onClose }) => {
       value={formValues.contactDetails.title}
       onChange={handleChange("title", true)}
       error={errors.title}
+      type="text"
     />
   </Col>
   <Col md={6}>
@@ -144,6 +148,7 @@ const AddEntityModal = ({ open, onClose }) => {
       value={formValues.contactDetails.email}
       onChange={handleChange("email", true)}
       error={errors.email}
+      type="email"
     />
   </Col>
   <Col md={6}>
@@ -153,6 +158,7 @@ const AddEntityModal = ({ open, onClose }) => {
       value={formValues.contactDetails.phoneNumber}
       onChange={handleChange("phoneNumber", true)}
       error={errors.phoneNumber}
+      type="number"
     />
   </Col>
 </Row>

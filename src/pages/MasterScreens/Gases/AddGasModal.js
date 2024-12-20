@@ -3,11 +3,11 @@ import Modal from "../../../Components/CommonComponents/Modal";
 import { Col, Container, Row } from "reactstrap";
 import FormField from "../../../Components/CommonComponents/FormField";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import {GasContext} from "../../../contexts/GasContext"
+import { useTranslation } from "react-i18next";
 
 const AddGasModal = ({ open, onClose }) => {
- const navigate = useNavigate();
+const { t } = useTranslation();
    const {addGas, fetchAllGases} = useContext(GasContext);
 
    const [formValues, setFormValues] = useState({
@@ -45,14 +45,14 @@ const AddGasModal = ({ open, onClose }) => {
     }
 
     const createFormData = {
-        GasType: values.GasType,
-        gasName: values.gasName,
+        GasType: formValues.GasType,
+        gasName: formValues.gasName,
       };
          try {
            await addGas(createFormData);
           toast.success(t("Gas created successfully"), { autoClose: 3000 });
-           fetchAllGases();
-           navigate("/gases")
+           await fetchAllGases();
+           onClose();
          } catch (error) {
             toast.error(t("Error creating Gas"));
          }
@@ -60,16 +60,16 @@ const AddGasModal = ({ open, onClose }) => {
   };
 
   const gasesOptions = [
-    { label: 'Carbon Dioxide (CO2)', value: 'co2' },
-    { label: 'Methane (CH4)', value: 'ch4' },
-    { label: 'Nitrous Oxide (N2O)', value: 'n2o' },
-    { label: 'Sulfur Dioxide (SO2)', value: 'so2' },
-    { label: 'Ammonia (NH3)', value: 'nh3' },
-    { label: 'Ozone (O3)', value: 'o3' },
-    { label: 'Nitrogen Dioxide (NO2)', value: 'no2' },
-    { label: 'Carbon Monoxide (CO)', value: 'co' },
-    { label: 'Hydrogen Sulfide (H2S)', value: 'h2s' },
-    { label: 'Formaldehyde (CH2O)', value: 'ch2o' },
+    { name: 'Carbon Dioxide (CO2)', name: 'co2' },
+    { name: 'Methane (CH4)', name: 'ch4' },
+    { name: 'Nitrous Oxide (N2O)', name: 'n2o' },
+    { name: 'Sulfur Dioxide (SO2)', name: 'so2' },
+    { name: 'Ammonia (NH3)', name: 'nh3' },
+    { name: 'Ozone (O3)', name: 'o3' },
+    { name: 'Nitrogen Dioxide (NO2)', name: 'no2' },
+    { name: 'Carbon Monoxide (CO)', name: 'co' },
+    { name: 'Hydrogen Sulfide (H2S)', name: 'h2s' },
+    { name: 'Formaldehyde (CH2O)', name: 'ch2o' },
   ];
 
   return (
@@ -86,7 +86,9 @@ const AddGasModal = ({ open, onClose }) => {
                 <Row>
             <Col md={6}>
                   
-                         <FormField label="Gas Type" isDropdown options={gasesOptions} />
+                         <FormField label="Gas Type" isDropdown options={gasesOptions}  value={formValues.GasType}
+                      onChange={handleChange("GasType")}
+                      error={errors.GasType}/>
                     </Col>
                     <Col md={6}>
                     <FormField
@@ -95,6 +97,7 @@ const AddGasModal = ({ open, onClose }) => {
                       value={formValues.gasName}
                       onChange={handleChange("gasName")}
                       error={errors.gasName}
+                       type="text"
                     />
                     </Col>
                     </Row>

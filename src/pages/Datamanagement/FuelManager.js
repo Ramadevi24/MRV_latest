@@ -25,6 +25,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { FaXmark } from "react-icons/fa6";
 import { fuelTypesData, isPrimaryFuelTypes } from "../../utils/FuelData.js";
+import AddFuelModal from "./AddFuelModal.js";
+import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
 
 const FuelManager = () => {
   document.title = "MRV_PROJECT | Fuel Manager";
@@ -51,6 +53,26 @@ const FuelManager = () => {
     key: "name",
     direction: "ascending",
   });
+  const [isFuelModal, setIsFuelModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
+      const [FuelToDelete, setFuelToDelete] = useState(null);
+     
+          const confirmDelete = async () => {
+            if (FuelToDelete) {
+            await removeFuel(FuelToDelete);
+            await fetchFuels(); 
+            setDeleteModal(false);
+            setFuelToDelete(null);
+            }
+          };
+
+  const handleCreateFuel = () => {
+    setIsFuelModal(true);
+  };
+
+  const handleCloseFuel = () => { 
+    setIsFuelModal(false);
+  };
 
   useEffect(() => {
     fetchFuels();
@@ -110,12 +132,8 @@ const FuelManager = () => {
   };
 
   const handleDeleteClick = async (fuelId) => {
-    try {
-      await removeFuel(fuelId);
-      setFuels(fuels.filter((fuel) => fuel.fuelID !== fuelId));
-    } catch (error) {
-      console.error("Error deleting fuel:", error);
-    }
+    setFuelToDelete(fuelId);
+    setDeleteModal(true);
   };
 
   const filteredFuelData =
@@ -183,7 +201,7 @@ const FuelManager = () => {
                             <Button
                               color="success"
                               className="add-btn me-1"
-                              onClick={() => Navigate("/create-fuel")}
+                              onClick={handleCreateFuel}
                               id="create-btn"
                             >
                               <i className="ri-add-line align-bottom me-1"></i>{" "}
@@ -507,6 +525,12 @@ const FuelManager = () => {
           </Row>
         </Container>
       </div>
+      <AddFuelModal open={isFuelModal} onClose ={handleCloseFuel}/>
+       <DeleteModal
+                     show={deleteModal}
+                     onDeleteClick={confirmDelete}
+                     onCloseClick={() => setDeleteModal(false)}
+                   />
     </React.Fragment>
   );
 };
