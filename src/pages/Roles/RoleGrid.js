@@ -327,11 +327,17 @@ const RoleGrid = () => {
       <RoleFormModal open={addRole} onClose={handleRoleCloseModal} />
       <EditRoleModal open={editRole} onClose={handleEditCloseModal} id={editRoleId}  />
       {console.log(viewRoleData, 'viewRoleData')}
-  <ViewRoleModal
-    open={viewRole}
-    onClose={handleViewCloseModal}
-    id={viewRoleData}
-  />
+      {viewRole && (
+  <>
+    {console.log(viewRoleData, 'viewRoleDatannnnnnnnnnnnnnnnnnnnnnnnnnnn')}
+    <ViewRoleModal
+      open={viewRole}
+      onClose={handleViewCloseModal}
+      id={viewRoleData}
+    />
+  </>
+)}
+
 
       </div>
     </React.Fragment>

@@ -24,7 +24,7 @@ import { RoleContext } from "../../contexts/RoleContext";
 import { useNavigate } from "react-router-dom";
 import Modal from "../../Components/CommonComponents/Modal";
 
-const ViewRoleModal = (open, onClose, id) => {
+const ViewRoleModal = ({open, onClose, id}) => {
   console.log(id, "id");
   const { t } = useTranslation();
   const navigate = useNavigate();
