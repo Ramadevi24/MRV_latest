@@ -11,7 +11,7 @@ export const getGases = async () => {
     });
     return response.$values;  // Assuming the data is in the `data` property
   } catch (error) {
-    throw new Error("Error fetching gases");
+    // throw new Error("Error fetching gases");
   }
 };
 

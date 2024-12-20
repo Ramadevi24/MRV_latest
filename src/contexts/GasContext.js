@@ -23,7 +23,7 @@ export const GasProvider = ({ children }) => {
       setGases(data);
       setLoading(false);
     } catch (error) {
-      toast.error('Error fetching gases');
+      console.error('Error fetching gases');
       setLoading(false);
     }
   };
@@ -34,7 +34,7 @@ export const GasProvider = ({ children }) => {
       const gas = await getGasById(id);
       return gas;
     } catch (error) {
-      setError("Error fetching gases");
+      // setError("Error fetching gases");
     } finally {
       setLoading(false);
     }
