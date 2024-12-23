@@ -49,6 +49,7 @@ const FuelManager = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown state
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortConfig, setSortConfig] = useState({
     key: "name",
     direction: "ascending",
@@ -204,54 +205,63 @@ const FuelManager = () => {
                     <Row className="g-4 mb-3">
                       <Col className="col-sm">
                         <div className="d-flex justify-content-between align-items-center flex-wrap">
-                          <div className="search-box ms-2 me-3 d-flex align-items-center">
-                            <input
-                              type="text"
-                              className="form-control search"
-                              placeholder={t("Search...")}
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                            <i className="ri-search-line search-icon"></i>
-                          </div>
-                          <div className="d-flex align-items-center me-3">
-                          <div className="button-box d-flex align-items-center me-3">
-                            <input
-                              type="checkbox"
-                              id="userDefined"
-                              checked={showUserDefined}
-                              onChange={handleCheckboxChange}
-                              style={{
-                                transform: "scale(1.5)",
-                                marginRight: "10px",
-                                width: "auto",
-                              }}
-                            />
-                            <label
-                              htmlFor="userDefined"
-                              className="userdefined-label"
-                            >
-                              {t("Show user-defined fuels only")}
-                            </label>
-                          </div>
-                          {/* <div className="side-button-box toggle-button d-flex align-items-center me-3">
-                            <label className="conversionfactor">
-                              {t("Conversion Factor Type")} :
-                            </label>
-                            <span className="me-2">{t("NCV")}</span>
-                            <div className="form-check form-switch custom-switch">
-                              <input
-                                className="form-check-input form-switch"
-                                type="checkbox"
-                                role="switch"
-                                id="flexSwitchCheckChecked"
-                                checked={conversionFactorType === "GCV"}
-                                onChange={handleToggleClick}
+                          <div className="d-flex align-items-center">
+                            <div className="dropdown position-relative">
+                              <i
+                                className="ri-filter-line filter icon position-absolute"
+                                style={{
+                                  top: "50%",
+                                  left: "10px",
+                                  transform: "translateY(-50%)",
+                                }}
                               />
+                              <select
+                                className="form-select px-12 rounded-0 rounded-start"
+                                style={{ paddingLeft: "40px" }}
+                                onChange={(e) =>
+                                  setSelectedCategory(e.target.value)
+                                }
+                                value={selectedCategory}
+                              >
+                                <option value="All">{t("All")}</option>
+                                {/* <option value="ADDA">{t("ADDA")}</option>
+                                      <option value="IST">{t("IST")}</option> */}
+                              </select>
                             </div>
-                            <span>{t("GCV")}</span>
-                          </div> */}
-                          <div className="d-flex align-items-center me-3">
+
+                            <div className="search-box ml-0">
+                              <input
+                                type="text"
+                                className="form-control search rounded-0 rounded-end"
+                                placeholder={t("Search...")}
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                              />
+                              <i className="ri-search-line search-icon"></i>
+                            </div>
+                          </div>
+
+                          <div className="d-flex align-items-center">
+                            <div className="button-box d-flex align-items-center me-3">
+                              <input
+                                type="checkbox"
+                                id="userDefined"
+                                checked={showUserDefined}
+                                onChange={handleCheckboxChange}
+                                style={{
+                                  transform: "scale(1.5)",
+                                  marginRight: "10px",
+                                  width: "auto",
+                                }}
+                              />
+                              <label
+                                htmlFor="userDefined"
+                                className="userdefined-label"
+                              >
+                                {t("Show user-defined fuels only")}
+                              </label>
+                            </div>
+
                             <Button
                               color="success"
                               className="add-btn"
@@ -261,7 +271,6 @@ const FuelManager = () => {
                               <i className="ri-add-line align-bottom me-1"></i>{" "}
                               {t("Add")}
                             </Button>
-                          </div>
                           </div>
                         </div>
                       </Col>

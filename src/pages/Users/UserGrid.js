@@ -43,6 +43,7 @@ const UserGrid = () => {
   const [editUserID, setEditUserId] = useState(null);
   const [viewUser, setViewUser] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
 
   const handleAddUser = () => {
@@ -150,12 +151,35 @@ const UserGrid = () => {
                   <div className="listjs-table" id="customerList">
                     <Row className="g-4 mb-3">
 
-                      <Col className="col-sm">
+                    <Col className="col-sm w-[5rem]">
                         <div className="d-flex justify-content-sm-start">
-                          <div className="search-box ms-2">
+                          <div className="dropdown position-relative" >
+                            <i
+                              className="ri-filter-line filter icon position-absolute"
+                              style={{
+                                top: "50%",
+                                left: "10px",
+                                transform: "translateY(-50%)",
+                              }}
+                            />
+                            <select
+                              className="form-select px-12 rounded-0 rounded-start"
+                              style={{ paddingLeft: "40px" }}
+                              onChange={(e) =>
+                                setSelectedCategory(e.target.value)
+                              }
+                              value={selectedCategory}
+                            >
+                              <option value="All">{t("All")}</option>
+                              {/* <option value="ADDA">{t("ADDA")}</option>
+                              <option value="IST">{t("IST")}</option> */}
+                            </select>
+                          </div>
+
+                          <div className="search-box">
                             <input
                               type="text"
-                              className="form-control search"
+                              className="form-control search rounded-0 rounded-end"
                               placeholder={t("Search...")}
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
