@@ -214,6 +214,7 @@ const FuelManager = () => {
                             />
                             <i className="ri-search-line search-icon"></i>
                           </div>
+                          <div className="d-flex align-items-center me-3">
                           <div className="button-box d-flex align-items-center me-3">
                             <input
                               type="checkbox"
@@ -233,7 +234,7 @@ const FuelManager = () => {
                               {t("Show user-defined fuels only")}
                             </label>
                           </div>
-                          <div className="side-button-box toggle-button d-flex align-items-center me-3">
+                          {/* <div className="side-button-box toggle-button d-flex align-items-center me-3">
                             <label className="conversionfactor">
                               {t("Conversion Factor Type")} :
                             </label>
@@ -249,7 +250,7 @@ const FuelManager = () => {
                               />
                             </div>
                             <span>{t("GCV")}</span>
-                          </div>
+                          </div> */}
                           <div className="d-flex align-items-center me-3">
                             <Button
                               color="success"
@@ -260,6 +261,7 @@ const FuelManager = () => {
                               <i className="ri-add-line align-bottom me-1"></i>{" "}
                               {t("Add")}
                             </Button>
+                          </div>
                           </div>
                         </div>
                       </Col>
@@ -285,7 +287,7 @@ const FuelManager = () => {
                             marginBottom: "20px",
                           }}
                         >
-                          <Dropdown
+                          {/* <Dropdown
                             isOpen={dropdownOpen}
                             toggle={toggleDropdown}
                             className="btn-success"
@@ -317,7 +319,7 @@ const FuelManager = () => {
                                 {t("Solid Fuels")}
                               </DropdownItem>
                             </DropdownMenu>
-                          </Dropdown>
+                          </Dropdown> */}
                         </div>
                         <table
                           className="table align-middle table-nowrap"

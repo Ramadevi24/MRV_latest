@@ -11,8 +11,9 @@ const AddEntityModal = ({ open, onClose }) => {
  const navigate = useNavigate();
    const {createNewEntity, fetchAllEntity} = useContext(EntityContext);
    const { t } = useTranslation();
+   const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
    const [formValues, setFormValues] = useState({
-    name: "",
+    entityName: "",
     contactDetails: {
     name: "",
     email: "",
@@ -44,11 +45,11 @@ const AddEntityModal = ({ open, onClose }) => {
   const validate = () => {
     const newErrors = {};
   
-    if (!formValues.name.trim()) {
-      newErrors.name = "Entity is required.";
+    if (!formValues.entityName.trim()) {
+      newErrors.entityName = "Entity is required.";
     }
     if (!formValues.contactDetails.name.trim()) {
-      newErrors.contactName = "Contact Name is required.";
+      newErrors.name = "Contact Name is required.";
     }
     if (!formValues.contactDetails.email.trim()) {
       newErrors.email = "Email is required.";
@@ -72,13 +73,14 @@ const AddEntityModal = ({ open, onClose }) => {
     }
 
    const createFormData = {
-           name: formValues.name,
+           entityName: formValues.entityName,
            contactDetails: {
              name:formValues.contactDetails.name,
              email:  formValues.contactDetails.email,
              title: formValues.contactDetails.title,
              phoneNumber: formValues.contactDetails.phoneNumber,
-             }
+             },
+             tenantID: userPermissions.tenantID || "", 
          };
          try {
            await createNewEntity(createFormData);
@@ -107,9 +109,9 @@ const AddEntityModal = ({ open, onClose }) => {
                     <FormField
                       label="Entity"
                       placeholder="DOE"
-                      value={formValues.name}
-                      onChange={handleChange("name")}
-                      error={errors.name}
+                      value={formValues.entityName}
+                      onChange={handleChange("entityName")}
+                      error={errors.entityName}
                       type="text"
                     />
                     </Col>

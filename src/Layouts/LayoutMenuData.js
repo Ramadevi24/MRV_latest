@@ -5,8 +5,8 @@ const Navdata = () => {
   const history = useNavigate();
   const [isDashboard, setIsDashboard] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
-  const [isSample, setIsSample] = useState(false);
-  const [isDataManagement, setIsDataManagement] = useState(false);
+  // const [isSample, setIsSample] = useState(false);
+  // const [isDataManagement, setIsDataManagement] = useState(false);
   const [isEnergy, setIsEnergy] = useState(false);
   const [isEmissionEnergy, setIsEmissionEnergy] = useState(false);
   const [isViewEnergy, setIsViewEnergy] = useState(false);
@@ -54,12 +54,12 @@ const Navdata = () => {
     if (iscurrentState !== "Auth") {
       setIsAuth(false);
     }
-    if (iscurrentState !== "Sample") {
-      setIsSample(false);
-    }
-    if (iscurrentState !== "DataManagement") {
-      setIsDataManagement(false);
-    }
+    // if (iscurrentState !== "Sample") {
+    //   setIsSample(false);
+    // }
+    // if (iscurrentState !== "DataManagement") {
+    //   setIsDataManagement(false);
+    // }
     if (iscurrentState !== "FacilityConfiguration") {
       setIsFacilityConfiguration(false);
     }
@@ -113,8 +113,8 @@ const Navdata = () => {
     iscurrentState,
     isDashboard,
     isAuth,
-    isSample,
-    isDataManagement,
+    // isSample,
+    // isDataManagement,
     isEmissionData,
     isFuelCombustion,
     isEnergy,
@@ -151,46 +151,46 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
     },
-    {
-      id: "sample",
-      label: "Sample Page",
-      icon: "mdi mdi-file-document",
-      link: "/sample",
-      stateVariables: isSample,
-      click: function (e) {
-        e.preventDefault();
-        setIsSample(!isSample);
-        setIscurrentState("Sample");
-        updateIconSidebar(e);
-      },
-    },
+    // {
+    //   id: "sample",
+    //   label: "Sample Page",
+    //   icon: "mdi mdi-file-document",
+    //   link: "/sample",
+    //   stateVariables: isSample,
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setIsSample(!isSample);
+    //     setIscurrentState("Sample");
+    //     updateIconSidebar(e);
+    //   },
+    // },
     // {
     //   label: "Pages",
     //   isHeader: true,
     // },
     
-    {
-      id: "datamanagement",
-      label: "Data Management",
-      icon: "ri-database-fill",
-      link: "/#",
-      stateVariables: isDataManagement,
-      click: function (e) {
-        e.preventDefault();
-        setIsDataManagement(!isDataManagement);
-        setIscurrentState("DataManagement");
-        updateIconSidebar(e);
-      },
-      subItems: [
-        {
-          id: "c02equivalents",
-          label: "C02 Equivalents",
-          link: "/c02equivalents",
-          icon: "bx bx-building-house",
-          parentId: "datamanagement",
-        },
-      ],
-    },
+    // {
+    //   id: "datamanagement",
+    //   label: "Data Management",
+    //   icon: "ri-database-fill",
+    //   link: "/#",
+    //   stateVariables: isDataManagement,
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setIsDataManagement(!isDataManagement);
+    //     setIscurrentState("DataManagement");
+    //     updateIconSidebar(e);
+    //   },
+    //   subItems: [
+    //     {
+    //       id: "c02equivalents",
+    //       label: "C02 Equivalents",
+    //       link: "/c02equivalents",
+    //       icon: "bx bx-building-house",
+    //       parentId: "datamanagement",
+    //     },
+    //   ],
+    // },
     {
       id: "facilityconfiguration",
       label: "Facility Configuration",
@@ -592,6 +592,13 @@ const Navdata = () => {
           id: "fuelmanager",
           label: "Fuel Manager",
           link: "/fuelmanager",
+          parentId: "adminmasterScreens",
+        },
+        {
+          id: "c02equivalents",
+          label: "Co2 Equivalents",
+          link: "/c02equivalents",
+          // icon: "bx bx-building-house",
           parentId: "adminmasterScreens",
         },
       ],
