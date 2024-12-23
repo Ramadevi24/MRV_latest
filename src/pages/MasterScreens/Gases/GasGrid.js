@@ -75,15 +75,17 @@ const GasGrid = () => {
     setSortConfig({ key, direction });
   };
 
-  const sortedData = [...gases].sort((a, b) => {
-    if (a[sortConfig.key] < b[sortConfig.key]) {
-      return sortConfig.direction === "ascending" ? -1 : 1;
-    }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
-      return sortConfig.direction === "ascending" ? 1 : -1;
-    }
-    return 0;
-  });
+  const sortedData = Array.isArray(gases) 
+  ? [...gases].sort((a, b) => {
+      if (a[sortConfig.key] < b[sortConfig.key]) {
+        return sortConfig.direction === "ascending" ? -1 : 1;
+      }
+      if (a[sortConfig.key] > b[sortConfig.key]) {
+        return sortConfig.direction === "ascending" ? 1 : -1;
+      }
+      return 0;
+    })
+  : [];
 
   const filteredSortedData = sortedData?.filter((data) =>
     ["gasType", "gasName", "createdDate"].some((key) =>
