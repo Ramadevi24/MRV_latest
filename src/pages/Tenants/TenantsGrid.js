@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  FaPencilAlt,
-  FaTrashAlt,
-  FaEye
-} from "react-icons/fa";
+import { FaPencilAlt, FaTrashAlt, FaEye } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../Components/CommonComponents/PaginationNumber.js";
 import { formatDate } from "../../utils/formateDate.js";
@@ -24,9 +20,8 @@ import AddTenantModal from "./AddTenantModal.js";
 import EditTenantModal from "./EditTenantModal.js";
 
 const TenantsGrid = () => {
-
   document.title = "MRV_PROJECT | TenantsGrid";
-const {t}=useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { tenants, loading, removeTenant, fetchAllTenants } =
     useContext(TenantContext);
@@ -42,9 +37,10 @@ const {t}=useTranslation();
   const [editTenant, setEditTenant] = useState(false);
   const [addTenant, setAddTenant] = useState(false);
   const [editTenantId, setEditTenantId] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const handleEditTenantClick = (id) => {
-    setEditTenantId(id)
+    setEditTenantId(id);
     setEditTenant(true);
   };
 
@@ -71,9 +67,9 @@ const {t}=useTranslation();
 
   const confirmDelete = async () => {
     if (tenantToDelete) {
-    await removeTenant(tenantToDelete);
-    setDeleteModal(false);
-    setTenantToDelete(null);
+      await removeTenant(tenantToDelete);
+      setDeleteModal(false);
+      setTenantToDelete(null);
     }
   };
 
@@ -118,18 +114,50 @@ const {t}=useTranslation();
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  <h4 className="card-title mb-0" style={{color:'#45CB85', fontSize:'20px', fontWeight:'bold'}}>{t('Tenants')}</h4>
+                  <h4
+                    className="card-title mb-0"
+                    style={{
+                      color: "#45CB85",
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {t("Tenants")}
+                  </h4>
                 </CardHeader>
 
                 <CardBody>
                   <div className="listjs-table" id="customerList">
                     <Row className="g-4 mb-3">
-                    <Col className="col-sm">
+                      <Col className="col-sm w-[5rem]">
                         <div className="d-flex justify-content-sm-start">
-                          <div className="search-box ms-2">
+                          <div className="dropdown position-relative" >
+                            <i
+                              className="ri-filter-line filter icon position-absolute"
+                              style={{
+                                top: "50%",
+                                left: "10px",
+                                transform: "translateY(-50%)",
+                              }}
+                            />
+                            <select
+                              className="form-select px-12 rounded-0 rounded-start"
+                              style={{ paddingLeft: "40px" }}
+                              onChange={(e) =>
+                                setSelectedCategory(e.target.value)
+                              }
+                              value={selectedCategory}
+                            >
+                              <option value="All">{t("All")}</option>
+                              <option value="ADDA">{t("ADDA")}</option>
+                              <option value="IST">{t("IST")}</option>
+                            </select>
+                          </div>
+
+                          <div className="search-box">
                             <input
                               type="text"
-                              className="form-control search"
+                              className="form-control search rounded-0 rounded-end"
                               placeholder={t("Search...")}
                               value={searchTerm}
                               onChange={(e) => setSearchTerm(e.target.value)}
@@ -145,15 +173,15 @@ const {t}=useTranslation();
                             color="success"
                             className="add-btn me-1"
                             // onClick={() => navigate("/create-tenant")}
-                            onClick={handleAddTenantClick} onClose={handleAddTenantCloseModal}
+                            onClick={handleAddTenantClick}
+                            onClose={handleAddTenantCloseModal}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>{" "}
-                           {t('Add')}
+                            {t("Add")}
                           </Button>
                         </div>
                       </Col>
-                     
                     </Row>
                     {loading ? (
                       <div
@@ -196,10 +224,10 @@ const {t}=useTranslation();
                                 {t("Created Date")}
                               </th>
                               <th className="sort" data-sort="status">
-                             {t('Delivery Status')}
+                                {t("Delivery Status")}
                               </th>
                               <th className="sort" data-sort="action">
-                               {t('Action')}
+                                {t("Action")}
                               </th>
                             </tr>
                           </thead>
@@ -207,7 +235,9 @@ const {t}=useTranslation();
                             {currentTenants.map((tenant) => (
                               <tr key={tenant.tenantID}>
                                 <td className="name">{tenant.name}</td>
-                                <td className="description">{tenant.description}</td>
+                                <td className="description">
+                                  {tenant.description}
+                                </td>
                                 <td className="createdDate">
                                   {formatDate(tenant.createdDate)}
                                 </td>
@@ -221,8 +251,10 @@ const {t}=useTranslation();
                                     <div className="edit">
                                       <button
                                         className="btn btn-sm btn-info edit-item-btn"
-                                        onClick={() => handleEditTenantClick(tenant.tenantID)
-                                        } onClose={handleTenantCloseModal}
+                                        onClick={() =>
+                                          handleEditTenantClick(tenant.tenantID)
+                                        }
+                                        onClose={handleTenantCloseModal}
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
                                       >
@@ -234,7 +266,7 @@ const {t}=useTranslation();
                                       <button
                                         className="btn btn-sm btn-danger remove-item-btn"
                                         onClick={() =>
-                                            handleDelete(tenant.tenantID)
+                                          handleDelete(tenant.tenantID)
                                         }
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteRecordModal"
@@ -242,7 +274,6 @@ const {t}=useTranslation();
                                         <FaTrashAlt color="white" />
                                       </button>
                                     </div>
-                            
                                   </div>
                                 </td>
                               </tr>
@@ -281,12 +312,19 @@ const {t}=useTranslation();
           </Row>
         </Container>
         <DeleteModal
-        show={deleteModal}
-        onDeleteClick={confirmDelete}
-        onCloseClick={() => setDeleteModal(false)}
-      />
-      <AddTenantModal isOpen={addTenant} onClose={handleAddTenantCloseModal}/>
-      <EditTenantModal isOpen={editTenant} onClose={handleTenantCloseModal} tenantId={editTenantId}/>
+          show={deleteModal}
+          onDeleteClick={confirmDelete}
+          onCloseClick={() => setDeleteModal(false)}
+        />
+        <AddTenantModal
+          isOpen={addTenant}
+          onClose={handleAddTenantCloseModal}
+        />
+        <EditTenantModal
+          isOpen={editTenant}
+          onClose={handleTenantCloseModal}
+          tenantId={editTenantId}
+        />
       </div>
     </React.Fragment>
   );
