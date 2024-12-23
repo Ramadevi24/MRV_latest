@@ -5,7 +5,7 @@ import FormField from "../../Components/CommonComponents/FormField";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
-const EditCo2Modal = ({ open, onClose }) => {
+const EditCo2Modal = ({ open, onClose, id }) => {
   const { t } = useTranslation();
   const [formValues, setFormValues] = useState({
     gasName: "",

@@ -21,6 +21,7 @@ import { Co2EquivalentContext } from "../../contexts/Co2EquivalentContext.js";
 import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
 import { formatDate } from "../../utils/formateDate.js";
 import AddCo2Modal from "./AddCo2Modal.js";
+import EditCo2Modal from "./EditCo2Modal.js";
 
 const C02equivalents = () => {
   document.title = "MRV_PROJECT | Co2 Equivalents";
@@ -43,6 +44,8 @@ const C02equivalents = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [isEquivalentModal, setIsEquivalentModal] = useState(false);
   const [EquivalentToDelete, setEquivalentToDelete] = useState(null);
+  const [isEditEquivalentModal, setIsEditEquivalentModal] = useState(false);
+  const [equivalentId, setEquivalentId] = useState(null);
 
   const confirmDelete = async () => {
     if (EquivalentToDelete) {
@@ -64,6 +67,11 @@ const C02equivalents = () => {
 
   const handleCloseEquivalent = () => {
     setIsEquivalentModal(false);
+  };
+
+  const handleEditEquivalent = (id) => {
+    setEquivalentId(id);
+    setIsEditEquivalentModal(true);
   };
 
   const handleSort = (key) => {
@@ -164,11 +172,11 @@ const C02equivalents = () => {
                                     <div className="edit">
                                       <button
                                         className="btn btn-sm btn-info edit-item-btn"
-                                        // onClick={() =>
-                                        //   handleEditTenantClick(
-                                        //     equivalent.emiratesID
-                                        //   )
-                                        // }
+                                        onClick={() =>
+                                          handleEditEquivalent(
+                                            equivalent.emiratesID
+                                          )
+                                        }
                                         onClose={handleCloseEquivalent}
                                         data-bs-toggle="modal"
                                         data-bs-target="#showModal"
@@ -215,6 +223,12 @@ const C02equivalents = () => {
         </Container>
       </div>
       <AddCo2Modal open = {isEquivalentModal} onClose={handleCloseEquivalent}/>
+      <EditCo2Modal open ={isEditEquivalentModal} onClose={()=>setIsEditEquivalentModal(false)} id={equivalentId}/>
+     <DeleteModal
+            show={deleteModal}
+            onDeleteClick={confirmDelete}
+            onCloseClick={() => setDeleteModal(false)}
+          />
     </React.Fragment>
   );
 };
