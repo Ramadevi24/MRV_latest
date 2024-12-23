@@ -14,13 +14,7 @@ import {
   Col,
   Container,
   Row,
-  Input,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  Modal,
-  Form,
+  Input
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { FaXmark } from "react-icons/fa6";
@@ -32,7 +26,7 @@ const FuelManager = () => {
   document.title = "MRV_PROJECT | Fuel Manager";
   const { t } = useTranslation();
   const Navigate = useNavigate();
-  const [selectedFuelType, setSelectedFuelType] = useState("");
+  // const [selectedFuelType, setSelectedFuelType] = useState("");
   const {
     fuels,
     removeFuel,
@@ -44,11 +38,11 @@ const FuelManager = () => {
   const [editingRowId, setEditingRowId] = useState(null);
   const [editingFuel, setEditingFuel] = useState({});
   const [showUserDefined, setShowUserDefined] = useState(false);
-  const [conversionFactorType, setConversionFactorType] = useState("NCV");
+  // const [conversionFactorType, setConversionFactorType] = useState("NCV");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [dropdownOpen, setDropdownOpen] = useState(false); // Dropdown state
+  // const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortConfig, setSortConfig] = useState({
     key: "name",
@@ -79,11 +73,11 @@ const FuelManager = () => {
     fetchFuels();
   }, []);
 
-  useEffect(() => {
-    setSelectedFuelType(t("All Fuels"));
-  }, []);
+  // useEffect(() => {
+  //   setSelectedFuelType(t("All Fuels"));
+  // }, []);
 
-  const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
+  // const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
 
   const handleCheckboxChange = () => {
     setShowUserDefined(!showUserDefined);
@@ -131,23 +125,23 @@ const FuelManager = () => {
     });
   };
 
-  const handleToggleClick = () => {
-    setConversionFactorType((prevType) => (prevType === "NCV" ? "GCV" : "NCV"));
-  };
+  // const handleToggleClick = () => {
+  //   setConversionFactorType((prevType) => (prevType === "NCV" ? "GCV" : "NCV"));
+  // };
 
-  const handleFuelTypeChange = (fuelType) => {
-    setSelectedFuelType(fuelType);
-  };
+  // const handleFuelTypeChange = (fuelType) => {
+  //   setSelectedFuelType(fuelType);
+  // };
 
   const handleDeleteClick = async (fuelId) => {
     setFuelToDelete(fuelId);
     setDeleteModal(true);
   };
 
-  const filteredFuelData =
-    selectedFuelType === "All Fuels"
-      ? fuels
-      : fuels?.filter((fuel) => fuel?.fuelType === selectedFuelType);
+  const filteredFuelData = fuels
+    // selectedFuelType === "All Fuels"
+    //   ? fuels
+    //   : fuels?.filter((fuel) => fuel?.fuelType === selectedFuelType);
 
   const handleSort = (key) => {
     let direction = "ascending";
@@ -202,7 +196,7 @@ const FuelManager = () => {
                 </CardHeader>
                 <CardBody>
                   <div className="listjs-table" id="customerList">
-                    <Row className="g-4 mb-3">
+                    <Row className="g-4">
                       <Col className="col-sm">
                         <div className="d-flex justify-content-between align-items-center flex-wrap">
                           <div className="d-flex align-items-center">
@@ -286,7 +280,7 @@ const FuelManager = () => {
                       </div>
                     ) : (
                       <div
-                        className="table-responsive table-card mt-3 mb-1"
+                        className="table-responsive table-card mb-1"
                         style={{ padding: "20px" }}
                       >
                         <div
@@ -342,17 +336,8 @@ const FuelManager = () => {
                               <th onClick={() => handleSort("isPrimaryFuel")}>
                                 {t("Primary Fuel")}
                               </th>
-                              <th>
-                                {" "}
-                                {conversionFactorType == "NCV"
-                                  ? t("Net Calorific Value (TJ/Gg)")
-                                  : t("Gross Calorific Value (TJ/Gg)")}
-                              </th>
-                              <th>
-                                {conversionFactorType == "NCV"
-                                  ? t("Carbon Content NCV")
-                                  : t("Carbon Content GCV")}
-                              </th>
+                              <th>{t("Net Calorific Value (TJ/Gg)")} </th>
+                              <th> {t("Carbon Content NCV")} </th>
                               <th onClick={() => handleSort("fuelType")}>
                                 {t("Fuel Type")}
                               </th>
@@ -410,45 +395,25 @@ const FuelManager = () => {
                                   {editingRowId === fuel.fuelID ? (
                                     <Input
                                       type="text"
-                                      name={
-                                        conversionFactorType === "NCV"
-                                          ? "netCalorificValue"
-                                          : "grossCalorificValue"
-                                      }
-                                      value={
-                                        conversionFactorType === "NCV"
-                                          ? editingFuel.netCalorificValue
-                                          : editingFuel.grossCalorificValue
-                                      }
+                                      name="netCalorificValue"
+                                      value={editingFuel.netCalorificValue}
                                       onChange={handleInputChange}
                                     />
-                                  ) : conversionFactorType === "NCV" ? (
-                                    fuel?.netCalorificValue
-                                  ) : (
-                                    fuel?.grossCalorificValue
-                                  )}
+                                  ) : 
+                                    (fuel?.netCalorificValue)}
                                 </td>
                                 <td>
                                   {editingRowId === fuel.fuelID ? (
                                     <Input
                                       type="text"
-                                      name={
-                                        conversionFactorType === "NCV"
-                                          ? "carbonContentNCV"
-                                          : "carbonContentGCV"
-                                      }
-                                      value={
-                                        conversionFactorType === "NCV"
-                                          ? editingFuel.carbonContentNCV
-                                          : editingFuel.carbonContentGCV
-                                      }
+                                      name= "carbonContentNCV"
+                                    
+                                      value={editingFuel.carbonContentNCV}
                                       onChange={handleInputChange}
                                     />
-                                  ) : conversionFactorType === "NCV" ? (
+                                  ) :  (
                                     fuel?.carbonContentNCV
-                                  ) : (
-                                    fuel?.carbonContentGCV
-                                  )}
+                                  ) }
                                 </td>
                                 <td>
                                   {editingRowId === fuel.fuelID ? (

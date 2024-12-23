@@ -193,7 +193,7 @@ const TenantsGrid = () => {
                         </Spinner>
                       </div>
                     ) : (
-                      <div className="table-responsive table-card mt-3 mb-1">
+                      <div className="table-responsive table-card mt-3 mb-1"  style={{ padding: "20px" }}>
                         <table
                           className="table align-middle table-nowrap"
                           id="customerTable"

@@ -48,8 +48,6 @@ import SamplePage from "../pages/SamplePage";
 import FuelManager from "../pages/Datamanagement/FuelManager";
 import AddFuel from "../pages/Datamanagement/AddFuel";
 import C02equivalents from "../pages/Datamanagement/C02equivalents";
-import CreateGas from "../pages/Datamanagement/CreateGas";
-import Gastype from "../pages/Datamanagement/Gastype";
 import FacilityGrid from "../pages/EntityInformations/FacilityGrid";
 import AddFacility from "../pages/EntityInformations/AddFacility";
 import TransportGrid from "../pages/EntityInformations/Transportation/TransportGrid";
@@ -94,8 +92,6 @@ const authProtectedRoutes = [
   {path:'/fuelmanager', component: <FuelManager/>},
   {path:'/create-fuel', component: <AddFuel />},
   {path:'/c02equivalents', component: <C02equivalents />},
-  {path:'/create-gas', component: <CreateGas />},
-  {path:'/add-gasType', component: <Gastype />},
   {path:'/view-emission/:power', component: <FacilityGrid/>},
   {path:'/facility/:power', component: <FacilityGrid/>},
   {path:'/add-facility/:power', component: <AddFacility/>},
