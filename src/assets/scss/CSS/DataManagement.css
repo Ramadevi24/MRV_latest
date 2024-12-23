@@ -12,7 +12,7 @@
   .button-box{
     background-color: white;
     padding: 8px;
-    border:1px solid #ced4da;
+    /* border:1px solid #ced4da; */
     border-radius: 5px;
     display: flex;
     align-items: center;
@@ -22,6 +22,11 @@
 
   label {
     margin-bottom: 0rem !important;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    text-align: right;
+    color: #667085F2;
   }
 
   .ncv{
