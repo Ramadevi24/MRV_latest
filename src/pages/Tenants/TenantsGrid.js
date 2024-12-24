@@ -117,7 +117,7 @@ const TenantsGrid = () => {
                   <h4
                     className="card-title mb-0"
                     style={{
-                      color: "#45CB85",
+                      color: "#0f6192",
                       fontSize: "20px",
                       fontWeight: "bold",
                     }}
@@ -129,7 +129,7 @@ const TenantsGrid = () => {
                 <CardBody>
                   <div className="listjs-table" id="customerList">
                     <Row className="g-4 mb-3">
-                      <Col className="col-sm w-[5rem]">
+                    <Col className="col-sm w-[5rem]">
                         <div className="d-flex justify-content-sm-start">
                           <div className="dropdown position-relative" >
                             <i
@@ -149,8 +149,8 @@ const TenantsGrid = () => {
                               value={selectedCategory}
                             >
                               <option value="All">{t("All")}</option>
-                              <option value="ADDA">{t("ADDA")}</option>
-                              <option value="IST">{t("IST")}</option>
+                              {/* <option value="ADDA">{t("ADDA")}</option>
+                              <option value="IST">{t("IST")}</option> */}
                             </select>
                           </div>
 

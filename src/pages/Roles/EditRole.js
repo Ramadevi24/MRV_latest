@@ -155,7 +155,7 @@ const EditRole = () => {
                   <h4
                     className="card-title mb-0"
                     style={{
-                      color: "#45CB85",
+                      color: "#0f6192",
                       fontSize: "20px",
                       fontWeight: "bold",
                     }}

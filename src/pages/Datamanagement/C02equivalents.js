@@ -46,6 +46,7 @@ const C02equivalents = () => {
   const [EquivalentToDelete, setEquivalentToDelete] = useState(null);
   const [isEditEquivalentModal, setIsEditEquivalentModal] = useState(false);
   const [equivalentId, setEquivalentId] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const confirmDelete = async () => {
     if (EquivalentToDelete) {
@@ -113,7 +114,7 @@ const C02equivalents = () => {
                   <h4
                     className="card-title mb-0"
                     style={{
-                      color: "#45CB85",
+                      color: "#0f6192",
                       fontSize: "20px",
                       fontWeight: "bold",
                     }}
@@ -123,7 +124,6 @@ const C02equivalents = () => {
                 </CardHeader>
                 <CardBody>
                   <div className="listjs-table" id="customerList">
-                 
                     {loading ? (
                       <div
                         className="d-flex justify-content-center align-items-center"
@@ -138,25 +138,71 @@ const C02equivalents = () => {
                         className="table-responsive table-card"
                         style={{ padding: "20px" }}
                       >
-                        <div style={{ float: "right", marginBottom: "10px" }}>
-                          <Button
-                            color="success"
-                            className="add-btn me-1"
-                            onClick={handleCreateEquivalent}
-                            id="create-btn"
-                          >
-                            <i className="ri-add-line align-bottom me-1"></i>{" "}
-                            {t("Add")}
-                          </Button>
+                        <div className="d-flex align-items-center justify-content-between mb-4">
+                          <Col className="col-sm w-[5rem] ">
+                            <div className="d-flex justify-content-sm-start">
+                              <div className="dropdown position-relative">
+                                <i
+                                  className="ri-filter-line filter icon position-absolute"
+                                  style={{
+                                    top: "50%",
+                                    left: "10px",
+                                    transform: "translateY(-50%)",
+                                  }}
+                                />
+                                <select
+                                  className="form-select px-12 rounded-0 rounded-start"
+                                  style={{ paddingLeft: "40px" }}
+                                  onChange={(e) =>
+                                    setSelectedCategory(e.target.value)
+                                  }
+                                  value={selectedCategory}
+                                >
+                                  <option value="All">{t("All")}</option>
+                                  {/* <option value="ADDA">{t("ADDA")}</option>
+          <option value="IST">{t("IST")}</option> */}
+                                </select>
+                              </div>
+
+                              <div className="search-box">
+                                <input
+                                  type="text"
+                                  className="form-control search rounded-0 rounded-end"
+                                  placeholder={t("Search...")}
+                                  value={searchTerm}
+                                  onChange={(e) =>
+                                    setSearchTerm(e.target.value)
+                                  }
+                                />
+                                <i className="ri-search-line search-icon"></i>
+                              </div>
+                            </div>
+                          </Col>
+
+                          <div>
+                            <Button
+                              color="success"
+                              className="add-btn me-1"
+                              onClick={handleCreateEquivalent}
+                              id="create-btn"
+                            >
+                              <i className="ri-add-line align-bottom me-1"></i>{" "}
+                              {t("Add")}
+                            </Button>
+                          </div>
                         </div>
+
                         <table
                           className="table align-middle table-nowrap"
                           id="customerTable"
                         >
                           <thead className="table-light">
                             <tr>
-                            <th>ID</th>
-                              <th onClick={() => handleSort("fuelName")}> {t("Gas Group")} </th>
+                              <th>ID</th>
+                              <th onClick={() => handleSort("fuelName")}>
+                                {" "}
+                                {t("Gas Group")}{" "}
+                              </th>
                               <th>createdDate</th>
                               <th>{t("Actions")}</th>
                             </tr>
@@ -222,13 +268,17 @@ const C02equivalents = () => {
           </Row>
         </Container>
       </div>
-      <AddCo2Modal open = {isEquivalentModal} onClose={handleCloseEquivalent}/>
-      <EditCo2Modal open ={isEditEquivalentModal} onClose={()=>setIsEditEquivalentModal(false)} id={equivalentId}/>
-     <DeleteModal
-            show={deleteModal}
-            onDeleteClick={confirmDelete}
-            onCloseClick={() => setDeleteModal(false)}
-          />
+      <AddCo2Modal open={isEquivalentModal} onClose={handleCloseEquivalent} />
+      <EditCo2Modal
+        open={isEditEquivalentModal}
+        onClose={() => setIsEditEquivalentModal(false)}
+        id={equivalentId}
+      />
+      <DeleteModal
+        show={deleteModal}
+        onDeleteClick={confirmDelete}
+        onCloseClick={() => setDeleteModal(false)}
+      />
     </React.Fragment>
   );
 };
