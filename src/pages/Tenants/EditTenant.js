@@ -67,7 +67,7 @@ const EditTenant = () => {
           <Col lg={12}>
             <Card>
               <CardHeader>
-                <h4 className="card-title mb-0" style={{ color: "#45CB85", fontSize: "20px", fontWeight: "bold" }}>
+                <h4 className="card-title mb-0" style={{ color: "#0f6192", fontSize: "20px", fontWeight: "bold" }}>
                   {t('Edit Tenant')}
                 </h4>
               </CardHeader>

@@ -236,7 +236,7 @@ const ViewOrganization = () => {
             <Col lg={12}>
               <Card>
                 <CardHeader>
-                  <h4 className="card-title mb-0" style={{ color: "#45CB85", fontSize: "20px", fontWeight: "bold" }}>
+                  <h4 className="card-title mb-0" style={{ color: "#0f6192", fontSize: "20px", fontWeight: "bold" }}>
                     {t('View Organization')}
                   </h4>
                 </CardHeader>
@@ -248,9 +248,9 @@ const ViewOrganization = () => {
                       style={{
                         cursor: "pointer",
                         padding: "10px 20px",
-                        borderTop: isOrganizationTabActive ? "3px solid #45CB85" : "3px solid transparent",
+                        borderTop: isOrganizationTabActive ? "3px solid #0f6192" : "3px solid transparent",
                         fontWeight: isOrganizationTabActive ? "bold" : "normal",
-                        color: isOrganizationTabActive ? "#45CB85" : "#000",
+                        color: isOrganizationTabActive ? "#0f6192" : "#000",
                         background: isOrganizationTabActive ? "#eff2f7":""
                       }}
                     >
@@ -263,9 +263,9 @@ const ViewOrganization = () => {
                       style={{
                         cursor: "pointer",
                         padding: "10px 20px",
-                        borderTop: isCategoriesTabActive ? "3px solid #45CB85" : "3px solid transparent",
+                        borderTop: isCategoriesTabActive ? "3px solid #0f6192" : "3px solid transparent",
                         fontWeight: isCategoriesTabActive ? "bold" : "normal",
-                        color: isCategoriesTabActive ? "#45CB85" : "#000",
+                        color: isCategoriesTabActive ? "#0f6192" : "#000",
                         background: isCategoriesTabActive ? "#eff2f7":""
                       }}
                     >

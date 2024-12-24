@@ -29,7 +29,7 @@ function Dashboard() {
                   className="card-title mb-0"
                   style={{
                     textAlign: "center",
-                    color: "#45CB85",
+                    color: "#0f6192",
                     fontSize: "20px",
                     fontWeight: "bold",
                   }}
