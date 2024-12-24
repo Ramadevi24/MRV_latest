@@ -1,11 +1,12 @@
 import React, { createContext, useEffect, useState } from "react";
-import {getAllEquivalents, getEquivalentById, CreateEquivalent, updateEquivalent, deleteEquivalent} from "../services/Co2EquiavalentService";
+import {getAllEquivalents, getEquivalentById, CreateEquivalent, updateEquivalent, deleteEquivalent, getCo2EquivalentTypeById, getAllCo2EquivalentTypes, CreateEquivalentType} from "../services/Co2EquiavalentService";
 import { toast } from 'react-toastify';
 
 export const Co2EquivalentContext = createContext();
 
 export const Co2EquivalentProvider = ({ children }) => {
   const [co2Equivalents, setCo2Equivalents] = useState([]);
+  const [co2EquivalentsTypes, setCo2EquivalentsTypes] = useState([]);
     const [loading, setLoading] = useState(true);
      const [error, setError] = useState(null);
 
@@ -75,8 +76,44 @@ export const Co2EquivalentProvider = ({ children }) => {
     }
   };
 
+  const fetchAllEquivalentsTypes = async () => {
+    try {
+      const data = await getAllCo2EquivalentTypes();
+      setCo2EquivalentsTypes(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching Equivalents');
+      setLoading(false);
+    }
+  };
+
+  const fetchEquivalentTypeById = async (id) => {
+    try {
+      return await getCo2EquivalentTypeById(id);
+    } catch (error) {
+      console.error('Error fetching Equivalent');
+      throw error;
+    }
+    finally {
+        setLoading(false);
+      }
+  };
+
+  const createNewEquivalentType = async (newEquivalent) => {
+    try {
+        setLoading(true);
+      const createdEquivalentType = await CreateEquivalentType(newEquivalent);
+      setCo2Equivalents((prevEquivalents) => [...prevEquivalents, createdEquivalentType]); // Update the state with the new entity
+      toast.success('EquivalentType created successfully');
+    } catch (error) {
+      toast.error('Error creating Equivalent');
+} finally {
+    setLoading(false);
+  }
+  };
+
   return (
-    <Co2EquivalentContext.Provider value={{ co2Equivalents, loading, fetchAllEquivalents, fetchEquivalentyById, createNewEquivalent, updateExistingEquivalent, removeEquivalent }}>
+    <Co2EquivalentContext.Provider value={{ co2Equivalents, loading, fetchAllEquivalents, fetchEquivalentyById, createNewEquivalent, updateExistingEquivalent, removeEquivalent, fetchAllEquivalentsTypes, co2EquivalentsTypes, fetchEquivalentTypeById, createNewEquivalentType }}>
       {children}
     </Co2EquivalentContext.Provider>
   );

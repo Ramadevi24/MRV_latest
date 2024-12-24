@@ -93,7 +93,7 @@ const C02equivalents = () => {
   });
 
   const filteredData = sortedData?.filter((fuel) => {
-    return fuel?.name.toLowerCase().includes(searchTerm.toLowerCase());
+    return fuel?.gasName.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -163,9 +163,9 @@ const C02equivalents = () => {
                           </thead>
                           <tbody>
                             {currentItems?.map((equivalent) => (
-                              <tr key={equivalent.emiratesID}>
-                                    <td> {equivalent?.emiratesID} </td>
-                                <td> {equivalent?.name} </td>
+                              <tr key={equivalent.co2GasId}>
+                                    <td> {equivalent?.co2GasId} </td>
+                                <td> {equivalent?.gasName} </td>
                                 <td> {formatDate(equivalent?.createdDate)} </td>
                                 <td>
                                   <div className="d-flex gap-2">
@@ -174,7 +174,7 @@ const C02equivalents = () => {
                                         className="btn btn-sm btn-info edit-item-btn"
                                         onClick={() =>
                                           handleEditEquivalent(
-                                            equivalent.emiratesID
+                                            equivalent.co2GasId
                                           )
                                         }
                                         onClose={handleCloseEquivalent}
@@ -190,7 +190,7 @@ const C02equivalents = () => {
                                         className="btn btn-sm btn-danger remove-item-btn"
                                         onClick={() =>
                                           handleDeleteClick(
-                                            equivalent.emiratesID
+                                            equivalent.co2GasId
                                           )
                                         }
                                         data-bs-toggle="modal"

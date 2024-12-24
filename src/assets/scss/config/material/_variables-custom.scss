@@ -34,8 +34,8 @@ $vertical-menu-box-shadow:                        0 2px 4px rgba(15,34,58,0.12);
 $vertical-menu-dropdown-box-shadow:               0 2px 4px rgba(15, 34, 58, 0.12);
 
 //sidebar dark 
-$dark-vertical-menu-bg:                           #1C1C36;
-$dark-vertical-menu-border:                       #151529;
+$dark-vertical-menu-bg:                           #0f6192;
+$dark-vertical-menu-border:                       #0f6192;
 $dark-vertical-menu-item-color:                   #a3a6b7;
 $dark-vertical-menu-item-bg:                      rgba($white, .15);
 $dark-vertical-menu-item-hover-color:             $white;
@@ -63,7 +63,7 @@ $vertical-menu-box-shadow-gradient:               0 2px 4px rgba(15,34,58,0.12);
 $vertical-menu-dropdown-box-shadow-gradient:      0 2px 4px rgba(15,34,58,0.12);
 
 //gradient one
-$vertical-menu-bg-gradient:                     #0f6192;
+$vertical-menu-bg-gradient:                     linear-gradient(176.75deg, #187B5C 2.44%, #173373 100%);
 $vertical-menu-border-gradient:                  #036068;
 $twocolumn-menu-iconview-bg-gradient:             var(--#{$prefix}primary);
 
@@ -98,8 +98,8 @@ $page-title-box-shadow:                           $box-shadow;
 $page-title-border:                               none;
 
 // Topbar - dark
-$dark-header-bg:                                  #1C1C36;
-$dark-header-border:                              #1C1C36;
+$dark-header-bg:                                  #0f6192;
+$dark-header-border:                              #0f6192;
 $dark-header-item-color:                          rgba($white, .85);
 $dark-header-item-bg:                             #29294e;
 $dark-header-item-sub-color:                      #a3a6b7; 
@@ -108,8 +108,8 @@ $dark-topbar-search-bg:                           rgba($white, .05);
 $dark-topbar-search-color:                        $white;
 
 // Topbar - gradient
-// $gradient-header-bg:                               linear-gradient(to right,rgba(0, 138, 95, 1),rgba(75, 56, 179, 1));
-$gradient-header-bg:                                   #0f6192;
+$gradient-header-bg:                               linear-gradient(to right,rgba(0, 138, 95, 1),rgba(75, 56, 179, 1));
+// $gradient-header-bg:                                   #0f6192;
 $gradient-header-border:                            #1199A8;    
 $gradient-header-item-color:                          rgba($white, .85);
 $gradient-header-item-bg:                             #29294e;

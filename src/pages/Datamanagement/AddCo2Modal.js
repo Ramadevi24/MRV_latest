@@ -4,11 +4,13 @@ import { Col, Container, Row } from "reactstrap";
 import FormField from "../../Components/CommonComponents/FormField";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
+import { Co2EquivalentContext } from "../../contexts/Co2EquivalentContext";
 
 const AddCo2Modal = ({ open, onClose }) => {
   const { t } = useTranslation();
+  const {createNewEquivalentType, fetchAllEquivalentsTypes} = useContext(Co2EquivalentContext);
   const [formValues, setFormValues] = useState({
-    gasName: "",
+    gasTypeName: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -21,8 +23,8 @@ const AddCo2Modal = ({ open, onClose }) => {
 
   const validate = () => {
     const newErrors = {};
-    if (!formValues.gasName.trim()) {
-      newErrors.gasName = "Gas Name is required.";
+    if (!formValues.gasTypeName.trim()) {
+      newErrors.gasTypeName = "CO2 Equivalent Name is required.";
     }
     return newErrors;
   };
@@ -36,15 +38,14 @@ const AddCo2Modal = ({ open, onClose }) => {
     }
 
     const createFormData = {
-      gasName: formValues.gasName,
+      gasTypeName: formValues.gasTypeName,
     };
     try {
-      await addGas(createFormData);
-      toast.success(t("Gas created successfully"), { autoClose: 3000 });
-      await fetchAllGases();
+      await createNewEquivalentType(createFormData);
+      await fetchAllEquivalentsTypes();
       onClose();
     } catch (error) {
-      toast.error(t("Error creating Gas"));
+      toast.error(t("Error creating CO2Equivalent Type"));
     }
   };
 
@@ -59,9 +60,9 @@ const AddCo2Modal = ({ open, onClose }) => {
                   <FormField
                     label="CO2 Equivalent Type Name"
                     placeholder="Liquid"
-                    value={formValues.gasName}
-                    onChange={handleChange("gasName")}
-                    error={errors.gasName}
+                    value={formValues.gasTypeName}
+                    onChange={handleChange("gasTypeName")}
+                    error={errors.gasTypeName}
                     type="text"
                   />
                 </Col>
