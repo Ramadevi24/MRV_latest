@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const API_URL = "http://localhost:5000/api/GasInformation";  // Replace with actual API URL
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 

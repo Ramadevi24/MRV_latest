@@ -1,5 +1,20 @@
-@media (min-width: 320px) and (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) {
     .modal-container-right {
-        width: 100% !important;
+        width: 60% !important;
       }
+}
+
+@media screen and (max-width: 767px) {
+  .col-mobile{
+    flex:none !important
+  }
+  .flex-mobile{
+     flex-direction: column !important;
+  }
+  .mobile-height{
+    margin-top: 20px;
+  }
+  .modal-container-right {
+    width: 100% !important;
+  }
 }

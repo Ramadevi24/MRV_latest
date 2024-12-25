@@ -33,6 +33,7 @@ const C02equivalents = () => {
     updateExistingEquivalent,
     removeEquivalent,
     loading,
+    co2EquivalentsTypes
   } = useContext(Co2EquivalentContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,7 +47,7 @@ const C02equivalents = () => {
   const [EquivalentToDelete, setEquivalentToDelete] = useState(null);
   const [isEditEquivalentModal, setIsEditEquivalentModal] = useState(false);
   const [equivalentId, setEquivalentId] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("Type");
 
   const confirmDelete = async () => {
     if (EquivalentToDelete) {
@@ -124,22 +125,9 @@ const C02equivalents = () => {
                 </CardHeader>
                 <CardBody>
                   <div className="listjs-table" id="customerList">
-                    {loading ? (
-                      <div
-                        className="d-flex justify-content-center align-items-center"
-                        style={{ height: "50vh" }}
-                      >
-                        <Spinner animation="border" role="status">
-                          <span className="sr-only">{t("Loading...")}</span>
-                        </Spinner>
-                      </div>
-                    ) : (
-                      <div
-                        className="table-responsive table-card"
-                        style={{ padding: "20px" }}
-                      >
-                        <div className="d-flex align-items-center justify-content-between mb-4">
-                          <Col className="col-sm w-[5rem] ">
+                  <div className="d-flex align-items-center justify-content-between mb-4 flex-mobile">
+                             <Row className="g-4">
+                              <Col className="col-sm w-[5rem]">
                             <div className="d-flex justify-content-sm-start">
                               <div className="dropdown position-relative">
                                 <i
@@ -150,6 +138,7 @@ const C02equivalents = () => {
                                     transform: "translateY(-50%)",
                                   }}
                                 />
+                            
                                 <select
                                   className="form-select px-12 rounded-0 rounded-start"
                                   style={{ paddingLeft: "40px" }}
@@ -158,9 +147,12 @@ const C02equivalents = () => {
                                   }
                                   value={selectedCategory}
                                 >
-                                  <option value="All">{t("All")}</option>
-                                  {/* <option value="ADDA">{t("ADDA")}</option>
-          <option value="IST">{t("IST")}</option> */}
+                                   <option value="Type">{t("Type")}</option>
+                                  {co2EquivalentsTypes && co2EquivalentsTypes.map((gas) => (
+                                    <>
+                                  <option value={gas.gasTypeName}>{gas.gasTypeName}</option>
+                                  </>
+                                ))}
                                 </select>
                               </div>
 
@@ -177,9 +169,14 @@ const C02equivalents = () => {
                                 <i className="ri-search-line search-icon"></i>
                               </div>
                             </div>
-                          </Col>
-
-                          <div>
+                            </Col>
+                            </Row>
+                          <div className="d-flex justify-content-end mobile-height">
+                          <Button
+                              className="me-1 default-btn"
+                            >
+                              {t("Set as Default")}
+                            </Button>
                             <Button
                               color="success"
                               className="add-btn me-1"
@@ -190,8 +187,22 @@ const C02equivalents = () => {
                               {t("Add")}
                             </Button>
                           </div>
+                        
                         </div>
-
+                    {loading ? (
+                      <div
+                        className="d-flex justify-content-center align-items-center"
+                        style={{ height: "50vh" }}
+                      >
+                        <Spinner animation="border" role="status">
+                          <span className="sr-only">{t("Loading...")}</span>
+                        </Spinner>
+                      </div>
+                    ) : (
+                      <div
+                        className="table-responsive table-card"
+                        style={{ padding: "20px" }}
+                      >
                         <table
                           className="table align-middle table-nowrap"
                           id="customerTable"
@@ -209,8 +220,8 @@ const C02equivalents = () => {
                           </thead>
                           <tbody>
                             {currentItems?.map((equivalent) => (
-                              <tr key={equivalent.co2GasId}>
-                                    <td> {equivalent?.co2GasId} </td>
+                              <tr key={equivalent?.co2GasId}>
+                                <td> {equivalent?.co2GasId} </td>
                                 <td> {equivalent?.gasName} </td>
                                 <td> {formatDate(equivalent?.createdDate)} </td>
                                 <td>
@@ -220,7 +231,7 @@ const C02equivalents = () => {
                                         className="btn btn-sm btn-info edit-item-btn"
                                         onClick={() =>
                                           handleEditEquivalent(
-                                            equivalent.co2GasId
+                                            equivalent?.co2GasId
                                           )
                                         }
                                         onClose={handleCloseEquivalent}

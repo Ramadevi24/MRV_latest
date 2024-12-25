@@ -126,7 +126,7 @@ const PermissionGrid = () => {
                 <CardBody>
                   <div className="listjs-table" id="customerList">
                     <Row className="g-4 mb-3">
-                    <Col className="col-sm w-[5rem]">
+                    <Col className="col-sm w-[5rem] col-mobile">
                         <div className="d-flex justify-content-sm-start">
                           <div className="dropdown position-relative" >
                             <i

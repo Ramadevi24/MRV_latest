@@ -86,7 +86,7 @@ const EditCo2Modal = ({ open, onClose }) => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Modal size="lg" title="Edit/Add CO2 Equivalent" isOpen={open} onClose={onClose}>
+          <Modal size="lg" title="Add Gas" isOpen={open} onClose={onClose}>
             <div className="table-responsive table-card" style={{ padding: "20px" }}>
               <table className="table align-middle table-nowrap">
                 <thead className="table-light">
@@ -99,7 +99,7 @@ const EditCo2Modal = ({ open, onClose }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {co2Equivalents.map((item) => (
+                  {co2Equivalents?.map((item) => (
                     <tr key={item.co2GasId}>
                       <td>
                         {editingRowId === item.co2GasId ? (

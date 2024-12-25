@@ -69,15 +69,15 @@ const AddCo2Modal = ({ open, onClose }) => {
               </Row>
 
               <div className="d-flex justify-content-end mt-3">
-                <button type="submit" className="add-details-btn  me-2">
+                <button type="submit" className="add-details-btn me-2 add-btn">
                   {" "}
-                  Add
+                  Add  
                 </button>
                 <button
                   type="submit"
                   color="danger"
                   className="cancel-details-btn "
-                  onClick={() => history.back()}
+                  onClick={onClose}
                 >
                   Cancel
                 </button>

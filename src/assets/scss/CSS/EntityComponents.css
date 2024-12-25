@@ -455,5 +455,26 @@ border: 1px solid #CED0DA;
     color: #f06548;
   }
   
+  .add-btn {
+    background-color: #0066A4;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    height: 38px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
 
-  
+  .add-btn:hover {
+    opacity: 0.8;
+    background-color: #0066A4;
+  } 
+
+  .default-btn{
+    color: #0066A4;
+    border: 1px solid #0066A4;
+    background: none;
+
+  }
+
+ 

@@ -335,7 +335,7 @@ const AddFuelModal = ({ open, onClose }) => {
             </Row> */}
 
             <div className="d-flex justify-content-end mt-3">
-              <Button type="submit" color="success" className="me-2">
+              <Button type="submit" color="success" className="me-2 add-btn">
                 {t("Submit")}
               </Button>
               <Button type="button" color="danger" onClick={onClose}>

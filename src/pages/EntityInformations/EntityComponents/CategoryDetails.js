@@ -73,7 +73,7 @@ const CategoryDetails = () => {
   return (
     <div className="category-details">
       <div className='facility-subheadings'>
-        <h2 className='add_facility_subtitle'>Category Details</h2>
+        <h2 className='add_facility_subtitle mt-4'>Category Details</h2>
         <Button label="Add Categories" width="12.5" height="12.5"
         icon={addIcon} onClick={handleButtonClick} className="category-button">
         </Button>

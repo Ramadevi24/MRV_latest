@@ -180,7 +180,7 @@ const AddEntityModal = ({ open, onClose }) => {
                   type="submit"
                   color="danger"
                   className="cancel-details-btn "
-                  onClick={() => history.back()}
+                  onClick={onClose}
                 >
                   Cancel
                 </button>

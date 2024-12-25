@@ -12,6 +12,7 @@ export const Co2EquivalentProvider = ({ children }) => {
 
   useEffect(() => {
     fetchAllEquivalents();
+    fetchAllEquivalentsTypes();
   }, [])
 
   const fetchAllEquivalents = async () => {

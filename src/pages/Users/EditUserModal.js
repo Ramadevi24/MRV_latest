@@ -396,8 +396,8 @@ const EditUserModal = ({ isOpen, onClose, id }) => {
                           ) : null}
                         </Col>
                       </Row>
-        <div className="modal-footer">
-          <Button color="success" type="submit">
+        <div className="modal-footer mt-3">
+          <Button color="success" type="submit" className="me-2 add-btn">
             Save
           </Button>
           <Button color="danger" type="button" onClick={onClose}>

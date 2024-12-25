@@ -14,7 +14,7 @@ export const GasProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetchAllGases();
+      fetchAllGases();
     }, [])
 
   const fetchAllGases = async () => {

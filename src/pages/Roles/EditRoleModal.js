@@ -258,8 +258,8 @@ const EditRoleModal = ({open, onClose, id }) => {
               </Col>
             </Row>
 
-            <div className="d-flex justify-content-end mt-3">
-              <Button type="submit" color="success" className="me-2">
+            <div className="d-flex justify-content-end mt-3" style={{marginRight: "4rem"}}>
+              <Button type="submit" color="success" className="me-2 add-btn">
                 Submit
               </Button>
               <Button type="button" color="danger" onClick={onClose}>

@@ -172,7 +172,7 @@ const EmirateGrid = () => {
                           </div>
                         </div>
                       </Col> */}
-                      <Col className="col-sm w-[5rem]">
+                      <Col className="col-sm w-[5rem] col-mobile">
                         <div className="d-flex justify-content-sm-start">
                           <div className="dropdown position-relative" >
                             <i
