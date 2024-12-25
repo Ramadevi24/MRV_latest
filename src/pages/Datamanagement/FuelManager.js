@@ -330,15 +330,15 @@ const FuelManager = () => {
                         >
                           <thead className="table-light">
                             <tr>
-                              <th onClick={() => handleSort("fuelName")}>
+                              <th   className="sort" onClick={() => handleSort("fuelName")}>
                                 {t("Fuel Name")}
                               </th>
-                              <th onClick={() => handleSort("isPrimaryFuel")}>
+                              <th  className="sort" onClick={() => handleSort("isPrimaryFuel")}>
                                 {t("Primary Fuel")}
                               </th>
                               <th>{t("Net Calorific Value (TJ/Gg)")} </th>
                               <th> {t("Carbon Content NCV")} </th>
-                              <th onClick={() => handleSort("fuelType")}>
+                              <th  className="sort" onClick={() => handleSort("fuelType")}>
                                 {t("Fuel Type")}
                               </th>
                               <th>{t("Actions")}</th>

@@ -13,6 +13,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { UserProvider } from "./contexts/UserContext";
 import { PermissionProvider } from "./contexts/PermissionContext";
 import "react-toastify/dist/ReactToastify.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { ToastContainer } from "react-toastify";
 import { AlertProvider } from "./contexts/AlertContext";
 import { FuelProvider } from "./contexts/FuelContext";

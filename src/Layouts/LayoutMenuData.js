@@ -318,7 +318,7 @@ const Navdata = () => {
     {
       id: "emissiondata",
       label: "Emission Data",
-      icon: "ri-ai-generate",
+      icon: "fa-solid fa-podcast" ,
       link: "/#",
       stateVariables: isEmissionData,
       click: function (e) {
@@ -442,7 +442,7 @@ const Navdata = () => {
     {
       id: "viewemission",
       label: "View Emission",
-      icon: "ri-ai-generate",
+      icon: "fa-solid fa-address-card",
       link: "/#",
       stateVariables: isViewEmission,
       click: function (e) {
@@ -567,7 +567,7 @@ const Navdata = () => {
       id: "adminmasterScreens",
       label: "Master Screens",
       link: "/#",
-      icon: "ri-user-add-line",
+      icon: "fa-solid fa-user-pen",
       stateVariables: isMasterScreens,
       click: function (e) {
         e.preventDefault();

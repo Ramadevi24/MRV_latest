@@ -210,11 +210,11 @@ const C02equivalents = () => {
                           <thead className="table-light">
                             <tr>
                               <th>ID</th>
-                              <th onClick={() => handleSort("fuelName")}>
+                              <th  className="sort" onClick={() => handleSort("gasName")}>
                                 {" "}
                                 {t("Gas Group")}{" "}
                               </th>
-                              <th>createdDate</th>
+                              <th  className="sort" onClick={() => handleSort("createdDate")}>createdDate</th>
                               <th>{t("Actions")}</th>
                             </tr>
                           </thead>

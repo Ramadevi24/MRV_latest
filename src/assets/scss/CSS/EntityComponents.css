@@ -477,4 +477,9 @@ border: 1px solid #CED0DA;
 
   }
 
+  .default-btn:hover{
+    background-color: #0066A4;
+    color: #FFFFFF;
+  }
+
  

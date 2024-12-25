@@ -59,13 +59,25 @@ import {
         } else if (windowSize < 1025 && windowSize > 767) {
             document.body.classList.remove("twocolumn-panel");
             if (document.documentElement.getAttribute("data-layout") === "vertical") {
-                document.documentElement.setAttribute("data-sidebar-size", "sm");
+                // document.documentElement.setAttribute("data-sidebar-size", "sm");
+                document.documentElement.setAttribute("data-sidebar-size", "leftsidbarSizeType");
             }
             if (document.documentElement.getAttribute("data-layout") === "semibox") {
-                document.documentElement.setAttribute("data-sidebar-size", "sm");
+                // document.documentElement.setAttribute("data-sidebar-size", "sm");
+                document.documentElement.setAttribute("data-sidebar-size", "leftsidbarSizeType");
             }
-            if (document.querySelector(".hamburger-icon")) {
-                document.querySelector(".hamburger-icon").classList.add("open");
+            // if (document.querySelector(".hamburger-icon")) {
+            //     document.querySelector(".hamburger-icon").classList.add("open");
+            // }
+            var hamburgerIcon = document.querySelector(".hamburger-icon");
+            if ((sidebarVisibilitytype === "show" || layoutType === "vertical" || layoutType === "twocolumn") && document.querySelector(".hamburger-icon")) {
+                if (hamburgerIcon !== null) {
+                    hamburgerIcon.classList.remove("open");
+                }
+            } else {
+                if (hamburgerIcon !== null) {
+                    hamburgerIcon.classList.remove("open");
+                }
             }
         } else if (windowSize <= 767) {
             document.body.classList.remove("vertical-sidebar-enable");
