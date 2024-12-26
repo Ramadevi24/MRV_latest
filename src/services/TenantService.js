@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "https://atlas.smartgeoapps.com/MRVAPI/api/Tenant";
+// const API_URL = "https://atlas.smartgeoapps.com/MRVAPI/api/Tenant";
+const API_URL = "http://localhost:5000/api/Tenant";
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 
 // Get all tenants
