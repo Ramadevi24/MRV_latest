@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 //import images
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
 import { createSelector } from 'reselect';
+import { t } from 'i18next';
 
 const ProfileDropdown = () => {
     const navigate = useNavigate();
@@ -47,22 +48,22 @@ const ProfileDropdown = () => {
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-end">
 
-                    <h6 className="dropdown-header">Welcome {userPermissions && userPermissions.firstName} {userPermissions && userPermissions.lastName}!</h6>
+                    <h6 className="dropdown-header">{t("Welcome")} {userPermissions && userPermissions.firstName} {userPermissions && userPermissions.lastName}!</h6>
                     <DropdownItem><i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-                        <span className="align-middle">Profile</span></DropdownItem>
+                        <span className="align-middle">{t("Profile")}</span></DropdownItem>
                     <DropdownItem><i
                         className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span
-                            className="align-middle">Messages</span></DropdownItem>
+                            className="align-middle">{t("Messages")}</span></DropdownItem>
                     <div className="dropdown-divider"></div>
                     <DropdownItem><span
                         className="badge bg-success-subtle text-success mt-1 float-end">New</span><i
                             className="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
-                                className="align-middle">Settings</span></DropdownItem>
+                                className="align-middle">{t("Settings")}</span></DropdownItem>
                     <DropdownItem><i
-                        className="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span className="align-middle">Lock screen</span></DropdownItem>
+                        className="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span className="align-middle">{t("Lock screen")}</span></DropdownItem>
                     <DropdownItem onClick={handleLogout}><i
                         className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
-                            className="align-middle" data-key="t-logout">Logout</span></DropdownItem>
+                            className="align-middle" data-key="t-logout">{t("Logout")}</span></DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         </React.Fragment>
