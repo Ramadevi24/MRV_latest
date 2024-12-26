@@ -58,6 +58,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                 document.documentElement.setAttribute('data-sidebar-size', 'lg');
             }
         }
+          
 
 
         //Two column menu
