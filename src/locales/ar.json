@@ -157,10 +157,13 @@
   "Add Emirate":"أضف الإمارة",
   "Set as Default":"تعيين كافتراضي",
   "Type":"نوع",
-  "createdDate" : "تاريخ الإنشاء",
   "CO2 Equivalent Type Name":"اسم نوع مكافئات ثاني أكسيد الكربون",
 "Gas Group":"مجموعة الغاز",
-"ID":"معرف"
+"ID":"معرف",
+  "Gas Information":"معلومات الغاز",
+  "Emirates Information":"معلومات الإمارات",
+  "CO2 Equivalents" :"CO2 المعادلات",
+  "createdDate":"تاريخ الإنشاء"
 
   
 
