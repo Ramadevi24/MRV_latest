@@ -26,3 +26,7 @@
 .lang-ar .me-2 {
   margin-left: 0.5rem !important;
 }
+
+.lang-ar .nav{
+  padding-right: 0;
+}
