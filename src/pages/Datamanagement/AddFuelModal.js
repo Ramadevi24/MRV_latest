@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "../../Components/CommonComponents/Modal";
 import {
   Col,
@@ -25,6 +25,7 @@ import {
 const AddFuelModal = ({ open, onClose }) => {
   const { t } = useTranslation();
   const { addFuel, fetchFuels } = useContext(FuelContext);
+  const [errors, setErrors] = useState({});
 
   const formik = useFormik({
     initialValues: {
@@ -52,7 +53,15 @@ const AddFuelModal = ({ open, onClose }) => {
         await fetchFuels();
         onClose();
       } catch (error) {
-        toast.error(t("Error creating fuel"));
+        console.log("Error creating fuel", error);
+        if (error.response && error.response.data) {
+          // Extract errors from the response
+          const backendErrors = error.response.data.errors;
+          setErrors(backendErrors);
+        } else {
+          console.error('Unexpected Error:', error.message);
+        }
+
       }
     },
   });
@@ -333,7 +342,13 @@ const AddFuelModal = ({ open, onClose }) => {
                 </FormGroup>
               </Col>
             </Row> */}
-
+  {errors.ConversionFactorType && (
+        <div style={{ color: 'red' }}>
+          {errors.ConversionFactorType.map((err, index) => (
+            <p key={index}>{err}</p>
+          ))}
+        </div>
+      )}
             <div className="d-flex justify-content-end mt-3">
               <Button type="submit" color="success" className="me-2 add-btn">
                 {t("Submit")}

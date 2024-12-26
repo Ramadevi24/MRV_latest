@@ -5,10 +5,11 @@ import FormField from "../../../Components/CommonComponents/FormField";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {EmiratesContext} from "../../../contexts/EmiratesContext"
-import { t } from 'i18next';
+import { useTranslation } from "react-i18next";
 
 const AddEmirateModal = ({ open, onClose }) => {
  const navigate = useNavigate();
+  const { t } = useTranslation();
    const {createEmirate, fetchAllEmirates} = useContext(EmiratesContext);
 
    const [formValues, setFormValues] = useState({
@@ -27,7 +28,7 @@ const AddEmirateModal = ({ open, onClose }) => {
   const validate = () => {
     const newErrors = {};
     if (!formValues.name.trim()) {
-      newErrors.name = "Emirate is required.";
+      newErrors.name = t("Emirate is required.");
     }
     return newErrors;
   };

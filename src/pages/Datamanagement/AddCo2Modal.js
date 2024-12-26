@@ -79,7 +79,7 @@ const AddCo2Modal = ({ open, onClose }) => {
                   className="cancel-details-btn "
                   onClick={onClose}
                 >
-                  {t("Cancel")}
+                   {t("Cancel")}
                 </button>
               </div>
             </form>

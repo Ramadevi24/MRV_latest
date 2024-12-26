@@ -10,7 +10,7 @@
     font-family: 'Roboto', sans-serif;
 }
 .lang-ar #page-topbar {
-  right: var(--vz-vertical-menu-width) !important;
+  /* right: var(--vz-vertical-menu-width) !important; */
   left:0;
 }
 
@@ -23,6 +23,16 @@
   padding-right: 0;
 } */
 
+@media (min-width: 768px) {
+  .lang-ar [data-layout=vertical]:is([data-sidebar-size=sm], [data-sidebar-size=sm-hover]) #page-topbar {
+      right: var(--vz-vertical-menu-width-sm);
+  }
+}
+
 .lang-ar .me-2 {
   margin-left: 0.5rem !important;
+}
+
+.lang-ar .nav{
+  padding-right: 0;
 }
