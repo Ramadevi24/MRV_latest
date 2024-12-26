@@ -42,13 +42,13 @@
 
 @media (max-width: 440px) {
 
-  .lang-ar .navbar-menu {
-    display: none; /* Initially hidden */
+  .lang-ar .app-menu {
+    display: none; 
   }
   
-  .lang-ar .navbar-menu.open {
-    display: block; /* Shown when "open" class is added */
-  }
+  /* .lang-ar .app-menu.open {
+    display: block; 
+  } */
   
   
 }
