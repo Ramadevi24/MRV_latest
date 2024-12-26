@@ -5,6 +5,9 @@
     "Analytics": "تحليلات",
     "Pages": "الصفحات",
     "Tenants": "المستأجرين",
+    "Facility Configuration": "تكوين المنشأة",
+    "1.A Fuel Combustion Activity":"1.نشاط احتراق الوقود",
+    "1.B Fugitives Emission":"1.ب انبعاث الهاربين",
     "Organizations": "المنظمات",
     "Roles": "الأدوار",
     "Users": "المستخدمين",
@@ -107,11 +110,54 @@
   "Are You Sure":"هل أنت متأكد؟",
   "Are you sure you want to remove this record": "هل أنت متأكد أنك تريد إزالة هذا السجل؟",
   "Close":"إغلاق",
-  "Yes Delete It":"نعم، احذفه!"
+  "Yes Delete It":"نعم، احذفه!",
 
+  "View Emission":"عرض الانبعاثات",
+  "Emission Data":"بيانات الانبعاثات",
 
-
+  "Master Screens": "شاشات رئيسية",
+  "1.A.1 Energy Industries":"1.A.1 صناعات الطاقة",
+  "1.A.1.a Power Generation":"1.A.1.a توليد الطاقة",
+  "1.A.1.b Petroleum Refining":"1.A.1.b تكرير النفط",
+  "1.A.2 Manufacturing & Construction":"1.A.2 التصنيع والبناء",
+  "1.A.2.a Manufacturing":"1.A.2.a تصنيع",
+  "1.A.3 Transportation":"1.A.3 مواصلات",
+  "1.A.3.a Domestic aviation":"1.A.3.a الطيران الداخلي",
+  "1.A.3.b Road transportation":"1.A.3.b النقل البري",
+  "1.A.3.c Domestic navigation":"1.A.3.c الملاحة الداخلية",
+  "1.A.4 Other Updates":"1.A.4 تحديثات أخرى",
+  "Emirate":"الإمارة",
+  "Gases":"الغازات",
+  "Fuel Manager":"مدير الوقود",
+  "Co2 Equivalents":"مكافئات ثاني أكسيد الكربون",
     
+
+  "All":"الجميع",
+  "Welcome To Dashboard":"مرحبا بكم في لوحة القيادة",
+  "Fuel Name":"اسم الوقود",
+  "Primary Fuel":"الوقود الأساسي",
+  "Net Calorific Value (TJ/Gg)":"القيمة الحرارية الصافية (TJ/Gg)",
+  "Carbon Content NCV":"المحتوى الكربوني NCV",
+  "Fuel Type":"نوع الوقود",
+  "Actions":"الإجراءات",
+  "Show user-defined fuels only":"إظهار الوقود المحدد من قبل المستخدم فقط",
+  "Save":"الحفظ",
+  "Name":"الاسم",
+  "ID":"بطاقة تعريف",
+  "Facility(Plant Name)":"المنشأة (اسم المصنع)",
+  "Sector":"قطاع",
+  "Sub Category":"الفئة الفرعية",
+  "Calendar Year":"السنة التقويمية",
+  "Calculation Approach":"نهج الحساب",
+  "Status":"حالة",
+  "Add Facility":"إضافة منشأة",
+  "Facility/Company Information":"معلومات المنشأة/الشركة",
+  "Facility Information":"معلومات المنشأة",
+
+  "Add Emirate":"أضف الإمارة"
+
+  
+
    
 
 }

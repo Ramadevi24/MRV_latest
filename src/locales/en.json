@@ -3,6 +3,9 @@
     "Dashboards": "Dashboards",
     "Pages": "Pages",
     "Tenants": "Tenants",
+    "Facility Configuration": "Facility Configuration",
+    "Fuel Combustion Activity":"Fuel Combustion Activity",
+    "Fugitives Emission":"Fugitives Emission",
     "Organizations": "Organizations",
     "Roles": "Roles",
     "Users": "Users",
@@ -98,5 +101,23 @@
    "Are You Sure":"Are you sure",
   " Are you sure you want to remove this record":"Are you sure you want to remove this record?",
   "Close":"Close",
-  "Yes Delete It":"Yes, Delete It!"
+  "Yes Delete It":"Yes, Delete It!",
+  
+
+
+  "Energy Industries":"Energy Industries",
+  "Power Generation":"Power Generation",
+  "Petroleum Refining":"Petroleum Refining",
+  "Manufacturing & Construction":"Manufacturing & Construction",
+  "Manufacturing":"Manufacturing",
+  "Transportation":"Transportation",
+  "Domestic aviation":"Domestic aviation",
+  "Road transportation":"Road transportation",
+  "Domestic navigation":"Domestic navigation",
+  "Other Updates":"Other Updates",
+  "Emirate":"Emirate",
+  "Gases":"Gases",
+  "Fuel Manager":"Fuel Manager",
+  "Co2 Equivalents":"Co2 Equivalents"
+
 }
