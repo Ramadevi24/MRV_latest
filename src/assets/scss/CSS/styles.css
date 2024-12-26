@@ -9,12 +9,20 @@
     text-align: right;
     font-family: 'Roboto', sans-serif;
 }
-body.lang-ar #page-topbar {
+.lang-ar #page-topbar {
   right: var(--vz-vertical-menu-width) !important;
   left:0;
 }
 
-body.lang-ar  .main-content {
+.lang-ar  .main-content {
   margin-right: var(--vz-vertical-menu-width);
   margin-left: auto;
+}
+
+/* .lang-ar .navbar-nav {
+  padding-right: 0;
+} */
+
+.lang-ar .me-2 {
+  margin-left: 0.5rem !important;
 }

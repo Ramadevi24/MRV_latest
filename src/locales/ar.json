@@ -154,7 +154,13 @@
   "Facility/Company Information":"معلومات المنشأة/الشركة",
   "Facility Information":"معلومات المنشأة",
 
-  "Add Emirate":"أضف الإمارة"
+  "Add Emirate":"أضف الإمارة",
+  "Set as Default":"تعيين كافتراضي",
+  "Type":"نوع",
+  "createdDate" : "تاريخ الإنشاء",
+  "CO2 Equivalent Type Name":"اسم نوع مكافئات ثاني أكسيد الكربون",
+"Gas Group":"مجموعة الغاز",
+"ID":"معرف"
 
   
 

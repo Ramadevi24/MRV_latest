@@ -33,7 +33,9 @@ const C02equivalents = () => {
     updateExistingEquivalent,
     removeEquivalent,
     loading,
-    co2EquivalentsTypes
+    co2EquivalentsTypes,
+    updateExistingEquivalentType,
+    fetchEquivalentTypeById
   } = useContext(Co2EquivalentContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,7 +49,22 @@ const C02equivalents = () => {
   const [EquivalentToDelete, setEquivalentToDelete] = useState(null);
   const [isEditEquivalentModal, setIsEditEquivalentModal] = useState(false);
   const [equivalentId, setEquivalentId] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("Type");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedEquivalentTypeData, setSelectedEquivalentTypeData] = useState(null);
+
+  useEffect(() => {
+    if (selectedCategory === null) return; 
+    const SelectedEquivalentTypeById = async () => {
+      try {
+        const response = await fetchEquivalentTypeById(selectedCategory);
+        setSelectedEquivalentTypeData(response);
+      } catch (error) {
+        console.error("API Error:", error);
+      }
+    };
+  
+    SelectedEquivalentTypeById();
+  }, [selectedCategory]);
 
   const confirmDelete = async () => {
     if (EquivalentToDelete) {
@@ -69,6 +86,20 @@ const C02equivalents = () => {
 
   const handleCloseEquivalent = () => {
     setIsEquivalentModal(false);
+  };
+
+  const handleEditTypeEquivalent = async (id) => {
+    try {
+      const updatedEquivalent = {
+        co2EquiId: id,
+        gasTypeName: selectedEquivalentTypeData.gasTypeName,
+        isDefault: ! selectedEquivalentTypeData.isDefault,
+      };
+      await updateExistingEquivalentType(id, updatedEquivalent);
+      toast.success("Default CO2 Equivalent Type Set Successfully");
+    } catch (error) {
+      toast.error("Error setting default CO2 Equivalent Type");
+    }
   };
 
   const handleEditEquivalent = (id) => {
@@ -147,11 +178,9 @@ const C02equivalents = () => {
                                   }
                                   value={selectedCategory}
                                 >
-                                   <option value="Type">{t("Type")}</option>
+                                   <option>{t("Type")}</option>
                                   {co2EquivalentsTypes && co2EquivalentsTypes.map((gas) => (
-                                    <>
-                                  <option value={gas.gasTypeName}>{gas.gasTypeName}</option>
-                                  </>
+                                  <option key={gas.co2EquiId} value={gas.co2EquiId}>{gas.gasTypeName}</option>
                                 ))}
                                 </select>
                               </div>
@@ -174,6 +203,7 @@ const C02equivalents = () => {
                           <div className="d-flex justify-content-end mobile-height">
                           <Button
                               className="me-1 default-btn"
+                              onClick={()=>handleEditTypeEquivalent(selectedCategory)}
                             >
                               {t("Set as Default")}
                             </Button>
@@ -209,12 +239,12 @@ const C02equivalents = () => {
                         >
                           <thead className="table-light">
                             <tr>
-                              <th>ID</th>
+                              <th>{t("ID")}</th>
                               <th  className="sort" onClick={() => handleSort("gasName")}>
                                 {" "}
                                 {t("Gas Group")}{" "}
                               </th>
-                              <th  className="sort" onClick={() => handleSort("createdDate")}>createdDate</th>
+                              <th  className="sort" onClick={() => handleSort("createdDate")}>{t("createdDate")}</th>
                               <th>{t("Actions")}</th>
                             </tr>
                           </thead>

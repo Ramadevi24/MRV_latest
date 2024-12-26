@@ -58,8 +58,8 @@ const AddCo2Modal = ({ open, onClose }) => {
               <Row>
                 <Col md={6}>
                   <FormField
-                    label="CO2 Equivalent Type Name"
-                    placeholder="Liquid"
+                    label={t("CO2 Equivalent Type Name")}
+                    placeholder={t("Liquid")}
                     value={formValues.gasTypeName}
                     onChange={handleChange("gasTypeName")}
                     error={errors.gasTypeName}

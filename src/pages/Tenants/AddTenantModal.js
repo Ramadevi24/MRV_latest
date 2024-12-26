@@ -50,14 +50,14 @@ const AddTenantModal = ({ isOpen, onClose }) => {
   return (
     <Modal
       size="lg"
-      title="Add Tenant"
+      title={t("Add Tenant")}
       isOpen={isOpen} // Corrected prop
       onClose={onClose} // Toggle properly passed
     >
       <Form onSubmit={formik.handleSubmit}>
         <ModalBody>
           <FormGroup>
-            <Label for="name">Tenant Name</Label>
+            <Label for="name">{t("Tenant Name")}</Label>
             <Input
               id="name"
               name="name"
@@ -74,7 +74,7 @@ const AddTenantModal = ({ isOpen, onClose }) => {
             ) : null}
           </FormGroup>
           <FormGroup>
-            <Label for="description">Description</Label>
+            <Label for="description">{t("Description")}</Label>
             <Input
               id="description"
               name="description"
@@ -95,10 +95,10 @@ const AddTenantModal = ({ isOpen, onClose }) => {
         </ModalBody>
         <div className="modal-footer mt-3">
           <Button color="success" type="submit" className="me-2 add-btn">
-            Save
+            {t("Save")}
           </Button>
           <Button color="danger" type="button" onClick={onClose}>
-            Cancel
+            {t("Cancel")}
           </Button>
         </div>
       </Form>

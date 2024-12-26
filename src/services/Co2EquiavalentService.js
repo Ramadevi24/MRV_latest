@@ -21,7 +21,7 @@ export const getAllEquivalents = async () => {
       const response = await axios.get(`${API_URL}/${id}`, {
         headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
       });
-      return response.$values;
+      return response;
     } catch (error) {
       console.error(`Error fetching equivalent with id ${id}:`, error);
       throw error;
@@ -81,7 +81,7 @@ export const getAllEquivalents = async () => {
       const response = await axios.get(`${API_type_URL}/${id}`, {
         headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
       });
-      return response.$values;
+      return response;
     } catch (error) {
       console.error(`Error fetching equivalent with id ${id}:`, error);
       throw error;
@@ -96,6 +96,18 @@ export const getAllEquivalents = async () => {
       return response.$values;
     } catch (error) {
       console.error('Error creating new equivalent:', error);
+      throw error;
+    }
+  }
+
+  export const updateEquivalentType = async (id, data) => {
+    try {
+      const response = await axios.put(`${API_type_URL}/${id}`, data, {
+        headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
+      });
+      return response.$values;
+    } catch (error) {
+      console.error(`Error updating equivalent with id ${id}:`, error);
       throw error;
     }
   }

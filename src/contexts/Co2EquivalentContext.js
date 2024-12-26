@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
-import {getAllEquivalents, getEquivalentById, CreateEquivalent, updateEquivalent, deleteEquivalent, getCo2EquivalentTypeById, getAllCo2EquivalentTypes, CreateEquivalentType} from "../services/Co2EquiavalentService";
+import {getAllEquivalents, getEquivalentById, CreateEquivalent, updateEquivalent, deleteEquivalent, getCo2EquivalentTypeById, getAllCo2EquivalentTypes, CreateEquivalentType, updateEquivalentType} from "../services/Co2EquiavalentService";
 import { toast } from 'react-toastify';
 
 export const Co2EquivalentContext = createContext();
@@ -43,9 +43,8 @@ export const Co2EquivalentProvider = ({ children }) => {
         setLoading(true);
       const createdEquivalent = await CreateEquivalent(newEquivalent);
       setCo2Equivalents((prevEquivalents) => [...prevEquivalents, createdEquivalent]); // Update the state with the new entity
-      toast.success('Equivalent created successfully');
     } catch (error) {
-      toast.error('Error creating Equivalent');
+      console.error('Error creating Equivalent');
 } finally {
     setLoading(false);
   }
@@ -58,7 +57,6 @@ export const Co2EquivalentProvider = ({ children }) => {
       setCo2Equivalents((prevEquivalents) =>
         prevEquivalents.map((item) => (item.id === id ? updated : item))
       );
-      toast.success('Equivalent updated successfully');
     } catch (error) {
       console.error('Error updating Equivalent');
     }
@@ -104,8 +102,7 @@ export const Co2EquivalentProvider = ({ children }) => {
     try {
         setLoading(true);
       const createdEquivalentType = await CreateEquivalentType(newEquivalent);
-      setCo2Equivalents((prevEquivalents) => [...prevEquivalents, createdEquivalentType]); // Update the state with the new entity
-      toast.success('EquivalentType created successfully');
+      setCo2EquivalentsTypes((prevEquivalents) => [...prevEquivalents, createdEquivalentType]); // Update the state with the new entity
     } catch (error) {
       toast.error('Error creating Equivalent');
 } finally {
@@ -113,8 +110,24 @@ export const Co2EquivalentProvider = ({ children }) => {
   }
   };
 
+  const updateExistingEquivalentType = async (id, updatedEquivalent) => {
+    try {
+        setLoading(true);
+      const updated = await updateEquivalentType(id, updatedEquivalent);
+      setCo2EquivalentsTypes((prevEquivalents) =>
+        prevEquivalents.map((item) => (item.id === id ? updated : item))
+      );
+    } catch (error) {
+      console.error('Error updating Equivalent');
+    }
+    finally {
+        setLoading(false);
+      }
+  };
+
   return (
-    <Co2EquivalentContext.Provider value={{ co2Equivalents, loading, fetchAllEquivalents, fetchEquivalentyById, createNewEquivalent, updateExistingEquivalent, removeEquivalent, fetchAllEquivalentsTypes, co2EquivalentsTypes, fetchEquivalentTypeById, createNewEquivalentType }}>
+    <Co2EquivalentContext.Provider value={{ co2Equivalents, loading, fetchAllEquivalents, fetchEquivalentyById, createNewEquivalent, updateExistingEquivalent, removeEquivalent, fetchAllEquivalentsTypes, co2EquivalentsTypes, fetchEquivalentTypeById, 
+    createNewEquivalentType , updateExistingEquivalentType}}>
       {children}
     </Co2EquivalentContext.Provider>
   );
