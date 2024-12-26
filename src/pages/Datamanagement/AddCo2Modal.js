@@ -71,7 +71,7 @@ const AddCo2Modal = ({ open, onClose }) => {
               <div className="d-flex justify-content-end mt-3">
                 <button type="submit" className="add-details-btn me-2 add-btn">
                   {" "}
-                  Add  
+                  {t("Add")}  
                 </button>
                 <button
                   type="submit"
@@ -79,7 +79,7 @@ const AddCo2Modal = ({ open, onClose }) => {
                   className="cancel-details-btn "
                   onClick={onClose}
                 >
-                  Cancel
+                   {t("Cancel")}
                 </button>
               </div>
             </form>
