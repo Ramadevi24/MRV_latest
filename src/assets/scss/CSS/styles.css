@@ -14,10 +14,6 @@
   left:0;
 }
 
-.lang-ar  .main-content {
-  margin-right: var(--vz-vertical-menu-width);
-  margin-left: auto;
-}
 
 /* .lang-ar .navbar-nav {
   padding-right: 0;
@@ -29,6 +25,10 @@
   }
   .hamburger-icon {
     display: none;
+  }
+  .lang-ar  .main-content {
+    margin-right: var(--vz-vertical-menu-width);
+    margin-left: auto;
   }
 }
 
