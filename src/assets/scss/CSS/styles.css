@@ -27,6 +27,9 @@
   .lang-ar [data-layout=vertical]:is([data-sidebar-size=sm], [data-sidebar-size=sm-hover]) #page-topbar {
       right: var(--vz-vertical-menu-width-sm);
   }
+  .hamburger-icon {
+    display: none;
+  }
 }
 
 .lang-ar .me-2 {
@@ -36,3 +39,5 @@
 .lang-ar .nav{
   padding-right: 0;
 }
+
+
