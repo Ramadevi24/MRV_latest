@@ -62,7 +62,7 @@ const AddFuelModal = ({ open, onClose }) => {
       <Container fluid>
         <Modal
           size="lg"
-          title="Add Fuel Details"
+          title={t("Add Fuel Details")}
           isOpen={open}
           onClose={onClose}
         >

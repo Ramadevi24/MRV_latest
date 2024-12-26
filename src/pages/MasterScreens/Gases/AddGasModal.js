@@ -78,7 +78,7 @@ const { t } = useTranslation();
       <Container fluid>
         <Modal
           size="lg"
-          title="Add Gas"
+          title={t("Add Gas")}
           isOpen={open}
           onClose={onClose}
         >
@@ -86,13 +86,13 @@ const { t } = useTranslation();
                 <Row>
             <Col md={6}>
                   
-                         <FormField label="Gas Type" isDropdown options={gasesOptions}  value={formValues.GasType}
+                         <FormField label={t("Gas Type")} isDropdown options={gasesOptions}  value={formValues.GasType}
                       onChange={handleChange("GasType")}
                       error={errors.GasType}/>
                     </Col>
                     <Col md={6}>
                     <FormField
-                      label="Gas Name"
+                      label={t("Gas Name")}
                       placeholder="N20"
                       value={formValues.gasName}
                       onChange={handleChange("gasName")}
@@ -111,7 +111,7 @@ const { t } = useTranslation();
                   className="add-details-btn  me-2"
                 >
                   {" "}
-                  Add Details
+                  {t("Add Details")}
                 </button>
                 <button
                   type="submit"
@@ -119,7 +119,7 @@ const { t } = useTranslation();
                   className="cancel-details-btn "
                   onClick={onClose}
                 >
-                  Cancel
+                  {t("Cancel")}
                 </button>
               </div>
             </form>

@@ -5,6 +5,7 @@ import FormField from "../../../Components/CommonComponents/FormField";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {EmiratesContext} from "../../../contexts/EmiratesContext"
+import { t } from 'i18next';
 
 const AddEmirateModal = ({ open, onClose }) => {
  const navigate = useNavigate();
@@ -61,7 +62,7 @@ const AddEmirateModal = ({ open, onClose }) => {
       <Container fluid>
         <Modal
           size="lg"
-          title="Add Emirate"
+          title={t("Add Emirate")}
           isOpen={open}
           onClose={onClose}
         >
@@ -69,8 +70,8 @@ const AddEmirateModal = ({ open, onClose }) => {
                 <Row>
             <Col md={12}>
                     <FormField
-                      label="Emirate"
-                      placeholder="Abu Dhabi"
+                      label={t("Emirate")}
+                      placeholder={t("Abu Dhabi")}
                       value={formValues.name}
                       onChange={handleChange("name")}
                       error={errors.name}
@@ -87,7 +88,7 @@ const AddEmirateModal = ({ open, onClose }) => {
                   className="add-details-btn  me-2"
                 >
                   {" "}
-                  Add Details
+                  {t("Add Details")}
                 </button>
                 <button
                   type="submit"
@@ -95,7 +96,7 @@ const AddEmirateModal = ({ open, onClose }) => {
                   className="cancel-details-btn "
                   onClick={onClose}
                 >
-                  Cancel
+                  {t("Cancel")}
                 </button>
               </div>
             </form>

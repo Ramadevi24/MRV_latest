@@ -53,7 +53,7 @@ const AddCo2Modal = ({ open, onClose }) => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Modal size="lg" title="Add Type" isOpen={open} onClose={onClose}>
+          <Modal size="lg" title={t("Add Type")} isOpen={open} onClose={onClose}>
             <form onSubmit={handleSubmit}>
               <Row>
                 <Col md={6}>
@@ -71,7 +71,7 @@ const AddCo2Modal = ({ open, onClose }) => {
               <div className="d-flex justify-content-end mt-3">
                 <button type="submit" className="add-details-btn me-2 add-btn">
                   {" "}
-                  Add  
+                  {t("Add")}  
                 </button>
                 <button
                   type="submit"
@@ -79,7 +79,7 @@ const AddCo2Modal = ({ open, onClose }) => {
                   className="cancel-details-btn "
                   onClick={onClose}
                 >
-                  Cancel
+                  {t("Cancel")}
                 </button>
               </div>
             </form>

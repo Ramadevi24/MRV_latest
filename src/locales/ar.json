@@ -159,11 +159,23 @@
   "Type":"نوع",
   "CO2 Equivalent Type Name":"اسم نوع مكافئات ثاني أكسيد الكربون",
 "Gas Group":"مجموعة الغاز",
-"ID":"معرف",
   "Gas Information":"معلومات الغاز",
   "Emirates Information":"معلومات الإمارات",
   "CO2 Equivalents" :"CO2 المعادلات",
-  "createdDate":"تاريخ الإنشاء"
+  "createdDate":"تاريخ الإنشاء",
+  "Abu Dhabi":"أبو ظبي",
+  "Add Details":"أضف التفاصيل",
+  "Gas Name":"اسم الغاز",
+  "Gas Type":"نوع الغاز",
+  "Add Gas":"أضف الغاز",
+  "Add Fuel Details":"أضف تفاصيل الوقود",
+  "Is Primary Fuel":"هو الوقود الأساسي",
+  "Carbon Content (Kg C/GJ)":"المحتوى الكربوني (Kg C/GJ)",
+  "Select Fuel Type":"اختر نوع الوقود",
+  "Select Value":"حدد القيمة",
+  "Aviation Gasoline":"بنزين الطيران",
+  "Add Type":"أضف النوع",
+  "Liquid":"سائل"
 
   
 
