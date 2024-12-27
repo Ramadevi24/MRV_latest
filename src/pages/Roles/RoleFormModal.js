@@ -113,7 +113,7 @@ const RoleFormModal = ({open, onClose}) => {
         <Modal
           isOpen={open}
           onClose={onClose}
-          title="Add Role"
+          title={t("Add Role")}
           size="lg"
         >
           <form onSubmit={formik.handleSubmit}>
@@ -231,10 +231,10 @@ const RoleFormModal = ({open, onClose}) => {
 
             <div className="d-flex justify-content-end mt-3" style={{marginRight: "4rem"}}>
               <Button type="submit" color="success" className="me-2 add-btn">
-                {"Submit"}
+                {t("Submit")}
               </Button>
               <Button type="button" color="danger" onClick={onClose}>
-                {"Cancel"}
+                {t("Cancel")}
               </Button>
             </div>
           </form>

@@ -53,12 +53,37 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
             } else if (windowSize > 1025) {
                 document.body.classList.remove('vertical-sidebar-enable');
                 (document.documentElement.getAttribute('data-sidebar-size') === 'none') ? document.documentElement.setAttribute('data-sidebar-size', 'sm') : document.documentElement.setAttribute('data-sidebar-size', 'lg');
-            } else if (windowSize <= 767) {
+            } 
+            else if (windowSize <= 767) {
                 document.body.classList.add('vertical-sidebar-enable');
                 document.documentElement.setAttribute('data-sidebar-size', 'lg');
             }
         }
+
+        
           
+        const hamburger = document.querySelector(".hamburger-icon"); 
+        const appMenu = document.querySelector(".app-menu"); 
+        
+        // Arabic Mobile Menu
+        hamburger.addEventListener('click', function (event) {
+            // event.stopPropagation(); 
+            if (appMenu.style.display === 'none' || appMenu.style.display === '') {
+                appMenu.style.display = 'block'; // Show the menu
+            } else {
+                appMenu.style.display = 'none'; 
+            }
+        });
+        
+        // Hide menu when clicking outside
+        document.addEventListener('click', function (event) {
+            if (!appMenu.contains(event.target) && !hamburger.contains(event.target)) {
+                appMenu.style.display = 'none'; // Hide the menu
+            }
+        });
+        
+        
+    
 
 
         //Two column menu
@@ -66,6 +91,8 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
             document.body.classList.contains('twocolumn-panel') ? document.body.classList.remove('twocolumn-panel') : document.body.classList.add('twocolumn-panel');
         }
     };
+
+
 
     return (
         <React.Fragment>

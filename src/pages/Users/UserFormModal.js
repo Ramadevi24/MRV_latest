@@ -133,7 +133,7 @@ const UserFormModal = ({ isOpen, onClose, userId }) => {
     <Modal
       size="lg"
       //   title={userId ? "Edit User" : "Add User"}
-      title="Add User"
+      title={t("Add User")}
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -256,7 +256,7 @@ const UserFormModal = ({ isOpen, onClose, userId }) => {
                 <Input
                   type="tel"
                   className="form-control"
-                  placeholder="Enter phone number"
+                  placeholder={t("Enter phone number")}
                   id="phone"
                   name="phone"
                   onChange={validation.handleChange}
@@ -389,10 +389,10 @@ const UserFormModal = ({ isOpen, onClose, userId }) => {
         </Row>
         <div className="modal-footer mt-3">
           <Button color="success" type="submit" className="me-2 add-btn">
-            Save
+            {t("Save")}
           </Button>
           <Button color="danger" type="button" onClick={onClose}>
-            Cancel
+            {t("Cancel")}
           </Button>
         </div>
       </Form>
