@@ -56,7 +56,6 @@ const CoverSignIn = (props) => {
                 });
 
                 const data = await response.json();
-                console.log(data, 'data');
                 if (data.token) {
                     if (rememberMe) {
                         localStorage.setItem("savedEmail", values.email);

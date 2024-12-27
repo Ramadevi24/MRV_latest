@@ -60,16 +60,8 @@ const { t } = useTranslation();
   };
 
   const gasesOptions = [
-    { name: 'Carbon Dioxide (CO2)', name: 'co2' },
-    { name: 'Methane (CH4)', name: 'ch4' },
-    { name: 'Nitrous Oxide (N2O)', name: 'n2o' },
-    { name: 'Sulfur Dioxide (SO2)', name: 'so2' },
-    { name: 'Ammonia (NH3)', name: 'nh3' },
-    { name: 'Ozone (O3)', name: 'o3' },
-    { name: 'Nitrogen Dioxide (NO2)', name: 'no2' },
-    { name: 'Carbon Monoxide (CO)', name: 'co' },
-    { name: 'Hydrogen Sulfide (H2S)', name: 'h2s' },
-    { name: 'Formaldehyde (CH2O)', name: 'ch2o' },
+    { name: 'Greenhouse Gases (GHGs)', name: 'Greenhouse Gases (GHGs)' },
+    { name: 'Precursor Gases', name: 'Precursor Gases' }
   ];
 
   return (
@@ -88,7 +80,7 @@ const { t } = useTranslation();
                   
                          <FormField label={t("Gas Type")} isDropdown options={gasesOptions}  value={formValues.GasType}
                       onChange={handleChange("GasType")}
-                      error={errors.GasType}/>
+                      error={errors.GasType} valueKey="name" labelKey="name"/>
                     </Col>
                     <Col md={6}>
                     <FormField

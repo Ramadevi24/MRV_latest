@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   ModalHeader,
   ModalBody,
@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 
 const AddTenantModal = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
-  const { addTenant } = useContext(TenantContext);
+  const { addTenant, fetchAllTenants } = useContext(TenantContext);
   const [generalError, setGeneralError] = useState("");
 
   const validationSchema = Yup.object({
@@ -37,37 +37,24 @@ const AddTenantModal = ({ isOpen, onClose }) => {
         ...values,
         countryID: 1,
         regionID: 1,
+        isActive: true,
       };
       try {
-        setGeneralError(""); // Clear any previous errors
-        const response = await addTenant(createPayload); // Ensure addTenant handles API errors
-
-        if (response.status === 201) { // Adjust according to your API's success status
-          toast.success(t("Tenant created successfully"), { autoClose: 3000 });
-          onClose()
-        } 
+        await addTenant(createPayload);
+        toast.success(t("Tenant created successfully"), { autoClose: 3000 });
+        await fetchAllTenants();
+        onClose();
       } catch (error) {
-        // if (error.response && error.response.status === 409) {
-        //   setGeneralError(
-        //     error.response.data.message || t("Tenant already exists")
-        //   );
-        // } else if (error.response && error.response.data.message) {
-        //   setGeneralError(error.response.data.message);
-        // } else {
-        //   setGeneralError(t("An unexpected error occurred. Please try again."));
-        // }
+      console.log(error, 'error');
+        error.response?.data?.message || // From response body
+        error.response?.headers["error-message"] ||
         console.log("Error adding tenant:", error);
       }
     },
   });
 
   return (
-    <Modal
-      size="lg"
-      title={t("Add Tenant")}
-      isOpen={isOpen} // Corrected prop
-      onClose={onClose} // Toggle properly passed
-    >
+    <Modal size="lg" title={t("Add Tenant")} isOpen={isOpen} onClose={onClose}>
       <Form onSubmit={formik.handleSubmit}>
         <ModalBody>
           <FormGroup>
