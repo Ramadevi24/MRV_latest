@@ -50,7 +50,7 @@ const AddEmirateModal = ({ open, onClose }) => {
       await createEmirate(createFormData);
       await fetchAllEmirates();
       onClose();
-      toast.success("Emirate created successfully", { autoClose: 3000 });
+      toast.success("Location created successfully", { autoClose: 3000 });
       navigate("/locations");
     } catch (error) {
       toast.error("Error creating emirate");
@@ -63,7 +63,7 @@ const AddEmirateModal = ({ open, onClose }) => {
       <Container fluid>
         <Modal
           size="lg"
-          title={t("Add Emirate")}
+          title={t("Add Location")}
           isOpen={open}
           onClose={onClose}
         >

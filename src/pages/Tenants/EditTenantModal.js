@@ -44,8 +44,10 @@ const EditTenantModal = ({ isOpen, onClose, tenantId }) => {
     onSubmit: async (values) => {
       const updatePayload = {
         ...values,
+        tenantID: tenantId,
         countryID: 1,
         regionID: 1,
+        "isActive": true
       };
       try {
         await editTenant(tenantId, updatePayload);

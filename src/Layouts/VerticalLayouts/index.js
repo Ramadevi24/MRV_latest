@@ -182,8 +182,6 @@ import {
         (permission) => permission.permissionName
       );
 
-      console.log('userPermissions', userPermissions);
-
     const renderMenuItems = (items) => {
       return items.map((item, key) => (
         <React.Fragment key={key}>

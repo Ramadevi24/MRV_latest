@@ -69,14 +69,21 @@ const EntityGrid = () => {
           return 0;
         });
 
-        const filteredSortedData = sortedData?.filter((data) =>
-          ["entityName",
+        const filteredSortedData = sortedData?.filter((data) => {
+          if (!data) return false; // Ensure 'data' is valid before accessing properties
+        
+          return ["entityName",
             "contactDetails.name",
             "contactDetails.email",
-            "contactDetails.phoneNumber", "contactDetails.title", "createdDate"].some((key) =>
-            data[key].toLowerCase().includes(searchTerm.toLowerCase())
-          )
-        );
+            "contactDetails.phoneNumber",
+            "contactDetails.title",
+            "createdDate"].some((key) => {
+              const value = key.includes(".")
+                ? key.split(".").reduce((obj, k) => obj?.[k], data) // Handle nested keys
+                : data[key];
+              return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+            });
+        });
       
         const indexOfLastPage = currentPage * dataPerPage;
         const indexOfFirstPage = indexOfLastPage - dataPerPage;

@@ -104,9 +104,9 @@ const EmirateGrid = () => {
       await fetchAllEmirates();
       setEditingRowId(null);
       setEditingEmirate({});
-      toast.success("Emirate updated successfully");
+      toast.success("Location updated successfully");
     } catch (error) {
-      toast.error("Error updating Emirate");
+      toast.error("Error updating Location");
     }
   };
 
@@ -150,7 +150,7 @@ const EmirateGrid = () => {
                       fontWeight: "bold",
                     }}
                   >
-                    {t("Emirates Information")}
+                    {t("Location Information")}
                   </h4>
                 </CardHeader>
 
