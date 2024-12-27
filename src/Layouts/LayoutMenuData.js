@@ -578,8 +578,8 @@ const Navdata = () => {
       subItems: [
         {
           id: "Emirate",
-          label: "Emirate",
-          link: "/emirate",
+          label: "Locations",
+          link: "/locations",
           parentId: "adminmasterScreens",
         },
         {

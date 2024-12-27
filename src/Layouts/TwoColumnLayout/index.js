@@ -24,6 +24,7 @@ import {
   organizationsPermissions,
   rolesPermissions,
   permissionsPermissions,
+  entityPermissions,
 } from "../../utils/useHasPermission";
 
 const TwoColumnLayout = (props) => {
@@ -215,7 +216,7 @@ const TwoColumnLayout = (props) => {
                                                         },
                                                         hasPermissionForEntity(
                                                             userPermissions,
-                                                            organizationsPermissions
+                                                            entityPermissions
                                                         ) && {
                                                             id: "organizations",
                                                             label: "Organizations",

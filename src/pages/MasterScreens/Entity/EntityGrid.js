@@ -70,7 +70,7 @@ const EntityGrid = () => {
         });
 
         const filteredSortedData = sortedData?.filter((data) =>
-          ["name",
+          ["entityName",
             "contactDetails.name",
             "contactDetails.email",
             "contactDetails.phoneNumber", "contactDetails.title", "createdDate"].some((key) =>
@@ -88,7 +88,7 @@ const EntityGrid = () => {
         const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
         const handleEditRow = (row) => {
-          setEditingRowId(row.entityID);
+          setEditingRowId(row.entityId);
           setEditingEntity({ ...row });
         };
       
@@ -143,8 +143,8 @@ const EntityGrid = () => {
     };
 
   const columns = [
-    { key: "entityID", label: "ID" },
-    { key: "name", label: "Entity" },
+    { key: "entityId", label: "ID" },
+    { key: "entityName", label: "Entity" },
     { key: "contactDetails.name", label: "Contact Name" },
     { key: "contactDetails.email", label: "Contact Email" },
     { key: "contactDetails.phoneNumber", label: "Contact Phone" },
@@ -239,22 +239,22 @@ const EntityGrid = () => {
                         </thead>
                         <tbody className="list form-check-all">
                           {currentData.map((item) => (
-                            <tr key={item.entityID}>
-                              <td className="name">{item.entityID}</td>
+                            <tr key={item.entityId}>
+                              <td className="name">{item.entityId}</td>
                               <td className="name">
-                                {editingRowId === item.entityID ? (
+                                {editingRowId === item.entityId ? (
                                   <Input
                                     type="text"
-                                    name="name"
-                                    value={editingEntity.name}
+                                    name="entityName"
+                                    value={editingEntity.entityName}
                                     onChange={handleInputChange}
                                   />
                                 ) : (
-                                  item.name
+                                  item.entityName
                                 )}
                               </td>
                               <td className="createdDate">
-                                {editingRowId === item.entityID ? (
+                                {editingRowId === item.entityId ? (
                                   <Input
                                     type="text"
                                     name="contactDetails.name"
@@ -266,7 +266,7 @@ const EntityGrid = () => {
                                 )}
                               </td>
                               <td className="createdDate">
-                                {editingRowId === item.entityID ? (
+                                {editingRowId === item.entityId ? (
                                   <Input
                                     type="text"
                                     name="contactDetails.email"
@@ -278,7 +278,7 @@ const EntityGrid = () => {
                                 )}
                               </td>
                               <td className="createdDate">
-                                {editingRowId === item.entityID ? (
+                                {editingRowId === item.entityId ? (
                                   <Input
                                     type="text"
                                     name="contactDetails.phoneNumber"
@@ -290,7 +290,7 @@ const EntityGrid = () => {
                                 )}
                               </td>
                               <td className="createdDate">
-                                {editingRowId === item.entityID ? (
+                                {editingRowId === item.entityId ? (
                                   <Input
                                     type="text"
                                     name="contactDetails.title"
@@ -306,7 +306,7 @@ const EntityGrid = () => {
                               </td>
                               <td>
                                 <div className="d-flex gap-2">
-                                  {editingRowId === item.entityID ? (
+                                  {editingRowId === item.entityId ? (
                                     <>
                                       <Button
                                         color="success"
@@ -343,7 +343,7 @@ const EntityGrid = () => {
                                         <button
                                           className="btn btn-sm btn-danger remove-item-btn"
                                           onClick={() =>
-                                            handleDelete(item.entityID)
+                                            handleDelete(item.entityId)
                                           }
                                           data-bs-toggle="modal"
                                           data-bs-target="#deleteRecordModal"

@@ -1,7 +1,8 @@
 import axios from 'axios';
+import config from '../config';
 
-const API_URL = 'http://localhost:5000/api/Co2EquiGases';
-const API_type_URL = 'http://localhost:5000/api/Co2Equivalent';
+const API_URL = `${config.api.API_URL}/Co2EquiGases`;
+const API_type_URL = `${config.api.API_URL}/Co2Equivalent`;
 const AUTH_TOKEN = localStorage.getItem('AuthToken');
 
 export const getAllEquivalents = async () => {

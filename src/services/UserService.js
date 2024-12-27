@@ -1,6 +1,7 @@
 import axios from "axios";
+import config from "../config";
 
-const API_URL = "https://atlas.smartgeoapps.com/MRVAPI/api/User";
+const API_URL = `${config.api.API_URL}/User`;
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 
 // Get all Users

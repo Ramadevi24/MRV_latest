@@ -1,7 +1,9 @@
 import axios from "axios";
+import config from '../config';
 
 // const API_URL = "https://atlas.smartgeoapps.com/MRVAPI/api/Tenant";
-const API_URL = "http://localhost:5000/api/Tenant";
+const API_URL = `${config.api.API_URL}/Tenant`;
+console.log(API_URL, 'API_URL');
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 
 // Get all tenants
@@ -10,7 +12,7 @@ export const getTenants = async () => {
     const response = await axios.get(API_URL, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response.$values;
+    return response.value.$values;
   } catch (error) {
     throw new Error("Error fetching tenants");
   }
@@ -30,7 +32,7 @@ export const getTenantById = async (id) => {
 // Create a new tenant
 export const createTenant = async (tenantData) => {
   try {
-    const response = await axios.post(`${API_URL}`, tenantData, {
+    const response = await axios.post(`${API_URL}/CreateTenant`, tenantData, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
     return response;

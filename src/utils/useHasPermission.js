@@ -1,37 +1,66 @@
 export const usersPermissions = [
-    "create_users",
-    "edit_users",
-    "delete_users",
-    "view_users",
+    "CreateUser",
+    "DeleteUser",
+    "UpdateUser",
+    "ViewUser",
   ];
   
   export const tenantsPermissions = [
-    "create_tenant",
-    "edit_tenant",
-    "delete_tenant",
-    "view_tenant",
+    "CreateTenant",
+    "UpdateTenant",
+    "DeleteTenant",
+    "ViewTenant",
   ];
   
-  export const organizationsPermissions = [
-    "create_organization",
-    "edit_organization",
-    "delete_organization",
-    "view_organization",
-  ];
+  // export const organizationsPermissions = [
+  //   "CreateEntity",
+  //   "UpdateEntity",
+  //   "DeleteEntity",
+  //   "ViewEntity",
+  // ];
   
   export const rolesPermissions = [
-    "create_role",
-    "edit_role",
-    "delete_role",
-    "view_role",
+    "CreateRole",
+    "UpdateRole",
+    "DeleteRole",
+    "ViewRole",
   ];
   
   export const permissionsPermissions = [
-    "create_permission",
-    "edit_permission",
-    "delete_permission",
-    "view_permission",
+    "CreatePermission",
+    "updatePermission",
+    "DeletePermission",
+    "ViewPermission",
   ];
+
+  export const entityPermissions =[
+    "CreateEntity",
+    "UpdateEntity",
+    "DeleteEntity",
+    "ViewEntity"
+  ]
+
+  export const emiratesPermissions = [
+    "CreateEmirates",
+    "ViewEmirates",
+    "UpdateEmirates",
+    "DeleteEmirates",
+  ];
+
+  export const  GasPermissions = [
+    "CreateGas",
+    "ViewGas",
+    "UpdateGas",
+    "DeleteGas",
+  ];
+
+  export const facilityConfigurationPermissions = [
+    "CreateFacilityConfiguration",
+    "ViewFacilityConfiguration",
+    "UpdateFacilityConfiguration",
+    "DeleteFacilityConfiguration",
+  ];
+
 
 export const hasPermissionForEntity = (userPermissions, entityPermissions) => {
     return userPermissions?.some((permission) =>

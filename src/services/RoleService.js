@@ -1,7 +1,8 @@
 import axios from "axios";
+import config from "../config";
 
-const API_URL = "https://atlas.smartgeoapps.com/MRVAPI/api/Role/Roles";
-const baseURL = 'https://atlas.smartgeoapps.com/MRVAPI/api/Role/';
+const API_URL = `${config.api.API_URL}/Role/Roles`;
+const baseURL = `${config.api.API_URL}/Role/`;
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 
 // Get all Roles
@@ -32,7 +33,7 @@ export const getRoles =async (tenantID = null) => {
 // Create a new Role
 export const createRole = async (RoleData) => {
   try {
-    const response = await axios.post(`https://atlas.smartgeoapps.com/MRVAPI/api/Role`, RoleData, {
+    const response = await axios.post(`${config.api.API_URL}/Role`, RoleData, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
     return response;

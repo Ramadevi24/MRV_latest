@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import {
   ModalHeader,
   ModalBody,
@@ -19,10 +19,11 @@ import { toast } from "react-toastify";
 const AddTenantModal = ({ isOpen, onClose }) => {
   const { t } = useTranslation();
   const { addTenant } = useContext(TenantContext);
+  const [generalError, setGeneralError] = useState("");
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Please enter tenant name"),
-    description: Yup.string().required("Please enter description"),
+    name: Yup.string().required(t("Please enter tenant name")),
+    description: Yup.string().required(t("Please enter description")),
   });
 
   const formik = useFormik({
@@ -38,11 +39,24 @@ const AddTenantModal = ({ isOpen, onClose }) => {
         regionID: 1,
       };
       try {
-        await addTenant(createPayload);
-        toast.success(t("Tenant created successfully"), { autoClose: 3000 });
-        onClose();
+        setGeneralError(""); // Clear any previous errors
+        const response = await addTenant(createPayload); // Ensure addTenant handles API errors
+
+        if (response.status === 201) { // Adjust according to your API's success status
+          toast.success(t("Tenant created successfully"), { autoClose: 3000 });
+          onClose()
+        } 
       } catch (error) {
-        toast.error(t("Error creating tenant"), { autoClose: 3000 });
+        // if (error.response && error.response.status === 409) {
+        //   setGeneralError(
+        //     error.response.data.message || t("Tenant already exists")
+        //   );
+        // } else if (error.response && error.response.data.message) {
+        //   setGeneralError(error.response.data.message);
+        // } else {
+        //   setGeneralError(t("An unexpected error occurred. Please try again."));
+        // }
+        console.log("Error adding tenant:", error);
       }
     },
   });
@@ -92,6 +106,7 @@ const AddTenantModal = ({ isOpen, onClose }) => {
               <FormFeedback>{formik.errors.description}</FormFeedback>
             ) : null}
           </FormGroup>
+          {generalError && <p className="error-text">{generalError}</p>}
         </ModalBody>
         <div className="modal-footer mt-3">
           <Button color="success" type="submit" className="me-2 add-btn">

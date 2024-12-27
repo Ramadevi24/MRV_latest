@@ -13,9 +13,12 @@ import {
     hasPermissionForEntity,
     usersPermissions,
     tenantsPermissions,
-    organizationsPermissions,
     rolesPermissions,
     permissionsPermissions,
+    entityPermissions,
+    emiratesPermissions,
+    GasPermissions,
+    facilityConfigurationPermissions
   } from "../../utils/useHasPermission";
 
   const VerticalLayout = (props) => {
@@ -179,6 +182,8 @@ import {
         (permission) => permission.permissionName
       );
 
+      console.log('userPermissions', userPermissions);
+
     const renderMenuItems = (items) => {
       return items.map((item, key) => (
         <React.Fragment key={key}>
@@ -249,7 +254,7 @@ import {
                         link: "/tenants",
                         icon: "ri-key-2-line", // Add the icon class here
                       },
-                      hasPermissionForEntity(userPermissions, organizationsPermissions) && {
+                      hasPermissionForEntity(userPermissions, entityPermissions) && {
                         id: "Entity",
                         icon: "ri-team-line", // Add the icon class here
                         label: "Entity",

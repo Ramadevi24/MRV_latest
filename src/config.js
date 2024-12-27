@@ -1,3 +1,4 @@
+
 module.exports = {
   google: {
     API_KEY: "",
@@ -8,6 +9,6 @@ module.exports = {
     APP_ID: "",
   },
   api: {
-    API_URL: "https://api-node.themesbrand.website",
+    API_URL: "http://localhost:5000/api",
   }
 };

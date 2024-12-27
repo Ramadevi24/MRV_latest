@@ -51,7 +51,7 @@ const AddEmirateModal = ({ open, onClose }) => {
       await fetchAllEmirates();
       onClose();
       toast.success("Emirate created successfully", { autoClose: 3000 });
-      navigate("/emirate");
+      navigate("/locations");
     } catch (error) {
       toast.error("Error creating emirate");
     }

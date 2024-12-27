@@ -1,6 +1,7 @@
 import axios from 'axios';
+import config from '../config';
 
-const API_URL = 'http://localhost:5000/api/FuelManager';
+const API_URL = `${config.api.API_URL}/FuelManager`;
 const AUTH_TOKEN = localStorage.getItem('AuthToken');
 
 export const getAllFuels = async () => {

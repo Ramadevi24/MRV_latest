@@ -12,6 +12,7 @@ const TenantForm = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { addTenant } = React.useContext(TenantContext);
+  const [generalError, setGeneralError] = useState(''); 
 
   const validationSchema = Yup.object({
     name: Yup.string()
@@ -32,11 +33,18 @@ const TenantForm = () => {
         regionID: 1,
       };
       try {
+        setGeneralError('');
         await addTenant(createPayload);
         toast.success(t('Tenant created successfully'), { autoClose: 3000 });
         navigate('/tenants');
       } catch (error) {
-        toast.error(t('Error creating tenant'), { autoClose: 3000 });
+        if (error.response && error.response.status === 409) {
+          setGeneralError(error.response.data.message || 'Tenant already exists');
+        } else if (error.response && error.response.data.message) {
+          setGeneralError(error.response.data.message);
+        } else {
+          setGeneralError('An unexpected error occurred. Please try again.');
+        }
       }
     },
   });
@@ -129,6 +137,7 @@ const TenantForm = () => {
                           <FormFeedback>{formik.errors.description}</FormFeedback>
                         ) : null}
                       </FormGroup>
+                      {generalError && <p className='error-text'>{generalError}</p>}
           <div className="d-flex justify-content-end  mt-3" style={{marginRight:'4rem'}}>
                 <Button type="submit" color="success" className=" me-2">
                   {t('Submit')}

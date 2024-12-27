@@ -14,13 +14,17 @@ export const TenantProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    fetchAllTenants();
+  }, []);
+
   const fetchAllTenants = async () => {
     try {
       const data = await getTenants();
       setTenants(data);
       setLoading(false);
     } catch (error) {
-      toast.error('Error fetching tenants');
+      console.error('Error fetching tenants');
       setLoading(false);
     }
   };

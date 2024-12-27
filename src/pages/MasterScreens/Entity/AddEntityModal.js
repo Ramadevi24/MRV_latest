@@ -5,15 +5,19 @@ import FormField from "../../../Components/CommonComponents/FormField";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import {EntityContext} from "../../../contexts/EntityContext"
+import { TenantContext } from '../../../contexts/TenantContext';
 import { useTranslation } from "react-i18next";
 
 const AddEntityModal = ({ open, onClose }) => {
  const navigate = useNavigate();
    const {createNewEntity, fetchAllEntity} = useContext(EntityContext);
+   const {tenants} = useContext(TenantContext);
    const { t } = useTranslation();
-   const userPermissions = JSON.parse(localStorage.getItem("UserPermissions")) || [];
    const [formValues, setFormValues] = useState({
     entityName: "",
+    tenantID:"",
+    address:"",
+    description:"",
     contactDetails: {
     name: "",
     email: "",
@@ -48,6 +52,15 @@ const AddEntityModal = ({ open, onClose }) => {
     if (!formValues.entityName.trim()) {
       newErrors.entityName = "Entity is required.";
     }
+    if (!formValues.tenantID.trim()) {
+      newErrors.tenantID = "Please select a tenant.";
+    }
+    if (!formValues.description.trim()) {
+      newErrors.description = "Please add a description.";
+    }
+    if (!formValues.address.trim()) {
+      newErrors.address = "Address is required.";
+    }
     if (!formValues.contactDetails.name.trim()) {
       newErrors.name = "Contact Name is required.";
     }
@@ -80,7 +93,9 @@ const AddEntityModal = ({ open, onClose }) => {
              title: formValues.contactDetails.title,
              phoneNumber: formValues.contactDetails.phoneNumber,
              },
-             tenantID: userPermissions.tenantID || "", 
+             tenantID: formValues.tenantID, 
+             address: formValues.address,
+              description: formValues.description
          };
          try {
            await createNewEntity(createFormData);
@@ -105,13 +120,39 @@ const AddEntityModal = ({ open, onClose }) => {
         >
             <form onSubmit={handleSubmit}>
                 <Row>
-            <Col md={12}>
+            <Col md={6}>
                     <FormField
                       label="Entity"
                       placeholder="DOE"
                       value={formValues.entityName}
                       onChange={handleChange("entityName")}
                       error={errors.entityName}
+                      type="text"
+                    />
+                    </Col>
+                   
+            <Col md={6}>
+                    <FormField
+                      label={t("Tenants")}
+                      options={tenants}
+                      isDropdown
+                      placeholder={t("Select Tenant")}
+                      value={formValues.tenantID}
+                      onChange={handleChange("tenantID")}
+                      error={errors.tenantID}
+                      valueKey = "tenantID"
+                      labelKey = "name"
+                    />
+                    </Col>
+                    </Row>
+                    <Row>
+            <Col md={6}>
+                    <FormField
+                      label="Address"
+                      placeholder="Hyderabad"
+                      value={formValues.address}
+                      onChange={handleChange("address")}
+                      error={errors.address}
                       type="text"
                     />
                     </Col>
@@ -164,7 +205,21 @@ const AddEntityModal = ({ open, onClose }) => {
     />
   </Col>
 </Row>
+
                 </div>
+                <Row>
+            <Col md={12} style={{marginTop:'10px'}}>
+                    <FormField
+                      label="Description"
+                      placeholder="Write here..."
+                      value={formValues.description}
+                      onChange={handleChange("description")}
+                      error={errors.description}
+                      type="textarea"
+                      rows="3"
+                    />
+                    </Col>
+                    </Row>
                     <div
                 className="d-flex justify-content-end mt-3"
                

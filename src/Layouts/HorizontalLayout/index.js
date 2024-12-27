@@ -14,6 +14,7 @@ import {
   organizationsPermissions,
   rolesPermissions,
   permissionsPermissions,
+  entityPermissions,
 } from "../../utils/useHasPermission";
 
 const HorizontalLayout = (props) => {
@@ -96,7 +97,7 @@ const HorizontalLayout = (props) => {
                       link: "/tenants",
                       icon: "ri-key-2-line",
                     },
-                    hasPermissionForEntity(userPermissions, organizationsPermissions) && {
+                    hasPermissionForEntity(userPermissions, entityPermissions) && {
                       id: "organizations",
                       label: "Organizations",
                       link: "/organizations",

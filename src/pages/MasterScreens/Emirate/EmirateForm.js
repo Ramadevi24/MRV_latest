@@ -45,7 +45,7 @@ const EmirateForm = () => {
       try {
         await createEmirate(createFormData);
         toast.success(t("Emirate created successfully"), { autoClose: 3000 });
-        navigate("/emirate");
+        navigate("/locations");
       } catch (error) {
         toast.error(t("Error creating user"));
       }

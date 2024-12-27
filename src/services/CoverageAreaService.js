@@ -1,6 +1,7 @@
 import axios from 'axios';
+import config from '../config';
 
-const API_BASE_URL = 'http://localhost:5000/api/CoverageAreaOfTheData';
+const API_BASE_URL = `${config.api.API_URL}/CoverageAreaOfTheData`;
 const AUTH_TOKEN = localStorage.getItem('AuthToken');
 
 export const getCoverageArea = async () => {

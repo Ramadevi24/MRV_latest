@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import CryptoJS from "crypto-js"; // Assuming you are using CryptoJS for encryption
 import withRouter from "../../../Components/Common/withRouter";
 import { useAuth } from "../../../contexts/AuthContext";
+import config from "../../../config";
 
 const CoverSignIn = (props) => {
     const navigate = useNavigate();
@@ -46,7 +47,7 @@ const CoverSignIn = (props) => {
             setLoading(true);
             try {
                 const encryptedPassword = CryptoJS.SHA256(values.password).toString();
-                const response = await fetch("https://atlas.smartgeoapps.com/MRVAPI/api/Authentication/login", {
+                const response = await fetch(`${config.api.API_URL}/Authentication/login`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -55,6 +56,7 @@ const CoverSignIn = (props) => {
                 });
 
                 const data = await response.json();
+                console.log(data, 'data');
                 if (data.token) {
                     if (rememberMe) {
                         localStorage.setItem("savedEmail", values.email);

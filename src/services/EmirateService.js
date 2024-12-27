@@ -1,6 +1,7 @@
 import axios from 'axios';
+import config from '../config';
 
-const API_BASE_URL = 'http://localhost:5000/api/Emirates';
+const API_BASE_URL = `${config.api.API_URL}/Emirates`;
 const AUTH_TOKEN = localStorage.getItem('AuthToken');
 
 export const getEmirates = async () => {

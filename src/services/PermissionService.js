@@ -1,6 +1,7 @@
 import axios from "axios";
+import config from "../config";
 
-const API_URL = "https://atlas.smartgeoapps.com/MRVAPI/api/Permissions";
+const API_URL = `${config.api.API_URL}/Permissions`;
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 
 // Get all Permissions
