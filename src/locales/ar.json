@@ -183,7 +183,10 @@
   "Lock screen":"قفل الشاشة",
   "Logout":"تسجيل الخروج",
   "Select User Role":"حدد دور المستخدم",
-  "Enter Role Description":"أدخل وصف الدور"
+  "Enter Role Description":"أدخل وصف الدور",
+  "Location Information":"معلومات الموقع",
+  "Locations":"المواقع",
+  "Add Location":"أضف الموقع"
 
   
 

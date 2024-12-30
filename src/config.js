@@ -10,5 +10,6 @@ module.exports = {
   },
   api: {
     API_URL: "http://localhost:5000/api",
+    // API_URL: "https://atlas.smartgeoapps.com/MRVAPI/api",
   }
 };
