@@ -42,6 +42,10 @@ const EmirateGrid = () => {
   const handleDelete = (id) => {
     setEmirateToDelete(id);
     setDeleteModal(true);
+    const totalPages = Math.ceil(updateEmirate.length / 10);
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages); // Go to the last available page
+    }
   };
 
   const confirmDelete = async () => {
