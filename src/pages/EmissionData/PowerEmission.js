@@ -457,6 +457,8 @@ function PowerEmission() {
                       ]}
                       onChange={handleTierChange}
                       value={tierLevel}
+                      valueKey ="name"
+                      labelKey ="name"
                     />
                   </Col>
 
