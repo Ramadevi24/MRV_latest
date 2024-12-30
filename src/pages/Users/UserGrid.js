@@ -255,8 +255,8 @@ const UserGrid = () => {
                               <th className="sort" data-sort="status">
                                {t('Delivery Status')}
                               </th>
-                              <th className="sort" data-sort="action">
-                                {t('Action')}
+                              <th>
+                                {t('Actions')}
                               </th>
                             </tr>
                           </thead>

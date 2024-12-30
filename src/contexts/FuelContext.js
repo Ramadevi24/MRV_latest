@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { getAllFuels, getByFuelId, CreateFuel, updateFuel, deleteFuel } from '../services/FuelManagerService';
+import { toast } from 'react-toastify';
 
 export const FuelContext = createContext();
 
@@ -63,8 +64,9 @@ export const FuelProvider = ({ children }) => {
     try {
       await deleteFuel(id);
       setFuels(fuels.filter(fuel => fuel.id !== id));
+       toast.success('Fuel deleted successfully');
     } catch (err) {
-      setError(err);
+      toast.error('Error deleting Fuel');
     } finally {
       setLoading(false);
     }

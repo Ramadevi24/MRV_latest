@@ -28,7 +28,7 @@ const AddEmirateModal = ({ open, onClose }) => {
   const validate = () => {
     const newErrors = {};
     if (!formValues.name.trim()) {
-      newErrors.name = t("Emirate is required.");
+      newErrors.name = t("Location Name is required.");
     }
     return newErrors;
   };
@@ -51,9 +51,10 @@ const AddEmirateModal = ({ open, onClose }) => {
       await fetchAllEmirates();
       onClose();
       toast.success("Location created successfully", { autoClose: 3000 });
+      setFormValues({  name: ""})
       navigate("/locations");
     } catch (error) {
-      toast.error("Error creating emirate");
+      toast.error("Error creating location");
     }
   };
 
@@ -71,7 +72,7 @@ const AddEmirateModal = ({ open, onClose }) => {
                 <Row>
             <Col md={12}>
                     <FormField
-                      label={t("Emirate")}
+                      label={t("Location Name")}
                       placeholder={t("Abu Dhabi")}
                       value={formValues.name}
                       onChange={handleChange("name")}

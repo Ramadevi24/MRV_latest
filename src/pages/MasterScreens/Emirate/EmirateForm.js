@@ -44,10 +44,10 @@ const EmirateForm = () => {
         };
       try {
         await createEmirate(createFormData);
-        toast.success(t("Emirate created successfully"), { autoClose: 3000 });
+        toast.success(t("Location created successfully"), { autoClose: 3000 });
         navigate("/locations");
       } catch (error) {
-        toast.error(t("Error creating user"));
+        toast.error(t("Error creating location"));
       }
     },
   });

@@ -91,11 +91,15 @@ const TenantsGrid = () => {
     return 0;
   });
 
-  const filteredTenants = sortedTenants?.filter((tenant) =>
-    ["name", "description", "createdDate"].some((key) =>
-      tenant[key].toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  const filteredTenants = sortedTenants?.filter((data) =>{
+    if (!data) return false; 
+  return["name", "description", "createdDate"].some((key) =>{
+    const value = key.includes(".")
+    ? key.split(".").reduce((obj, k) => obj?.[k], data) // Handle nested keys
+    : data[key];
+    return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+  })
+});
 
   const indexOfLastTenant = currentPage * tenantsPerPage;
   const indexOfFirstTenant = indexOfLastTenant - tenantsPerPage;
@@ -224,10 +228,10 @@ const TenantsGrid = () => {
                                 {t("Created Date")}
                               </th>
                               <th className="sort" data-sort="status">
-                                {t("Delivery Status")}
+                                {t("Status")}
                               </th>
-                              <th className="sort" data-sort="action">
-                                {t("Action")}
+                              <th>
+                                {t("Actions")}
                               </th>
                             </tr>
                           </thead>
@@ -241,9 +245,10 @@ const TenantsGrid = () => {
                                 <td className="createdDate">
                                   {formatDate(tenant.createdDate)}
                                 </td>
+
                                 <td className="status">
                                   <span className="badge bg-success-subtle text-success text-uppercase">
-                                    Active
+                                    {tenant.isActive === true ? "Active" : "Inactive"}
                                   </span>
                                 </td>
                                 <td>

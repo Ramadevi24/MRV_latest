@@ -246,10 +246,10 @@ const GasGrid = () => {
                             <tr>
                               {columns.map((column) => (
                                 <th
-                                  key={column.key}
-                                  onClick={() => handleSort(column.key)}
-                                  className="sort"
-                                  data-sort="email"
+                                key={column.key}
+                                onClick={() => column.key !== "actions" && handleSort(column.key)} // Prevent sorting for "Actions"
+                                className={column.key !== "actions" ? "sort" : ""} // Conditionally apply the sort class
+                                data-sort={column.key !== "actions" ? column.key : undefined}
                                 >
                                   {t(column.label)}
                                 </th>

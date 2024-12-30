@@ -71,11 +71,15 @@ const EmirateGrid = () => {
     return 0;
   });
 
-  const filteredSortedData = sortedData?.filter((data) =>
-    ["name", "createdDate"].some((key) =>
-      data[key].toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  const filteredSortedData = sortedData?.filter((data) => {
+    if (!data) return false; 
+    return ["name", "createdDate"].some((key) =>{
+      const value = key.includes(".")
+        ? key.split(".").reduce((obj, k) => obj?.[k], data) // Handle nested keys
+        : data[key];
+      return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+    });
+});
 
   const indexOfLastPage = currentPage * dataPerPage;
   const indexOfFirstPage = indexOfLastPage - dataPerPage;
@@ -242,10 +246,10 @@ const EmirateGrid = () => {
                             <tr>
                               {columns.map((column) => (
                                 <th
-                                  key={column.key}
-                                  onClick={() => handleSort(column.key)}
-                                  className="sort"
-                                  data-sort="email"
+                                key={column.key}
+                                onClick={() => column.key !== "actions" && handleSort(column.key)} // Prevent sorting for "Actions"
+                                className={column.key !== "actions" ? "sort" : ""} // Conditionally apply the sort class
+                                data-sort={column.key !== "actions" ? column.key : undefined}
                                 >
                                   {t(column.label)}
                                 </th>

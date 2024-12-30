@@ -59,14 +59,30 @@ const EntityGrid = () => {
           setSortConfig({ key, direction });
         };
       
+        // const sortedData = [...entity].sort((a, b) => {
+        //   if (a[sortConfig.key] < b[sortConfig.key]) {
+        //     return sortConfig.direction === "ascending" ? -1 : 1;
+        //   }
+        //   if (a[sortConfig.key] > b[sortConfig.key]) {
+        //     return sortConfig.direction === "ascending" ? 1 : -1;
+        //   }
+        //   return 0;
+        // });
+
         const sortedData = [...entity].sort((a, b) => {
-          if (a[sortConfig.key] < b[sortConfig.key]) {
+          const getNestedValue = (obj, path) =>
+            path.split('.').reduce((acc, key) => acc?.[key], obj);
+        
+          const valueA = getNestedValue(a, sortConfig.key); // Get the value for the key from 'a'
+          const valueB = getNestedValue(b, sortConfig.key); // Get the value for the key from 'b'
+        
+          if (valueA < valueB) {
             return sortConfig.direction === "ascending" ? -1 : 1;
           }
-          if (a[sortConfig.key] > b[sortConfig.key]) {
+          if (valueA > valueB) {
             return sortConfig.direction === "ascending" ? 1 : -1;
           }
-          return 0;
+          return 0; // Equal values
         });
 
         const filteredSortedData = sortedData?.filter((data) => {
@@ -84,6 +100,7 @@ const EntityGrid = () => {
               return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
             });
         });
+       
       
         const indexOfLastPage = currentPage * dataPerPage;
         const indexOfFirstPage = indexOfLastPage - dataPerPage;
@@ -235,9 +252,9 @@ const EntityGrid = () => {
                             {columns.map((column) => (
                               <th
                                 key={column.key}
-                                onClick={() => handleSort(column.key)}
-                                className="sort"
-                                data-sort="email"
+                                onClick={() => column.key !== "actions" && handleSort(column.key)} // Prevent sorting for "Actions"
+                                className={column.key !== "actions" ? "sort" : ""} // Conditionally apply the sort class
+                                data-sort={column.key !== "actions" ? column.key : undefined}
                               >
                                 {t(column.label)}
                               </th>

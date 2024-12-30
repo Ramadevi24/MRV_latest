@@ -40,14 +40,14 @@ const AddTenantModal = ({ isOpen, onClose }) => {
         isActive: true,
       };
       try {
-        await addTenant(createPayload);
-        toast.success(t("Tenant created successfully"), { autoClose: 3000 });
-        await fetchAllTenants();
-        onClose();
+        const response = await addTenant(createPayload);
+        console.log(response, 'response')
+        if (response) {
+          onClose();
+          toast.success(t("Tenant created successfully"), { autoClose: 3000 });
+          await fetchAllTenants();
+        }
       } catch (error) {
-      console.log(error, 'error');
-        error.response?.data?.message || // From response body
-        error.response?.headers["error-message"] ||
         console.log("Error adding tenant:", error);
       }
     },

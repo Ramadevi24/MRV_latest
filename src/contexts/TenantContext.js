@@ -12,7 +12,6 @@ export const TenantContext = createContext();
 export const TenantProvider = ({ children }) => {
   const [tenants, setTenants] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchAllTenants();
@@ -24,7 +23,7 @@ export const TenantProvider = ({ children }) => {
       setTenants(data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching tenants');
+      throw new Error("Error fetching tenant");
       setLoading(false);
     }
   };
@@ -35,7 +34,7 @@ export const TenantProvider = ({ children }) => {
       const tenant = await getTenantById(id);
       return tenant;
     } catch (error) {
-      setError("Error fetching tenant");
+      throw new Error("Error fetching tenant");
     } finally {
       setLoading(false);
     }
@@ -45,9 +44,10 @@ export const TenantProvider = ({ children }) => {
     try {
       setLoading(true);
       const newTenant = await createTenant(tenantData);
-      setTenants((prevTenants) => [...prevTenants, newTenant]); // Update tenants list with new tenant
+      setTenants((prevTenants) => [...prevTenants, newTenant]);
+      return newTenant;
     } catch (error) {
-      setError("Error creating tenant");
+      throw new Error("Error creating tenant");
     } finally {
       setLoading(false);
     }
@@ -61,9 +61,9 @@ export const TenantProvider = ({ children }) => {
         tenants.map((tenant) =>
           tenant.id === id ? updatedTenant : tenant
         )
-      ); // Update tenants list with the modified tenant
+      );
     } catch (error) {
-      setError("Error updating tenant");
+      throw new Error("Error updating tenant");
     } finally {
       setLoading(false);
     }

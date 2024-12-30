@@ -17,7 +17,7 @@ export const EmiratesProvider = ({ children }) => {
       const data = await getEmirates();
       setEmirates(data);
     } catch (error) {
-      console.error('Error fetching Emirates');
+      console.error('Error fetching Locations');
     }
   };
 
@@ -25,7 +25,7 @@ export const EmiratesProvider = ({ children }) => {
     try {
       return await getEmiratesById(id);
     } catch (error) {
-      console.error('Error fetching Emirate');
+      console.error('Error fetching Location');
       throw error;
     }
   };
@@ -34,9 +34,7 @@ export const EmiratesProvider = ({ children }) => {
     try {
       const createdEmirate = await addEmirates(newEmirate);
       setEmirates((prevEmirates) => [...prevEmirates, createdEmirate]);
-      toast.success('Emirate added successfully');
     } catch (error) {
-      toast.error('Error adding Emirate');
     }
   };
 
@@ -49,9 +47,8 @@ export const EmiratesProvider = ({ children }) => {
           emirate.gasid === id ? { ...emirate, ...updatedData } : emirate
         )
       );
-      toast.success('Emirate updated successfully');
+
     } catch (error) {
-      toast.error('Error updating Emirate');
     }
   };
 
@@ -60,9 +57,9 @@ export const EmiratesProvider = ({ children }) => {
     try {
       await deleteEmirates(id);
       setEmirates((prevEmirates) => prevEmirates.filter((emirate) => emirate.gasid !== id));
-      toast.success('Emirate deleted successfully');
+      toast.success('Location deleted successfully');
     } catch (error) {
-      toast.error('Error deleting Emirate');
+      toast.error('Error deleting Location');
     }
   };
 

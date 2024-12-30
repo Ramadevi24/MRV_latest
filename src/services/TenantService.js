@@ -1,5 +1,6 @@
 import axios from "axios";
-import config from '../config';
+import config from "../config";
+import { toast } from "react-toastify";
 
 // const API_URL = "https://atlas.smartgeoapps.com/MRVAPI/api/Tenant";
 const API_URL = `${config.api.API_URL}/Tenant`;
@@ -34,13 +35,14 @@ export const createTenant = async (tenantData) => {
     const response = await axios.post(`${API_URL}/CreateTenant`, tenantData, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    console.log(response.value.$values, 'response');
-    console.log(response.data, 'response.data');
-    console.log(response, 'response');
     return response;
   } catch (error) {
-    console.log(error, error.status, 'error');
-    throw new Error("Error create tenant");
+    if ((error = "Request failed with status code 409")) {
+      toast.warn("Tenant already exists");
+      await fetchAllTenants();
+    } else {
+      throw new Error("Error fetching tenant");
+    }
   }
 };
 

@@ -42,7 +42,7 @@ const EditEmirateForm = () => {
         };
       try {
         await addUser(createFormData);
-        toast.success(t("Emirate created successfully"), { autoClose: 3000 });
+        toast.success(t("Location created successfully"), { autoClose: 3000 });
         navigate("/locations");
       } catch (error) {
         toast.error(t("Error creating user"));
