@@ -59,19 +59,17 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                 document.documentElement.setAttribute('data-sidebar-size', 'lg');
             }
         }
-
-        
-          
+  
         const hamburger = document.querySelector(".hamburger-icon"); 
         const appMenu = document.querySelector(".app-menu"); 
         
         // Arabic Mobile Menu
         hamburger.addEventListener('click', function (event) {
             // event.stopPropagation(); 
-            if (appMenu.style.display === 'none' || appMenu.style.display === '') {
+            if (appMenu.style.display === 'none') {
                 appMenu.style.display = 'block'; // Show the menu
             } else {
-                appMenu.style.display = 'none'; 
+                appMenu.style.display = 'block'; 
             }
         });
         
@@ -82,9 +80,6 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
             }
         });
         
-        
-    
-
 
         //Two column menu
         if (document.documentElement.getAttribute('data-layout') === "twocolumn") {
