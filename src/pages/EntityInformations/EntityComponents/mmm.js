@@ -3,36 +3,35 @@ import Modal from "../../../Components/CommonComponents/Modal";
 import FileUpload from "../../../Components/CommonComponents/FileUpload";
 import { Col, Container, Row } from "reactstrap";
 import FormField from "../../../Components/CommonComponents/FormField";
+import { OrganizationContext } from "../../../contexts/OrganizationContext";
 import { CalculationApproach } from "../../../utils/FuelData";
 import { GasContext } from "../../../contexts/GasContext";
 import { useCategories } from "../../../contexts/CategoriesContext";
 
 const CategoryModal = ({ open, onClose }) => {
-  const { gases } = useContext(GasContext);
-  const [submittedData, setSubmittedData] = useState([]);
-  const [formData, setFormData] = useState([
-    {
-      sector_ID: "",
-      sub_sectorID: "",
-      category_ID: "",
-      emission_source_type: "",
-      calculation_approach: "",
-      ghg_gases_covered: "",
-      precursors_gases_covered: "",
-      uncertainty_guidance: false,
-      qA_QC_for_emission: false,
-      qA_QC_for_activity_data: false,
-      uploadedDocuments: [
-        {
-          document_Type: "",
-          file_Name: "",
-          file_path: "",
-          file_size: 0,
-        },
-      ],
-    },
-  ]);
+  const [formData, setFormData] = useState({
+    sector_ID: "",
+    sub_sectorID: "",
+    category_ID: "",
+    emission_source_type: "",
+    calculation_approach: "",
+    ghg_gases_covered: "",
+    precursors_gases_covered: "",
+    uncertainty_guidance: false,
+    qA_QC_for_emission: false,
+    qA_QC_for_activity_data: false,
+    uploadedDocuments: [
+      {
+        document_Type: "",
+        file_Name: "",
+        file_path: "",
+        file_size: 0,
+      },
+    ],
+  });
 
+  const { categories } = useContext(OrganizationContext);
+  const { gases } = useContext(GasContext);
   const {
     level1Categories,
     level2Categories,
@@ -46,21 +45,6 @@ const CategoryModal = ({ open, onClose }) => {
       ...prevData,
       [field]: value,
     }));
-
-    if (field === "sector_ID") {
-      handleLevel1Change(value);
-      setFormData((prevData) => ({
-        ...prevData,
-        sub_sectorID: "",
-        category_ID: "",
-      }));
-    } else if (field === "sub_sectorID") {
-      handleLevel2Change(value);
-      setFormData((prevData) => ({
-        ...prevData,
-        category_ID: "",
-      }));
-    }
   };
 
   const handleFileUpload = (documentType, file) => {
@@ -81,43 +65,15 @@ const CategoryModal = ({ open, onClose }) => {
     e.preventDefault();
 
     // Perform validation
-    if (
-      !formData.sector_ID ||
-      !formData.sub_sectorID ||
-      !formData.category_ID
-    ) {
+    if (!formData.sector_ID || !formData.sub_sectorID || !formData.category_ID) {
       alert("Please fill all required fields");
       return;
     }
 
-    const filteredData = Object.entries(formData).reduce((acc, [key, value]) => {
-      if (value !== "" && value !== null) {
-        acc[key] = value;
-      }
-      return acc;
-    }, {});
-  
-    const updatedData = [...submittedData, filteredData];
-  
-    setSubmittedData(updatedData);
-  
-    // Save to local storage
-    localStorage.setItem("submittedData", JSON.stringify(updatedData));
-  
-    setFormData({
-      sector_ID: "",
-      sub_sectorID: "",
-      category_ID: "",
-      emission_source_type: "",
-      calculation_approach: "",
-      ghg_gases_covered: "",
-      precursors_gases_covered: "",
-      uncertainty_guidance: false,
-      qA_QC_for_emission: false,
-      qA_QC_for_activity_data: false,
-      uploadedDocuments: [],
-    });
-  
+    // Log the data (or send to an API)
+    console.log("Submitted Form Data:", formData);
+
+    // Close the modal or reset the form
     onClose();
   };
 
@@ -135,16 +91,13 @@ const CategoryModal = ({ open, onClose }) => {
               <Row>
                 <Col md={6}>
                   <div className="form-field">
-                    <label htmlFor="level1">Sector</label>
+                    <label htmlFor="sector">Sector</label>
                     <select
+                      id="sector"
                       value={formData.sector_ID}
                       onChange={(e) =>
-                        handleInputChange(
-                          "sector_ID",
-                          parseInt(e.target.value, 10)
-                        )
+                        handleInputChange("sector_ID", parseInt(e.target.value, 10))
                       }
-                      // onChange={(e) => handleLevel1Change(parseInt(e.target.value, 10))}
                     >
                       <option value="">Select Sector</option>
                       {level1Categories.map((category) => (
@@ -155,20 +108,15 @@ const CategoryModal = ({ open, onClose }) => {
                     </select>
                   </div>
                 </Col>
-
                 <Col md={6}>
                   <div className="form-field">
-                    <label htmlFor="level2">Sub Sector</label>
+                    <label htmlFor="subSector">Sub Sector</label>
                     <select
                       id="subSector"
                       value={formData.sub_sectorID}
                       onChange={(e) =>
-                        handleInputChange(
-                          "sub_sectorID",
-                          parseInt(e.target.value, 10)
-                        )
+                        handleInputChange("sub_sectorID", parseInt(e.target.value, 10))
                       }
-                      // onChange={(e) => handleLevel2Change(parseInt(e.target.value, 10))}
                       disabled={!level2Categories.length}
                     >
                       <option value="">Select Sub Sector</option>
@@ -184,15 +132,12 @@ const CategoryModal = ({ open, onClose }) => {
               <Row>
                 <Col md={6}>
                   <div className="form-field">
-                    <label htmlFor="level3">Category</label>
+                    <label htmlFor="category">Category</label>
                     <select
                       id="category"
                       value={formData.category_ID}
                       onChange={(e) =>
-                        handleInputChange(
-                          "category_ID",
-                          parseInt(e.target.value, 10)
-                        )
+                        handleInputChange("category_ID", parseInt(e.target.value, 10))
                       }
                       disabled={!level3Categories.length}
                     >
@@ -234,11 +179,7 @@ const CategoryModal = ({ open, onClose }) => {
                 <Col md={6}>
                   <FormField
                     label="GHG Gases Covered"
-                    placeholder="N2O, CH4"
-                    isDropdown
-                    options={gases}
-                    valueKey="gasGroupID"
-                    labelKey="gasName"
+                    type="text"
                     value={formData.ghg_gases_covered}
                     onChange={(e) =>
                       handleInputChange("ghg_gases_covered", e.target.value)
@@ -250,17 +191,10 @@ const CategoryModal = ({ open, onClose }) => {
                 <Col md={6}>
                   <FormField
                     label="Precursors Gases Covered"
-                    placeholder="N2O, CH4"
-                    isDropdown
-                    options={gases}
-                    valueKey="gasGroupID"
-                    labelKey="gasName"
+                    type="text"
                     value={formData.precursors_gases_covered}
                     onChange={(e) =>
-                      handleInputChange(
-                        "precursors_gases_covered",
-                        e.target.value
-                      )
+                      handleInputChange("precursors_gases_covered", e.target.value)
                     }
                   />
                 </Col>
@@ -286,10 +220,7 @@ const CategoryModal = ({ open, onClose }) => {
                   <FileUpload
                     label="Is QA/QC for emission data?"
                     toggleClick={() =>
-                      handleInputChange(
-                        "qA_QC_for_emission",
-                        !formData.qA_QC_for_emission
-                      )
+                      handleInputChange("qA_QC_for_emission", !formData.qA_QC_for_emission)
                     }
                     conditionData={formData.qA_QC_for_emission}
                     onFileUpload={(file) =>
@@ -313,17 +244,13 @@ const CategoryModal = ({ open, onClose }) => {
                   />
                 </Col>
               </div>
-              <div
-                className="d-flex justify-content-end mt-3"
-                style={{ marginRight: "4rem" }}
-              >
-                <button type="submit" className="add-details-btn  me-2">
-                  {" "}
+              <div className="d-flex justify-content-end mt-3" style={{ marginRight: "4rem" }}>
+                <button type="submit" className="add-details-btn me-2">
                   Add Details
                 </button>
                 <button
-                  color="danger"
-                  className="cancel-details-btn "
+                  type="button"
+                  className="cancel-details-btn"
                   onClick={onClose}
                 >
                   Cancel

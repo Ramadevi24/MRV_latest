@@ -55,8 +55,8 @@ const GasGrid = () => {
   };
 
   const gasesOptions = [
-    { name: "Greenhouse Gases (GHGs)", name: "Greenhouse Gases (GHGs)" },
-    { name: "Precursor Gases", name: "Precursor Gases" },
+    { name: 'Greenhouse Gases (GHGs)', name: 'Greenhouse Gases (GHGs)' },
+    { name: 'Precursor Gases', name: 'Precursor Gases' }
   ];
 
   const handleSort = (key) => {
@@ -79,9 +79,9 @@ const GasGrid = () => {
       })
     : [];
 
-  const filteredSortedData = sortedData?.filter((data) => {
-    if (!data) return false;
-
+  const filteredSortedData = sortedData?.filter((data) =>{
+    if (!data) return false; 
+  
     return ["gasType", "gasName", "createdDate"].some((key) => {
       const value = key.includes(".")
         ? key.split(".").reduce((obj, k) => obj?.[k], data) // Handle nested keys
@@ -100,7 +100,7 @@ const GasGrid = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleEditRow = (row) => {
-    setEditingRowId(row.gasid);
+    setEditingRowId(row.gasID);
     setEditingGas({ ...row });
   };
 
@@ -145,8 +145,8 @@ const GasGrid = () => {
   };
 
   const columns = [
-    { key: "gasid", label: "ID" },
-    { key: "gasType", label: "Gas Type" },
+    { key: "gasID", label: "ID" },
+    { key: "gasGroupID", label: "Gas Type" },
     { key: "gasName", label: "Gas Name" },
     { key: "createdDate", label: "Created Date" },
     {
@@ -271,112 +271,111 @@ const GasGrid = () => {
                               ))}
                             </tr>
                           </thead>
-                   { currentData.length > 0 ? (<tbody className="list form-check-all">
-                        {currentData.map((item) => (
-                          <tr key={item.gasid}>
-                            <td className="name">{item.gasid}</td>
-                            <td className="name">
-                              {editingRowId === item.gasid ? (
-                                // <Input
-                                //   type="text"
-                                //   name="gasType"
-                                //   value={editingGas.gasType}
-                                //   onChange={handleInputChange}
-                                // />
-                                <select
-                                  className="form-select"
-                                  id="gasType"
-                                  name="gasType"
-                                  value={editingGas.gasType}
-                                  onChange={handleInputChange}
-                                  aria-label="Default select example"
-                                >
-                                  <option value="">
-                                    {t("Select Gas Type")}
-                                  </option>
-                                  {gasesOptions.map((item) => (
-                                    <option
-                                      key={item.name}
-                                      value={item.name}
-                                    >
-                                      {item.name}
-                                    </option>
-                                  ))}
-                                </select>
-                              ) : (
-                                item.gasType
-                              )}
-                            </td>
-                            <td className="name">
-                              {editingRowId === item.gasid ? (
-                                <Input
-                                  type="text"
-                                  name="gasName"
-                                  value={editingGas.gasName}
-                                  onChange={handleInputChange}
-                                />
-                              ) : (
-                                item.gasName
-                              )}
-                            </td>
-                            <td className="createdDate">
-                              {formatDate(item.createdDate)}
-                            </td>
-                            <td>
-                              <div className="d-flex gap-2">
-                                {editingRowId === item.gasid ? (
-                                  <>
-                                    <Button
-                                      color="success"
-                                      size="sm"
-                                      onClick={() =>
-                                        handleSaveRow(item.gasid)
-                                      }
-                                    >
-                                      <FaCheck color="white" />
-                                    </Button>
+                          <tbody className="list form-check-all">
+                            {currentData.map((item) => (
+                              <tr key={item.gasid}>
+                                <td className="name">{item.gasid}</td>
+                                <td className="name">
+                                  {editingRowId === item.gasid ? (
+                                    // <Input
+                                    //   type="text"
+                                    //   name="gasType"
+                                    //   value={editingGas.gasType}
+                                    //   onChange={handleInputChange}
+                                    // />
+                                      <select
+                                                                          className="form-select"
+                                                                          id="gasType"
+                                                                          name="gasType"
+                                                                          value={editingGas.gasType}
+                                                                          onChange={handleInputChange}
+                                                                          aria-label="Default select example"
+                                                                        >
+                                                                          <option value="">
+                                                                            {t("Select Gas Type")}
+                                                                          </option>
+                                                                          {gasesOptions.map((item) => (
+                                                                            <option
+                                                                              key={item.name}
+                                                                              value={item.name}
+                                                                            >
+                                                                              {item.name}
+                                                                            </option>
+                                                                          ))}
+                                                                        </select>
+                                  ) : (
+                                    item.gasType
+                                  )}
+                                </td>
+                                <td className="name">
+                                  {editingRowId === item.gasid ? (
+                                    <Input
+                                      type="text"
+                                      name="gasName"
+                                      value={editingGas.gasName}
+                                      onChange={handleInputChange}
+                                    />
+                                  ) : (
+                                    item.gasName
+                                  )}
+                                </td>
+                                <td className="createdDate">
+                                  {formatDate(item.createdDate)}
+                                </td>
+                                <td>
+                                  <div className="d-flex gap-2">
+                                    {editingRowId === item.gasid ? (
+                                      <>
+                                        <Button
+                                          color="success"
+                                          size="sm"
+                                          onClick={() =>
+                                            handleSaveRow(item.gasid)
+                                          }
+                                        >
+                                          <FaCheck color="white" />
+                                        </Button>
 
-                                    <Button
-                                      color="danger"
-                                      size="sm"
-                                      onClick={handleCancelEdit}
-                                    >
-                                      <FaXmark color="white" />
-                                    </Button>
-                                  </>
-                                ) : (
-                                  <>
-                                    <div className="edit">
-                                      <button
-                                        className="btn btn-sm btn-info edit-item-btn"
-                                        onClick={() => handleEditRow(item)}
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#showModal"
-                                      >
-                                        {" "}
-                                        <FaPencilAlt color="white" />
-                                      </button>
-                                    </div>
-                                    <div className="remove">
-                                      <button
-                                        className="btn btn-sm btn-danger remove-item-btn"
-                                        onClick={() =>
-                                          handleDelete(item.gasid)
-                                        }
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteRecordModal"
-                                      >
-                                        <FaTrashAlt color="white" />
-                                      </button>
-                                    </div>
-                                  </>
-                                )}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>):( <tbody> <tr> <td colSpan={columns.length} className="text-center no-records"> No records found </td> </tr> </tbody>)
- }   
+                                        <Button
+                                          color="danger"
+                                          size="sm"
+                                          onClick={handleCancelEdit}
+                                        >
+                                          <FaXmark color="white" />
+                                        </Button>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <div className="edit">
+                                          <button
+                                            className="btn btn-sm btn-info edit-item-btn"
+                                            onClick={() => handleEditRow(item)}
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#showModal"
+                                          >
+                                            {" "}
+                                            <FaPencilAlt color="white" />
+                                          </button>
+                                        </div>
+                                        <div className="remove">
+                                          <button
+                                            className="btn btn-sm btn-danger remove-item-btn"
+                                            onClick={() =>
+                                              handleDelete(item.gasid)
+                                            }
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteRecordModal"
+                                          >
+                                            <FaTrashAlt color="white" />
+                                          </button>
+                                        </div>
+                                      </>
+                                    )}
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
                         </table>
                       </div>
                     )}
