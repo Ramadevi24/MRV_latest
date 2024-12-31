@@ -12,7 +12,7 @@ export const getFacility = async () => {
     const response = await axios.get(`${API_URL}/GetAllFacilitiesWithDetails`, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response.value.$values;
+    return response.$values;
   } catch (error) {
     throw new Error("Error fetching facility");
   }

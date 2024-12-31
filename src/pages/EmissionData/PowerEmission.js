@@ -30,11 +30,7 @@ function PowerEmission() {
     const [ActivityQAQC, setActivityQAQC] = useState(false);
 const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
   
-    const [facilityOptions, setFacilityOptions] = useState([
-      { name: "Taweela A1", value: "Taweela A1" },
-      { name: "Taweela A2", value: "Taweela A2" },
-      { name: "Taweela A3", value: "Taweela A3" },
-    ]);
+    const [facilityOptions, setFacilityOptions] = useState(facility);
   const  
   [calendarYear, setCalendarYear] = useState([
     { name: "2023", value: "2023" },
@@ -514,8 +510,8 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                     <FormField
                       label="Facility / Plant Name"
                       isDropdown
-                      options={facilityOptions}   valueKey ="name"
-                      labelKey ="name"
+                      options={facilityOptions}   valueKey ="$id"
+                      labelKey ="facilityName"
 
                     />
                   </Col>
