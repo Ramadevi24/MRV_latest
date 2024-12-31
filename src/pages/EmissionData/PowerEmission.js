@@ -15,6 +15,8 @@ import DownloadIcon from "../../assets/images/Power Sector--- Data Entry/basil_u
 import EmissionTable from "../../Components/CommonComponents/EmissionTable";
 import VerticalEmissionTable from "../../Components/CommonComponents/VerticalEmissionTable";
 import VerticalEmissionTable2 from "../../Components/CommonComponents/VerticalEmissionTable2";
+import VerticalEmissionTable3 from "../../Components/CommonComponents/VerticalEmissionTable3";
+
 import { useParams } from "react-router-dom";
 import FileUpload from "../../Components/CommonComponents/FileUpload";
 
@@ -331,6 +333,69 @@ function PowerEmission() {
     {parameter: "Temperature (°C)",values:[34,13,17,24]},
     {parameter: "Flow Rate(m3/hrs)",values:[24, 23,17,46]}
   ];
+ /* const emissionPowerT3parameters = [
+    { parameter: "Is Monitored", values:["Yes", "Yes","Yes","Yes", "No","No","No"]},
+    {parameter: "Emission Factor",values:[34,13,17,24]},
+    {parameter: "Source Of emission factor",values:[24, 23,17,46]},
+    {parameter: "Emission (Tonnes)",values:[24, 23,17,46]}
+
+  ];*/
+
+  const emissionPowerT3parameters = [
+    {
+      type: "Co2",
+      "Is Monitored": "Yes",
+      "Emission Factor (Kg/TJ)": "",
+      "Source Of emission factor": "",
+      "Emission (Tonnes)": "123"
+        },
+    {
+      type: "Co4",
+      "Is Monitored": "Yes",
+      "Emission Factor (Kg/TJ)": "",
+      "Source Of emission factor": "",
+      "Emission (Tonnes)": "321"
+        },  
+        {
+          type: "N20",
+          "Is Monitored": "Yes",
+          "Emission Factor (Kg/TJ)": "",
+          "Source Of emission factor": "",
+          "Emission (Tonnes)": "333"
+            },    
+            {
+              type: "HFCs",
+              "Is Monitored": "Yes",
+              "Emission Factor (Kg/TJ)": "42",
+              "Source Of emission factor": "plant",
+              "Emission (Tonnes)": ""
+                },    
+                {
+                  type: "PFCs",
+                  "Is Monitored": "No",
+                  "Emission Factor (Kg/TJ)": "63",
+                  "Source Of emission factor": "plant",
+                  "Emission (Tonnes)": ""
+                    },    
+                    {
+                      type: "SF6",
+                      "Is Monitored": "No",
+                      "Emission Factor (Kg/TJ)": "25",
+                      "Source Of emission factor": "plant",
+                      "Emission (Tonnes)": ""
+                        },  
+                        {
+                          type: "NF3",
+                          "Is Monitored": "No",
+                          "Emission Factor (Kg/TJ)": "45",
+                          "Source Of emission factor": "plant",
+                          "Emission (Tonnes)": ""
+                            },    
+                         
+                                              
+    
+  ];
+
 
   // const stackPowerT3parameters = [
   //   { type: "CH4(%)", ST12345: 34, ST12346: 25, ST12347: 12, ST12348: 45 },
@@ -456,7 +521,8 @@ function PowerEmission() {
                         { name: "T3", name: "T3" },
                       ]}
                       onChange={handleTierChange}
-                      value={tierLevel}
+                      value={tierLevel}  valueKey ="name"
+                      labelKey ="name"
                     />
                   </Col>
 
@@ -523,9 +589,9 @@ function PowerEmission() {
                           showHeaderRow={false}
                           showParametersRow={false}
                         />
-                        <VerticalEmissionTable2
+                        <VerticalEmissionTable3
                           headers={FuelPowerT3headers}
-                          parameters={stackPowerT3parameters}
+                          parameters={emissionPowerT3parameters}
                           title="Emission Details"
                           showParametersRow={false}
                         />
