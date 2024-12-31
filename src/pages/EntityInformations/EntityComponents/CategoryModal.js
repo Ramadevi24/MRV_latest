@@ -40,11 +40,27 @@ const CategoryModal = ({open, onClose}) => {
     handleLevel2Change,
   } = useCategories();
 
+
   const handleInputChange = (field, value) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
+  
+    if (field === "sector_ID") {
+      handleLevel1Change(value); 
+      setFormData((prevData) => ({
+        ...prevData,
+        sub_sectorID: "",
+        category_ID: "",
+      }));
+    } else if (field === "sub_sectorID") {
+      handleLevel2Change(value); 
+      setFormData((prevData) => ({
+        ...prevData,
+        category_ID: "",
+      })); 
+    }
   };
 
   const handleFileUpload = (documentType, file) => {

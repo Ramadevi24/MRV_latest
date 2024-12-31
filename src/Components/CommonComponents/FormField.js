@@ -14,7 +14,7 @@ const FormField = ({ label, type, value, onChange, options, isDropdown, placehol
       {isDropdown ? (
         <div>
         <select value={isMultiSelect ? value?.split(',') : value}  onChange={isMultiSelect ? handleMultiSelectChange : onChange}  multiple={isMultiSelect}>
-          {options.map((option) => (
+          {options?.map((option) => (
             <option key={option[valueKey]} value={option[valueKey]}>
               {option[labelKey]}
             </option>
