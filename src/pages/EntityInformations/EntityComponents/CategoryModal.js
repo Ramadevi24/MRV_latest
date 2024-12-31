@@ -7,30 +7,31 @@ import { CalculationApproach } from "../../../utils/FuelData";
 import { GasContext } from "../../../contexts/GasContext";
 import { useCategories } from "../../../contexts/CategoriesContext";
 
-
-const CategoryModal = ({open, onClose}) => {
+const CategoryModal = ({ open, onClose }) => {
   const { gases } = useContext(GasContext);
-  const [formData, setFormData] = useState([{
-    sector_ID: "",
-    sub_sectorID: "",
-    category_ID: "",
-    emission_source_type: "",
-    calculation_approach: "",
-    ghg_gases_covered: "",
-    precursors_gases_covered: "",
-    uncertainty_guidance: false,
-    qA_QC_for_emission: false,
-    qA_QC_for_activity_data: false,
-    uploadedDocuments: [
-      {
-        document_Type: "",
-        file_Name: "",
-        file_path: "",
-        file_size: 0
-      }
-    ]
-  }],
-  );
+  const [submittedData, setSubmittedData] = useState([]);
+  const [formData, setFormData] = useState([
+    {
+      sector_ID: "",
+      sub_sectorID: "",
+      category_ID: "",
+      emission_source_type: "",
+      calculation_approach: "",
+      ghg_gases_covered: "",
+      precursors_gases_covered: "",
+      uncertainty_guidance: false,
+      qA_QC_for_emission: false,
+      qA_QC_for_activity_data: false,
+      uploadedDocuments: [
+        {
+          document_Type: "",
+          file_Name: "",
+          file_path: "",
+          file_size: 0,
+        },
+      ],
+    },
+  ]);
 
   const {
     level1Categories,
@@ -40,26 +41,25 @@ const CategoryModal = ({open, onClose}) => {
     handleLevel2Change,
   } = useCategories();
 
-
   const handleInputChange = (field, value) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: value,
     }));
-  
+
     if (field === "sector_ID") {
-      handleLevel1Change(value); 
+      handleLevel1Change(value);
       setFormData((prevData) => ({
         ...prevData,
         sub_sectorID: "",
         category_ID: "",
       }));
     } else if (field === "sub_sectorID") {
-      handleLevel2Change(value); 
+      handleLevel2Change(value);
       setFormData((prevData) => ({
         ...prevData,
         category_ID: "",
-      })); 
+      }));
     }
   };
 
@@ -77,150 +77,230 @@ const CategoryModal = ({open, onClose}) => {
     }));
   };
 
-  
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Perform validation
-    if (!formData.sector_ID || !formData.sub_sectorID || !formData.category_ID) {
+    if (
+      !formData.sector_ID ||
+      !formData.sub_sectorID ||
+      !formData.category_ID
+    ) {
       alert("Please fill all required fields");
       return;
     }
 
-    // Log the data (or send to an API)
-    console.log("Submitted Form Data:", formData);
-
-    // Close the modal or reset the form
+    const filteredData = Object.entries(formData).reduce((acc, [key, value]) => {
+      if (value !== "" && value !== null) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+  
+    const updatedData = [...submittedData, filteredData];
+  
+    setSubmittedData(updatedData);
+  
+    // Save to local storage
+    localStorage.setItem("submittedData", JSON.stringify(updatedData));
+  
+    setFormData({
+      sector_ID: "",
+      sub_sectorID: "",
+      category_ID: "",
+      emission_source_type: "",
+      calculation_approach: "",
+      ghg_gases_covered: "",
+      precursors_gases_covered: "",
+      uncertainty_guidance: false,
+      qA_QC_for_emission: false,
+      qA_QC_for_activity_data: false,
+      uploadedDocuments: [],
+    });
+  
     onClose();
   };
 
   return (
     <React.Fragment>
       <div className="page-content">
-    <Container fluid>
-      <Modal size="lg" 
-        title="Category Details"
-        isOpen={open}
-        onClose={onClose}
-      >
-        <form onSubmit={handleSubmit}>
-           <Row>
-           <Col md={6}>
-        <div className="form-field">
-          <label htmlFor="level1">Sector</label>
-          <select
-            value={formData.sector_ID}
-            onChange={(e) =>
-              handleInputChange("sector_ID", parseInt(e.target.value, 10))
-            }
-            // onChange={(e) => handleLevel1Change(parseInt(e.target.value, 10))}
+        <Container fluid>
+          <Modal
+            size="lg"
+            title="Category Details"
+            isOpen={open}
+            onClose={onClose}
           >
-            <option value="">Select Sector</option>
-            {level1Categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.code} - {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </Col>
-          
-      <Col md={6}>
-        <div className="form-field">
-          <label htmlFor="level2">Sub Sector</label>
-          <select
-          id="subSector"
-          value={formData.sub_sectorID}
-          onChange={(e) =>
-            handleInputChange("sub_sectorID", parseInt(e.target.value, 10))
-          }
-            // onChange={(e) => handleLevel2Change(parseInt(e.target.value, 10))}
-            disabled={!level2Categories.length}
-          >
-            <option value="">Select Sub Sector</option>
-            {level2Categories.map((subCategory) => (
-              <option key={subCategory.id} value={subCategory.id}>
-                {subCategory.code} - {subCategory.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </Col>
-          
-                
+            <form onSubmit={handleSubmit}>
+              <Row>
+                <Col md={6}>
+                  <div className="form-field">
+                    <label htmlFor="level1">Sector</label>
+                    <select
+                      value={formData.sector_ID}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "sector_ID",
+                          parseInt(e.target.value, 10)
+                        )
+                      }
+                      // onChange={(e) => handleLevel1Change(parseInt(e.target.value, 10))}
+                    >
+                      <option value="">Select Sector</option>
+                      {level1Categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.code} - {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </Col>
+
+                <Col md={6}>
+                  <div className="form-field">
+                    <label htmlFor="level2">Sub Sector</label>
+                    <select
+                      id="subSector"
+                      value={formData.sub_sectorID}
+                      onChange={(e) =>
+                        handleInputChange(
+                          "sub_sectorID",
+                          parseInt(e.target.value, 10)
+                        )
+                      }
+                      // onChange={(e) => handleLevel2Change(parseInt(e.target.value, 10))}
+                      disabled={!level2Categories.length}
+                    >
+                      <option value="">Select Sub Sector</option>
+                      {level2Categories.map((subCategory) => (
+                        <option key={subCategory.id} value={subCategory.id}>
+                          {subCategory.code} - {subCategory.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </Col>
               </Row>
-          <Row>
-          <Col md={6}>
-        <div className="form-field">
-          <label htmlFor="level3">Category</label>
-          <select  id="category"
+              <Row>
+                <Col md={6}>
+                  <div className="form-field">
+                    <label htmlFor="level3">Category</label>
+                    <select
+                      id="category"
                       value={formData.category_ID}
                       onChange={(e) =>
-                        handleInputChange("category_ID", parseInt(e.target.value, 10))
-                      } disabled={!level3Categories.length}>
-            <option value="">Select Category</option>
-            {level3Categories.map((subCategory) => (
-              <option key={subCategory.id} value={subCategory.id}>
-                {subCategory.code} - {subCategory.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </Col>
-            <Col md={6}>
-            <FormField label="Emission Source Type" placeholder="Steam Turbine" type="text"  value={formData.emission_source_type}
+                        handleInputChange(
+                          "category_ID",
+                          parseInt(e.target.value, 10)
+                        )
+                      }
+                      disabled={!level3Categories.length}
+                    >
+                      <option value="">Select Category</option>
+                      {level3Categories.map((subCategory) => (
+                        <option key={subCategory.id} value={subCategory.id}>
+                          {subCategory.code} - {subCategory.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <FormField
+                    label="Emission Source Type"
+                    placeholder="Steam Turbine"
+                    type="text"
+                    value={formData.emission_source_type}
                     onChange={(e) =>
                       handleInputChange("emission_source_type", e.target.value)
-                    }/>
-            </Col>
-          
-            </Row>
-            <Row>
-            <Col md={6}>
-            <FormField label="Calculation Approach" isDropdown options={CalculationApproach} valueKey="value" labelKey="name"  value={formData.calculation_approach}
+                    }
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <FormField
+                    label="Calculation Approach"
+                    isDropdown
+                    options={CalculationApproach}
+                    valueKey="value"
+                    labelKey="name"
+                    value={formData.calculation_approach}
                     onChange={(e) =>
                       handleInputChange("calculation_approach", e.target.value)
-                    }/>
-            </Col>
-            <Col md={6}>
-            <FormField label="GHG Gases Covered"   placeholder="N2O, CH4"  isDropdown options={gases} valueKey="gasGroupID" labelKey="gasName" value={formData.ghg_gases_covered}
+                    }
+                  />
+                </Col>
+                <Col md={6}>
+                  <FormField
+                    label="GHG Gases Covered"
+                    placeholder="N2O, CH4"
+                    isDropdown
+                    options={gases}
+                    valueKey="gasGroupID"
+                    labelKey="gasName"
+                    value={formData.ghg_gases_covered}
                     onChange={(e) =>
                       handleInputChange("ghg_gases_covered", e.target.value)
-                    }/>
-            </Col>
-           
-            </Row>
-            <Row>
-            <Col md={6}>
-            <FormField label="Precursors Gases Covered"  placeholder="N2O, CH4"  isDropdown options={gases} valueKey="gasGroupID" labelKey="gasName" value={formData.precursors_gases_covered}
+                    }
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <FormField
+                    label="Precursors Gases Covered"
+                    placeholder="N2O, CH4"
+                    isDropdown
+                    options={gases}
+                    valueKey="gasGroupID"
+                    labelKey="gasName"
+                    value={formData.precursors_gases_covered}
                     onChange={(e) =>
-                      handleInputChange("precursors_gases_covered", e.target.value)
-                    }/>
-            </Col>
-            </Row>
-            <div className="category-sub-modal">
-            <h4 className="category-sub-title">Upload Documents</h4>
-            <Col md={12}>
-          <FileUpload label="Uncertainty Guidance?" toggleClick={() =>
+                      handleInputChange(
+                        "precursors_gases_covered",
+                        e.target.value
+                      )
+                    }
+                  />
+                </Col>
+              </Row>
+              <div className="category-sub-modal">
+                <h4 className="category-sub-title">Upload Documents</h4>
+                <Col md={12}>
+                  <FileUpload
+                    label="Uncertainty Guidance?"
+                    toggleClick={() =>
                       handleInputChange(
                         "uncertainty_guidance",
                         !formData.uncertainty_guidance
-                      )}  conditionData={formData.uncertainty_guidance}
-                      onFileUpload={(file) =>
-                        handleFileUpload("Uncertainty Guidance", file)
-                      }/>
-            </Col>
-            <Col md={12}>
-          <FileUpload label="Is QA/QC for emission data?"  toggleClick={() =>
-                      handleInputChange("qA_QC_for_emission", !formData.qA_QC_for_emission)
+                      )
+                    }
+                    conditionData={formData.uncertainty_guidance}
+                    onFileUpload={(file) =>
+                      handleFileUpload("Uncertainty Guidance", file)
+                    }
+                  />
+                </Col>
+                <Col md={12}>
+                  <FileUpload
+                    label="Is QA/QC for emission data?"
+                    toggleClick={() =>
+                      handleInputChange(
+                        "qA_QC_for_emission",
+                        !formData.qA_QC_for_emission
+                      )
                     }
                     conditionData={formData.qA_QC_for_emission}
                     onFileUpload={(file) =>
                       handleFileUpload("QA/QC for Emission Data", file)
-                    }/>
-            </Col>
-            <Col md={12}>
-          <FileUpload label="Is QA/QC for activity data?" toggleClick={() =>
+                    }
+                  />
+                </Col>
+                <Col md={12}>
+                  <FileUpload
+                    label="Is QA/QC for activity data?"
+                    toggleClick={() =>
                       handleInputChange(
                         "qA_QC_for_activity_data",
                         !formData.qA_QC_for_activity_data
@@ -229,20 +309,30 @@ const CategoryModal = ({open, onClose}) => {
                     conditionData={formData.qA_QC_for_activity_data}
                     onFileUpload={(file) =>
                       handleFileUpload("QA/QC for Activity Data", file)
-                    }/>
-          </Col>
-          </div>
-          <div className="d-flex justify-content-end mt-3" style={{ marginRight: '4rem' }}>
-          <button type="submit"  className="add-details-btn  me-2" > Add Details
-    </button>
-    <button color="danger" className="cancel-details-btn "  onClick={onClose}>Cancel
-    </button>
-                 
-                </div>
-        </form>
-      </Modal>
-      </Container>
-    </div>
+                    }
+                  />
+                </Col>
+              </div>
+              <div
+                className="d-flex justify-content-end mt-3"
+                style={{ marginRight: "4rem" }}
+              >
+                <button type="submit" className="add-details-btn  me-2">
+                  {" "}
+                  Add Details
+                </button>
+                <button
+                  color="danger"
+                  className="cancel-details-btn "
+                  onClick={onClose}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </Modal>
+        </Container>
+      </div>
     </React.Fragment>
   );
 };
