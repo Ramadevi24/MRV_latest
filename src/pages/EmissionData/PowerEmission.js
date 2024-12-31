@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import FormField from "../../Components/CommonComponents/FormField";
 import "../../assets/scss/CSS/EntityComponents.css";
 import {
@@ -19,6 +19,7 @@ import VerticalEmissionTable3 from "../../Components/CommonComponents/VerticalEm
 
 import { useParams } from "react-router-dom";
 import FileUpload from "../../Components/CommonComponents/FileUpload";
+import { FacilityContext } from "../../contexts/FacilityContext";
 
 function PowerEmission() {
   const [file, setFile] = useState(null);
@@ -27,7 +28,19 @@ function PowerEmission() {
     const [Uncertainty, setUncertainty] = useState(false);
     const [QAQC, setQAQC] = useState(false);
     const [ActivityQAQC, setActivityQAQC] = useState(false);
+const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
   
+    const [facilityOptions, setFacilityOptions] = useState([
+      { name: "Taweela A1", value: "Taweela A1" },
+      { name: "Taweela A2", value: "Taweela A2" },
+      { name: "Taweela A3", value: "Taweela A3" },
+    ]);
+  const  
+  [calendarYear, setCalendarYear] = useState([
+    { name: "2023", value: "2023" },
+    { name: "2024", value: "2024" },
+    { name: "2025", value: "2025" },
+  ]);
     const handleUncertainty = () => {
       setUncertainty(!Uncertainty);
     }
@@ -501,14 +514,18 @@ function PowerEmission() {
                     <FormField
                       label="Facility / Plant Name"
                       isDropdown
-                      options={[{ name: "Taweela A1", value: "Taweela A1" }]}
+                      options={facilityOptions}   valueKey ="name"
+                      labelKey ="name"
+
                     />
                   </Col>
                   <Col md={3}>
                     <FormField
                       label="Calendar Year"
                       isDropdown
-                      options={[{ name: "2024", value: "2024" }]}
+                      options={calendarYear}  valueKey ="name"
+                      labelKey ="name"
+
                     />
                   </Col>
                   <Col md={3}>
