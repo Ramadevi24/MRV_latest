@@ -260,7 +260,8 @@ const EmirateGrid = () => {
                               ))}
                             </tr>
                           </thead>
-                          <tbody className="list form-check-all">
+                          { currentData.length > 0 ? (
+                            <tbody className="list form-check-all">
                             {currentData.map((item) => (
                               <tr key={item.emiratesID}>
                                 <td className="name">{item.emiratesID}</td>
@@ -332,7 +333,7 @@ const EmirateGrid = () => {
                                 </td>
                               </tr>
                             ))}
-                          </tbody>
+                          </tbody>): ( <tbody> <tr> <td colSpan={columns.length} className="text-center"> No records found </td> </tr> </tbody>)}
                         </table>
                       </div>
                     )}

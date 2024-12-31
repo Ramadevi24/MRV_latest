@@ -1,13 +1,20 @@
 import React from 'react';
 
-const FormField = ({ label, type, value, onChange, options, isDropdown, placeholder, icon, error, valueKey,  labelKey, rows}) => {
+const FormField = ({ label, type, value, onChange, options, isDropdown, placeholder, icon, error, valueKey,  labelKey, rows, isMultiSelect}) => {
+  const handleMultiSelectChange = (event) => {
+    const selectedOptions = Array.from(event.target.selectedOptions).map(
+      (option) => option.value
+    );
+    onChange(selectedOptions.join(',')); // Join selected values with a comma
+  };
+
   return (
     <div className="form-field">
       <label>{label}</label>
       {isDropdown ? (
         <div>
-        <select value={value} onChange={onChange}>
-          {options.map((option) => (
+        <select value={isMultiSelect ? value?.split(',') : value}  onChange={isMultiSelect ? handleMultiSelectChange : onChange}  multiple={isMultiSelect}>
+          {options?.map((option) => (
             <option key={option[valueKey]} value={option[valueKey]}>
               {option[labelKey]}
             </option>

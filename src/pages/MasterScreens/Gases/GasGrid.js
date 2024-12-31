@@ -56,8 +56,8 @@ const GasGrid = () => {
 
   
   const gasesOptions = [
-    { name: 'Greenhouse Gases (GHGs)', name: 'Greenhouse Gases (GHGs)' },
-    { name: 'Precursor Gases', name: 'Precursor Gases' }
+    { id: 1, name: 'Greenhouse Gases (GHGs)', name: 'Greenhouse Gases (GHGs)' },
+    { id:2, name: 'Precursor Gases', name: 'Precursor Gases' }
   ];
 
   const handleSort = (key) => {
@@ -83,7 +83,7 @@ const GasGrid = () => {
   const filteredSortedData = sortedData?.filter((data) =>{
     if (!data) return false; 
   
-    return ["gasType", "gasName", "createdDate"].some((key) => {
+    return ["gasGroupID", "gasName", "createdDate"].some((key) => {
       const value = key.includes(".")
     ? key.split(".").reduce((obj, k) => obj?.[k], data) // Handle nested keys
     : data[key];
@@ -101,7 +101,7 @@ const GasGrid = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleEditRow = (row) => {
-    setEditingRowId(row.gasid);
+    setEditingRowId(row.gasID);
     setEditingGas({ ...row });
   };
 
@@ -146,8 +146,8 @@ const GasGrid = () => {
   };
 
   const columns = [
-    { key: "gasid", label: "ID" },
-    { key: "gasType", label: "Gas Type" },
+    { key: "gasID", label: "ID" },
+    { key: "gasGroupID", label: "Gas Type" },
     { key: "gasName", label: "Gas Name" },
     { key: "createdDate", label: "Created Date" },
     {
@@ -263,10 +263,10 @@ const GasGrid = () => {
                           </thead>
                           <tbody className="list form-check-all">
                             {currentData.map((item) => (
-                              <tr key={item.gasid}>
-                                <td className="name">{item.gasid}</td>
+                              <tr key={item.gasID}>
+                                <td className="name">{item.gasID}</td>
                                 <td className="name">
-                                  {editingRowId === item.gasid ? (
+                                  {editingRowId === item.gasID ? (
                                     // <Input
                                     //   type="text"
                                     //   name="gasType"
@@ -275,9 +275,9 @@ const GasGrid = () => {
                                     // />
                                       <select
                                                                           className="form-select"
-                                                                          id="gasType"
-                                                                          name="gasType"
-                                                                          value={editingGas.gasType}
+                                                                          id="gasGroupID"
+                                                                          name="gasGroupID"
+                                                                          value={editingGas.gasGroupID}
                                                                           onChange={handleInputChange}
                                                                           aria-label="Default select example"
                                                                         >
@@ -286,19 +286,19 @@ const GasGrid = () => {
                                                                           </option>
                                                                           {gasesOptions.map((item) => (
                                                                             <option
-                                                                              key={item.name}
-                                                                              value={item.name}
+                                                                              key={item.id}
+                                                                              value={item.id}
                                                                             >
                                                                               {item.name}
                                                                             </option>
                                                                           ))}
                                                                         </select>
                                   ) : (
-                                    item.gasType
+                                    item.gasGroupID === 1 ? "Greenhouse Gases (GHGs)" : "Precursor Gases"
                                   )}
                                 </td>
                                 <td className="name">
-                                  {editingRowId === item.gasid ? (
+                                  {editingRowId === item.gasID ? (
                                     <Input
                                       type="text"
                                       name="gasName"
@@ -314,13 +314,13 @@ const GasGrid = () => {
                                 </td>
                                 <td>
                                   <div className="d-flex gap-2">
-                                    {editingRowId === item.gasid ? (
+                                    {editingRowId === item.gasID ? (
                                       <>
                                         <Button
                                           color="success"
                                           size="sm"
                                           onClick={() =>
-                                            handleSaveRow(item.gasid)
+                                            handleSaveRow(item.gasID)
                                           }
                                         >
                                           <FaCheck color="white" />
@@ -351,7 +351,7 @@ const GasGrid = () => {
                                           <button
                                             className="btn btn-sm btn-danger remove-item-btn"
                                             onClick={() =>
-                                              handleDelete(item.gasid)
+                                              handleDelete(item.gasID)
                                             }
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteRecordModal"

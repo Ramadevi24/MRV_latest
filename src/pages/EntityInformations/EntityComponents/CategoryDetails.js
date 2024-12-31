@@ -10,6 +10,9 @@ const CategoryDetails = () => {
   const {power, transport} = useParams();
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const categoriesData = localStorage.getItem('submittedData') ? JSON.parse(localStorage.getItem('submittedData')) : [];
+
+  console.log(categoriesData, 'categoriesData');
 
   const handleButtonClick = () => {
     setIsModalOpen(true);
@@ -20,12 +23,12 @@ const CategoryDetails = () => {
   };
 
   const columns = [
-    { key: "Sector", label: t("Sector"), sortable: true },
-    { key: "Sub Sector / Category", label: t("Sub Sector / Category"), sortable: true },
-    { key: "Emission Source Type", label: t("Emission Source Type"), sortable: true },
-    { key: "Calculation Approach", label: t("Calculation Approach"), sortable: true },
-    { key: "GHG Gases Covered", label: t("GHG Gases Covered"), sortable: true },
-    { key: "Precursors Gases Covered", label: t("Precursors Gases Covered"), sortable: true },
+    { key: "sector_ID", label: t("Sector"), sortable: true },
+    { key: "sub_sectorID", label: t("Sub Sector / Category"), sortable: true },
+    { key: "emission_source_type", label: t("Emission Source Type"), sortable: true },
+    { key: "calculation_approach", label: t("Calculation Approach"), sortable: true },
+    { key: "ghg_gases_covered", label: t("GHG Gases Covered"), sortable: true },
+    { key: "precursors_gases_covered", label: t("Precursors Gases Covered"), sortable: true },
     { key: "Actions", label: t("Action"), render: (val, item) => (
       <div className="d-flex gap-2">
         <button className="btn btn-sm btn-info" onClick={() => navigate(`/edit-role/${item.roleID}`)}>
@@ -80,7 +83,7 @@ const CategoryDetails = () => {
         </Button>
       </div>
       {(power !== "undefined" && transport !== ":aviation") &&(<DataTable
-        data={data}
+        data={categoriesData}
         columns={columns}
         onSort={handleSort}
         onAction={(action, item) => {

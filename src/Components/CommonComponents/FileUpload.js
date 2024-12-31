@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import ToggleSwitch from "./ToggleSwitch";
 import DownloadIcon from "../../assets/images/Power Sector--- Data Entry/basil_upload-solid.png"
 
-const FileUpload = ({ label, toggleClick, conditionData }) => {
+const FileUpload = ({ label, toggleClick, conditionData, onFileUpload }) => {
   const [file, setFile] = useState(null);
 
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+    if (onFileUpload && selectedFile) {
+      onFileUpload(selectedFile); // Call the onFileUpload callback with the selected file
+    }
   };
 
   const handleFileRemove = () => {
