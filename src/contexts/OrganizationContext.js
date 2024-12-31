@@ -19,6 +19,10 @@ export const OrganizationProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
 
+  useEffect(() => {
+    fetchAllCategories();
+  }, []);
+
 
   const fetchAllOrganizations = async (tenantID = null) => {
     try {

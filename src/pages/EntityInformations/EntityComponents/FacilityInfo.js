@@ -17,7 +17,7 @@ const FacilityInfo = () => {
      <FormField label="Emirate" isDropdown options={emirates} valueKey="emiratesID" labelKey="name"/>
      </Col>
      <Col md={3}>
-      <FormField label="Entity" isDropdown options={entity} valueKey="entityId" labelKey="entityName"/>
+      <FormField label="Reporting Entity" isDropdown options={entity} valueKey="entityId" labelKey="entityName"/>
       </Col>
       <Col md={3}>
       <FormField label="Facility" placeholder="IB11/Taweelah" type="text"/>

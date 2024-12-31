@@ -16,7 +16,7 @@ function AddFacilityDetail() {
 
   const tabs = [
     "Facility Configuration",
-    "Power Generation Details",
+    "Sub Plant Details (Power)",
     "Road Transportation Details",
     "View Details",
   ];

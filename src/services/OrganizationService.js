@@ -1,7 +1,8 @@
 import axios from 'axios';
+import config from '../config';
 
-const API_BASE_URL = 'https://atlas.smartgeoapps.com/MRVAPI/api/Organization';
-const CATEGORIES_URL = 'https://atlas.smartgeoapps.com/MRVAPI/api/Categories/level1and2';
+const API_BASE_URL = `${config.api.API_URL}/Organization`;
+const CATEGORIES_URL = `${config.api.API_URL}/Categories`;
 const AUTH_TOKEN = localStorage.getItem('AuthToken');
 
 export const getOrganizations = async (tenantID = null) => {

@@ -23,7 +23,7 @@ export const TenantProvider = ({ children }) => {
       setTenants(data);
       setLoading(false);
     } catch (error) {
-      throw new Error("Error fetching tenant");
+      console.error('Error fetching tenants', error);
       setLoading(false);
     }
   };
@@ -34,7 +34,7 @@ export const TenantProvider = ({ children }) => {
       const tenant = await getTenantById(id);
       return tenant;
     } catch (error) {
-      throw new Error("Error fetching tenant");
+      console.error('Error fetching tenant by id', error);
     } finally {
       setLoading(false);
     }
