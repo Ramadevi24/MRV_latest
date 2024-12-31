@@ -24,7 +24,8 @@ const AddCo2Modal = ({ open, onClose }) => {
   const validate = () => {
     const newErrors = {};
     if (!formValues.gasTypeName.trim()) {
-      newErrors.gasTypeName = "CO2 Equivalent Name is required.";
+      newErrors.gasTypeName = `${t("CO2 Equivalent Name is required.")}`;
+
     }
     return newErrors;
   };

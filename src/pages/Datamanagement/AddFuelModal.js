@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FuelContext } from "../../contexts/FuelContext";
+import '../../assets/scss/CSS/styles.css'
 import {
   fuelTypesData,
   isPrimaryFuelTypes,
@@ -39,8 +40,12 @@ const AddFuelModal = ({ open, onClose }) => {
       fuelName: Yup.string().required(t("Please Enter a Fuel Name")),
       fuelType: Yup.string().required(t("Please select a fuel type")),
       isPrimaryFuel: Yup.string().required(t("Please select a primary fuel")),
-      netCalorificValue: Yup.string().required( t("Please Enter a netCalorificValue")),
-      carbonContentNCV: Yup.string().required(t("Please Enter a carbonContentNCV"))
+      netCalorificValue: Yup.string().required(
+        t("Please Enter a netCalorificValue")
+      ),
+      carbonContentNCV: Yup.string().required(
+        t("Please Enter a carbonContentNCV")
+      ),
     }),
     onSubmit: async (values) => {
       const updatedValues = {
@@ -59,9 +64,8 @@ const AddFuelModal = ({ open, onClose }) => {
           const backendErrors = error.response.data.errors;
           setErrors(backendErrors);
         } else {
-          console.error('Unexpected Error:', error.message);
+          console.error("Unexpected Error:", error.message);
         }
-
       }
     },
   });
@@ -182,7 +186,11 @@ const AddFuelModal = ({ open, onClose }) => {
                     type="number"
                     name="netCalorificValue"
                     id="netCalorificValue"
-                    className="form-control"
+                    className={`form-control ${
+                      document.body.classList.contains("lang-ar")
+                        ? "rtl-placeholder"
+                        : ""
+                    }`}
                     placeholder={t("12.6")}
                     value={formik.values.netCalorificValue || ""}
                     onChange={formik.handleChange}
@@ -194,6 +202,7 @@ const AddFuelModal = ({ open, onClose }) => {
                         : false
                     }
                   />
+
                   {formik.touched.netCalorificValue &&
                   formik.errors.netCalorificValue ? (
                     <FormFeedback>
@@ -342,13 +351,13 @@ const AddFuelModal = ({ open, onClose }) => {
                 </FormGroup>
               </Col>
             </Row> */}
-  {errors.ConversionFactorType && (
-        <div style={{ color: 'red' }}>
-          {errors.ConversionFactorType.map((err, index) => (
-            <p key={index}>{err}</p>
-          ))}
-        </div>
-      )}
+            {errors.ConversionFactorType && (
+              <div style={{ color: "red" }}>
+                {errors.ConversionFactorType.map((err, index) => (
+                  <p key={index}>{err}</p>
+                ))}
+              </div>
+            )}
             <div className="d-flex justify-content-end mt-3">
               <Button type="submit" color="success" className="me-2 add-btn">
                 {t("Submit")}

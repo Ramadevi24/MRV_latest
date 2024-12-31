@@ -261,7 +261,7 @@ const EntityGrid = () => {
                             ))}
                           </tr>
                         </thead>
-                        <tbody className="list form-check-all">
+                        { currentData.length > 0 ? (<tbody className="list form-check-all">
                           {currentData.map((item) => (
                             <tr key={item.entityId}>
                               <td className="name">{item.entityId}</td>
@@ -381,7 +381,8 @@ const EntityGrid = () => {
                               </td>
                             </tr>
                           ))}
-                        </tbody>
+                        </tbody>) : ( <tbody> <tr> <td colSpan={4} className="text-center"> No records found </td> </tr> </tbody>)
+ }
                       </table>
                     </div>
                   )}
