@@ -235,7 +235,7 @@ const TenantsGrid = () => {
                               </th>
                             </tr>
                           </thead>
-                          <tbody className="list form-check-all">
+                          {currentTenants.length > 0 ? (<tbody className="list form-check-all">
                             {currentTenants.map((tenant) => (
                               <tr key={tenant.tenantID}>
                                 <td className="name">{tenant.name}</td>
@@ -283,7 +283,8 @@ const TenantsGrid = () => {
                                 </td>
                               </tr>
                             ))}
-                          </tbody>
+                          </tbody>) : ( <tbody> <tr> <td colSpan={4} className="text-center"> No records found </td> </tr> </tbody>)
+ }
                         </table>
                         <div className="noresult" style={{ display: "none" }}>
                           <div className="text-center">

@@ -6,7 +6,15 @@ import EmissionSourceDetails from "../EntityInformations/EntityComponents/Emissi
 import ContactDetails from "../EntityInformations/EntityComponents/ContactDetails";
 import ToggleSwitch from "../../Components/CommonComponents/ToggleSwitch";
 import "../../assets/scss/CSS/EntityComponents.css";
-import { Container, Card, CardBody, CardHeader, Row, Col, Button } from "reactstrap";
+import {
+  Container,
+  Card,
+  CardBody,
+  CardHeader,
+  Row,
+  Col,
+  Button,
+} from "reactstrap";
 import { useNavigate } from "react-router-dom";
 
 function AddFacilityDetail() {
@@ -34,8 +42,8 @@ function AddFacilityDetail() {
   };
 
   const handleCancel = () => {
-   Navigate("/FacilityDetailsGrid/:component");
-    };
+    Navigate("/FacilityDetailsGrid/:component");
+  };
 
   const handleTabClick = (index) => {
     setActiveTab(index);
@@ -52,7 +60,9 @@ function AddFacilityDetail() {
           <Col lg={12}>
             <Card>
               <CardHeader>
-                <h4 className="card-title mb-0 cardTitle">Facility Information</h4>
+                <h4 className="card-title mb-0 cardTitle">
+                  Facility Information
+                </h4>
               </CardHeader>
               <CardBody>
                 {/* Tabs */}
@@ -65,9 +75,13 @@ function AddFacilityDetail() {
                         padding: "10px 20px",
                         marginRight: "10px",
                         cursor: "pointer",
-                        backgroundColor: activeTab === index ? "#0066A4" : "#E9EDF5",
+                        backgroundColor:
+                          activeTab === index ? "#0066A4" : "#E9EDF5",
                         color: activeTab === index ? "#fff" : "#000",
-                        border: activeTab === index ? "1px solid #0066A4" : "1px solid #E9EDF5",
+                        border:
+                          activeTab === index
+                            ? "1px solid #0066A4"
+                            : "1px solid #E9EDF5",
                         borderRadius: "5px",
                       }}
                     >
@@ -99,11 +113,16 @@ function AddFacilityDetail() {
                     <EmissionSourceDetails />
                   </>
                 )}
-                {activeTab === 2 && <div>Content for Road Transportation Details</div>}
+                {activeTab === 2 && (
+                  <div>Content for Road Transportation Details</div>
+                )}
                 {activeTab === 3 && <div>Content for View Details</div>}
 
                 {/* Navigation Buttons */}
-                <div className="d-flex justify-content-end mt-3" style={{ marginRight: "4rem" }}>
+                <div
+                  className="d-flex justify-content-end mt-3"
+                  style={{ marginRight: "4rem" }}
+                >
                   {activeTab > 0 && (
                     <Button
                       type="button"
@@ -114,12 +133,12 @@ function AddFacilityDetail() {
                       Back
                     </Button>
                   )}
-                   {activeTab === 0 && (
+                  {activeTab === 0 && (
                     <Button
                       type="button"
                       color="danger"
                       className="me-2"
-                      onClick ={handleCancel}
+                      onClick={handleCancel}
                     >
                       Cancel
                     </Button>

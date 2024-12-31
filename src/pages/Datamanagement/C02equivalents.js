@@ -35,7 +35,7 @@ const C02equivalents = () => {
     loading,
     co2EquivalentsTypes,
     updateExistingEquivalentType,
-    fetchEquivalentTypeById
+    fetchEquivalentTypeById,
   } = useContext(Co2EquivalentContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,10 +50,11 @@ const C02equivalents = () => {
   const [isEditEquivalentModal, setIsEditEquivalentModal] = useState(false);
   const [equivalentId, setEquivalentId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedEquivalentTypeData, setSelectedEquivalentTypeData] = useState(null);
+  const [selectedEquivalentTypeData, setSelectedEquivalentTypeData] =
+    useState(null);
 
   useEffect(() => {
-    if (selectedCategory === null) return; 
+    if (selectedCategory === null) return;
     const SelectedEquivalentTypeById = async () => {
       try {
         const response = await fetchEquivalentTypeById(selectedCategory);
@@ -62,7 +63,7 @@ const C02equivalents = () => {
         console.error("API Error:", error);
       }
     };
-  
+
     SelectedEquivalentTypeById();
   }, [selectedCategory]);
 
@@ -93,7 +94,7 @@ const C02equivalents = () => {
       const updatedEquivalent = {
         co2EquiId: id,
         gasTypeName: selectedEquivalentTypeData.gasTypeName,
-        isDefault: ! selectedEquivalentTypeData.isDefault,
+        isDefault: !selectedEquivalentTypeData.isDefault,
       };
       await updateExistingEquivalentType(id, updatedEquivalent);
       toast.success("Default CO2 Equivalent Type Set Successfully");
@@ -156,69 +157,74 @@ const C02equivalents = () => {
                 </CardHeader>
                 <CardBody>
                   <div className="listjs-table" id="customerList">
-                  <div className="d-flex align-items-center justify-content-between mb-4 flex-mobile">
-                             <Row className="g-4">
-                              <Col className="col-sm w-[5rem]">
-                            <div className="d-flex justify-content-sm-start">
-                              <div className="dropdown position-relative">
-                                <i
-                                  className="ri-filter-line filter icon position-absolute"
-                                  style={{
-                                    top: "50%",
-                                    left: "10px",
-                                    transform: "translateY(-50%)",
-                                  }}
-                                />
-                            
-                                <select
-                                  className="form-select px-12 rounded-0 rounded-start"
-                                  style={{ paddingLeft: "40px" }}
-                                  onChange={(e) =>
-                                    setSelectedCategory(e.target.value)
-                                  }
-                                  value={selectedCategory}
-                                >
-                                   <option>{t("Type")}</option>
-                                  {co2EquivalentsTypes && co2EquivalentsTypes.map((gas) => (
-                                  <option key={gas.co2EquiId} value={gas.co2EquiId}>{gas.gasTypeName}</option>
-                                ))}
-                                </select>
-                              </div>
+                    <div className="d-flex align-items-center justify-content-between mb-4 flex-mobile">
+                      <Row className="g-4">
+                        <Col className="col-sm w-[5rem]">
+                          <div className="d-flex justify-content-sm-start">
+                            <div className="dropdown position-relative">
+                              <i
+                                className="ri-filter-line filter icon position-absolute"
+                                style={{
+                                  top: "50%",
+                                  left: "10px",
+                                  transform: "translateY(-50%)",
+                                }}
+                              />
 
-                              <div className="search-box">
-                                <input
-                                  type="text"
-                                  className="form-control search rounded-0 rounded-end"
-                                  placeholder={t("Search...")}
-                                  value={searchTerm}
-                                  onChange={(e) =>
-                                    setSearchTerm(e.target.value)
-                                  }
-                                />
-                                <i className="ri-search-line search-icon"></i>
-                              </div>
+                              <select
+                                className="form-select px-12 rounded-0 rounded-start"
+                                style={{ paddingLeft: "40px" }}
+                                onChange={(e) =>
+                                  setSelectedCategory(e.target.value)
+                                }
+                                value={selectedCategory}
+                              >
+                                <option>{t("Type")}</option>
+                                {co2EquivalentsTypes &&
+                                  co2EquivalentsTypes.map((gas) => (
+                                    <option
+                                      key={gas.co2EquiId}
+                                      value={gas.co2EquiId}
+                                    >
+                                      {gas.gasTypeName}
+                                    </option>
+                                  ))}
+                              </select>
                             </div>
-                            </Col>
-                            </Row>
-                          <div className="d-flex justify-content-end mobile-height">
-                          <Button
-                              className="me-1 default-btn"
-                              onClick={()=>handleEditTypeEquivalent(selectedCategory)}
-                            >
-                              {t("Set as Default")}
-                            </Button>
-                            <Button
-                              color="success"
-                              className="add-btn me-1"
-                              onClick={handleCreateEquivalent}
-                              id="create-btn"
-                            >
-                              <i className="ri-add-line align-bottom me-1"></i>{" "}
-                              {t("Add")}
-                            </Button>
+
+                            <div className="search-box">
+                              <input
+                                type="text"
+                                className="form-control search rounded-0 rounded-end"
+                                placeholder={t("Search...")}
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                              />
+                              <i className="ri-search-line search-icon"></i>
+                            </div>
                           </div>
-                        
-                        </div>
+                        </Col>
+                      </Row>
+                      <div className="d-flex justify-content-end mobile-height">
+                        <Button
+                          className="me-1 default-btn"
+                          onClick={() =>
+                            handleEditTypeEquivalent(selectedCategory)
+                          }
+                        >
+                          {t("Set as Default")}
+                        </Button>
+                        <Button
+                          color="success"
+                          className="add-btn me-1"
+                          onClick={handleCreateEquivalent}
+                          id="create-btn"
+                        >
+                          <i className="ri-add-line align-bottom me-1"></i>{" "}
+                          {t("Add")}
+                        </Button>
+                      </div>
+                    </div>
                     {loading ? (
                       <div
                         className="d-flex justify-content-center align-items-center"
@@ -240,57 +246,84 @@ const C02equivalents = () => {
                           <thead className="table-light">
                             <tr>
                               <th>{t("ID")}</th>
-                              <th  className="sort" onClick={() => handleSort("gasName")}>
+                              <th
+                                className="sort"
+                                onClick={() => handleSort("gasName")}
+                              >
                                 {" "}
                                 {t("Gas Group")}{" "}
                               </th>
-                              <th  className="sort" onClick={() => handleSort("createdDate")}>{t("createdDate")}</th>
+                              <th
+                                className="sort"
+                                onClick={() => handleSort("createdDate")}
+                              >
+                                {t("createdDate")}
+                              </th>
                               <th>{t("Actions")}</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            {currentItems?.map((equivalent) => (
-                              <tr key={equivalent?.co2GasId}>
-                                <td> {equivalent?.co2GasId} </td>
-                                <td> {equivalent?.gasName} </td>
-                                <td> {formatDate(equivalent?.createdDate)} </td>
-                                <td>
-                                  <div className="d-flex gap-2">
-                                    <div className="edit">
-                                      <button
-                                        className="btn btn-sm btn-info edit-item-btn"
-                                        onClick={() =>
-                                          handleEditEquivalent(
-                                            equivalent?.co2GasId
-                                          )
-                                        }
-                                        onClose={handleCloseEquivalent}
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#showModal"
-                                      >
-                                        {" "}
-                                        <FaPencilAlt color="white" />
-                                      </button>
+                          {currentItems.length > 0 ? (
+                            <tbody>
+                              {currentItems?.map((equivalent) => (
+                                <tr key={equivalent?.co2GasId}>
+                                  <td> {equivalent?.co2GasId} </td>
+                                  <td> {equivalent?.gasName} </td>
+                                  <td>
+                                    {" "}
+                                    {formatDate(equivalent?.createdDate)}{" "}
+                                  </td>
+                                  <td>
+                                    <div className="d-flex gap-2">
+                                      <div className="edit">
+                                        <button
+                                          className="btn btn-sm btn-info edit-item-btn"
+                                          onClick={() =>
+                                            handleEditEquivalent(
+                                              equivalent?.co2GasId
+                                            )
+                                          }
+                                          onClose={handleCloseEquivalent}
+                                          data-bs-toggle="modal"
+                                          data-bs-target="#showModal"
+                                        >
+                                          {" "}
+                                          <FaPencilAlt color="white" />
+                                        </button>
+                                      </div>
+                                      <div className="remove">
+                                        <button
+                                          className="btn btn-sm btn-danger remove-item-btn"
+                                          onClick={() =>
+                                            handleDeleteClick(
+                                              equivalent.co2GasId
+                                            )
+                                          }
+                                          data-bs-toggle="modal"
+                                          data-bs-target="#deleteRecordModal"
+                                        >
+                                          <FaTrashAlt color="white" />
+                                        </button>
+                                      </div>
                                     </div>
-                                    <div className="remove">
-                                      <button
-                                        className="btn btn-sm btn-danger remove-item-btn"
-                                        onClick={() =>
-                                          handleDeleteClick(
-                                            equivalent.co2GasId
-                                          )
-                                        }
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteRecordModal"
-                                      >
-                                        <FaTrashAlt color="white" />
-                                      </button>
-                                    </div>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          ) : (
+                            <tbody>
+                              {" "}
+                              <tr>
+                                {" "}
+                                <td
+                                  colSpan={4}
+                                  className="text-center no-records"
+                                >
+                                  {" "}
+                                  {t("No records found")}{" "}
+                                </td>{" "}
+                              </tr>{" "}
+                            </tbody>
+                          )}
                         </table>
                       </div>
                     )}

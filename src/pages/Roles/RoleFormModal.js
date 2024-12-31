@@ -42,9 +42,9 @@ const RoleFormModal = ({open, onClose}) => {
       tenantID: "",
     },
     validationSchema: Yup.object({
-      roleName: Yup.string().required("Please Enter Role Name"),
-      description: Yup.string().required("Please Enter Role Description"),
-      permissionIds: Yup.array().required("Please Select Permissions"),
+      roleName: Yup.string().required(t("Please Enter Role Name")),
+      description: Yup.string().required(t("Please Enter Role Description")),
+      permissionIds: Yup.array().required(t("Please Select Permissions")),
     }),
     onSubmit: async (values) => {
       try {

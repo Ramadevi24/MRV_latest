@@ -236,7 +236,7 @@ const FuelManager = () => {
                             </div>
                           </div>
 
-                          <div className="d-flex align-items-center">
+                          <div className="d-flex align-items-center arabic-vr">
                             <div className="button-box d-flex align-items-center me-3">
                               <input
                                 type="checkbox"
@@ -346,7 +346,7 @@ const FuelManager = () => {
                               <th>{t("Actions")}</th>
                             </tr>
                           </thead>
-                          <tbody>
+                         {currentItems.length > 0 ? (<tbody>
                             {currentItems?.map((fuel) => (
                               <tr key={fuel.fuelID}>
                                 <td>
@@ -485,7 +485,8 @@ const FuelManager = () => {
                                 </td>
                               </tr>
                             ))}
-                          </tbody>
+                          </tbody>) : ( <tbody> <tr> <td colSpan={4} className="text-center no-records"> No records found </td> </tr> </tbody>)
+ }
                         </table>
                       </div>
                     )}
