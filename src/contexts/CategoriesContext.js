@@ -1,7 +1,12 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { Col, Row } from 'reactstrap';
+// CategoriesContext.js
+import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
+import { OrganizationContext } from './OrganizationContext';
 
-const CategoriesDropdown = ({ data }) => {
+const CategoriesContext = createContext();
+
+export const CategoriesProvider = ({ children }) => {
+  const { categories } = useContext(OrganizationContext);
+  const data = categories
   const [level1Categories, setLevel1Categories] = useState([]);
   const [level2Categories, setLevel2Categories] = useState([]);
   const [level3Categories, setLevel3Categories] = useState([]);
@@ -39,8 +44,7 @@ const CategoriesDropdown = ({ data }) => {
   }, [processedData]);
 
   // Handle Level 1 selection
-  const handleLevel1Change = (event) => {
-    const selectedId = parseInt(event.target.value, 10);
+  const handleLevel1Change = (selectedId) => {
     setSelectedLevel1(selectedId);
 
     const selectedCategory = processedData.find((item) => item.categoryID === selectedId);
@@ -59,8 +63,7 @@ const CategoriesDropdown = ({ data }) => {
   };
 
   // Handle Level 2 selection
-  const handleLevel2Change = (event) => {
-    const selectedId = parseInt(event.target.value, 10);
+  const handleLevel2Change = (selectedId) => {
     setSelectedLevel2(selectedId);
 
     const selectedCategory = level2Categories.find((item) => item.id === selectedId);
@@ -76,50 +79,20 @@ const CategoriesDropdown = ({ data }) => {
   };
 
   return (
-    <Row>
-      <Col md={6}>
-        <div className="form-field">
-          <label htmlFor="level1">Sector</label>
-          <select id="level1" onChange={handleLevel1Change}>
-            <option value="">Select Sector</option>
-            {level1Categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.code} - {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </Col>
-
-      <Col md={6}>
-        <div className="form-field">
-          <label htmlFor="level2">Sub Sector</label>
-          <select id="level2" onChange={handleLevel2Change} disabled={!level2Categories.length}>
-            <option value="">Select Sub Sector</option>
-            {level2Categories.map((subCategory) => (
-              <option key={subCategory.id} value={subCategory.id}>
-                {subCategory.code} - {subCategory.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </Col>
-
-      <Col md={6}>
-        <div className="form-field">
-          <label htmlFor="level3">Category</label>
-          <select id="level3" disabled={!level3Categories.length}>
-            <option value="">Select Category</option>
-            {level3Categories.map((subCategory) => (
-              <option key={subCategory.id} value={subCategory.id}>
-                {subCategory.code} - {subCategory.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </Col>
-    </Row>
+    <CategoriesContext.Provider
+      value={{
+        level1Categories,
+        level2Categories,
+        level3Categories,
+        selectedLevel1,
+        selectedLevel2,
+        handleLevel1Change,
+        handleLevel2Change,
+      }}
+    >
+      {children}
+    </CategoriesContext.Provider>
   );
 };
 
-export default CategoriesDropdown;
+export const useCategories = () => useContext(CategoriesContext);

@@ -23,6 +23,7 @@ import { EntityProvider } from "./contexts/EntityContext";
 import { CoverageAreaProvider } from "./contexts/CoverageAreaContext";
 import { GasProvider } from "./contexts/GasContext";
 import { Co2EquivalentProvider } from "./contexts/Co2EquivalentContext";
+import { CategoriesProvider } from "./contexts/CategoriesContext";
 
 const store = configureStore({ reducer: rootReducer, devTools: true });
 
@@ -47,7 +48,9 @@ root.render(
                               <CoverageAreaProvider>
                                 <GasProvider>
                                 <Co2EquivalentProvider>
-                                <App/>
+                                  <CategoriesProvider>
+                                    <App/>
+                                  </CategoriesProvider>
                                 </Co2EquivalentProvider>
                                 </GasProvider>
                               </CoverageAreaProvider>
