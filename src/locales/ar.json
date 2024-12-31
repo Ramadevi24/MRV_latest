@@ -186,7 +186,19 @@
   "Enter Role Description":"أدخل وصف الدور",
   "Location Information":"معلومات الموقع",
   "Locations":"المواقع",
-  "Add Location":"أضف الموقع"
+  "Add Location":"أضف الموقع",
+  "Contact Title":"عنوان الاتصال",
+  "Contact Phone":"هاتف الاتصال",
+  "Contact Email":"البريد الإلكتروني للاتصال",
+  "Contact Name":"اسم جهة الاتصال",
+  "Entity":"كيان",
+  "Add Entity":"إضافة كيان",
+  "Contact Details":"تفاصيل الاتصال",
+  "Title":"عنوان",
+  "Write here...":"أكتب هنا...",
+  "Plant Operator":"مشغل مصنع",
+  "Entity Information":"معلومات الكيان"
+
 
   
 

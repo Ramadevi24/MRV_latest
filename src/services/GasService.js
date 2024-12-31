@@ -1,9 +1,22 @@
 import axios from "axios";
 import config from "../config";
 const API_URL = `${config.api.API_URL}/GasInformation`;  // Replace with actual API URL
+const Gas_Group_URL = `${config.api.API_URL}/GasGroups`;  // Replace with actual API URL
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 
 // Get all gases
+
+export const getGasesGroups = async () => {
+  try {
+    const response = await axios.get(Gas_Group_URL, {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
+    });
+    return response.$values;  // Assuming the data is in the `data` property
+  } catch (error) {
+    // throw new Error("Error fetching gases");
+  }
+};
+
 export const getGases = async () => {
   try {
     const response = await axios.get(API_URL, {
@@ -35,7 +48,11 @@ export const createGas = async (gasData) => {
     });
     return response;
   } catch (error) {
-    throw new Error("Error creating gas");
+    if ((error = "Request failed with status code 409")) {
+      toast.warn("Gas already exists");
+    } else {
+      throw new Error("Error fetching Gas");
+    }
   }
 };
 

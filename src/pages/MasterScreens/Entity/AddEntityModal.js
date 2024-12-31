@@ -98,12 +98,15 @@ const AddEntityModal = ({ open, onClose }) => {
               description: formValues.description
          };
          try {
-           await createNewEntity(createFormData);
-           await fetchAllEntity();
-           onClose();
-           toast.success(t("Entity created successfully"), { autoClose: 3000 });
+          const response = await createNewEntity(createFormData);
+          console.log(response, 'responded');
+          if (response) {
+            onClose();
+            toast.success(t("Entity created successfully"), { autoClose: 3000 });
+            await fetchAllEntity();
+          }    
          } catch (error) {
-           toast.error(t("Error creating entity"));
+           console.log(t("Error creating entity"));
          }
        
   };
@@ -114,15 +117,15 @@ const AddEntityModal = ({ open, onClose }) => {
       <Container fluid>
         <Modal
           size="lg"
-          title="Add Entity"
+          title={t("Add Entity")}
           isOpen={open}
           onClose={onClose}
         >
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>  
                 <Row>
             <Col md={6}>
                     <FormField
-                      label="Entity"
+                      label={t("Entity")}
                       placeholder="DOE"
                       value={formValues.entityName}
                       onChange={handleChange("entityName")}
@@ -148,7 +151,7 @@ const AddEntityModal = ({ open, onClose }) => {
                     <Row>
             <Col md={6}>
                     <FormField
-                      label="Address"
+                      label={t("Address")}
                       placeholder="Hyderabad"
                       value={formValues.address}
                       onChange={handleChange("address")}
@@ -160,13 +163,13 @@ const AddEntityModal = ({ open, onClose }) => {
                     <div className="category-sub-modal" style={{marginTop:'10px'}}>
                    <Row>
                             <Col md={6}>
-                            <h4 className="modal-subhead">Contact Details</h4>
+                            <h4 className="modal-subhead">{t("Contact Details")}</h4>
                             </Col>
                         </Row>
                         <Row>
   <Col md={6}>
     <FormField
-      label="Name"
+      label={t("Name")}
       placeholder="Abdul"
       value={formValues.contactDetails.name}
       onChange={handleChange("name", true)} // Pass true for nested fields
@@ -176,8 +179,8 @@ const AddEntityModal = ({ open, onClose }) => {
   </Col>
   <Col md={6}>
     <FormField
-      label="Title"
-      placeholder="Plant Operator"
+      label={t("Title")}
+      placeholder={t("Plant Operator")}
       value={formValues.contactDetails.title}
       onChange={handleChange("title", true)}
       error={errors.title}
@@ -186,7 +189,7 @@ const AddEntityModal = ({ open, onClose }) => {
   </Col>
   <Col md={6}>
     <FormField
-      label="Email"
+      label={t("Email")}
       placeholder="abdul@gmail.com"
       value={formValues.contactDetails.email}
       onChange={handleChange("email", true)}
@@ -196,8 +199,8 @@ const AddEntityModal = ({ open, onClose }) => {
   </Col>
   <Col md={6}>
     <FormField
-      label="Phone Number"
-      placeholder="+971 123456789"
+      label={t("Phone Number")}
+      placeholder={t("+971 123456789")}
       value={formValues.contactDetails.phoneNumber}
       onChange={handleChange("phoneNumber", true)}
       error={errors.phoneNumber}
@@ -210,8 +213,8 @@ const AddEntityModal = ({ open, onClose }) => {
                 <Row>
             <Col md={12} style={{marginTop:'10px'}}>
                     <FormField
-                      label="Description"
-                      placeholder="Write here..."
+                      label={t("Description")}
+                      placeholder={t("Write here...")}
                       value={formValues.description}
                       onChange={handleChange("description")}
                       error={errors.description}
@@ -221,7 +224,7 @@ const AddEntityModal = ({ open, onClose }) => {
                     </Col>
                     </Row>
                     <div
-                className="d-flex justify-content-end mt-3"
+                className="d-flex justify-content-end mt-3" style={{marginRight: "4rem"}}
                
               >
                 <button
@@ -229,7 +232,7 @@ const AddEntityModal = ({ open, onClose }) => {
                   className="add-details-btn  me-2"
                 >
                   {" "}
-                  Add Details
+                  {t("Add Details")}
                 </button>
                 <button
                   type="submit"
@@ -237,7 +240,7 @@ const AddEntityModal = ({ open, onClose }) => {
                   className="cancel-details-btn "
                   onClick={onClose}
                 >
-                  Cancel
+                  {t("Cancel")}
                 </button>
               </div>
             </form>

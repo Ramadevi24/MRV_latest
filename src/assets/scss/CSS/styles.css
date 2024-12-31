@@ -53,3 +53,20 @@
 }
 
 
+@media  (min-width: 768px) {
+  .lang-ar .dele-ar {
+    margin-right: 6px !important;
+  }
+}
+
+@media (min-width:320px) and (max-width: 768px) {
+  .btn-responsive {
+    margin-top: 8px;
+  }
+  .label-responsive {
+    margin-right: 25px;
+  }
+  
+}
+
+

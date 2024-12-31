@@ -11,12 +11,12 @@ import { formatDate } from "../../utils/formateDate";
 import '../../assets/scss/CSS/styles.css';
 import { FaEye } from "react-icons/fa";
 
-const FacilityGrid = () => {
+const FacilityDetailsGrid = () => {
   document.title = "MRV_PROJECT | Facility Grid";
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { roles, loading, removeRole, fetchAllRoles } = useContext(RoleContext);
-  const {power} = useParams();
+  const {component} = useParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "name", direction: "ascending" });
   const [currentPage, setCurrentPage] = useState(1);
@@ -146,7 +146,7 @@ const FacilityGrid = () => {
                           <Button
                             color="success"
                             className="add-btn me-1"
-                            onClick={() => navigate(`/add-facility/${power}`)}
+                            onClick={() => navigate(`/add-facilityDetail/${component}`)}
                             id="create-btn"
                           >
                             <i className="ri-add-line align-bottom me-1"></i>
@@ -197,4 +197,4 @@ const FacilityGrid = () => {
   );
 };
 
-export default FacilityGrid;
+export default FacilityDetailsGrid;

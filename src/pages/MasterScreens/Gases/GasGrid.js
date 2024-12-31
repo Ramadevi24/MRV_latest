@@ -80,11 +80,16 @@ const GasGrid = () => {
     })
   : [];
 
-  const filteredSortedData = sortedData?.filter((data) =>
-    ["gasType", "gasName", "createdDate"].some((key) =>
-      data[key].toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  const filteredSortedData = sortedData?.filter((data) =>{
+    if (!data) return false; 
+  
+    return ["gasType", "gasName", "createdDate"].some((key) => {
+      const value = key.includes(".")
+    ? key.split(".").reduce((obj, k) => obj?.[k], data) // Handle nested keys
+    : data[key];
+    return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+  })
+});
 
   const indexOfLastPage = currentPage * dataPerPage;
   const indexOfFirstPage = indexOfLastPage - dataPerPage;

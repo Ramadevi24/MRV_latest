@@ -518,10 +518,11 @@ function PowerEmission() {
                       options={[
                         { name: "T1", name: "T1" },
                         { name: "T2", name: "T2" },
-                        { name: "T3", name: "T3" },
+                        { name: "T3", name: "T3" }
                       ]}
                       onChange={handleTierChange}
-                      value={tierLevel}  valueKey ="name"
+                      value={tierLevel}
+                      valueKey ="name"
                       labelKey ="name"
                     />
                   </Col>

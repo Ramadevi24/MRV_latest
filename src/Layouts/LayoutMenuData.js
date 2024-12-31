@@ -5,7 +5,7 @@ const Navdata = () => {
   const history = useNavigate();
   const [isDashboard, setIsDashboard] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
-  // const [isSample, setIsSample] = useState(false);
+  const [isFacilityDetails, setIsFacilityDetails] = useState(false);
   // const [isDataManagement, setIsDataManagement] = useState(false);
   const [isEnergy, setIsEnergy] = useState(false);
   const [isEmissionEnergy, setIsEmissionEnergy] = useState(false);
@@ -54,9 +54,9 @@ const Navdata = () => {
     if (iscurrentState !== "Auth") {
       setIsAuth(false);
     }
-    // if (iscurrentState !== "Sample") {
-    //   setIsSample(false);
-    // }
+    if (iscurrentState !== "FacilityDetails") {
+      setIsFacilityDetails(false);
+    }
     // if (iscurrentState !== "DataManagement") {
     //   setIsDataManagement(false);
     // }
@@ -113,7 +113,7 @@ const Navdata = () => {
     iscurrentState,
     isDashboard,
     isAuth,
-    // isSample,
+    isFacilityDetails,
     // isDataManagement,
     isEmissionData,
     isFuelCombustion,
@@ -151,23 +151,10 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
     },
-    // {
-    //   id: "sample",
-    //   label: "Sample Page",
-    //   icon: "mdi mdi-file-document",
-    //   link: "/sample",
-    //   stateVariables: isSample,
-    //   click: function (e) {
-    //     e.preventDefault();
-    //     setIsSample(!isSample);
-    //     setIscurrentState("Sample");
-    //     updateIconSidebar(e);
-    //   },
-    // },
-    // {
-    //   label: "Pages",
-    //   isHeader: true,
-    // },
+    {
+      label: "Pages",
+      isHeader: true,
+    },
     
     // {
     //   id: "datamanagement",
@@ -191,6 +178,19 @@ const Navdata = () => {
     //     },
     //   ],
     // },
+    {
+      id: "facilitydetails",
+      label: "Facility Details",
+      icon: "mdi mdi-file-document",
+      link: "/FacilityDetailsGrid/:component",
+      stateVariables: isFacilityDetails,
+      click: function (e) {
+        e.preventDefault();
+        setIsFacilityDetails(!isFacilityDetails);
+        setIscurrentState("FacilityDetails");
+        updateIconSidebar(e);
+      },
+    },
     {
       id: "facilityconfiguration",
       label: "Facility Configuration",

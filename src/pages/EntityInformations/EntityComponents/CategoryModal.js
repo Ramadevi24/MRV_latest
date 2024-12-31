@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "../../../Components/CommonComponents/Modal";
 import FileUpload from "../../../Components/CommonComponents/FileUpload";
 import { Col, Container, Row } from "reactstrap";
 import FormField from "../../../Components/CommonComponents/FormField";
+import { OrganizationContext } from "../../../contexts/OrganizationContext";
+import { CalculationApproach } from "../../../utils/FuelData";
+import CategoriesDropdown from "../../../Components/CommonComponents/CategoriesDropdown";
+import { GasContext } from "../../../contexts/GasContext";
+
 
 const CategoryModal = ({open, onClose}) => {
   const [Uncertainty, setUncertainty] = useState(false);
   const [QAQC, setQAQC] = useState(false);
   const [ActivityQAQC, setActivityQAQC] = useState(false);
+  const { categories } =
+      useContext(OrganizationContext);
+  const { gasGroups } = useContext(GasContext);
+
+      console.log(gasGroups, 'gasGroups');
 
   const handleUncertainty = () => {
     setUncertainty(!Uncertainty);
@@ -29,25 +39,29 @@ const CategoryModal = ({open, onClose}) => {
         onClose={onClose}
       >
         <form>
-            <Row>
+            {/* <Row>
             <Col md={6}>
-            <FormField label="Sector" isDropdown options={[{ name: "1. Energy", value: "1. Energy"}]} />
+            <FormField label="Sector" isDropdown options={[{ name: "1. Energy", value: "1"}]} valueKey="value" labelKey="name"/>
             </Col>
             <Col md={6}>
-            <FormField label="Sub Sector / Category" isDropdown options={[{ name: "1.A Fuel Combustion Activities", value: "1.A Fuel Combustion Activities" }]} />
+            <FormField label="Sub Sector / Category" isDropdown options={[{ name: "1.A Fuel Combustion Activities", value: "1" }]} valueKey="value" labelKey="name"/>
             </Col>
-          </Row>
+          </Row> */}
+          <CategoriesDropdown data={categories}/>
           <Row>
             <Col md={6}>
             <FormField label="Emission Source Type" placeholder="Steam Turbine" type="text"/>
             </Col>
             <Col md={6}>
-            <FormField label="Calculation Approach" isDropdown options={[{ name: "T1,T2,T3", value: "T1,T2,T3" }]}/>
+            <FormField label="Calculation Approach" isDropdown options={CalculationApproach} valueKey="value" labelKey="name"/>
             </Col>
             </Row>
             <Row>
             <Col md={6}>
-            <FormField label="GHG Gases Covered" placeholder="N2O, CH4" type="text"/>
+            <FormField label="GHG Gases Covered" placeholder="N2O, CH4"  isDropdown options={gasGroups} valueKey="gasGroupId" labelKey="gasGroupName"/>
+            </Col>
+            <Col md={6}>
+            <FormField label="Precursors Gases Covered" placeholder="N2O, CH4"  isDropdown options={gasGroups} valueKey="gasGroupId" labelKey="gasGroupName"/>
             </Col>
             </Row>
             <div className="category-sub-modal">

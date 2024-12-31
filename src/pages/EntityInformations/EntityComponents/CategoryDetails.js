@@ -25,6 +25,7 @@ const CategoryDetails = () => {
     { key: "Emission Source Type", label: t("Emission Source Type"), sortable: true },
     { key: "Calculation Approach", label: t("Calculation Approach"), sortable: true },
     { key: "GHG Gases Covered", label: t("GHG Gases Covered"), sortable: true },
+    { key: "Precursors Gases Covered", label: t("Precursors Gases Covered"), sortable: true },
     { key: "Actions", label: t("Action"), render: (val, item) => (
       <div className="d-flex gap-2">
         <button className="btn btn-sm btn-info" onClick={() => navigate(`/edit-role/${item.roleID}`)}>

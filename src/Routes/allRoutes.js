@@ -61,6 +61,8 @@ import EntityForm from "../pages/MasterScreens/Entity/EntityForm";
 import GasGrid from "../pages/MasterScreens/Gases/GasGrid";
 import GasForm from "../pages/MasterScreens/Gases/GasForm";
 import EditGas from "../pages/MasterScreens/Gases/EditGas";
+import FacilityDetailsGrid from "../pages/FacilityDetails/FacilityDetailsGrid";
+import AddFacilityDetail from "../pages/FacilityDetails/AddFacilityDetail";
 
 
 const authProtectedRoutes = [
@@ -105,6 +107,8 @@ const authProtectedRoutes = [
   {path:'/gases', component:<GasGrid/>},
   {path:'/add-gases', component:<GasForm/>},
   {path:'/edit-gases/:id', component: <EditGas />},
+  {path:'/FacilityDetailsGrid/:component', component: <FacilityDetailsGrid /> },
+  {path:'/add-facilityDetail/:component', component: <AddFacilityDetail /> },
   {path: "*", component: <Navigate to="/dashboard" /> },
 ];
 

@@ -183,7 +183,7 @@ const AddFuelModal = ({ open, onClose }) => {
                     name="netCalorificValue"
                     id="netCalorificValue"
                     className="form-control"
-                    placeholder="12.6"
+                    placeholder={t("12.6")}
                     value={formik.values.netCalorificValue || ""}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -216,7 +216,7 @@ const AddFuelModal = ({ open, onClose }) => {
                     name="carbonContentNCV"
                     id="carbonContentNCV"
                     className="form-control"
-                    placeholder="15.3"
+                    placeholder={t("15.3")}
                     value={formik.values.carbonContentNCV || ""}
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}

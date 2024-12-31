@@ -33,9 +33,9 @@ export const EntityProvider = ({ children }) => {
     try {
       const createdEntity = await createEntity(newEntity);
       setEntity((prevEntities) => [...prevEntities, createdEntity]); // Update the state with the new entity
-      toast.success('Entity created successfully');
+      return createdEntity;
     } catch (error) {
-      toast.error('Error creating Entity');
+      throw error;
     }
   };
 
@@ -45,9 +45,8 @@ export const EntityProvider = ({ children }) => {
       setEntity((prevEntities) =>
         prevEntities.map((item) => (item.id === id ? updated : item))
       );
-      toast.success('Entity updated successfully');
     } catch (error) {
-      toast.error('Error updating Entity');
+      console.error('Error updating Entity');
     }
   };
 
