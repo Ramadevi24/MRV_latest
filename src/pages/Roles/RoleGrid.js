@@ -245,7 +245,7 @@ console.log("viewRoleId",viewRoleId)
                               </th>
                             </tr>
                           </thead>
-                          <tbody className="list form-check-all">
+                          { currentItems.length > 0 ? (<tbody className="list form-check-all">
                             {currentItems.map((role) => (
                               <tr key={role.roleID}>
                                 <td className="email">{role.roleName}</td>
@@ -301,7 +301,8 @@ console.log("viewRoleId",viewRoleId)
                                 </td>
                               </tr>
                             ))}
-                          </tbody>
+                          </tbody>) : ( <tbody> <tr> <td colSpan={4} className="text-center no-records"> No records found </td> </tr> </tbody>)
+ }
                         </table>
                         <div className="noresult" style={{ display: "none" }}>
                           <div className="text-center">

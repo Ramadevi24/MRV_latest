@@ -70,3 +70,27 @@
 }
 
 
+.lang-ar input.form-control {
+  direction: rtl; 
+  text-align: right; 
+}
+
+.lang-ar input::placeholder {
+  text-align: right; 
+}
+
+
+
+@media (min-width: 768px) {
+  .lang-ar .arabic-vr {
+    gap:10px;
+  }
+}
+
+
+.no-records {
+  font-size: large;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+

@@ -8,6 +8,7 @@ import { FaXmark } from "react-icons/fa6";
 import { useTranslation } from "react-i18next";
 import Pagination from "../../../Components/CommonComponents/PaginationNumber.js";
 import { toast } from "react-toastify";
+import "../../../assets/scss/CSS/styles.css";
 import {
   Spinner,
   Button,
@@ -76,14 +77,14 @@ const EmirateGrid = () => {
   });
 
   const filteredSortedData = sortedData?.filter((data) => {
-    if (!data) return false; 
-    return ["name", "createdDate"].some((key) =>{
+    if (!data) return false;
+    return ["name", "createdDate"].some((key) => {
       const value = key.includes(".")
         ? key.split(".").reduce((obj, k) => obj?.[k], data) // Handle nested keys
         : data[key];
       return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
     });
-});
+  });
 
   const indexOfLastPage = currentPage * dataPerPage;
   const indexOfFirstPage = indexOfLastPage - dataPerPage;
@@ -165,7 +166,6 @@ const EmirateGrid = () => {
                 <CardBody>
                   <div className="listjs-table" id="customerList">
                     <Row className="g-4 mb-3">
-                      
                       {/* <Col className="col-sm">
                         <div className="d-flex justify-content-sm-start">
                           <div className="search-box ms-2">
@@ -182,7 +182,7 @@ const EmirateGrid = () => {
                       </Col> */}
                       <Col className="col-sm w-[5rem] col-mobile">
                         <div className="d-flex justify-content-sm-start">
-                          <div className="dropdown position-relative" >
+                          <div className="dropdown position-relative">
                             <i
                               className="ri-filter-line filter icon position-absolute"
                               style={{
@@ -241,7 +241,10 @@ const EmirateGrid = () => {
                         </Spinner>
                       </div>
                     ) : (
-                      <div className="table-responsive table-card mt-3 mb-1"  style={{ padding: "20px" }}>
+                      <div
+                        className="table-responsive table-card mt-3 mb-1"
+                        style={{ padding: "20px" }}
+                      >
                         <table
                           className="table align-middle table-nowrap"
                           id="customerTable"
@@ -250,90 +253,116 @@ const EmirateGrid = () => {
                             <tr>
                               {columns.map((column) => (
                                 <th
-                                key={column.key}
-                                onClick={() => column.key !== "actions" && handleSort(column.key)} // Prevent sorting for "Actions"
-                                className={column.key !== "actions" ? "sort" : ""} // Conditionally apply the sort class
-                                data-sort={column.key !== "actions" ? column.key : undefined}
+                                  key={column.key}
+                                  onClick={() =>
+                                    column.key !== "actions" &&
+                                    handleSort(column.key)
+                                  } // Prevent sorting for "Actions"
+                                  className={
+                                    column.key !== "actions" ? "sort" : ""
+                                  } // Conditionally apply the sort class
+                                  data-sort={
+                                    column.key !== "actions"
+                                      ? column.key
+                                      : undefined
+                                  }
                                 >
                                   {t(column.label)}
                                 </th>
                               ))}
                             </tr>
                           </thead>
-                          { currentData.length > 0 ? (
+                          {currentData.length > 0 ? (
                             <tbody className="list form-check-all">
-                            {currentData.map((item) => (
-                              <tr key={item.emiratesID}>
-                                <td className="name">{item.emiratesID}</td>
-                                <td className="name">
-                                  {editingRowId === item.emiratesID ? (
-                                    <Input
-                                      type="text"
-                                      name="name"
-                                      value={editingEmirate.name}
-                                      onChange={handleInputChange}
-                                    />
-                                  ) : (
-                                    item.name
-                                  )}
-                                </td>
-                                <td className="createdDate">
-                                  {formatDate(item.createdDate)}
-                                </td>
-                                <td>
-                                  <div className="d-flex gap-2">
+                              {currentData.map((item) => (
+                                <tr key={item.emiratesID}>
+                                  <td className="name">{item.emiratesID}</td>
+                                  <td className="name">
                                     {editingRowId === item.emiratesID ? (
-                                      <>
-                                        <Button
-                                          color="success"
-                                          size="sm"
-                                          onClick={() =>
-                                            handleSaveRow(item.emiratesID)
-                                          }
-                                        >
-                                          <FaCheck color="white" />
-                                        </Button>
-
-                                        <Button
-                                          color="danger"
-                                          size="sm"
-                                          onClick={handleCancelEdit}
-                                        >
-                                          <FaXmark color="white" />
-                                        </Button>
-                                      </>
+                                      <Input
+                                        type="text"
+                                        name="name"
+                                        value={editingEmirate.name}
+                                        onChange={handleInputChange}
+                                      />
                                     ) : (
-                                      <>
-                                        <div className="edit">
-                                          <button
-                                            className="btn btn-sm btn-info edit-item-btn"
-                                            onClick={() => handleEditRow(item)}
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#showModal"
-                                          >
-                                            {" "}
-                                            <FaPencilAlt color="white" />
-                                          </button>
-                                        </div>
-                                        <div className="remove">
-                                          <button
-                                            className="btn btn-sm btn-danger remove-item-btn"
-                                            onClick={() =>
-                                              handleDelete(item.emiratesID)
-                                            }
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteRecordModal"
-                                          >
-                                            <FaTrashAlt color="white" />
-                                          </button>
-                                        </div>
-                                      </>
+                                      item.name
                                     )}
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>): ( <tbody> <tr> <td colSpan={columns.length} className="text-center"> No records found </td> </tr> </tbody>)}
+                                  </td>
+                                  <td className="createdDate">
+                                    {formatDate(item.createdDate)}
+                                  </td>
+                                  <td>
+                                    <div className="d-flex gap-2">
+                                      {editingRowId === item.emiratesID ? (
+                                        <>
+                                          <Button
+                                            color="success"
+                                            size="sm"
+                                            onClick={() =>
+                                              handleSaveRow(item.emiratesID)
+                                            }
+                                          >
+                                            <FaCheck color="white" />
+                                          </Button>
+
+                                          <Button
+                                            color="danger"
+                                            size="sm"
+                                            onClick={handleCancelEdit}
+                                          >
+                                            <FaXmark color="white" />
+                                          </Button>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <div className="edit">
+                                            <button
+                                              className="btn btn-sm btn-info edit-item-btn"
+                                              onClick={() =>
+                                                handleEditRow(item)
+                                              }
+                                              data-bs-toggle="modal"
+                                              data-bs-target="#showModal"
+                                            >
+                                              {" "}
+                                              <FaPencilAlt color="white" />
+                                            </button>
+                                          </div>
+                                          <div className="remove">
+                                            <button
+                                              className="btn btn-sm btn-danger remove-item-btn"
+                                              onClick={() =>
+                                                handleDelete(item.emiratesID)
+                                              }
+                                              data-bs-toggle="modal"
+                                              data-bs-target="#deleteRecordModal"
+                                            >
+                                              <FaTrashAlt color="white" />
+                                            </button>
+                                          </div>
+                                        </>
+                                      )}
+                                    </div>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          ) : (
+                            <tbody>
+                              {" "}
+                              <tr>
+                                {" "}
+                                <td
+                                  colSpan={columns.length}
+                                  className="text-center no-records"
+                                >
+                                  {" "}
+                                  {t("No records found")}{" "}
+                                </td>{" "}
+                              </tr>{" "}
+                            </tbody>
+                          )}
                         </table>
                       </div>
                     )}

@@ -28,10 +28,10 @@ const { t } = useTranslation();
     const newErrors = {};
   
     if (!formValues.gasGroupID.trim()) {
-      newErrors.gasGroupID = "Gas Type is required.";
+      newErrors.gasGroupID = `${t("Gas Type is required.")}`;
     }
     if (!formValues.gasName.trim()) {
-      newErrors.gasName = "Gas Name is required.";
+      newErrors.gasName = `${t("Gas Name is required.")}`;
     }
     return newErrors;
   };

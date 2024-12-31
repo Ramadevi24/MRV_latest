@@ -54,10 +54,9 @@ const GasGrid = () => {
     }
   };
 
-  
   const gasesOptions = [
-    { id: 1, name: 'Greenhouse Gases (GHGs)', name: 'Greenhouse Gases (GHGs)' },
-    { id:2, name: 'Precursor Gases', name: 'Precursor Gases' }
+    { name: 'Greenhouse Gases (GHGs)', name: 'Greenhouse Gases (GHGs)' },
+    { name: 'Precursor Gases', name: 'Precursor Gases' }
   ];
 
   const handleSort = (key) => {
@@ -68,28 +67,28 @@ const GasGrid = () => {
     setSortConfig({ key, direction });
   };
 
-  const sortedData = Array.isArray(gases) 
-  ? [...gases].sort((a, b) => {
-      if (a[sortConfig.key] < b[sortConfig.key]) {
-        return sortConfig.direction === "ascending" ? -1 : 1;
-      }
-      if (a[sortConfig.key] > b[sortConfig.key]) {
-        return sortConfig.direction === "ascending" ? 1 : -1;
-      }
-      return 0;
-    })
-  : [];
+  const sortedData = Array.isArray(gases)
+    ? [...gases].sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "ascending" ? 1 : -1;
+        }
+        return 0;
+      })
+    : [];
 
   const filteredSortedData = sortedData?.filter((data) =>{
     if (!data) return false; 
   
-    return ["gasGroupID", "gasName", "createdDate"].some((key) => {
+    return ["gasType", "gasName", "createdDate"].some((key) => {
       const value = key.includes(".")
-    ? key.split(".").reduce((obj, k) => obj?.[k], data) // Handle nested keys
-    : data[key];
-    return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
-  })
-});
+        ? key.split(".").reduce((obj, k) => obj?.[k], data) // Handle nested keys
+        : data[key];
+      return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+    });
+  });
 
   const indexOfLastPage = currentPage * dataPerPage;
   const indexOfFirstPage = indexOfLastPage - dataPerPage;
@@ -179,10 +178,9 @@ const GasGrid = () => {
                 <CardBody>
                   <div className="listjs-table" id="customerList">
                     <Row className="g-4 mb-3">
-                      
-                    <Col className="col-sm w-[5rem] col-mobile">
+                      <Col className="col-sm w-[5rem] col-mobile">
                         <div className="d-flex justify-content-sm-start">
-                          <div className="dropdown position-relative" >
+                          <div className="dropdown position-relative">
                             <i
                               className="ri-filter-line filter icon position-absolute"
                               style={{
@@ -242,7 +240,10 @@ const GasGrid = () => {
                         </Spinner>
                       </div>
                     ) : (
-                      <div className="table-responsive table-card mt-3 mb-1"  style={{ padding: "20px" }}>
+                      <div
+                        className="table-responsive table-card mt-3 mb-1"
+                        style={{ padding: "20px" }}
+                      >
                         <table
                           className="table align-middle table-nowrap"
                           id="customerTable"
@@ -251,10 +252,19 @@ const GasGrid = () => {
                             <tr>
                               {columns.map((column) => (
                                 <th
-                                key={column.key}
-                                onClick={() => column.key !== "actions" && handleSort(column.key)} // Prevent sorting for "Actions"
-                                className={column.key !== "actions" ? "sort" : ""} // Conditionally apply the sort class
-                                data-sort={column.key !== "actions" ? column.key : undefined}
+                                  key={column.key}
+                                  onClick={() =>
+                                    column.key !== "actions" &&
+                                    handleSort(column.key)
+                                  } // Prevent sorting for "Actions"
+                                  className={
+                                    column.key !== "actions" ? "sort" : ""
+                                  } // Conditionally apply the sort class
+                                  data-sort={
+                                    column.key !== "actions"
+                                      ? column.key
+                                      : undefined
+                                  }
                                 >
                                   {t(column.label)}
                                 </th>
@@ -263,10 +273,10 @@ const GasGrid = () => {
                           </thead>
                           <tbody className="list form-check-all">
                             {currentData.map((item) => (
-                              <tr key={item.gasID}>
-                                <td className="name">{item.gasID}</td>
+                              <tr key={item.gasid}>
+                                <td className="name">{item.gasid}</td>
                                 <td className="name">
-                                  {editingRowId === item.gasID ? (
+                                  {editingRowId === item.gasid ? (
                                     // <Input
                                     //   type="text"
                                     //   name="gasType"
@@ -275,9 +285,9 @@ const GasGrid = () => {
                                     // />
                                       <select
                                                                           className="form-select"
-                                                                          id="gasGroupID"
-                                                                          name="gasGroupID"
-                                                                          value={editingGas.gasGroupID}
+                                                                          id="gasType"
+                                                                          name="gasType"
+                                                                          value={editingGas.gasType}
                                                                           onChange={handleInputChange}
                                                                           aria-label="Default select example"
                                                                         >
@@ -286,19 +296,19 @@ const GasGrid = () => {
                                                                           </option>
                                                                           {gasesOptions.map((item) => (
                                                                             <option
-                                                                              key={item.id}
-                                                                              value={item.id}
+                                                                              key={item.name}
+                                                                              value={item.name}
                                                                             >
                                                                               {item.name}
                                                                             </option>
                                                                           ))}
                                                                         </select>
                                   ) : (
-                                    item.gasGroupID === 1 ? "Greenhouse Gases (GHGs)" : "Precursor Gases"
+                                    item.gasType
                                   )}
                                 </td>
                                 <td className="name">
-                                  {editingRowId === item.gasID ? (
+                                  {editingRowId === item.gasid ? (
                                     <Input
                                       type="text"
                                       name="gasName"
@@ -314,13 +324,13 @@ const GasGrid = () => {
                                 </td>
                                 <td>
                                   <div className="d-flex gap-2">
-                                    {editingRowId === item.gasID ? (
+                                    {editingRowId === item.gasid ? (
                                       <>
                                         <Button
                                           color="success"
                                           size="sm"
                                           onClick={() =>
-                                            handleSaveRow(item.gasID)
+                                            handleSaveRow(item.gasid)
                                           }
                                         >
                                           <FaCheck color="white" />
@@ -351,7 +361,7 @@ const GasGrid = () => {
                                           <button
                                             className="btn btn-sm btn-danger remove-item-btn"
                                             onClick={() =>
-                                              handleDelete(item.gasID)
+                                              handleDelete(item.gasid)
                                             }
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteRecordModal"
