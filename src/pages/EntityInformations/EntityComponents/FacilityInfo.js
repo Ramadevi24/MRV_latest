@@ -14,16 +14,16 @@ const FacilityInfo = () => {
     <div>
       <Row>
         <Col md={3}>
-     <FormField label="Emirate" isDropdown options={emirates} />
+     <FormField label="Emirate" isDropdown options={emirates} valueKey="emiratesID" labelKey="name"/>
      </Col>
      <Col md={3}>
-      <FormField label="Entity" isDropdown options={[{ name: "DOE", value: "DOE" }]}/>
+      <FormField label="Reporting Entity" isDropdown options={entity} valueKey="entityId" labelKey="entityName"/>
       </Col>
       <Col md={3}>
       <FormField label="Facility" placeholder="IB11/Taweelah" type="text"/>
       </Col>
       <Col md={3}>
-      <FormField label="Coverage Area of the Data" isDropdown options={coverageArea}/>
+      <FormField label="Coverage Area of the Data" isDropdown options={coverageArea} valueKey="coverageAreaOfTheDataID" labelKey="name"/>
       </Col>
       </Row>
       <Row>

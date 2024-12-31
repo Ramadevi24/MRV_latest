@@ -3,7 +3,7 @@ import {getGases,
   getGasById,
   createGas,
   updateGas,
-  deleteGas, } from '../services/GasService';
+  deleteGas, getGasesGroups} from '../services/GasService';
 import { toast } from 'react-toastify';
 
 export const GasContext = createContext();
@@ -11,11 +11,25 @@ export const GasContext = createContext();
 export const GasProvider = ({ children }) => {
   const [gases, setGases] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [gasGroups, setGasGroups] = useState([]);
   const [error, setError] = useState(null);
 
     useEffect(() => {
       fetchAllGases();
+      fetchAllGasGroups();
     }, [])
+
+
+    const fetchAllGasGroups = async () => { 
+      try {
+        const data = await getGasesGroups();
+        setGasGroups(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching gas groups');
+        setLoading(false);
+      }
+    }
 
   const fetchAllGases = async () => {
     try {
@@ -82,6 +96,7 @@ export const GasProvider = ({ children }) => {
       addGas,
       editGas,
       removegas,
+      gasGroups
 }}>
       {children}
     </GasContext.Provider>

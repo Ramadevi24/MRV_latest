@@ -13,3 +13,9 @@ export const isPrimaryFuelTypes = [
     {name:"No", value:"No"}
 ]
 
+export const CalculationApproach = [
+    {name:"T1", value:"T1"},
+    {name:"T2", value:"T2"},
+    {name:"T3", value:"T3"}
+]
+
