@@ -35,7 +35,11 @@ export const createGas = async (gasData) => {
     });
     return response;
   } catch (error) {
-    throw new Error("Error creating gas");
+    if ((error = "Request failed with status code 409")) {
+      toast.warn("Gas already exists");
+    } else {
+      throw new Error("Error fetching Gas");
+    }
   }
 };
 

@@ -39,7 +39,6 @@ export const createTenant = async (tenantData) => {
   } catch (error) {
     if ((error = "Request failed with status code 409")) {
       toast.warn("Tenant already exists");
-      await fetchAllTenants();
     } else {
       throw new Error("Error fetching tenant");
     }

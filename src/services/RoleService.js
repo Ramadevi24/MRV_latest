@@ -38,7 +38,11 @@ export const createRole = async (RoleData) => {
     });
     return response;
   } catch (error) {
-    throw new Error("Error create Role");
+    if ((error = "Request failed with status code 409")) {
+      toast.warn("Role already exists");
+    } else {
+      throw new Error("Error fetching Role");
+    }
   }
 };
 

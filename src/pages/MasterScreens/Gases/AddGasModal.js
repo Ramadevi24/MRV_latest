@@ -11,7 +11,7 @@ const { t } = useTranslation();
    const {addGas, fetchAllGases} = useContext(GasContext);
 
    const [formValues, setFormValues] = useState({
-    GasType: "",
+    gasGroupID: "",
     gasName: "",
   });
 
@@ -27,8 +27,8 @@ const { t } = useTranslation();
   const validate = () => {
     const newErrors = {};
   
-    if (!formValues.GasType.trim()) {
-      newErrors.GasType = "Gas Type is required.";
+    if (!formValues.gasGroupID.trim()) {
+      newErrors.gasGroupID = "Gas Type is required.";
     }
     if (!formValues.gasName.trim()) {
       newErrors.gasName = "Gas Name is required.";
@@ -45,7 +45,7 @@ const { t } = useTranslation();
     }
 
     const createFormData = {
-        GasType: formValues.GasType,
+      gasGroupID: formValues.gasGroupID,
         gasName: formValues.gasName,
       };
          try {
@@ -60,8 +60,8 @@ const { t } = useTranslation();
   };
 
   const gasesOptions = [
-    { name: 'Greenhouse Gases (GHGs)', name: 'Greenhouse Gases (GHGs)' },
-    { name: 'Precursor Gases', name: 'Precursor Gases' }
+    { id: 1, name: 'Greenhouse Gases (GHGs)', name: 'Greenhouse Gases (GHGs)' },
+    { id:2, name: 'Precursor Gases', name: 'Precursor Gases' }
   ];
 
   return (
@@ -78,9 +78,9 @@ const { t } = useTranslation();
                 <Row>
             <Col md={6}>
                   
-                         <FormField label={t("Gas Type")} isDropdown options={gasesOptions}  value={formValues.GasType}
-                      onChange={handleChange("GasType")}
-                      error={errors.GasType} valueKey="name" labelKey="name"/>
+                         <FormField label={t("Gas Type")} isDropdown options={gasesOptions}  value={formValues.gasGroupID}
+                      onChange={handleChange("gasGroupID")}
+                      error={errors.gasGroupID} valueKey="id" labelKey="name"/>
                     </Col>
                     <Col md={6}>
                     <FormField

@@ -93,7 +93,7 @@ const EntityForm = () => {
                     >
                       <Row>
                         <Col>
-                          <FormField label="Entity" placeholder="DOE"  type="text"/>
+                          <FormField label={t("Entity")} placeholder="DOE"  type="text"/>
                         </Col>
                         <Col>
                           <FormField

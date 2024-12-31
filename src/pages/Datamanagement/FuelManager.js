@@ -21,6 +21,7 @@ import { FaXmark } from "react-icons/fa6";
 import { fuelTypesData, isPrimaryFuelTypes } from "../../utils/FuelData.js";
 import AddFuelModal from "./AddFuelModal.js";
 import DeleteModal from "../../Components/CommonComponents/DeleteModal.js";
+import '../../assets/scss/CSS/styles.css'
 
 const FuelManager = () => {
   document.title = "MRV_PROJECT | Fuel Manager";
@@ -250,7 +251,8 @@ const FuelManager = () => {
                               />
                               <label
                                 htmlFor="userDefined"
-                                className="userdefined-label"
+                                className="userdefined-label label-responsive"
+                                style={document.body.classList.contains('lang-ar') ? { marginRight: '9px' } : {}}
                               >
                                 {t("Show user-defined fuels only")}
                               </label>
@@ -473,7 +475,8 @@ const FuelManager = () => {
                                         onClick={() =>
                                           handleDeleteClick(fuel.fuelID)
                                         }
-                                        className="btn btn-sm btn-danger remove-item-btn"
+                                        className="btn btn-sm btn-danger remove-item-btn btn-responsive"
+                                        style={document.body.classList.contains('lang-ar') ? { marginRight: '6px' } : {}}
                                       >
                                         <FaTrashAlt color="white" />
                                       </Button>

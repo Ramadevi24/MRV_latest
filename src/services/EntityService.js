@@ -1,5 +1,6 @@
 import axios from 'axios';
 import config from '../config';
+import { onCLS } from 'web-vitals';
 
 const API_BASE_URL =`${config.api.API_URL}/Entity`;
 const AUTH_TOKEN = localStorage.getItem('AuthToken');
@@ -33,7 +34,12 @@ export const createEntity = async (newEntity) => {
     });
     return response.$values; 
   } catch (error) {
-    throw new Error("Error creating Entity");
+    console.log(error, 'error')
+    if (error = "Request failed with status code 409 error") {
+      toast.warn("Entity already exists");
+    } else {
+      throw new Error("Error fetching Entity");
+    }
   }
 };
 
