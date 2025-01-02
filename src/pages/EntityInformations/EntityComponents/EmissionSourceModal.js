@@ -5,9 +5,12 @@ import FormField from "../../../Components/CommonComponents/FormField";
 import deleteIcon from "../../../assets/images/Power Sector--- Data Entry/Vector.png";
 import { MenuContext } from "../../../contexts/MenuContext";
 import { useParams } from "react-router-dom";
+import { EmissionSourceContext } from "../../../contexts/EmissionSourceContext";
 
 const EmissionSourceModal = ({ open, onClose }) => {
   const { power } = useParams();
+  const { addEmissionSource } = useContext(EmissionSourceContext);
+  console.log(addEmissionSource, 'addEmissionSource')
   const [rows, setRows] = useState([
     { name: "CO", value: 30 },
     { name: "CH4", value: 21 },
