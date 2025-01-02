@@ -5,7 +5,7 @@ const FormField = ({ label, type, value, onChange, options, isDropdown, placehol
     const selectedOptions = Array.from(event.target.selectedOptions).map(
       (option) => option.value
     );
-    onChange(selectedOptions.join(',')); // Join selected values with a comma
+    onChange(selectedOptions.join(','));
   };
 
   return (
