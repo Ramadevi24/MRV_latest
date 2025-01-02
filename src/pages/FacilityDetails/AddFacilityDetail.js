@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import FacilityInfo from "../EntityInformations/EntityComponents/FacilityInfo";
 import CategoryDetails from "../EntityInformations/EntityComponents/CategoryDetails";
 import SubPlantDetails from "../EntityInformations/EntityComponents/SubPlantDetails";
@@ -16,11 +16,57 @@ import {
   Button,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
+import {FacilityContext} from "../../contexts/FacilityContext";
 
 function AddFacilityDetail() {
+  const {addFacility} = useContext(FacilityContext);
   const [isContactDetailsVisible, setContactDetailsVisible] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
   const Navigate = useNavigate();
+  const categoriesData = localStorage.getItem('submittedData') ? JSON.parse(localStorage.getItem('submittedData')) : [];
+
+  console.log("categoriesData", categoriesData);
+
+  const [formData, setFormData] = useState({
+    facilityName: "",
+    siteOperatorName: "",
+    emiratesID:0,
+    entityID:0,
+    coverageAreaOfTheDataID:0,
+    longitude: 0,
+    latitude: 0,
+    streetAddress: "",
+    isContactPersonSameAsEntity: isContactDetailsVisible,
+  contactDetails: {
+    name: "",
+    title: "",
+    email: "",
+    phoneNumber: 0
+  },
+  facilitySectorDetails: categoriesData
+  });
+
+  const handleToggle = (isChecked) => {
+    setContactDetailsVisible(isChecked);
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData((prevData) => {
+      if (field === "contactDetails") {
+        return {
+          ...prevData,
+          contactDetails: {
+            ...prevData.contactDetails,
+            ...value, // Merge the new values into the contactDetails object
+          },
+        };
+      }
+      return {
+        ...prevData,
+        [field]: value,
+      };
+    });
+  };
 
   const tabs = [
     "Facility Configuration",
@@ -29,9 +75,30 @@ function AddFacilityDetail() {
     "View Details",
   ];
 
-  const handleNext = () => {
+  // const handleNext = () => {
+  //   if (activeTab < tabs.length - 1) {
+  //     console.log("Submitted Data:", formData);
+  //     setActiveTab(activeTab + 1);
+  //   }
+  // };
+
+  const handleNext = async () => {
     if (activeTab < tabs.length - 1) {
-      setActiveTab(activeTab + 1);
+      try {
+        const updatedData = { ...formData, isContactPersonSameAsEntity: isContactDetailsVisible, 
+          contactDetails: isContactDetailsVisible ? null : formData.contactDetails, 
+          facilitySectorDetails: categoriesData, isSubmitted: false , "isDelete": true};
+        console.log("Submitting Data:", formData);
+        const newFacility = await addFacility(updatedData); // Call the context function
+        if (newFacility) {
+          console.log("API Response:", newFacility);
+            setActiveTab(activeTab + 1);
+        } else {
+          console.error("Failed to submit data:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error while submitting data:", error);
+      }
     }
   };
 
@@ -47,10 +114,6 @@ function AddFacilityDetail() {
 
   const handleTabClick = (index) => {
     setActiveTab(index);
-  };
-
-  const handleToggle = (isChecked) => {
-    setContactDetailsVisible(isChecked);
   };
 
   return (
@@ -93,17 +156,17 @@ function AddFacilityDetail() {
                 {/* Tab Content */}
                 {activeTab === 0 && (
                   <>
-                    <FacilityInfo />
+                   <FacilityInfo onInputChange={handleInputChange}/>
                     <Col md={4}>
                       <ToggleSwitch
                         label="Contact Person is same as Entity"
                         onToggle={handleToggle}
                         toggleDivClassName="toggle-switch"
                         toggleLabelClassName="toggle-label"
-                        isCheckedData={true}
+                        isCheckedData={isContactDetailsVisible}
                       />
                     </Col>
-                    {!isContactDetailsVisible && <ContactDetails />}
+                    {!isContactDetailsVisible && <ContactDetails onInputChange={handleInputChange}/>}
                     <CategoryDetails />
                   </>
                 )}
