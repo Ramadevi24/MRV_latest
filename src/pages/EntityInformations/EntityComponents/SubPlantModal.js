@@ -10,11 +10,12 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { SubPlantContext } from "../../../contexts/SubPlantContext";
 import { toast } from "react-toastify";
+import { FuelContext } from "../../../contexts/FuelContext";
 
 const SubPlantModal = ({ open, onClose }) => {
-  const { createNewSubPlant, fetchAllSubPlants } = useContext(SubPlantContext);
+  const { addSubPlant, fetchAllSubPlants} = useContext(SubPlantContext);
+  const {fuels} = useContext(FuelContext)
   const { power } = useParams();
-  const [isLocation, setIsLocation] = useState(true);
   const [isContact, setIsContact] = useState(true);
   const { t } = useTranslation();
 
@@ -93,22 +94,24 @@ const SubPlantModal = ({ open, onClose }) => {
     if (!formValues.fuelTypeId.trim()) {
       newErrors.fuelTypeId = `${t("Select Fuel type.")}`;
     }
-    if (!formValues.contactDetails.name.trim()) {
-      newErrors.name = `${t("Contact Name is required.")}`;
-    }
-    if (!formValues.contactDetails.email.trim()) {
-      newErrors.email = `${t("Email is required.")}`;
-    }
-    if (!formValues.contactDetails.title.trim()) {
-      newErrors.title = `${t("Title is required.")}`;
-    }
-    if (
-      !formValues.contactDetails.phoneNumber ||
-      formValues.contactDetails.phoneNumber <= 0
-    ) {
-      newErrors.phoneNumber = `${t("Phone Number is required.")}`;
-    }
-
+      if (!isContact) {
+        if (!formValues.contactDetails.name.trim()) {
+          newErrors.name = `${t("Contact Name is required.")}`;
+        }
+        if (!formValues.contactDetails.email.trim()) {
+          newErrors.email = `${t("Email is required.")}`;
+        }
+        if (!formValues.contactDetails.title.trim()) {
+          newErrors.title = `${t("Title is required.")}`;
+        }
+        if (
+          !formValues.contactDetails.phoneNumber ||
+          formValues.contactDetails.phoneNumber <= 0
+        ) {
+          newErrors.phoneNumber = `${t("Phone Number is required.")}`;
+        }
+      
+      }
     return newErrors;
   };
 
@@ -121,23 +124,13 @@ const SubPlantModal = ({ open, onClose }) => {
     }
 
     const createFormData = {
-      subPlantName: formValues.subPlantName,
-      configuration: formValues.configuration,
-      technology: formValues.technology,
-      controlTechnology: formValues.controlTechnology,
-      combustionTechnology: formValues.combustionTechnology,
-      qualityOfMaintenance: formValues.qualityOfMaintenance,
-      ageOfEquipment: formValues.ageOfEquipment,
-      fuelTypeId: formValues.fuelTypeId,
-      contactDetails: {
-        name: formValues.contactDetails.name,
-        email: formValues.contactDetails.email,
-        title: formValues.contactDetails.title,
-        phoneNumber: formValues.contactDetails.phoneNumber,
-      },
+      ...formValues,
+      facilityID: 1002,
+      isSubmitted: false,
+      contactDetails: isContact ? null : formValues.contactDetails,
     };
     try {
-      const response = await createNewSubPlant(createFormData);
+      const response = await addSubPlant(createFormData);
       console.log(response, "responded");
       if (response) {
         onClose();
@@ -149,10 +142,6 @@ const SubPlantModal = ({ open, onClose }) => {
     } catch (error) {
       console.log(t("Error Creating Sub-Plant"));
     }
-  };
-
-  const handleLocation = () => {
-    setIsLocation(!isLocation);
   };
 
   const handleContact = () => {
@@ -238,14 +227,12 @@ const SubPlantModal = ({ open, onClose }) => {
                   <FormField
                     label={t("Fuel Type")}
                     isDropdown
-                    options={[
-                      { label: "Natural Gas", value: "natural_gas" },
-                      { label: "Diesel", value: "diesel" },
-                      { label: "Gas Oil", value: "gas_oil" },
-                    ]}
+                    options={fuels}
                     value={formValues.fuelTypeId}
                     onChange={handleChange("fuelTypeId")}
                     error={errors.fuelTypeId}
+                    valueKey="fuelID"
+                    labelKey="fuelName"
                   />
                 </Col>
                 {power === ":construction" && (
@@ -372,7 +359,7 @@ const SubPlantModal = ({ open, onClose }) => {
                           placeholder="Abdul"
                           value={formValues.contactDetails.name}
                           onChange={handleChange("name", true)}
-                          error={errors.contactName}
+                          error={errors.name}
                         />
                       </Col>
                       <Col md={6}>

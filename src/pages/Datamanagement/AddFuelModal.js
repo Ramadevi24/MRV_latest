@@ -56,6 +56,7 @@ const AddFuelModal = ({ open, onClose }) => {
         await addFuel(updatedValues);
         toast.success(t("Fuel created successfully"), { autoClose: 3000 });
         await fetchFuels();
+        formik.resetForm();
         onClose();
       } catch (error) {
         console.log("Error creating fuel", error);
