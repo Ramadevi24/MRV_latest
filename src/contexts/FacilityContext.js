@@ -1,6 +1,6 @@
 // context/FacilityContext.js
 import React, { createContext, useState, useEffect } from 'react';
-import {getFacility} from '../services/FacilityService';
+import {getFacility, createFacility} from '../services/FacilityService';
 import { toast } from 'react-toastify';
 
 export const FacilityContext = createContext();
@@ -24,59 +24,59 @@ export const FacilityProvider = ({ children }) => {
     }
   };
 
- /* const fetchTenantById = async (id) => {
+  // const fetchTenantById = async (id) => {
+  //   try {
+  //     setLoading(true);
+  //     const tenant = await getTenantById(id);
+  //     return tenant;
+  //   } catch (error) {
+  //     console.error('Error fetching tenant by id', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  const addFacility = async (data) => {
     try {
       setLoading(true);
-      const tenant = await getTenantById(id);
-      return tenant;
+      const newFacility = await createFacility(data);
+      setFacility((prevData) => [...prevData, newFacility]);
+      return newFacility;
     } catch (error) {
-      console.error('Error fetching tenant by id', error);
+      throw new Error("Error creating Facility");
     } finally {
       setLoading(false);
     }
   };
 
-  const addTenant = async (tenantData) => {
-    try {
-      setLoading(true);
-      const newTenant = await createTenant(tenantData);
-      setTenants((prevTenants) => [...prevTenants, newTenant]);
-      return newTenant;
-    } catch (error) {
-      throw new Error("Error creating tenant");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const editTenant = async (id, tenantData) => {
+  //   try {
+  //     setLoading(true);
+  //     const updatedTenant = await updateTenant(id, tenantData);
+  //     setTenants(
+  //       tenants.map((tenant) =>
+  //         tenant.id === id ? updatedTenant : tenant
+  //       )
+  //     );
+  //   } catch (error) {
+  //     throw new Error("Error updating tenant");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  const editTenant = async (id, tenantData) => {
-    try {
-      setLoading(true);
-      const updatedTenant = await updateTenant(id, tenantData);
-      setTenants(
-        tenants.map((tenant) =>
-          tenant.id === id ? updatedTenant : tenant
-        )
-      );
-    } catch (error) {
-      throw new Error("Error updating tenant");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const removeTenant = async (id) => {
+  //   try {
+  //     await deleteTenant(id);
+  //     setTenants(tenants.filter((tenant) => tenant.tenantID !== id));
+  //     toast.success('Tenant deleted successfully');
+  //   } catch (error) {
+  //     toast.error('Error deleting tenant');
+  //   }
+  // };
 
-  const removeTenant = async (id) => {
-    try {
-      await deleteTenant(id);
-      setTenants(tenants.filter((tenant) => tenant.tenantID !== id));
-      toast.success('Tenant deleted successfully');
-    } catch (error) {
-      toast.error('Error deleting tenant');
-    }
-  };
-*/
   return (
-    <FacilityContext.Provider value={{ facility, loading, fetchAllFacility}}>
+    <FacilityContext.Provider value={{ facility, loading, fetchAllFacility, addFacility}}>
       {children}
     </FacilityContext.Provider>
   );

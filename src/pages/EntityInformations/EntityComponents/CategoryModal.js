@@ -10,8 +10,9 @@ import { useCategories } from "../../../contexts/CategoriesContext";
 const CategoryModal = ({ open, onClose }) => {
   const { gases } = useContext(GasContext);
   const [submittedData, setSubmittedData] = useState([]);
-  const [formData, setFormData] = useState([
-    {
+  const [formData, setFormData] = useState({
+      facilitySectorDetails: [
+        {
       sector_ID: "",
       sub_sectorID: "",
       category_ID: "",
@@ -23,15 +24,9 @@ const CategoryModal = ({ open, onClose }) => {
       qA_QC_for_emission: false,
       qA_QC_for_activity_data: false,
       uploadedDocuments: [
-        {
-          document_Type: "",
-          file_Name: "",
-          file_path: "",
-          file_size: 0,
-        },
       ],
-    },
-  ]);
+    }]
+    });
 
   const {
     level1Categories,
@@ -41,86 +36,114 @@ const CategoryModal = ({ open, onClose }) => {
     handleLevel2Change,
   } = useCategories();
 
-  const handleInputChange = (field, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [field]: value,
-    }));
+  const handleInputChange = (index, field, value) => {
+    setFormData((prevData) => {
+      const updatedFacilityDetails = [...prevData.facilitySectorDetails];
+      updatedFacilityDetails[index] = {
+        ...updatedFacilityDetails[index],
+        [field]: value,
+      };
+      return {
+        ...prevData,
+        facilitySectorDetails: updatedFacilityDetails,
+      };
+    });
 
     if (field === "sector_ID") {
-      handleLevel1Change(value);
-      setFormData((prevData) => ({
-        ...prevData,
-        sub_sectorID: "",
-        category_ID: "",
-      }));
+      handleLevel1Change(value); 
+      setFormData((prevData) => {
+        const updatedFacilityDetails = [...prevData.facilitySectorDetails];
+        updatedFacilityDetails[index].sub_sectorID = "";
+        updatedFacilityDetails[index].category_ID = "";
+        return {
+          ...prevData,
+          facilitySectorDetails: updatedFacilityDetails,
+        };
+      });
     } else if (field === "sub_sectorID") {
-      handleLevel2Change(value);
-      setFormData((prevData) => ({
-        ...prevData,
-        category_ID: "",
-      }));
+      handleLevel2Change(value); 
+      setFormData((prevData) => {
+        const updatedFacilityDetails = [...prevData.facilitySectorDetails];
+        updatedFacilityDetails[index].category_ID = "";
+        return {
+          ...prevData,
+          facilitySectorDetails: updatedFacilityDetails,
+        };
+      });
     }
   };
 
-  const handleFileUpload = (documentType, file) => {
+  const handleFileUpload = (index, documentType, file) => {
     const newDocument = {
       document_Type: documentType,
       file_Name: file.name,
       file_path: file.path || "",
       file_size: file.size || 0,
     };
-
-    setFormData((prevData) => ({
-      ...prevData,
-      uploadedDocuments: [...prevData.uploadedDocuments, newDocument],
-    }));
+  
+    setFormData((prevData) => {
+      const updatedFacilityDetails = [...prevData.facilitySectorDetails];
+      const existingDocuments = updatedFacilityDetails[index].uploadedDocuments || [];
+        updatedFacilityDetails[index] = {
+        ...updatedFacilityDetails[index],
+        uploadedDocuments: [
+          ...existingDocuments.filter(
+            (doc) => doc.document_Type && doc.file_Name
+          ),
+          newDocument,
+        ],
+      };
+  
+      return {
+        ...prevData,
+        facilitySectorDetails: updatedFacilityDetails,
+      };
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Perform validation
-    if (
-      !formData.sector_ID ||
-      !formData.sub_sectorID ||
-      !formData.category_ID
-    ) {
-      alert("Please fill all required fields");
+  
+    const isValid = formData.facilitySectorDetails.every(
+      (detail) => detail.sector_ID && detail.sub_sectorID && detail.category_ID
+    );
+  
+    if (!isValid) {
+      alert("Please fill all required fields in all facility sector details.");
       return;
     }
-
-    const filteredData = Object.entries(formData).reduce((acc, [key, value]) => {
-      if (value !== "" && value !== null) {
-        acc[key] = value;
-      }
-      return acc;
-    }, {});
   
-    const updatedData = [...submittedData, filteredData];
+    const updatedData = formData.facilitySectorDetails.map((detail) => ({
+      ...detail,
+      uploadedDocuments: detail.uploadedDocuments.filter(
+        (doc) => doc.document_Type && doc.file_Name // Remove invalid documents
+      ),
+    }));
   
-    setSubmittedData(updatedData);
-  
-    // Save to local storage
+    setSubmittedData([...submittedData, ...updatedData]);
     localStorage.setItem("submittedData", JSON.stringify(updatedData));
   
     setFormData({
-      sector_ID: "",
-      sub_sectorID: "",
-      category_ID: "",
-      emission_source_type: "",
-      calculation_approach: "",
-      ghg_gases_covered: "",
-      precursors_gases_covered: "",
-      uncertainty_guidance: false,
-      qA_QC_for_emission: false,
-      qA_QC_for_activity_data: false,
-      uploadedDocuments: [],
+      facilitySectorDetails: [
+        {
+          sector_ID: "",
+          sub_sectorID: "",
+          category_ID: "",
+          emission_source_type: "",
+          calculation_approach: "",
+          ghg_gases_covered: "",
+          precursors_gases_covered: "",
+          uncertainty_guidance: false,
+          qA_QC_for_emission: false,
+          qA_QC_for_activity_data: false,
+          uploadedDocuments: [],
+        },
+      ],
     });
   
     onClose();
   };
-
+  
   return (
     <React.Fragment>
       <div className="page-content">
@@ -132,17 +155,16 @@ const CategoryModal = ({ open, onClose }) => {
             onClose={onClose}
           >
             <form onSubmit={handleSubmit}>
+            {formData.facilitySectorDetails.map((detail, index) => (
+                <div key={index} className="sector-detail">
               <Row>
                 <Col md={6}>
                   <div className="form-field">
                     <label htmlFor="level1">Sector</label>
                     <select
-                      value={formData.sector_ID}
+                      value={detail.sector_ID}
                       onChange={(e) =>
-                        handleInputChange(
-                          "sector_ID",
-                          parseInt(e.target.value, 10)
-                        )
+                        handleInputChange(index, "sector_ID", parseInt(e.target.value, 10))
                       }
                       // onChange={(e) => handleLevel1Change(parseInt(e.target.value, 10))}
                     >
@@ -161,12 +183,9 @@ const CategoryModal = ({ open, onClose }) => {
                     <label htmlFor="level2">Sub Sector</label>
                     <select
                       id="subSector"
-                      value={formData.sub_sectorID}
+                      value={detail.sub_sectorID}
                       onChange={(e) =>
-                        handleInputChange(
-                          "sub_sectorID",
-                          parseInt(e.target.value, 10)
-                        )
+                        handleInputChange(index, "sub_sectorID", parseInt(e.target.value, 10))
                       }
                       // onChange={(e) => handleLevel2Change(parseInt(e.target.value, 10))}
                       disabled={!level2Categories.length}
@@ -187,12 +206,9 @@ const CategoryModal = ({ open, onClose }) => {
                     <label htmlFor="level3">Category</label>
                     <select
                       id="category"
-                      value={formData.category_ID}
+                      value={detail.category_ID}
                       onChange={(e) =>
-                        handleInputChange(
-                          "category_ID",
-                          parseInt(e.target.value, 10)
-                        )
+                        handleInputChange(index, "category_ID", parseInt(e.target.value, 10))
                       }
                       disabled={!level3Categories.length}
                     >
@@ -210,9 +226,9 @@ const CategoryModal = ({ open, onClose }) => {
                     label="Emission Source Type"
                     placeholder="Steam Turbine"
                     type="text"
-                    value={formData.emission_source_type}
+                    value={detail.emission_source_type}
                     onChange={(e) =>
-                      handleInputChange("emission_source_type", e.target.value)
+                      handleInputChange(index, "emission_source_type", e.target.value)
                     }
                   />
                 </Col>
@@ -225,9 +241,9 @@ const CategoryModal = ({ open, onClose }) => {
                     options={CalculationApproach}
                     valueKey="value"
                     labelKey="name"
-                    value={formData.calculation_approach}
+                    value={detail.calculation_approach}
                     onChange={(e) =>
-                      handleInputChange("calculation_approach", e.target.value)
+                      handleInputChange(index, "calculation_approach", e.target.value)
                     }
                   />
                 </Col>
@@ -237,11 +253,11 @@ const CategoryModal = ({ open, onClose }) => {
                     placeholder="N2O, CH4"
                     isDropdown
                     options={gases}
-                    valueKey="gasGroupID"
+                    valueKey="gasName"
                     labelKey="gasName"
-                    value={formData.ghg_gases_covered}
+                    value={detail.ghg_gases_covered}
                     onChange={(e) =>
-                      handleInputChange("ghg_gases_covered", e.target.value)
+                      handleInputChange(index, "ghg_gases_covered", e.target.value)
                     }
                   />
                 </Col>
@@ -253,14 +269,11 @@ const CategoryModal = ({ open, onClose }) => {
                     placeholder="N2O, CH4"
                     isDropdown
                     options={gases}
-                    valueKey="gasGroupID"
+                    valueKey="gasName"
                     labelKey="gasName"
-                    value={formData.precursors_gases_covered}
+                    value={detail.precursors_gases_covered}
                     onChange={(e) =>
-                      handleInputChange(
-                        "precursors_gases_covered",
-                        e.target.value
-                      )
+                      handleInputChange(index, "precursors_gases_covered", e.target.value)
                     }
                   />
                 </Col>
@@ -272,13 +285,14 @@ const CategoryModal = ({ open, onClose }) => {
                     label="Uncertainty Guidance?"
                     toggleClick={() =>
                       handleInputChange(
+                        index,
                         "uncertainty_guidance",
-                        !formData.uncertainty_guidance
+                        !detail.uncertainty_guidance
                       )
                     }
-                    conditionData={formData.uncertainty_guidance}
+                    conditionData={detail.uncertainty_guidance}
                     onFileUpload={(file) =>
-                      handleFileUpload("Uncertainty Guidance", file)
+                      handleFileUpload(index, "Uncertainty Guidance", file)
                     }
                   />
                 </Col>
@@ -286,14 +300,11 @@ const CategoryModal = ({ open, onClose }) => {
                   <FileUpload
                     label="Is QA/QC for emission data?"
                     toggleClick={() =>
-                      handleInputChange(
-                        "qA_QC_for_emission",
-                        !formData.qA_QC_for_emission
-                      )
+                      handleInputChange(index, "qA_QC_for_emission", !detail.qA_QC_for_emission)
                     }
-                    conditionData={formData.qA_QC_for_emission}
+                    conditionData={detail.qA_QC_for_emission}
                     onFileUpload={(file) =>
-                      handleFileUpload("QA/QC for Emission Data", file)
+                      handleFileUpload(index, "QA/QC for Emission Data", file)
                     }
                   />
                 </Col>
@@ -302,17 +313,20 @@ const CategoryModal = ({ open, onClose }) => {
                     label="Is QA/QC for activity data?"
                     toggleClick={() =>
                       handleInputChange(
+                        index,
                         "qA_QC_for_activity_data",
-                        !formData.qA_QC_for_activity_data
+                        !detail.qA_QC_for_activity_data
                       )
                     }
-                    conditionData={formData.qA_QC_for_activity_data}
+                    conditionData={detail.qA_QC_for_activity_data}
                     onFileUpload={(file) =>
-                      handleFileUpload("QA/QC for Activity Data", file)
+                      handleFileUpload(index, "QA/QC for Activity Data", file)
                     }
                   />
                 </Col>
               </div>
+              </div>
+              ))}
               <div
                 className="d-flex justify-content-end mt-3"
                 style={{ marginRight: "4rem" }}

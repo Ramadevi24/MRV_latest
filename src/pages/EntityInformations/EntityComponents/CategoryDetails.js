@@ -12,8 +12,6 @@ const CategoryDetails = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const categoriesData = localStorage.getItem('submittedData') ? JSON.parse(localStorage.getItem('submittedData')) : [];
 
-  console.log(categoriesData, 'categoriesData');
-
   const handleButtonClick = () => {
     setIsModalOpen(true);
   };
@@ -24,7 +22,8 @@ const CategoryDetails = () => {
 
   const columns = [
     { key: "sector_ID", label: t("Sector"), sortable: true },
-    { key: "sub_sectorID", label: t("Sub Sector / Category"), sortable: true },
+    { key: "sub_sectorID", label: t("Sub Sector"), sortable: true },
+    { key: "category_ID", label: t("Category"), sortable: true },
     { key: "emission_source_type", label: t("Emission Source Type"), sortable: true },
     { key: "calculation_approach", label: t("Calculation Approach"), sortable: true },
     { key: "ghg_gases_covered", label: t("GHG Gases Covered"), sortable: true },

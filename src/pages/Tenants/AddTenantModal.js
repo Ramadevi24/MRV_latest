@@ -41,7 +41,6 @@ const AddTenantModal = ({ isOpen, onClose }) => {
       };
       try {
         const response = await addTenant(createPayload);
-        console.log(response, 'response')
         if (response) {
           onClose();
           toast.success(t("Tenant created successfully"), { autoClose: 3000 });
