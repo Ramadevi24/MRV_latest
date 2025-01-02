@@ -221,8 +221,8 @@ const SubPlantModal = ({ open, onClose }) => {
                     label="Quality of Maintainence"
                     placeholder="Reliability-Centre"
                     value={formValues.qualityOfMaintenance}
-                    onChange={handleChange("qualityOfMaintainence")}
-                    error={errors.qualityOfMaintainence}
+                    onChange={handleChange("qualityOfMaintenance")}
+                    error={errors.qualityOfMaintenance}
                   />
                 </Col>
                 <Col md={6}>
