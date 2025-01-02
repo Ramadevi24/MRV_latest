@@ -64,27 +64,74 @@ const EmissionSourceModal = ({ open, onClose }) => {
                 </Row>
                 <Row>
                   <Col md={6}>
-                    <FormField label="Stack ID" placeholder="GT12345" type="number"/>
+                    <FormField
+                      label="Stack ID"
+                      placeholder="GT12345"
+                      type="number"
+                    />
                   </Col>
                   <Col md={6}>
-                    <FormField label="Diameter (m)" placeholder="1.5" type="number"/>
+                    <FormField
+                      label="Emission Source"
+                      placeholder="Industrial Boiler"
+                      type="text"
+                    />
+                  </Col>
+                  <Col md={6}>
+                    <FormField
+                      label="CEMS ID’s"
+                      placeholder="CEM12345, CEM3426, CEM2341"
+                      type="text"
+                    />
+                  </Col>
+                  <Col md={6}>
+                    <FormField
+                      label="Diameter (m)"
+                      placeholder="1.5"
+                      type="number"
+                    />
                   </Col>
                 </Row>
                 <Row>
                   <Col md={6}>
-                    <FormField label="Height (m)" placeholder="60" type="number"/>
+                    <FormField
+                      label="Height (m)"
+                      placeholder="60"
+                      type="number"
+                    />
                   </Col>
                   <Col md={6}>
-                    <FormField label="Velocity (m/s)" placeholder="120" type="number"/>
+                    <FormField
+                      label="Velocity (m/s)"
+                      placeholder="120"
+                      type="number"
+                    />
                   </Col>
-                </Row>
-                <Row>
                   <Col md={6}>
-                    <FormField label="Temperature (c0)" placeholder="178" type="number"/>
+                    <FormField
+                      label="Volumetric Flow Rate (m3/hrs)"
+                      placeholder="178"
+                      type="number"
+                    />
+                  </Col>
+                  <Col md={6}>
+                    <FormField
+                      label="Temperature (c0)"
+                      placeholder="178"
+                      type="number"
+                    />
+                  </Col>
+                  <Col md={6}>
+                    <FormField
+                      label="CO2 Capture Efficiency (%)"
+                      placeholder="20"
+                      type="number"
+                    />
                   </Col>
                 </Row>
+                <Row></Row>
               </div>
-              {power !== ":construction" && (<div>
+              {/* {power !== ":construction" && (<div>
                 <Row>
                   <Col md={6}>
                     <FormField
@@ -123,15 +170,19 @@ const EmissionSourceModal = ({ open, onClose }) => {
                     </Col>
                   </Row>
                 )}
-              </div>)}
-              {power !== ":construction" && (<div className="category-sub-modal" style={{ marginTop: "10px" }}>
-                <Row>
-                  <Col md={6}>
-                    <h4 className="modal-subhead">Technologies</h4>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
+              </div>)} */}
+              {power !== ":construction" && (
+                <div
+                  className="category-sub-modal"
+                  style={{ marginTop: "10px" }}
+                >
+                  <Row>
+                    <Col md={6}>
+                      <h4 className="modal-subhead">Efficiencies</h4>
+                    </Col>
+                  </Row>
+                  <Row>
+                    {/* <Col md={6}>
                     <FormField
                       label="Technology Used"
                       placeholder="Gas Turbines"
@@ -144,54 +195,20 @@ const EmissionSourceModal = ({ open, onClose }) => {
                       placeholder="23"
                       type="number"
                     />
-                  </Col>
-                  <Row>
-                    <Col md={5}>
-                      <div className="efficiency-section">
-                        <h4 className="emission-subtitle">
-                          Abatement Efficiency
-                        </h4>
-                        <Row>
-                          <Col md={6}>
-                            <label className="emission-modal-label">
-                              NOX (%)
-                            </label>
-                          </Col>
-                          <Col md={6}>
-                            <div className="input-with-icon">
-                              <input
-                                type="number"
-                                value=""
-                                onChange=""
-                                placeholder="23"
-                                className="emission-modal-input"
-                              />
-                            </div>
-                          </Col>
-                        </Row>
-                        <Row style={{ marginTop: "10px" }}>
-                          <Col md={6}>
-                            <label className="emission-modal-label">
-                              SOX (%)
-                            </label>
-                          </Col>
-                          <Col md={6}>
-                            <div className="input-with-icon">
-                              <input
-                                type="number"
-                                value=""
-                                onChange=""
-                                placeholder="23"
-                                className="emission-modal-input"
-                              />
-                            </div>
-                          </Col>
-                        </Row>
-                        {power === ":petroleum" && (
-                          <Row style={{ marginTop: "10px" }}>
+                  </Col> */}
+                    <Row>
+                      <Col md={5}>
+                        <div className="efficiency-section">
+                          <h4
+                            className="emission-subtitle"
+                            style={{ color: "#4098CE" }}
+                          >
+                            Abatement Efficiency
+                          </h4>
+                          <Row>
                             <Col md={6}>
                               <label className="emission-modal-label">
-                                CO (%)
+                                NOX (%)
                               </label>
                             </Col>
                             <Col md={6}>
@@ -200,88 +217,147 @@ const EmissionSourceModal = ({ open, onClose }) => {
                                   type="number"
                                   value=""
                                   onChange=""
-                                  placeholder="24"
+                                  placeholder="42"
                                   className="emission-modal-input"
                                 />
                               </div>
                             </Col>
                           </Row>
-                        )}
-                      </div>
-                    </Col>
-                    <Col md={7}>
-                      <div className="other-efficiency-section">
-                        <h4 className="emission-subtitle">
-                          Other Abatement Efficiency
-                        </h4>
-                        <Card>
-                          <div className="abatement-table-container">
-                            <table className="abatement-table">
-                              <thead>
-                                <tr>
-                                  <th>Name</th>
-                                  <th>Value (%)</th>
-                                  <button
-                                    onClick={addRow}
-                                    className="add-emission-modalbtn"
-                                  >
-                                    + Add other
-                                  </button>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {rows.map((row, index) => (
-                                  <tr key={index}>
-                                    <td>
-                                      <input
-                                        type="text"
-                                        value={row.name}
-                                        onChange={(e) =>
-                                          updateRow(
-                                            index,
-                                            "name",
-                                            e.target.value
-                                          )
-                                        }
-                                        placeholder="Name"
-                                      />
-                                    </td>
-                                    <td>
-                                      <input
-                                        type="number"
-                                        value={row.value}
-                                        onChange={(e) =>
-                                          updateRow(
-                                            index,
-                                            "value",
-                                            e.target.value
-                                          )
-                                        }
-                                        placeholder="Value"
-                                      />
-                                    </td>
-                                    <td>
-                                      <button
-                                        onClick={() => removeRow(index)}
-                                        style={{
-                                          border: "none",
-                                          background: "none",
-                                        }}
-                                      >
-                                        <img src={deleteIcon} />
-                                      </button>
-                                    </td>
+                          <Row style={{ marginTop: "10px" }}>
+                            <Col md={6}>
+                              <label className="emission-modal-label">
+                                SOX (%)
+                              </label>
+                            </Col>
+                            <Col md={6}>
+                              <div className="input-with-icon">
+                                <input
+                                  type="number"
+                                  value=""
+                                  onChange=""
+                                  placeholder="23"
+                                  className="emission-modal-input"
+                                />
+                              </div>
+                            </Col>
+                          </Row>
+                          <Row style={{ marginTop: "10px" }}>
+                            <Col md={6}>
+                              <label className="emission-modal-label">
+                                PM (%)
+                              </label>
+                            </Col>
+                            <Col md={6}>
+                              <div className="input-with-icon">
+                                <input
+                                  type="number"
+                                  value=""
+                                  onChange=""
+                                  placeholder="27"
+                                  className="emission-modal-input"
+                                />
+                              </div>
+                            </Col>
+                          </Row>
+                          {power === ":petroleum" && (
+                            <Row style={{ marginTop: "10px" }}>
+                              <Col md={6}>
+                                <label className="emission-modal-label">
+                                  CO (%)
+                                </label>
+                              </Col>
+                              <Col md={6}>
+                                <div className="input-with-icon">
+                                  <input
+                                    type="number"
+                                    value=""
+                                    onChange=""
+                                    placeholder="24"
+                                    className="emission-modal-input"
+                                  />
+                                </div>
+                              </Col>
+                            </Row>
+                          )}
+                        </div>
+                      </Col>
+                      <Col md={7}>
+                        <div className="other-efficiency-section">
+                          <h4
+                            className="emission-subtitle"
+                            style={{ color: "#4098CE" }}
+                          >
+                            Other Abatement Efficiency
+                          </h4>
+                          <Card>
+                            <div className="abatement-table-container">
+                              <table className="abatement-table">
+                                <thead>
+                                  <tr>
+                                    <th>Name</th>
+                                    <th>Value (%)</th>
+                                    <button
+                                      onClick={addRow}
+                                      className="add-emission-modalbtn"
+                                    >
+                                      + Add other
+                                    </button>
                                   </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </Card>
-                      </div>
-                    </Col>
+                                </thead>
+                                <tbody>
+                                  {rows.map((row, index) => (
+                                    <tr key={index}>
+                                      <td>
+                                        <input
+                                          type="text"
+                                          value={row.name}
+                                          onChange={(e) =>
+                                            updateRow(
+                                              index,
+                                              "name",
+                                              e.target.value
+                                            )
+                                          }
+                                          placeholder="Name"
+                                        />
+                                      </td>
+                                      <td>
+                                        <input
+                                          type="number"
+                                          value={row.value}
+                                          onChange={(e) =>
+                                            updateRow(
+                                              index,
+                                              "value",
+                                              e.target.value
+                                            )
+                                          }
+                                          placeholder="Value"
+                                        />
+                                      </td>
+                                      <td>
+                                        <button
+                                          onClick={() => removeRow(index)}
+                                          style={{
+                                            border: "none",
+                                            background: "none",
+                                          }}
+                                        >
+                                          <img src={deleteIcon} />
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
+                          </Card>
+                        </div>
+                      </Col>
+                    </Row>
                   </Row>
-                </Row>
-              </div>)}
+                </div>
+              )}
               {power === ":construction" && (
                 <div
                   className="category-sub-modal"

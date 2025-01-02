@@ -1,6 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext,useEffect } from "react";
 import FormField from "../../Components/CommonComponents/FormField";
 import "../../assets/scss/CSS/EntityComponents.css";
+import { useTranslation } from "react-i18next";
 import {
   Container,
   Card,
@@ -25,27 +26,23 @@ function PowerEmission() {
   const [file, setFile] = useState(null);
   const [tierLevel, setTierLevel] = useState("T1");
   const { emission } = useParams();
-    const [Uncertainty, setUncertainty] = useState(false);
-    const [QAQC, setQAQC] = useState(false);
-    const [ActivityQAQC, setActivityQAQC] = useState(false);
-const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
-  
-    const [facilityOptions, setFacilityOptions] = useState(facility);
-  const  
-  [calendarYear, setCalendarYear] = useState([
-    { name: "2023", value: "2023" },
-    { name: "2024", value: "2024" },
-    { name: "2025", value: "2025" },
-  ]);
-    const handleUncertainty = () => {
-      setUncertainty(!Uncertainty);
-    }
-    const handleQAQC = () => {
-      setQAQC(!QAQC);
-    }
-    const handleActivityQAQC = () => {
-      setActivityQAQC(!ActivityQAQC);
-    }
+  const [Uncertainty, setUncertainty] = useState(false);
+  const [QAQC, setQAQC] = useState(false);
+  const [ActivityQAQC, setActivityQAQC] = useState(false);
+  const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
+  const { t } = useTranslation();
+  console.log(facility);
+  const [facilityOptions, setFacilityOptions] = useState(facility);
+  const [calendarYear, setCalendarYear] = useState([]);
+  const handleUncertainty = () => {
+    setUncertainty(!Uncertainty);
+  };
+  const handleQAQC = () => {
+    setQAQC(!QAQC);
+  };
+  const handleActivityQAQC = () => {
+    setActivityQAQC(!ActivityQAQC);
+  };
   const FuelPowerheaders = [
     "Fuel Type",
     "Natural Gas",
@@ -60,21 +57,17 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
     "Jet Fuel ",
     "Gasoline",
   ];
-  const FuelConstructionheaders = [
-    "Fuel Type",
-    "Natural Gas",
-    "Diesel",
-  ];
+  const FuelConstructionheaders = ["Fuel Type", "Natural Gas", "Diesel"];
   const FuelPowerT3headers = [
-      "Stack Name/ID",
-      "Parameters",
-      "C02",
-      "CH4",
-      "N20",
-      "HFCs",
-      "PFCs",
-      "SF6",
-      "NF3"
+    "Stack Name/ID",
+    "Parameters",
+    "C02",
+    "CH4",
+    "N20",
+    "HFCs",
+    "PFCs",
+    "SF6",
+    "NF3",
   ];
   const FuelT2SubPowerheaders = [
     "Sub Plant",
@@ -128,7 +121,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
       "Fuel Purpose": "Energy",
       "Fuel Quantity": 500,
       "Fuel Unit": "m³",
-      "Configuration": "Simple Cycle",
+      Configuration: "Simple Cycle",
       "Country/Plant GHG Emission Factor(kg/Tg)": "350-500 Kg/TJ",
       "Country/Plant Precursors Emission Factor(Kg/Tg)": "0.1-0.3 Kg/TJ",
     },
@@ -137,7 +130,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
       "Fuel Purpose": "Energy",
       "Fuel Quantity": 700,
       "Fuel Unit": "m³",
-      "Configuration": "Simple Cycle",
+      Configuration: "Simple Cycle",
       "Country/Plant GHG Emission Factor(kg/Tg)": "350-500 Kg/TJ",
       "Country/Plant Precursors Emission Factor(Kg/Tg)": "0.1-0.3 Kg/TJ",
     },
@@ -146,7 +139,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
       "Fuel Purpose": "Energy",
       "Fuel Quantity": 200,
       "Fuel Unit": "m³",
-      "Configuration": "Simple Cycle",
+      Configuration: "Simple Cycle",
       "Country/Plant GHG Emission Factor(kg/Tg)": "350-500 Kg/TJ",
       "Country/Plant Precursors Emission Factor(Kg/Tg)": "0.1-0.3 Kg/TJ",
     },
@@ -155,7 +148,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
       "Fuel Purpose": "Non Energy",
       "Fuel Quantity": 350,
       "Fuel Unit": "m³",
-      "Configuration": "Simple Cycle",
+      Configuration: "Simple Cycle",
       "Country/Plant GHG Emission Factor(kg/Tg)": "350-500 Kg/TJ",
       "Country/Plant Precursors Emission Factor(Kg/Tg)": "0.1-0.3 Kg/TJ",
     },
@@ -167,11 +160,11 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
       "Fuel Purpose": "Energy",
       "Fuel Quantity": 324,
       "Fuel Unit": "m³",
-      "Configuration": "Simple Cycle",
+      Configuration: "Simple Cycle",
       "Technology Specific GHG Emission Factor (Kg/TJ)": "350–500 Kg/TJ",
       "Technology Specific Precursors Emission Factor (Kg/TJ)": "0.1–0.3 Kg/TJ",
       "Source of Emission Factor": "IPCC",
-      "Technology": "Stream Turbine",
+      Technology: "Stream Turbine",
       "Control Technology": "Dry Low NOX",
       "Combustion Technology": "NGCC",
       "Operating Condition": "Gas Turbine",
@@ -184,11 +177,11 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
       "Fuel Purpose": "Energy",
       "Fuel Quantity": 562,
       "Fuel Unit": "m³",
-      "Configuration": "Combined Cycle",
+      Configuration: "Combined Cycle",
       "Technology Specific GHG Emission Factor (Kg/TJ)": "350–500 Kg/TJ",
       "Technology Specific Precursors Emission Factor (Kg/TJ)": "0.1–0.3 Kg/TJ",
       "Source of Emission Factor": "IPCC",
-      "Technology": "Gas Turbine",
+      Technology: "Gas Turbine",
       "Control Technology": "FGD",
       "Combustion Technology": "IGCC",
       "Operating Condition": "Gas Turbine",
@@ -201,11 +194,11 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
       "Fuel Purpose": "Energy",
       "Fuel Quantity": 321,
       "Fuel Unit": "m³",
-      "Configuration": "Simple Cycle",
+      Configuration: "Simple Cycle",
       "Technology Specific GHG Emission Factor (Kg/TJ)": "350–500 Kg/TJ",
       "Technology Specific Precursors Emission Factor (Kg/TJ)": "0.1–0.3 Kg/TJ",
       "Source of Emission Factor": "IPCC",
-      "Technology": "Stream Turbine",
+      Technology: "Stream Turbine",
       "Control Technology": "Dry Low NOX",
       "Combustion Technology": "NGCC",
       "Operating Condition": "Gas Turbine",
@@ -218,19 +211,19 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
       "Fuel Purpose": "Non Energy",
       "Fuel Quantity": 454,
       "Fuel Unit": "m³",
-      "Configuration": "Combined Cycle",
+      Configuration: "Combined Cycle",
       "Technology Specific GHG Emission Factor (Kg/TJ)": "350–500 Kg/TJ",
       "Technology Specific Precursors Emission Factor (Kg/TJ)": "0.1–0.3 Kg/TJ",
       "Source of Emission Factor": "IPCC",
-      "Technology": "Gas Turbine",
+      Technology: "Gas Turbine",
       "Control Technology": "FGD",
       "Combustion Technology": "NGCC",
       "Operating Condition": "Gas Turbine",
       "Quality Of Maintenance": "Reliability-Centre",
       "Age Of Equipment(Years)": 3,
       "Co2 Capture Efficiency(%)": 19,
-    }]
-  
+    },
+  ];
 
   const FuelPetroleumparameters = [
     { type: "Naphtha", "Fuel Quantity": 324, "Fuel Unit": "m³" },
@@ -336,13 +329,14 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
         { parameter: "Velocity (m/s)", values: [34, 13, 24, 26] },
         { parameter: "Temperature (°C)", values: [32, 24, 27, 21] },
       ],
-    }]
-  const stackPowerT3parameters = [
-    { parameter: "Velocity (m/s)", values:[24, 34,17,36]},
-    {parameter: "Temperature (°C)",values:[34,13,17,24]},
-    {parameter: "Flow Rate(m3/hrs)",values:[24, 23,17,46]}
+    },
   ];
- /* const emissionPowerT3parameters = [
+  const stackPowerT3parameters = [
+    { parameter: "Velocity (m/s)", values: [24, 34, 17, 36] },
+    { parameter: "Temperature (°C)", values: [34, 13, 17, 24] },
+    { parameter: "Flow Rate(m3/hrs)", values: [24, 23, 17, 46] },
+  ];
+  /* const emissionPowerT3parameters = [
     { parameter: "Is Monitored", values:["Yes", "Yes","Yes","Yes", "No","No","No"]},
     {parameter: "Emission Factor",values:[34,13,17,24]},
     {parameter: "Source Of emission factor",values:[24, 23,17,46]},
@@ -356,55 +350,51 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
       "Is Monitored": "Yes",
       "Emission Factor (Kg/TJ)": "",
       "Source Of emission factor": "",
-      "Emission (Tonnes)": "123"
-        },
+      "Emission (Tonnes)": "123",
+    },
     {
       type: "Co4",
       "Is Monitored": "Yes",
       "Emission Factor (Kg/TJ)": "",
       "Source Of emission factor": "",
-      "Emission (Tonnes)": "321"
-        },  
-        {
-          type: "N20",
-          "Is Monitored": "Yes",
-          "Emission Factor (Kg/TJ)": "",
-          "Source Of emission factor": "",
-          "Emission (Tonnes)": "333"
-            },    
-            {
-              type: "HFCs",
-              "Is Monitored": "Yes",
-              "Emission Factor (Kg/TJ)": "42",
-              "Source Of emission factor": "plant",
-              "Emission (Tonnes)": ""
-                },    
-                {
-                  type: "PFCs",
-                  "Is Monitored": "No",
-                  "Emission Factor (Kg/TJ)": "63",
-                  "Source Of emission factor": "plant",
-                  "Emission (Tonnes)": ""
-                    },    
-                    {
-                      type: "SF6",
-                      "Is Monitored": "No",
-                      "Emission Factor (Kg/TJ)": "25",
-                      "Source Of emission factor": "plant",
-                      "Emission (Tonnes)": ""
-                        },  
-                        {
-                          type: "NF3",
-                          "Is Monitored": "No",
-                          "Emission Factor (Kg/TJ)": "45",
-                          "Source Of emission factor": "plant",
-                          "Emission (Tonnes)": ""
-                            },    
-                         
-                                              
-    
+      "Emission (Tonnes)": "321",
+    },
+    {
+      type: "N20",
+      "Is Monitored": "Yes",
+      "Emission Factor (Kg/TJ)": "",
+      "Source Of emission factor": "",
+      "Emission (Tonnes)": "333",
+    },
+    {
+      type: "HFCs",
+      "Is Monitored": "Yes",
+      "Emission Factor (Kg/TJ)": "42",
+      "Source Of emission factor": "plant",
+      "Emission (Tonnes)": "",
+    },
+    {
+      type: "PFCs",
+      "Is Monitored": "No",
+      "Emission Factor (Kg/TJ)": "63",
+      "Source Of emission factor": "plant",
+      "Emission (Tonnes)": "",
+    },
+    {
+      type: "SF6",
+      "Is Monitored": "No",
+      "Emission Factor (Kg/TJ)": "25",
+      "Source Of emission factor": "plant",
+      "Emission (Tonnes)": "",
+    },
+    {
+      type: "NF3",
+      "Is Monitored": "No",
+      "Emission Factor (Kg/TJ)": "45",
+      "Source Of emission factor": "plant",
+      "Emission (Tonnes)": "",
+    },
   ];
-
 
   // const stackPowerT3parameters = [
   //   { type: "CH4(%)", ST12345: 34, ST12346: 25, ST12347: 12, ST12348: 45 },
@@ -481,6 +471,27 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
   const handleFileRemove = () => {
     setFile(null);
   };
+  useEffect(() => {
+    const startYear = 2005;
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    const facilites=[];
+    for (let year = startYear; year <= currentYear; year++) {
+      years.push({ name: year.toString(), value: year.toString() });
+    }
+    console.log(years);
+    setCalendarYear(years);
+  //   for(var i=0;i<facility.length;i++){
+  //     facilites.push({ name: facility[i].facilityName, value: facility[i].facilityId.toString()});
+  //   }
+  //   // facility.map((fac) => {
+  //   //     facilites.push({ name: fac.facilityName, value: fac.facilityId.toString()});
+  //   // });
+  //   console.log(facilites);
+    setFacilityOptions(facility);
+
+
+  }, [facility]);
   return (
     <div className="page-content">
       <Container fluid>
@@ -490,67 +501,80 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
               <CardHeader>
                 {emission === ":power" && (
                   <h4 className="card-title mb-0 cardTitle">
-                    1.A.1.a Power Generation GHG Emission Data
+                    {t("PowerGenerationGHGEmissionData")}
                   </h4>
                 )}
                 {emission === ":petroleum" && (
                   <h4 className="card-title mb-0 cardTitle">
-                    1.A.1.b Petroleum Refining
+                    {t("PetroleumRefining")}
                   </h4>
                 )}
                 {emission === ":construction" && (
                   <h4 className="card-title mb-0 cardTitle">
-                    1.A.2 Manufacturing Industries and Construction
+                    {t("ManufacturingIndustriesAndConstruction")}
                   </h4>
                 )}
               </CardHeader>
               <CardBody>
                 <Row>
-                  <Col md={3}>
+                  <Col md={4}> 
+                  
                     <FormField
-                      label="Facility / Plant Name"
+                      label={t("FacilityName")}
                       isDropdown
-                      options={facilityOptions}   valueKey ="$id"
-                      labelKey ="facilityName"
+                      options={facilityOptions}
+                      valueKey="facilityId"
+                      labelKey="facilityName"
+                    ></FormField>
+                  </Col>
+                  <Col md={4}>
 
+                    <FormField
+                      label={t("CalendarYear")}
+                      isDropdown
+                      options={calendarYear}
+                      valueKey="name"
+                      labelKey="name"
                     />
                   </Col>
-                  <Col md={3}>
+                  <Col md={4}>
                     <FormField
-                      label="Calendar Year"
-                      isDropdown
-                      options={calendarYear}  valueKey ="name"
-                      labelKey ="name"
-
-                    />
-                  </Col>
-                  <Col md={3}>
-                    <FormField
-                      label="Tier Level"
+                      label={t("TierLevel")}
                       isDropdown
                       options={[
                         { name: "T1", name: "T1" },
                         { name: "T2", name: "T2" },
-                        { name: "T3", name: "T3" }
+                        { name: "T3", name: "T3" },
                       ]}
                       onChange={handleTierChange}
                       value={tierLevel}
-                      valueKey ="name"
-                      labelKey ="name"
+                      valueKey="name"
+                      labelKey="name"
                     />
                   </Col>
-
                 </Row>
                 <Row>
-                <Col md={3}>
-          <FileUpload label="Uncertainty Guidance?" toggleClick={handleUncertainty} conditionData={Uncertainty}/>
-            </Col>
-            <Col md={3}>
-          <FileUpload label="Is QA/QC for emission data?" toggleClick={handleQAQC} conditionData={QAQC}/>
-            </Col>
-            <Col md={3}>
-          <FileUpload label="Is QA/QC for activity data?" toggleClick={handleActivityQAQC} conditionData={ActivityQAQC}/>
-          </Col>
+                  <Col md={4}>
+                    <FileUpload
+                      label={t("UncertaintyGuidance")}
+                      toggleClick={handleUncertainty}
+                      conditionData={Uncertainty}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <FileUpload
+                      label={t("QAQC")}
+                      toggleClick={handleQAQC}
+                      conditionData={QAQC}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <FileUpload
+                      label={t("ActivityQAQC")}
+                      toggleClick={handleActivityQAQC}
+                      conditionData={ActivityQAQC}
+                    />
+                  </Col>
                 </Row>
                 {emission === ":power" && (
                   <>
@@ -559,7 +583,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                         <EmissionTable
                           headers={FuelPowerheaders}
                           parameters={FuelPowerparameters}
-                          title="Fuel Consumption Details"
+                          title={t("FuelConsumptionDtls")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
@@ -567,46 +591,39 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                     )}
                     {tierLevel === "T2" && (
                       <>
-                      <EmissionTable
+                        <EmissionTable
                           headers={FuelPowerheaders}
                           parameters={FuelPowerT2parameters}
                           subHeaders={FuelT2SubPowerheaders}
                           showHeaderRow={true}
-                          title="Fuel Consumption Details"
+                          title={t("FuelConsumptionDtls")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
-                        {/* <VerticalEmissionTable
-                          headers={stackPowerheaders}
-                          parameters={stackPowerparameters}
-                          title="Abatement & Stack Parameter Details"
-                          showParametersRow={false}
-                        /> */}
-                        
                       </>
                     )}
                     {tierLevel === "T3" && (
                       <>
-                          <EmissionTable
+                        <EmissionTable
                           headers={FuelPowerheaders}
                           parameters={FuelPowerT3parameters}
                           subHeaders={FuelT2SubPowerheaders}
                           showHeaderRow={true}
-                          title="Fuel Consumption Details"
+                          title={t("FuelConsumptionDtls")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
-                           <VerticalEmissionTable2
+                        <VerticalEmissionTable2
                           headers={stackPowerheaders}
                           parameters={stackPowerT3parameters}
-                          title="Stack Details"
+                          title={t("StackDetails")}
                           showHeaderRow={false}
                           showParametersRow={false}
                         />
                         <VerticalEmissionTable3
                           headers={FuelPowerT3headers}
                           parameters={emissionPowerT3parameters}
-                          title="Emission Details"
+                          title={t("EmissionDetails")}
                           showParametersRow={false}
                         />
                       </>
@@ -620,14 +637,14 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                         <EmissionTable
                           headers={FuelPowerheaders}
                           parameters={FuelPowerparameters}
-                          title="Fuel Consumption Details"
+                          title={t("FuelConsumptionDtls")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
                         <EmissionTable
                           headers={FuelPetroleumheaders}
                           parameters={FuelPetroleumparameters}
-                          title="Fuel Production Details"
+                          title={t("FuelProductionDtls")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
@@ -638,7 +655,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                         <VerticalEmissionTable
                           headers={stackPowerheaders}
                           parameters={stackPowerparameters}
-                          title="Stack Parameter Details"
+                          title={t("StackParameterDetails")}
                           showParametersRow={false}
                         />
                         <EmissionTable
@@ -646,7 +663,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                           parameters={FuelPowerparameters}
                           subHeaders={FuelT2Petroleumheaders}
                           showHeaderRow={true}
-                          title="Fuel Consumption Details"
+                          title={t("FuelConsumptionDtls")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
@@ -655,7 +672,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                           parameters={FuelPetroleumparameters}
                           subHeaders={FuelT2Petroleumheaders}
                           showHeaderRow={true}
-                          title="Fuel Production Details"
+                          title={t("FuelProductionDtls")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
@@ -666,7 +683,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                         <VerticalEmissionTable
                           headers={stackPowerheaders}
                           parameters={stackPowerT3parameters}
-                          title="Abatement & Stack Parameter Details"
+                          title={t("AbatementDetails")}
                           showParametersRow={false}
                         />
                         <VerticalEmissionTable
@@ -674,15 +691,15 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                           parameters={fuelPowerT3Parameters}
                           subHeaders={FuelT3Powerheaders}
                           showHeaderRow={true}
-                          title="Fuel Consumption Details"
+                          title={t("FuelConsumptionDtls")}
                           showParametersRow={false}
                         />
-                         <EmissionTable
+                        <EmissionTable
                           headers={FuelPetroleumheaders}
                           parameters={FuelPetroleumparameters}
                           subHeaders={FuelT2Petroleumheaders}
                           showHeaderRow={true}
-                          title="Fuel Production Details"
+                          title={t("FuelProductionDtls")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
@@ -697,18 +714,18 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                         <EmissionTable
                           headers={FuelConstructionheaders}
                           parameters={FuelPowerparameters}
-                          title="Fuel Details"
+                          title={t("FuelDetails")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
-                          <EmissionTable
+                        <EmissionTable
                           headers={FuelConstructionheaders}
                           parameters={FuelPowerparameters}
-                          title="Product Details"
+                          title={t("ProductDetails")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
-                          <EmissionTable
+                        <EmissionTable
                           headers={FuelConstructionheaders}
                           parameters={FuelPowerparameters}
                           title="Raw Material Details"
@@ -716,14 +733,13 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                           subHead="Parameters"
                         />
                       </>
-                      
                     )}
                     {tierLevel === "T2" && (
                       <>
                         <VerticalEmissionTable
                           headers={stackPowerheaders}
                           parameters={stackPowerparameters}
-                          title="Stack Parameter Details"
+                          title={t("StackParameterDetails")}
                           showParametersRow={false}
                         />
                         <EmissionTable
@@ -731,7 +747,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                           parameters={FuelPowerparameters}
                           subHeaders={FuelT2SubPowerheaders}
                           showHeaderRow={true}
-                          title="Fuel Details"
+                          title={t("FuelDetails")}
                           showParametersRow={true}
                           subHead="Parameters"
                         />
@@ -742,7 +758,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                         <VerticalEmissionTable
                           headers={stackPowerheaders}
                           parameters={stackPowerT3parameters}
-                          title="Abatement & Stack Parameter Details"
+                          title={t("AbatementDetails")}
                           showParametersRow={false}
                         />
                         <VerticalEmissionTable
@@ -750,7 +766,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                           parameters={fuelPowerT3Parameters}
                           subHeaders={FuelT3Powerheaders}
                           showHeaderRow={true}
-                          title="Fuel Details"
+                          title={t("FuelDetails")}
                           showParametersRow={false}
                         />
                       </>
@@ -758,15 +774,15 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                   </>
                 )}
                 <Col md={12} className="mt-3">
-                  <label className="modal-subhead">Remarks</label>
+                  <label className="modal-subhead">{t("Remarks")}</label>
                   <textarea
                     className="form-control"
-                    placeholder="Write here..."
+                    placeholder={t("WriteHere")}
                     rows="3"
                   ></textarea>
                 </Col>
                 <Col md={6} className="mt-3">
-                  <label className="modal-subhead">Attach Files</label>
+                  <label className="modal-subhead">{t("AttachFiles")}</label>
                   <div className="file-upload-body">
                     {!file ? (
                       <div className="file-upload-align">
@@ -782,7 +798,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                             htmlFor="upload-label"
                             className="upload-placeholder"
                           >
-                            Drag and drop files here or upload
+                            {t("DragDropFiles")}
                           </label>
                         </div>
                         <div>
@@ -790,7 +806,7 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                             htmlFor="upload-label"
                             className="upload-button"
                           >
-                            Upload
+                            {t("Upload")}
                           </label>
                         </div>
                       </div>
@@ -818,13 +834,13 @@ const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
                     className="me-2"
                     onClick={() => history.back()}
                   >
-                    Cancel
+                    {t("Cancel")}
                   </Button>
                   <Button type="submit" color="info" className=" me-2">
-                    Save
+                    {t("Save")}
                   </Button>
                   <Button type="submit" color="success">
-                    Submit
+                    {t("Submit")}
                   </Button>
                 </div>
               </CardBody>
