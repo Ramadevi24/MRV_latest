@@ -13,7 +13,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { UserProvider } from "./contexts/UserContext";
 import { PermissionProvider } from "./contexts/PermissionContext";
 import "react-toastify/dist/ReactToastify.css";
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import { ToastContainer } from "react-toastify";
 import { AlertProvider } from "./contexts/AlertContext";
 import { FuelProvider } from "./contexts/FuelContext";
@@ -24,9 +24,9 @@ import { CoverageAreaProvider } from "./contexts/CoverageAreaContext";
 import { GasProvider } from "./contexts/GasContext";
 import { Co2EquivalentProvider } from "./contexts/Co2EquivalentContext";
 import { CategoriesProvider } from "./contexts/CategoriesContext";
-import {FacilityProvider } from "./contexts/FacilityContext";
+import { FacilityProvider } from "./contexts/FacilityContext";
 import { SubPlantProvider } from "./contexts/SubPlantContext";
-
+import { EmissionSourceProvider } from "./contexts/EmissionSourceContext";
 
 const store = configureStore({ reducer: rootReducer, devTools: true });
 
@@ -50,15 +50,17 @@ root.render(
                             <EntityProvider>
                               <CoverageAreaProvider>
                                 <GasProvider>
-                                <Co2EquivalentProvider>
-                                <CategoriesProvider>
-                                  <FacilityProvider>
-                                    <SubPlantProvider>
-                                <App/>
-                                </SubPlantProvider>
-                                </FacilityProvider>
-                                </CategoriesProvider>
-                                </Co2EquivalentProvider>
+                                  <Co2EquivalentProvider>
+                                    <CategoriesProvider>
+                                      <FacilityProvider>
+                                        <SubPlantProvider>
+                                          <EmissionSourceProvider>
+                                            <App />
+                                          </EmissionSourceProvider>
+                                        </SubPlantProvider>
+                                      </FacilityProvider>
+                                    </CategoriesProvider>
+                                  </Co2EquivalentProvider>
                                 </GasProvider>
                               </CoverageAreaProvider>
                             </EntityProvider>

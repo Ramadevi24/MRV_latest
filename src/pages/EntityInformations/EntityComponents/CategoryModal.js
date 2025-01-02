@@ -1,4 +1,6 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { v4 as uuidv4 } from 'uuid';  // Import uuidv4
+
 import Modal from "../../../Components/CommonComponents/Modal";
 import FileUpload from "../../../Components/CommonComponents/FileUpload";
 import { Col, Container, Row } from "reactstrap";
@@ -7,9 +9,15 @@ import { CalculationApproach } from "../../../utils/FuelData";
 import { GasContext } from "../../../contexts/GasContext";
 import { useCategories } from "../../../contexts/CategoriesContext";
 
-const CategoryModal = ({ open, onClose }) => {
-  const { gases } = useContext(GasContext);
-  const [submittedData, setSubmittedData] = useState([]);
+const CategoryModal = ({ open, onClose, data }) => {
+  const { gases } = useContext(GasContext); console.log(data);
+ // const [submittedData, setSubmittedData] = useState([]);
+
+ const storedData = localStorage.getItem('submittedData');
+ let storedData1 = storedData ? JSON.parse(storedData) : [];
+ const [submittedData, setSubmittedData] = useState(storedData1);
+
+  
   const [formData, setFormData] = useState({
       facilitySectorDetails: [
         {
@@ -28,6 +36,46 @@ const CategoryModal = ({ open, onClose }) => {
     }]
     });
 
+    useEffect(() => { 
+
+
+      if (data) {
+        handleLevel1Change(data.sector_ID);
+        handleLevel2Change(data.sub_sectorID);
+  
+        setFormData({
+
+          facilitySectorDetails: [
+            {
+    id : data.id,
+          sector_ID: data.sector_ID || '',
+          sub_sectorID: data.sub_sectorID || '',
+          category_ID: data.category_ID || '',
+          emission_source_type: data.emission_source_type || '',
+          calculation_approach: data.calculation_approach || '',
+          ghg_gases_covered: data.ghg_gases_covered || '',
+          precursors_gases_covered: data.precursors_gases_covered || '',
+          qA_QC_for_activity_data: data.qA_QC_for_activity_data || false,
+          qA_QC_for_emission: data.qA_QC_for_emission || false,
+          uncertainty_guidance: data.uncertainty_guidance || false,
+          uploadedDocuments: data.uploadedDocuments || [], // Set documents data
+            }]
+        });
+      }
+    }, [data]);
+
+
+    useEffect(() => {
+      if (submittedData.length > 0) {
+        localStorage.setItem("submittedData", JSON.stringify(submittedData));
+        if(localStorage.getItem("close") == "true") {
+                onClose();
+                localStorage.setItem("close", "false");
+        }
+      }
+    }, [submittedData]);
+    
+  
   const {
     level1Categories,
     level2Categories,
@@ -36,7 +84,13 @@ const CategoryModal = ({ open, onClose }) => {
     handleLevel2Change,
   } = useCategories();
 
-  const handleInputChange = (index, field, value) => {
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    onSave({ ...formData, id: data.id });  // Ensure to pass the ID along with updated data
+  };
+
+  const handleInputChange = (index, field, value) => { 
     setFormData((prevData) => {
       const updatedFacilityDetails = [...prevData.facilitySectorDetails];
       updatedFacilityDetails[index] = {
@@ -100,10 +154,11 @@ const CategoryModal = ({ open, onClose }) => {
       };
     });
   };
-
   const handleSubmit = (e) => {
+
     e.preventDefault();
-  
+    localStorage.setItem("close", "true");
+
     const isValid = formData.facilitySectorDetails.every(
       (detail) => detail.sector_ID && detail.sub_sectorID && detail.category_ID
     );
@@ -120,9 +175,30 @@ const CategoryModal = ({ open, onClose }) => {
       ),
     }));
   
-    setSubmittedData([...submittedData, ...updatedData]);
-    localStorage.setItem("submittedData", JSON.stringify(updatedData));
-  
+    if (updatedData.length > 0) {
+        const mergedData = updatedData.map((item) => {
+          const existingItem = submittedData.find(
+            (data) => data.id === item.id
+          );
+          return {
+            ...item,
+            id: existingItem ? existingItem.id : uuidv4(), // Keep the same ID or assign a new one
+          };
+        });
+    
+        // Update submittedData with merged data
+        setSubmittedData((prevData) => {
+          // Remove replaced entries from prevData
+          const idsToUpdate = mergedData.map((item) => item.id);
+          const filteredData = prevData.filter(
+            (data) => !idsToUpdate.includes(data.id)
+          );
+
+         
+          return [...filteredData, ...mergedData];
+        });
+
+      }
     setFormData({
       facilitySectorDetails: [
         {
@@ -141,7 +217,7 @@ const CategoryModal = ({ open, onClose }) => {
       ],
     });
   
-    onClose();
+  //  onClose();
   };
   
   return (
@@ -279,7 +355,7 @@ const CategoryModal = ({ open, onClose }) => {
                 </Col>
               </Row>
               <div className="category-sub-modal">
-                <h4 className="category-sub-title">Upload Documents</h4>
+                <h4 className="category-sub-title">Upload Documents{console.log(detail.uncertainty_guidance)}</h4>
                 <Col md={12}>
                   <FileUpload
                     label="Uncertainty Guidance?"
@@ -294,7 +370,21 @@ const CategoryModal = ({ open, onClose }) => {
                     onFileUpload={(file) =>
                       handleFileUpload(index, "Uncertainty Guidance", file)
                     }
+                    className={`toggle-switch-modal ${ detail.uncertainty_guidance ? "active" : "" }`}
                   />
+
+                    {detail.uploadedDocuments
+                    .filter((doc) => doc.document_Type === "Uncertainty Guidance")
+                    .map((doc, docIndex) => (
+                      <div key={docIndex} className="uploaded-file-name" style={{
+                          margin: "10px",
+                          fontSize: "14px",
+                          color: "#333",
+                        }}>
+                        <span>{doc.file_Name}</span>
+                      </div>
+                    ))}
+
                 </Col>
                 <Col md={12}>
                   <FileUpload
@@ -307,6 +397,18 @@ const CategoryModal = ({ open, onClose }) => {
                       handleFileUpload(index, "QA/QC for Emission Data", file)
                     }
                   />
+                    {detail.uploadedDocuments
+                      .filter((doc) => doc.document_Type === "QA/QC for Emission Data")
+                      .map((doc, docIndex) => (
+                        <div key={docIndex} className="uploaded-file-name" style={{
+                            margin: "10px",
+                            fontSize: "14px",
+                            color: "#333",
+                          }}>
+                          <span>{doc.file_Name}</span>
+                        </div>
+                      ))}
+
                 </Col>
                 <Col md={12}>
                   <FileUpload
@@ -321,8 +423,19 @@ const CategoryModal = ({ open, onClose }) => {
                     conditionData={detail.qA_QC_for_activity_data}
                     onFileUpload={(file) =>
                       handleFileUpload(index, "QA/QC for Activity Data", file)
-                    }
-                  />
+                    }/>
+                    {detail.uploadedDocuments
+                      .filter((doc) => doc.document_Type === "QA/QC for Activity Data")
+                      .map((doc, docIndex) => (
+                        <div key={docIndex} className="uploaded-file-name" style={{
+                            margin: "10px",
+                            fontSize: "14px",
+                            color: "#333",
+                          }}>
+                          <span>{doc.file_Name}</span>
+                        </div>
+                      ))}
+                                    
                 </Col>
               </div>
               </div>
