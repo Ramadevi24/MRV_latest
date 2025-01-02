@@ -2,7 +2,7 @@ import React from "react";
 import FormField from "../../../Components/CommonComponents/FormField";
 import { Col, Row } from "reactstrap";
 
-const ContactDetails = ({onInputChange}) => {
+const ContactDetails = ({onInputChange, formData}) => {
 
     const handleChange = (field) => (event) => {
       // Pass the field and value for the contactDetails object
@@ -18,16 +18,16 @@ const ContactDetails = ({onInputChange}) => {
       </div>
       <Row>
      <Col md={3}>
-      <FormField label="Name" placeholder="Enter Name" type="text" onChange={handleChange("name")}/>
+      <FormField label="Name" placeholder="Enter Name" type="text" onChange={handleChange("name")} value={formData?.name || ''}/>
       </Col>
       <Col md={3}>
-      <FormField label="Title" placeholder="Enter Title" type="text" onChange={handleChange("title")}/>
+      <FormField label="Title" placeholder="Enter Title" type="text" onChange={handleChange("title")} value={formData?.title || ''}/>
       </Col>
       <Col md={3}>
-      <FormField label="Email" placeholder="Enter Email" type="email" onChange={handleChange("email")}/>
+      <FormField label="Email" placeholder="Enter Email" type="email" onChange={handleChange("email")} value={formData?.email || ''}/>
       </Col>
       <Col md={3}>
-      <FormField label="Phone Number" placeholder="Enter Phone number" type="number" onChange={handleChange("phoneNumber")}/>
+      <FormField label="Phone Number" placeholder="Enter Phone number" type="number" onChange={handleChange("phoneNumber")} value={formData?.phoneNumber || ''}/>
       </Col>
       </Row>
     </div>

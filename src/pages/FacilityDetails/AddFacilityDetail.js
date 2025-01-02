@@ -25,8 +25,6 @@ function AddFacilityDetail() {
   const Navigate = useNavigate();
   const categoriesData = localStorage.getItem('submittedData') ? JSON.parse(localStorage.getItem('submittedData')) : [];
 
-  console.log("categoriesData", categoriesData);
-
   const [formData, setFormData] = useState({
     facilityName: "",
     siteOperatorName: "",
@@ -46,6 +44,35 @@ function AddFacilityDetail() {
   facilitySectorDetails: categoriesData
   });
 
+  const [errors, setErrors] = useState({
+    emiratesID: "",
+    entityID: "",
+    siteOperatorName: "",
+    facilityName: "",
+    coverageAreaOfTheDataID: "",
+    longitude: "",
+    latitude: "",
+    streetAddress: "",
+  });
+
+  const validateField = (field, value) => {
+    let errorMessage = "";
+  
+    if (["contactDetails", "isSubmitted", "isDelete", "isContactPersonSameAsEntity"].includes(field)) {
+      return errorMessage;
+    }
+  
+    if (!value) {
+      errorMessage = `${field} field is required.`;
+    } else if (field === "longitude" || field === "latitude") {
+      if (isNaN(value) || value < -180 || value > 180) {
+        errorMessage = `Please provide a valid ${field} coordinate.`;
+      }
+    }
+  
+    return errorMessage;
+  };
+
   const handleToggle = (isChecked) => {
     setContactDetailsVisible(isChecked);
   };
@@ -57,7 +84,7 @@ function AddFacilityDetail() {
           ...prevData,
           contactDetails: {
             ...prevData.contactDetails,
-            ...value, // Merge the new values into the contactDetails object
+            ...value,
           },
         };
       }
@@ -66,6 +93,12 @@ function AddFacilityDetail() {
         [field]: value,
       };
     });
+
+    const error = validateField(field, value);
+    setErrors((prev) => ({
+      ...prev,
+      [field]: error,
+    }));
   };
 
   const tabs = [
@@ -82,16 +115,36 @@ function AddFacilityDetail() {
   //   }
   // };
 
+  const addFacilityWithTimeout = (facilityData, timeout = 10000) => {
+    return Promise.race([
+      addFacility(facilityData), // Original API call
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Request timed out")), timeout)
+      ),
+    ]);
+  }
+
   const handleNext = async () => {
+    const newErrors = {};
+    Object.keys(formData).forEach((field) => {
+      newErrors[field] = validateField(field, formData[field]);
+    });
+    setErrors(newErrors);
+    const hasErrors = Object.values(newErrors).some((error) => error);
+    if (hasErrors) {
+      console.warn("Validation errors detected:", newErrors);
+      return;
+    }
+  
     if (activeTab < tabs.length - 1) {
       try {
         const updatedData = { ...formData, isContactPersonSameAsEntity: isContactDetailsVisible, 
-          contactDetails: isContactDetailsVisible ? null : formData.contactDetails, 
-          facilitySectorDetails: categoriesData, isSubmitted: false , "isDelete": true};
-        console.log("Submitting Data:", formData);
-        const newFacility = await addFacility(updatedData); // Call the context function
+        contactDetails: isContactDetailsVisible ? null : formData.contactDetails, 
+        facilitySectorDetails: categoriesData, isSubmitted: false , isDelete: false};
+        // const newFacility = await addFacility(updatedData);
+        const newFacility = await addFacilityWithTimeout(updatedData);
         if (newFacility) {
-          console.log("API Response:", newFacility);
+          localStorage.setItem("facilityData", JSON.stringify(newFacility.facility));
             setActiveTab(activeTab + 1);
         } else {
           console.error("Failed to submit data:", response.statusText);
@@ -102,8 +155,18 @@ function AddFacilityDetail() {
     }
   };
 
+  const loadDataFromLocalStorage = () => {
+    const savedData = localStorage.getItem("facilityData");
+    if (savedData) {
+      const parsedData = JSON.parse(savedData);
+      setFormData(parsedData);
+      setContactDetailsVisible(parsedData.isContactPersonSameAsEntity);
+    }
+  };
+
   const handleBack = () => {
     if (activeTab > 0) {
+      loadDataFromLocalStorage();
       setActiveTab(activeTab - 1);
     }
   };
@@ -156,7 +219,7 @@ function AddFacilityDetail() {
                 {/* Tab Content */}
                 {activeTab === 0 && (
                   <>
-                   <FacilityInfo onInputChange={handleInputChange}/>
+                   <FacilityInfo onInputChange={handleInputChange} formData={formData} errors={errors}/>
                     <Col md={4}>
                       <ToggleSwitch
                         label="Contact Person is same as Entity"
@@ -166,7 +229,7 @@ function AddFacilityDetail() {
                         isCheckedData={isContactDetailsVisible}
                       />
                     </Col>
-                    {!isContactDetailsVisible && <ContactDetails onInputChange={handleInputChange}/>}
+                    {!isContactDetailsVisible && <ContactDetails onInputChange={handleInputChange} formData={formData.contactDetails}/>}
                     <CategoryDetails />
                   </>
                 )}
