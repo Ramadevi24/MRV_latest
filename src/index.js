@@ -25,6 +25,7 @@ import { GasProvider } from "./contexts/GasContext";
 import { Co2EquivalentProvider } from "./contexts/Co2EquivalentContext";
 import { CategoriesProvider } from "./contexts/CategoriesContext";
 import {FacilityProvider } from "./contexts/FacilityContext";
+import { SubPlantProvider } from "./contexts/SubPlantContext";
 
 
 const store = configureStore({ reducer: rootReducer, devTools: true });
@@ -52,7 +53,10 @@ root.render(
                                 <Co2EquivalentProvider>
                                 <CategoriesProvider>
                                   <FacilityProvider>
-                                <App/></FacilityProvider>
+                                    <SubPlantProvider>
+                                <App/>
+                                </SubPlantProvider>
+                                </FacilityProvider>
                                 </CategoriesProvider>
                                 </Co2EquivalentProvider>
                                 </GasProvider>
