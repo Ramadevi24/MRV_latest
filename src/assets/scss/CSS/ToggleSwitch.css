@@ -49,11 +49,10 @@
   }
   
   .switch-label {
-    font-size: 14px;
-    font-weight: Roboto;
+    font-size: 13px;   
     line-height: 16.41px;
     color: #8C8D8E;
-    font-weight: 500;
+    /* font-weight: 500; */
   }
   
   .switch {

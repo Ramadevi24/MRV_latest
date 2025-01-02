@@ -9,7 +9,7 @@ const AUTH_TOKEN = localStorage.getItem("AuthToken");
 // Get all tenants
 export const getFacility = async () => {
   try {
-    const response = await axios.get(`${API_URL}/GetAllFacilitiesWithDetails`, {
+    const response = await axios.get(`${API_URL}/GetAllFacilitiesNamesByUser`, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
     return response.$values;;
