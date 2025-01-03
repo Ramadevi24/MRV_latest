@@ -55,17 +55,17 @@ export const createFacility = async (data) => {
   }
 };
 
-// Update a tenant
-// export const updateTenant = async (id, tenantData) => {
-//   try {
-//     const response = await axios.put(`${API_URL}/${id}`, tenantData, {
-//       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
-//     });
-//     return response.value.$values;
-//   } catch (error) {
-//     throw new Error("Error Updating tenant");
-//   }
-// };
+
+export const updateSubmitFacility = async (id, facilityData) => {
+  try {
+    const response = await axios.put(`${API_URL}/SubmitFacilityData/${id}`, facilityData, {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
+    });
+    return response.value.$values;
+  } catch (error) {
+    throw new Error("Error Updating facility");
+  }
+};
 
 // Delete tenant
 // export const deleteTenant = async (id) => {

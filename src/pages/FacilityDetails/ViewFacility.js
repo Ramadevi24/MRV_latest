@@ -11,7 +11,7 @@ import { Container, Card,
   CardHeader, Row, Col, Button} from "reactstrap";
   import { useLocation } from "react-router-dom";
 
-function ViewFacility() {
+function ViewFacility({formData, onInputChange, errors}) {
   const [isContactDetailsVisible, setContactDetailsVisible] = React.useState(true);
 
   const handleToggle = (isChecked) => {
@@ -24,7 +24,7 @@ function ViewFacility() {
         <Row>
           <Col lg={12}>
               <div>
-                <FacilityInfo />
+                <FacilityInfo formData={formData} onInputChange={onInputChange} errors={errors}/>
                 <Col md={4}>
                 <ToggleSwitch label="Contact Person is same as Entity" onToggle={handleToggle} toggleDivClassName="toggle-switch" toggleLabelClassName="toggle-label" isCheckedData = {true}/>
                 </Col>

@@ -1,6 +1,6 @@
 // context/FacilityContext.js
 import React, { createContext, useState, useEffect } from 'react';
-import {getGetAllFacilitiesNamesByUser, createFacility, getAllFacilityWithDetailsByFacilityID} from '../services/FacilityService';
+import {getGetAllFacilitiesNamesByUser, createFacility, getAllFacilityWithDetailsByFacilityID, updateSubmitFacility} from '../services/FacilityService';
 import { toast } from 'react-toastify';
 
 export const FacilityContext = createContext();
@@ -49,21 +49,21 @@ export const FacilityProvider = ({ children }) => {
     }
   };
 
-  // const editTenant = async (id, tenantData) => {
-  //   try {
-  //     setLoading(true);
-  //     const updatedTenant = await updateTenant(id, tenantData);
-  //     setTenants(
-  //       tenants.map((tenant) =>
-  //         tenant.id === id ? updatedTenant : tenant
-  //       )
-  //     );
-  //   } catch (error) {
-  //     throw new Error("Error updating tenant");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  const updateFacilitySubmitData = async (id, facilityData) => {
+    try {
+      setLoading(true);
+      const updatedFacility = await updateSubmitFacility(id, facilityData);
+      setTenants(
+        tenants.map((tenant) =>
+          tenant.id === id ? updatedFacility : facility
+        )
+      );
+    } catch (error) {
+      throw new Error("Error updating Facility");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // const removeTenant = async (id) => {
   //   try {
@@ -76,7 +76,7 @@ export const FacilityProvider = ({ children }) => {
   // };
 
   return (
-    <FacilityContext.Provider value={{ facility, loading, fetchAllFacility, addFacility, fetchAllFacilityWithDetailsByFacilityID}}>
+    <FacilityContext.Provider value={{ facility, loading, fetchAllFacility, addFacility, fetchAllFacilityWithDetailsByFacilityID, updateFacilitySubmitData}}>
       {children}
     </FacilityContext.Provider>
   );

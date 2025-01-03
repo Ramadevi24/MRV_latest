@@ -19,14 +19,16 @@ import { useNavigate } from "react-router-dom";
 import {FacilityContext} from "../../contexts/FacilityContext";
 import { useTranslation } from "react-i18next";
 import ViewFacility from "./ViewFacility";
+import { toast } from "react-toastify";
 
 function AddFacilityDetail() {
   const { t } = useTranslation();
-  const {addFacility, fetchAllFacilityWithDetailsByFacilityID} = useContext(FacilityContext);
+  const {addFacility, fetchAllFacilityWithDetailsByFacilityID, updateFacilitySubmitData} = useContext(FacilityContext);
   const [isContactDetailsVisible, setContactDetailsVisible] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
   const Navigate = useNavigate();
   const categoriesData = localStorage.getItem('submittedData') ? JSON.parse(localStorage.getItem('submittedData')) : [];
+  const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
 
   const [formData, setFormData] = useState({
     facilityName: "",
@@ -55,31 +57,28 @@ function AddFacilityDetail() {
     if (["contactDetails", "isSubmitted", "isDelete", "isContactPersonSameAsEntity"].includes(field)) {
       return errorMessage;
     }
+    if (field === "contactDetails") {
+      if (!isContactDetailsVisible) {
+        if (!value.contactDetails.name) {
+          return "Contact name is required.";
+        }
+        if (!value.contactDetails.title) {
+          return "Contact title is required.";
+        }
+        if (!value.contactDetails.email) {
+          return "Contact email is required.";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.email)) {
+          return "Please provide a valid email address.";
+        }
+        if (!value.contactDetails.phoneNumber) {
+          return "Contact phone number is required.";
+        } else if (!/^\+?[0-9]{7,15}$/.test(value.phoneNumber)) {
+          return "Please provide a valid phone number.";
+        }
+      }
+      return errorMessage; // No errors for visible contactDetails
+    }
 
-    // if (field === "contactDetails") {
-    //   const { name, title, email, phoneNumber } = value;
-    //   if (!isContactDetailsVisible) {
-    //     if (!name) {
-    //       return "Contact name is required.";
-    //     }
-    //     if (!title) {
-    //       return "Contact title is required.";
-    //     }
-    //     if (!email) {
-    //       return "Contact email is required.";
-    //     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    //       return "Please provide a valid email address.";
-    //     }
-    //     if (!phoneNumber) {
-    //       return "Contact phone number is required.";
-    //     } else if (!/^\+?[0-9]{7,15}$/.test(phoneNumber)) {
-    //       return "Please provide a valid phone number.";
-    //     }
-    //   }
-  
-    //   return errorMessage;
-    // }
-  
     if (!value) {
       errorMessage = `${field} field is required.`;
     } else if (field === "longitude" || field === "latitude") {
@@ -90,61 +89,6 @@ function AddFacilityDetail() {
   
     return errorMessage;
   };
-
-
-  // const validateField = () => {
-  //   const newErrors = {};
-
-  //   if (!formData.emiratesID) {
-  //     newErrors.emiratesID = `${t("Emirate is required.")}`;
-  //   }
-  //   if (!formData.entityID) {
-  //     newErrors.entityID = `${t("Entity is required.")}`;
-  //   }
-  //   if (!formData.siteOperatorName.trim()) {
-  //     newErrors.siteOperatorName = `${t("siteOperator Name is required.")}`;
-  //   }
-  //   if (!formData.facilityName.trim()) {
-  //     newErrors.facilityName = `${t("Facility Name is required.")}`;
-  //   }
-  //   if (!formData.coverageAreaOfTheDataID) {
-  //     newErrors.coverageAreaOfTheDataID = `${t(
-  //       "coverageArea is required."
-  //     )}`;
-  //   }
-  //   if (!formData.longitude || formData.longitude < -180 || formData.longitude > 180) {
-  //     newErrors.longitude = `${t(
-  //       "Please provide a valid longitude coordinate."
-  //     )}`;
-  //   }
-  //   if (!formData.latitude || formData.latitude < -180 || formData.latitude > 180) {
-  //     newErrors.latitude = `${t(
-  //       "Please provide a valid latitude coordinate."
-  //     )}`;
-  //   }
-  //   if (!formData.streetAddress.trim()) {
-  //     newErrors.streetAddress = `${t("Address is required.")}`;
-  //   }
-  //     if (!isContactDetailsVisible) {
-  //       if (!formData.contactDetails.name.trim()) {
-  //         newErrors.name = `${t("Contact Name is required.")}`;
-  //       }
-  //       if (!formData.contactDetails.email.trim()) {
-  //         newErrors.email = `${t("Email is required.")}`;
-  //       }
-  //       if (!formData.contactDetails.title.trim()) {
-  //         newErrors.title = `${t("Title is required.")}`;
-  //       }
-  //       if (
-  //         !formData.contactDetails.phoneNumber ||
-  //         formData.contactDetails.phoneNumber <= 0
-  //       ) {
-  //         newErrors.phoneNumber = `${t("Phone Number is required.")}`;
-  //       }
-      
-  //     }
-  //   return newErrors;
-  // };
 
   const handleToggle = (isChecked) => {
     setContactDetailsVisible(isChecked);
@@ -167,7 +111,7 @@ function AddFacilityDetail() {
       };
     });
 
-    const error = validateField(field, value);
+    const error = validateField(field, value, isContactDetailsVisible);
     setErrors((prev) => ({
       ...prev,
       [field]: error,
@@ -192,48 +136,98 @@ function AddFacilityDetail() {
   }
 
   const handleNext = async () => {
-    // const newErrors = {};
-    // Object.keys(formData).forEach((field) => {
-    //   newErrors[field] = validateField(field, formData[field]);
-    // });
-    // setErrors(newErrors);
-    // const hasErrors = Object.values(newErrors).some((error) => error);
-    // if (hasErrors) {
-    //   console.warn("Validation errors detected:", newErrors);
-    //   return;
-    // }
+    const newErrors = {};
+    Object.keys(formData).forEach((field) => {
+      if (field === "contactDetails") {
+        const contactError = validateField(
+          "contactDetails",
+          formData.contactDetails,
+          isContactDetailsVisible
+        );
+        if (contactError) {
+          newErrors[field] = contactError;
+        }
+      } else {
+        const error = validateField(field, formData[field], isContactDetailsVisible);
+        if (error) {
+          newErrors[field] = error;
+        }
+      }
+    });
+    setErrors(newErrors);
+    const hasErrors = Object.values(newErrors).some((error) => error);
+    if (hasErrors) {
+      console.warn("Validation errors detected:", newErrors);
+      return;
+    }
     if (activeTab === 0) {
+     await handleFirstTabSubmission();
+    }
+    else if (activeTab === 1) {
+      await handleSecondTabSubmission();
+      }
+      else if (activeTab === 2) {
+        await handleFinalSubmission();
+      }
+    }
+
+    const handleFirstTabSubmission = async () => {
+      const updatedData = {
+        ...formData,
+        isContactPersonSameAsEntity: isContactDetailsVisible,
+        contactDetails: isContactDetailsVisible ? null : formData.contactDetails,
+        facilitySectorDetails: categoriesData,
+        isSubmitted: false,
+        isDelete: false,
+      };
+    
       try {
-        const updatedData = { ...formData, isContactPersonSameAsEntity: isContactDetailsVisible, 
-        contactDetails: isContactDetailsVisible ? null : formData.contactDetails, 
-        facilitySectorDetails: categoriesData, isSubmitted: false , isDelete: false};
-        // const newFacility = await addFacility(updatedData);
         const newFacility = await addFacilityWithTimeout(updatedData);
         if (newFacility) {
           localStorage.setItem("facilityData", JSON.stringify(newFacility.facility));
-            setActiveTab(activeTab + 1);
+          setActiveTab(activeTab + 1);
         } else {
-          console.error("Failed to submit data:", response.statusText);
+          console.error("Failed to submit data: No response received.");
         }
       } catch (error) {
-        console.error("Error while submitting data:", error);
+        console.error("Error during first tab submission:", error);
       }
-    }
-    else if (activeTab === 1) {
-      console.log('hi')
-      try{
+    };
+
+    const handleSecondTabSubmission = async () => {
+      try {
         const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
-        const getFacilityDataById = await fetchAllFacilityWithDetailsByFacilityID(facilityStoredData.facilityID);
+        const getFacilityDataById = await fetchAllFacilityWithDetailsByFacilityID(
+          facilityStoredData.facilityID
+        );
+    
         if (getFacilityDataById) {
-            setActiveTab(activeTab + 1);
+          setFormData(getFacilityDataById);
+          setActiveTab(activeTab + 1);
         } else {
-          console.error("Failed to submit data:", response.statusText);
+          console.error("Failed to fetch facility data by ID.");
         }
       } catch (error) {
-        console.error("Error while submitting data:", error);
+        console.error("Error during second tab submission:", error);
       }
+    };
+
+    const handleFinalSubmission = async () => {
+      try {
+        const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
+        const updatedSubmitData = { ...formData, isSubmitted: true, isDelete: false };
+        const response = await updateFacilitySubmitData(facilityStoredData.facilityID, updatedSubmitData);
+        if (response) {
+          Navigate("/FacilityDetailsGrid/:component");
+          toast.success("Facility added successfully");
+        } else {
+          console.error("Failed to update facility data.");
+        }
+        localStorage.removeItem("facilityData");
+      } catch (error) {
+        console.error("Error during final submission:", error);
       }
-    }
+    };
 
   const loadDataFromLocalStorage = () => {
     const savedData = localStorage.getItem("facilityData");
@@ -315,12 +309,12 @@ function AddFacilityDetail() {
                 )}
                 {activeTab === 1 && (
                   <>
-                    <SubPlantDetails />
-                    <EmissionSourceDetails />
+                    <SubPlantDetails formData={formData}/>
+                    <EmissionSourceDetails formData={formData}/>
                   </>
                 )}
                 {activeTab === 2 && (
-                  <ViewFacility/>
+                  <ViewFacility formData={formData} onInputChange={handleInputChange} errors={errors}/>
                 )}
 
                 {/* Navigation Buttons */}
