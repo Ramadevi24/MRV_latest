@@ -11,7 +11,6 @@ import { useCategories } from "../../../contexts/CategoriesContext";
 
 const CategoryModal = ({ open, onClose, data }) => {
   const { gases } = useContext(GasContext);
-  console.log(data);
 
   const storedData = localStorage.getItem("submittedData");
   let storedData1 = storedData ? JSON.parse(storedData) : [];
@@ -122,16 +121,18 @@ const CategoryModal = ({ open, onClose, data }) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (submittedData.length > 0) {
-      localStorage.setItem("submittedData", JSON.stringify(submittedData));
-      if (localStorage.getItem("close") === "true") {
-        onClose();
-        localStorage.setItem("close", "false");
+  
+    useEffect(() => {console.log(submittedData);
+      if (submittedData.length > 0) {
+        localStorage.setItem("submittedData", JSON.stringify(submittedData));
+        if(localStorage.getItem("close") == "true") {
+                onClose();
+                localStorage.setItem("close", "false");
+        }
       }
-    }
-  }, [submittedData]);
-
+    }, [submittedData]);
+    
+  
   const {
     level1Categories,
     level2Categories,
@@ -200,8 +201,7 @@ const CategoryModal = ({ open, onClose, data }) => {
     const newDocument = {
       document_Type: documentType,
       file_Name: file[0].name,
-      file_path: file[0].path || "",
-      file_size: file[0].size || 0,
+      file: file
     };
 
     setFormData((prevData) => {
@@ -217,7 +217,6 @@ const CategoryModal = ({ open, onClose, data }) => {
           newDocument,
         ],
       };
-
       return {
         ...prevData,
         facilitySectorDetails: updatedFacilityDetails,
@@ -243,23 +242,25 @@ const CategoryModal = ({ open, onClose, data }) => {
       alert("Please fill all required fields in all facility sector details.");
       return;
     }
-
     const updatedData = formData.facilitySectorDetails.map((detail) => ({
       ...detail,
       uploadedDocuments: detail.uploadedDocuments.filter(
-        (doc) => doc.document_Type && doc.file_Name
+        (doc) => doc.document_Type && doc.file_Name// Remove invalid documents
       ),
     }));
-
     if (updatedData.length > 0) {
-      const mergedData = updatedData.map((item) => {
-        const existingItem = submittedData.find((data) => data.id === item.id);
-        return {
-          ...item,
-          id: existingItem ? existingItem.id : uuidv4(),
-        };
-      });
+        const mergedData = updatedData.map((item) => {
+          const existingItem = submittedData.find(
+            (data) => data.id === item.id
+          );
+          return {
+            ...item,
+            id: existingItem ? existingItem.id : uuidv4(), // Keep the same ID or assign a new one
+          };
+        });
 
+        // Update submittedData with merged data
+        
       setSubmittedData((prevData) => {
         const idsToUpdate = mergedData.map((item) => item.id);
         const filteredData = prevData.filter(
@@ -270,6 +271,8 @@ const CategoryModal = ({ open, onClose, data }) => {
       });
     }
 
+
+      
     setFormData({
       facilitySectorDetails: [
         {
@@ -302,193 +305,177 @@ const CategoryModal = ({ open, onClose, data }) => {
             <form onSubmit={handleSubmit}>
               {formData.facilitySectorDetails.map((detail, index) => (
                 <div key={index} className="sector-detail">
-                  <Row>
-                    <Col md={6}>
-                      <div className="form-field">
-                        <label htmlFor="level1">Sector</label>
-                        <select
-                          value={detail.sector_ID}
-                          onChange={(e) =>
-                            handleInputChange(
-                              index,
-                              "sector_ID",
-                              parseInt(e.target.value, 10)
-                            )
-                          }
-                          // onChange={(e) => handleLevel1Change(parseInt(e.target.value, 10))}
-                        >
-                          <option value="">Select Sector</option>
-                          {level1Categories.map((category) => (
-                            <option key={category.id} value={category.id}>
-                              {category.code} - {category.name}
-                            </option>
-                          ))}
-                        </select>
-                        {errors[`sector_ID_${index}`] && (
-                          <p className="error" style={{ color: "red" }}>
-                            {errors[`sector_ID_${index}`]}
-                          </p>
-                        )}
-                      </div>
-                    </Col>
+              <Row>
+                <Col md={6}>
+                  <div className="form-field">
+                    <label htmlFor="level1">Sector</label>
+                    <select
+                      value={detail.sector_ID}
+                      onChange={(e) =>
+                        handleInputChange(index, "sector_ID", parseInt(e.target.value, 10))
+                      }
+                      // onChange={(e) => handleLevel1Change(parseInt(e.target.value, 10))}
+                    >
+                      <option value="">Select Sector</option>
+                      {level1Categories.map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.code} - {category.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </Col>
 
-                    <Col md={6}>
-                      <div className="form-field">
-                        <label htmlFor="level2">Sub Sector</label>
-                        <select
-                          id="subSector"
-                          value={detail.sub_sectorID}
-                          onChange={(e) =>
-                            handleInputChange(
-                              index,
-                              "sub_sectorID",
-                              parseInt(e.target.value, 10)
-                            )
-                          }
-                          // onChange={(e) => handleLevel2Change(parseInt(e.target.value, 10))}
-                          disabled={!level2Categories.length}
-                        >
-                          <option value="">Select Sub Sector</option>
-                          {level2Categories.map((subCategory) => (
-                            <option key={subCategory.id} value={subCategory.id}>
-                              {subCategory.code} - {subCategory.name}
-                            </option>
-                          ))}
-                        </select>
-                        {errors[`sub_sectorID_${index}`] && (
+                <Col md={6}>
+                  <div className="form-field">
+                    <label htmlFor="level2">Sub Sector</label>
+                    <select
+                      id="subSector"
+                      value={detail.sub_sectorID}
+                      onChange={(e) =>
+                        handleInputChange(index, "sub_sectorID", parseInt(e.target.value, 10))
+                      }
+                      // onChange={(e) => handleLevel2Change(parseInt(e.target.value, 10))}
+                      disabled={!level2Categories.length}
+                    >
+                      <option value="">Select Sub Sector</option>
+                      {level2Categories.map((subCategory) => (
+                        <option key={subCategory.id} value={subCategory.id}>
+                          {subCategory.code} - {subCategory.name}
+                        </option>
+                      ))}
+                    </select>
+                    {errors[`sub_sectorID_${index}`] && (
                           <p className="error" style={{ color: "red" }}>
                             {errors[`sub_sectorID_${index}`]}
                           </p>
                         )}
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={6}>
-                      <div className="form-field">
-                        <label htmlFor="level3">Category</label>
-                        <select
-                          id="category"
-                          value={detail.category_ID}
-                          onChange={(e) =>
-                            handleInputChange(
-                              index,
-                              "category_ID",
-                              parseInt(e.target.value, 10)
-                            )
-                          }
-                          disabled={!level3Categories.length}
-                        >
-                          <option value="">Select Category</option>
-                          {level3Categories.map((subCategory) => (
-                            <option key={subCategory.id} value={subCategory.id}>
-                              {subCategory.code} - {subCategory.name}
-                            </option>
-                          ))}
-                        </select>
-                        {errors[`category_ID_${index}`] && (
+                      
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <div className="form-field">
+                    <label htmlFor="level3">Category</label>
+                    <select
+                      id="category"
+                      value={detail.category_ID}
+                      onChange={(e) =>
+                        handleInputChange(index, "category_ID", parseInt(e.target.value, 10))
+                      }
+                      disabled={!level3Categories.length}
+                    >
+                      <option value="">Select Category</option>
+                      {level3Categories.map((subCategory) => (
+                        <option key={subCategory.id} value={subCategory.id}>
+                          {subCategory.code} - {subCategory.name}
+                        </option>
+                      ))}
+                    </select>
+                    {errors[`category_ID_${index}`] && (
                           <p className="error" style={{ color: "red" }}>
                             {errors[`category_ID_${index}`]}
                           </p>
                         )}
-                      </div>
-                    </Col>
-                    <Col md={6}>
-                      <FormField
-                        label="Emission Source Type"
-                        placeholder="Steam Turbine"
-                        type="text"
-                        value={detail.emission_source_type}
-                        onChange={(e) =>
-                          handleInputChange(
-                            index,
-                            "emission_source_type",
-                            e.target.value
-                          )
-                        }
-                      />
-                      {errors[`emission_source_type_${index}`] && (
+                      
+                  </div>
+                </Col>
+                <Col md={6}>
+                  <FormField
+                    label="Emission Source Type"
+                    placeholder="Steam Turbine"
+                    type="text"
+                    value={detail.emission_source_type}
+                    onChange={(e) =>
+                      handleInputChange(index, "emission_source_type", e.target.value)
+                    }
+                  />
+                   {errors[`emission_source_type_${index}`] && (
                         <p className="error" style={{ color: "red" }}>
                           {errors[`emission_source_type_${index}`]}
                         </p>
                       )}
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={6}>
-                      <FormField
-                        label="Calculation Approach"
-                        isDropdown
-                        options={CalculationApproach}
-                        valueKey="value"
-                        labelKey="name"
-                        value={detail.calculation_approach}
-                        onChange={(e) =>
-                          handleInputChange(
-                            index,
-                            "calculation_approach",
-                            e.target.value
-                          )
-                        }
-                      />
-                      {errors[`calculation_approach_${index}`] && (
+                    
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                  <FormField
+                    label="Calculation Approach"
+                    isDropdown
+                    options={CalculationApproach}
+                    valueKey="value"
+                    labelKey="name"
+                    value={detail.calculation_approach}
+                    onChange={(e) =>
+                      handleInputChange(index, "calculation_approach", e.target.value)
+                    }
+                  />
+                   {errors[`calculation_approach_${index}`] && (
                         <p className="error" style={{ color: "red" }}>
                           {errors[`calculation_approach_${index}`]}
                         </p>
                       )}
-                    </Col>
-                    <Col md={6}>
-                      <FormField
-                        label="GHG Gases Covered"
-                        placeholder="N2O, CH4"
-                        isDropdown
-                        options={gases}
-                        valueKey="gasName"
-                        labelKey="gasName"
-                        value={detail.ghg_gases_covered}
-                        onChange={(e) =>
-                          handleInputChange(
-                            index,
-                            "ghg_gases_covered",
-                            e.target.value
-                          )
-                        }
-                      />
-                      {errors[`ghg_gases_covered_${index}`] && (
+                </Col>
+                <Col md={6}>
+                  <FormField
+                    label="GHG Gases Covered"
+                    placeholder="N2O, CH4"
+                    isDropdown
+                    isMultiSelect="true"
+
+                    options={gases}
+                    valueKey="gasName"
+                    labelKey="gasName"
+                    value={detail?.ghg_gases_covered}
+                   /* onChange={(e) =>
+                      handleInputChange(index, "ghg_gases_covered", e.target.value)
+                    }*/
+                    onChange={(selectedOptions) =>
+                      handleInputChange(index, "ghg_gases_covered", selectedOptions)
+                    }
+                  />
+                   {errors[`ghg_gases_covered_${index}`] && (
                         <p className="error" style={{ color: "red" }}>
                           {errors[`ghg_gases_covered_${index}`]}
                         </p>
                       )}
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={6}>
-                      <FormField
-                        label="Precursors Gases Covered"
-                        placeholder="N2O, CH4"
-                        isDropdown
-                        options={gases}
-                        valueKey="gasName"
-                        labelKey="gasName"
-                        value={detail.precursors_gases_covered}
-                        onChange={(e) =>
-                          handleInputChange(
-                            index,
-                            "precursors_gases_covered",
-                            e.target.value
-                          )
-                        }
-                      />
-                      {errors[`precursors_gases_covered_${index}`] && (
+
+                </Col>
+              </Row>
+              <Row>
+                <Col md={6}>
+                
+                  <FormField
+                    label="Precursors Gases Covered"
+                    placeholder="N2O, CH4"
+                    isDropdown
+                    isMultiSelect="true"
+                    options={gases}
+                    valueKey="gasName"
+                    labelKey="gasName"
+                    value={detail?.precursors_gases_covered}
+                   /* onChange={(e) =>
+                      handleInputChange(index, "precursors_gases_covered", e.target.value)
+                    }*/
+                    onChange={(selectedOptions) =>
+                      handleInputChange(index, "precursors_gases_covered", selectedOptions)
+                    }
+                  
+                  />
+                   {errors[`precursors_gases_covered_${index}`] && (
                         <p className="error" style={{ color: "red" }}>
                           {errors[`precursors_gases_covered_${index}`]}
                         </p>
                       )}
-                    </Col>
-                  </Row>
+                    
+                </Col>
+              </Row>
+                  
                   <div className="category-sub-modal">
                     <h4 className="category-sub-title">
-                      Upload Documents{console.log(detail.uncertainty_guidance)}
+                      Upload Documents
                     </h4>
                     <Col md={12}>
                       <FileUpload

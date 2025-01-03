@@ -27,6 +27,17 @@ export const getSubPlantById = async (id) => {
   }
 };
 
+export const getSubPlantByFacilityId = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/facilityId?facilityId=${id}`, {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
+    });
+    return response.data.$values;
+  } catch (error) {
+    throw new Error("Error fetching sub-plant");
+  }
+};
+
 export const createSubPlant = async (subPlantData) => {
   try {
     const response = await axios.post(`${API_URL}`, subPlantData, {
