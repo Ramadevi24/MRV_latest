@@ -92,7 +92,7 @@ const SubPlantModal = ({ open, onClose }) => {
       )}`;
     }
     if (!formValues.fuelTypeId.trim()) {
-      newErrors.fuelTypeId = `${t("Select Fuel type.")}`;
+      newErrors.fuelTypeId = `${t("Please Select Fuel type.")}`;
     }
       if (!isContact) {
         if (!formValues.contactDetails.name.trim()) {
@@ -257,11 +257,9 @@ const SubPlantModal = ({ open, onClose }) => {
                       <FormField
                         label="Fuel Type"
                         isDropdown
-                        options={[
-                          { label: "Natural Gas", value: "natural_gas" },
-                          { label: "Diesel", value: "diesel" },
-                          { label: "Gas Oil", value: "gas_oil" },
-                        ]}
+                        options={fuels}
+                        labelKey="subPlantName"
+                        valueKey="subPlantID"
                         value={formValues.fuelTypeId}
                         onChange={handleChange("fuelTypeId")}
                         error={errors.fuelTypeId}

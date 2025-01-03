@@ -17,8 +17,10 @@ import {
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import {FacilityContext} from "../../contexts/FacilityContext";
+import { useTranslation } from "react-i18next";
 
 function AddFacilityDetail() {
+  const { t } = useTranslation();
   const {addFacility} = useContext(FacilityContext);
   const [isContactDetailsVisible, setContactDetailsVisible] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
@@ -35,7 +37,7 @@ function AddFacilityDetail() {
     latitude: 0,
     streetAddress: "",
     isContactPersonSameAsEntity: isContactDetailsVisible,
-  contactDetails: {
+    contactDetails: {
     name: "",
     title: "",
     email: "",
@@ -44,16 +46,7 @@ function AddFacilityDetail() {
   facilitySectorDetails: categoriesData
   });
 
-  const [errors, setErrors] = useState({
-    emiratesID: "",
-    entityID: "",
-    siteOperatorName: "",
-    facilityName: "",
-    coverageAreaOfTheDataID: "",
-    longitude: "",
-    latitude: "",
-    streetAddress: "",
-  });
+  const [errors, setErrors] = useState({ });
 
   const validateField = (field, value) => {
     let errorMessage = "";
@@ -61,6 +54,30 @@ function AddFacilityDetail() {
     if (["contactDetails", "isSubmitted", "isDelete", "isContactPersonSameAsEntity"].includes(field)) {
       return errorMessage;
     }
+
+    // if (field === "contactDetails") {
+    //   const { name, title, email, phoneNumber } = value;
+    //   if (!isContactDetailsVisible) {
+    //     if (!name) {
+    //       return "Contact name is required.";
+    //     }
+    //     if (!title) {
+    //       return "Contact title is required.";
+    //     }
+    //     if (!email) {
+    //       return "Contact email is required.";
+    //     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    //       return "Please provide a valid email address.";
+    //     }
+    //     if (!phoneNumber) {
+    //       return "Contact phone number is required.";
+    //     } else if (!/^\+?[0-9]{7,15}$/.test(phoneNumber)) {
+    //       return "Please provide a valid phone number.";
+    //     }
+    //   }
+  
+    //   return errorMessage;
+    // }
   
     if (!value) {
       errorMessage = `${field} field is required.`;
@@ -72,6 +89,61 @@ function AddFacilityDetail() {
   
     return errorMessage;
   };
+
+
+  // const validateField = () => {
+  //   const newErrors = {};
+
+  //   if (!formData.emiratesID) {
+  //     newErrors.emiratesID = `${t("Emirate is required.")}`;
+  //   }
+  //   if (!formData.entityID) {
+  //     newErrors.entityID = `${t("Entity is required.")}`;
+  //   }
+  //   if (!formData.siteOperatorName.trim()) {
+  //     newErrors.siteOperatorName = `${t("siteOperator Name is required.")}`;
+  //   }
+  //   if (!formData.facilityName.trim()) {
+  //     newErrors.facilityName = `${t("Facility Name is required.")}`;
+  //   }
+  //   if (!formData.coverageAreaOfTheDataID) {
+  //     newErrors.coverageAreaOfTheDataID = `${t(
+  //       "coverageArea is required."
+  //     )}`;
+  //   }
+  //   if (!formData.longitude || formData.longitude < -180 || formData.longitude > 180) {
+  //     newErrors.longitude = `${t(
+  //       "Please provide a valid longitude coordinate."
+  //     )}`;
+  //   }
+  //   if (!formData.latitude || formData.latitude < -180 || formData.latitude > 180) {
+  //     newErrors.latitude = `${t(
+  //       "Please provide a valid latitude coordinate."
+  //     )}`;
+  //   }
+  //   if (!formData.streetAddress.trim()) {
+  //     newErrors.streetAddress = `${t("Address is required.")}`;
+  //   }
+  //     if (!isContactDetailsVisible) {
+  //       if (!formData.contactDetails.name.trim()) {
+  //         newErrors.name = `${t("Contact Name is required.")}`;
+  //       }
+  //       if (!formData.contactDetails.email.trim()) {
+  //         newErrors.email = `${t("Email is required.")}`;
+  //       }
+  //       if (!formData.contactDetails.title.trim()) {
+  //         newErrors.title = `${t("Title is required.")}`;
+  //       }
+  //       if (
+  //         !formData.contactDetails.phoneNumber ||
+  //         formData.contactDetails.phoneNumber <= 0
+  //       ) {
+  //         newErrors.phoneNumber = `${t("Phone Number is required.")}`;
+  //       }
+      
+  //     }
+  //   return newErrors;
+  // };
 
   const handleToggle = (isChecked) => {
     setContactDetailsVisible(isChecked);
@@ -100,6 +172,7 @@ function AddFacilityDetail() {
       [field]: error,
     }));
   };
+  
 
   const tabs = [
     "Facility Configuration",
@@ -108,12 +181,6 @@ function AddFacilityDetail() {
     "View Details",
   ];
 
-  // const handleNext = () => {
-  //   if (activeTab < tabs.length - 1) {
-  //     console.log("Submitted Data:", formData);
-  //     setActiveTab(activeTab + 1);
-  //   }
-  // };
 
   const addFacilityWithTimeout = (facilityData, timeout = 10000) => {
     return Promise.race([
@@ -135,7 +202,6 @@ function AddFacilityDetail() {
       console.warn("Validation errors detected:", newErrors);
       return;
     }
-  
     if (activeTab < tabs.length - 1) {
       try {
         const updatedData = { ...formData, isContactPersonSameAsEntity: isContactDetailsVisible, 
@@ -229,7 +295,7 @@ function AddFacilityDetail() {
                         isCheckedData={isContactDetailsVisible}
                       />
                     </Col>
-                    {!isContactDetailsVisible && <ContactDetails onInputChange={handleInputChange} formData={formData.contactDetails}/>}
+                    {!isContactDetailsVisible && <ContactDetails onInputChange={handleInputChange} formData={formData.contactDetails} errors={errors}/>}
                     <CategoryDetails />
                   </>
                 )}
