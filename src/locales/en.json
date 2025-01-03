@@ -1,4 +1,6 @@
 {
+  "InvalidFileType": "Invalid file type: {{fileName}}",
+  "FileTooLarge": "File too large: {{fileName}}",
   "PowerGenerationGHGEmissionData": "1.A.1.a Power Generation GHG Emission Data",
   "PetroleumRefining": "1.A.1.b Petroleum Refining",
   "ManufacturingConstruction": "1.A.2  Manufacturing & Construction",

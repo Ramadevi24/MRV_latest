@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, { useContext, useEffect } from "react";
 import FormField from "../../../Components/CommonComponents/FormField";
 import { Col, Row } from "reactstrap";
 import locationIcon from "../../../assets/images/Power Sector--- Data Entry/pin 1.png";
@@ -6,13 +6,22 @@ import { EmiratesContext } from "../../../contexts/EmiratesContext";
 import { EntityContext } from "../../../contexts/EntityContext";
 import { CoverageAreaContext } from "../../../contexts/CoverageAreaContext";
 
-const FacilityInfo = ({onInputChange, formData, errors }) => {
-  const {emirates} = useContext(EmiratesContext)
-  const {entity} = useContext(EntityContext)
-  const {coverageArea} = useContext(CoverageAreaContext)
+
+const validInputRegex = /^[a-zA-Z0-9]*$/;
+
+const FacilityInfo = ({ onInputChange, formData, errors }) => {
+  const { emirates } = useContext(EmiratesContext);
+  const { entity } = useContext(EntityContext);
+  const { coverageArea } = useContext(CoverageAreaContext);
 
   const handleChange = (field) => (event) => {
-    onInputChange(field, event.target.value);
+    const value = event.target.value;
+
+    
+    if (field === "siteOperatorName" && !validInputRegex.test(value)) {
+      return;
+    }
+    onInputChange(field, value);
   };
 
   return (
@@ -46,7 +55,6 @@ const FacilityInfo = ({onInputChange, formData, errors }) => {
       </Col>
       </Row>
     </div>
-    
   );
 };
 
