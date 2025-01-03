@@ -66,16 +66,16 @@ const {
   
   const columns = [
     { key: "sector_ID", label: t("Sector"), sortable: true, render: (val) => {
-      const sectorName = level1Categories.find((sector) => sector.id === val)?.name || "Unknown Sector";
+      const sectorName = level1Categories.find((sector) => sector.id === val)?.name || "";
       return sectorName;
     }, },
     { key: "sub_sectorID", label: t("Sub Sector"), sortable: true ,    render: (val) => {
-      const subSectorName = level2Categories.find((sub) => sub.id === val)?.name || "Unknown Sub-Sector";
+      const subSectorName = level2Categories.find((sub) => sub.id === val)?.name || "";
       return subSectorName;
     },
 },
     { key: "category_ID", label: t("Category"), sortable: true,    render: (val) => {
-      const categoryName = level3Categories.find((cat) => cat.id === val)?.name || "Unknown Category";
+      const categoryName = level3Categories.find((cat) => cat.id === val)?.name || "";
       return categoryName;
     },
  },

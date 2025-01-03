@@ -59,7 +59,6 @@ const SubPlantDetails = () => {
         columns={columns}
         onSort={handleSort}
         onAction={(action, item) => {
-          console.log(action, item);
           if (action === "edit") navigate(`/edit-role/${item.subPlantID}`);
           if (action === "delete") handleDelete(item.subPlantID);
         }}

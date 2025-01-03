@@ -36,8 +36,8 @@ const SubPlantModal = ({ open, onClose }) => {
       phoneNumber: 0,
     },
   });
-
   const [errors, setErrors] = useState({});
+  const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
 
   const handleChange =
     (field, isNested = false) =>
@@ -125,7 +125,7 @@ const SubPlantModal = ({ open, onClose }) => {
 
     const createFormData = {
       ...formValues,
-      facilityID: 1002,
+      facilityID: facilityStoredData.facilityID,
       isSubmitted: false,
       contactDetails: isContact ? null : formValues.contactDetails,
     };

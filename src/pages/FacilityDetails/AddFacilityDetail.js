@@ -18,10 +18,11 @@ import {
 import { useNavigate } from "react-router-dom";
 import {FacilityContext} from "../../contexts/FacilityContext";
 import { useTranslation } from "react-i18next";
+import ViewFacility from "./ViewFacility";
 
 function AddFacilityDetail() {
   const { t } = useTranslation();
-  const {addFacility} = useContext(FacilityContext);
+  const {addFacility, fetchAllFacilityWithDetailsByFacilityID} = useContext(FacilityContext);
   const [isContactDetailsVisible, setContactDetailsVisible] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
   const Navigate = useNavigate();
@@ -177,7 +178,6 @@ function AddFacilityDetail() {
   const tabs = [
     "Facility Configuration",
     "Sub Plant Details (Power)",
-    "Road Transportation Details",
     "View Details",
   ];
 
@@ -192,17 +192,17 @@ function AddFacilityDetail() {
   }
 
   const handleNext = async () => {
-    const newErrors = {};
-    Object.keys(formData).forEach((field) => {
-      newErrors[field] = validateField(field, formData[field]);
-    });
-    setErrors(newErrors);
-    const hasErrors = Object.values(newErrors).some((error) => error);
-    if (hasErrors) {
-      console.warn("Validation errors detected:", newErrors);
-      return;
-    }
-    if (activeTab < tabs.length - 1) {
+    // const newErrors = {};
+    // Object.keys(formData).forEach((field) => {
+    //   newErrors[field] = validateField(field, formData[field]);
+    // });
+    // setErrors(newErrors);
+    // const hasErrors = Object.values(newErrors).some((error) => error);
+    // if (hasErrors) {
+    //   console.warn("Validation errors detected:", newErrors);
+    //   return;
+    // }
+    if (activeTab === 0) {
       try {
         const updatedData = { ...formData, isContactPersonSameAsEntity: isContactDetailsVisible, 
         contactDetails: isContactDetailsVisible ? null : formData.contactDetails, 
@@ -219,7 +219,21 @@ function AddFacilityDetail() {
         console.error("Error while submitting data:", error);
       }
     }
-  };
+    else if (activeTab === 1) {
+      console.log('hi')
+      try{
+        const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
+        const getFacilityDataById = await fetchAllFacilityWithDetailsByFacilityID(facilityStoredData.facilityID);
+        if (getFacilityDataById) {
+            setActiveTab(activeTab + 1);
+        } else {
+          console.error("Failed to submit data:", response.statusText);
+        }
+      } catch (error) {
+        console.error("Error while submitting data:", error);
+      }
+      }
+    }
 
   const loadDataFromLocalStorage = () => {
     const savedData = localStorage.getItem("facilityData");
@@ -306,9 +320,8 @@ function AddFacilityDetail() {
                   </>
                 )}
                 {activeTab === 2 && (
-                  <div>Content for Road Transportation Details</div>
+                  <ViewFacility/>
                 )}
-                {activeTab === 3 && <div>Content for View Details</div>}
 
                 {/* Navigation Buttons */}
                 <div
@@ -344,6 +357,17 @@ function AddFacilityDetail() {
                       style={{ width: "77px" }}
                     >
                       Next
+                    </Button>
+                  )}
+                  {activeTab == tabs.length - 1 && (
+                    <Button
+                      type="button"
+                      color="success"
+                      className="add-details-btn"
+                      onClick={handleNext}
+                      style={{ width: "77px" }}
+                    >
+                      Submit
                     </Button>
                   )}
                 </div>
