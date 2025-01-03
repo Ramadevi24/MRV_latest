@@ -208,15 +208,21 @@ const CategoryModal = ({ open, onClose, data }) => {
       const updatedFacilityDetails = [...prevData.facilitySectorDetails];
       const existingDocuments =
         updatedFacilityDetails[index].uploadedDocuments || [];
-      updatedFacilityDetails[index] = {
-        ...updatedFacilityDetails[index],
-        uploadedDocuments: [
-          ...existingDocuments.filter(
-            (doc) => doc.document_Type && doc.file_Name
-          ),
-          newDocument,
-        ],
-      };
+
+      // Filter out documents with the same document_Type as the new document
+  const filteredDocuments = existingDocuments.filter(
+    (doc) => doc.document_Type !== newDocument.document_Type
+  );
+
+  // Update the document list by replacing or adding the new document
+  updatedFacilityDetails[index] = {
+    ...updatedFacilityDetails[index],
+    uploadedDocuments: [
+      ...filteredDocuments, // Keep only the documents with different types
+      newDocument,          // Add the new document
+    ],
+  };
+
       return {
         ...prevData,
         facilitySectorDetails: updatedFacilityDetails,
@@ -496,7 +502,7 @@ const CategoryModal = ({ open, onClose, data }) => {
                         }`}
                       />
 
-                      {detail.uploadedDocuments
+                      {data && detail.uploadedDocuments
                         .filter(
                           (doc) => doc.document_Type === "Uncertainty Guidance"
                         )
@@ -527,7 +533,7 @@ const CategoryModal = ({ open, onClose, data }) => {
                           )
                         }
                       />
-                      {detail.uploadedDocuments
+                      {data && detail.uploadedDocuments
                         .filter(
                           (doc) =>
                             doc.document_Type === "QA/QC for Emission Data"
@@ -559,7 +565,7 @@ const CategoryModal = ({ open, onClose, data }) => {
                           )
                         }
                       />
-                      {detail.uploadedDocuments
+                      {data && detail.uploadedDocuments
                         .filter(
                           (doc) =>
                             doc.document_Type === "QA/QC for Activity Data"
