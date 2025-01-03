@@ -18,7 +18,7 @@ const DataTable = ({ data, onSort, onAction, columns }) => {
         </tr>
       </thead>
       <tbody>
-        {data.length > 0 ? (
+        {data?.length > 0 ? (
           data.map((item) => (
             <tr key={item.roleID}>
               {columns.map(({ key, render }) => (

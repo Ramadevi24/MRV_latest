@@ -125,14 +125,14 @@ const SubPlantModal = ({ open, onClose }) => {
 
     const createFormData = {
       ...formValues,
-      facilityID: facilityStoredData.facilityID,
+      facilityID: facilityStoredData?.facilityID,
       isSubmitted: false,
       contactDetails: isContact ? null : formValues.contactDetails,
     };
     try {
       const response = await addSubPlant(createFormData);
-      console.log(response, "responded");
       if (response) {
+        localStorage.setItem("subPlantData", JSON.stringify(response));
         onClose();
         toast.success(t("Sub-Plant Created Successfully."), {
           autoClose: 3000,

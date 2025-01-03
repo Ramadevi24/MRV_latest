@@ -208,15 +208,21 @@ const CategoryModal = ({ open, onClose, data }) => {
       const updatedFacilityDetails = [...prevData.facilitySectorDetails];
       const existingDocuments =
         updatedFacilityDetails[index].uploadedDocuments || [];
-      updatedFacilityDetails[index] = {
-        ...updatedFacilityDetails[index],
-        uploadedDocuments: [
-          ...existingDocuments.filter(
-            (doc) => doc.document_Type && doc.file_Name
-          ),
-          newDocument,
-        ],
-      };
+
+      // Filter out documents with the same document_Type as the new document
+  const filteredDocuments = existingDocuments.filter(
+    (doc) => doc.document_Type !== newDocument.document_Type
+  );
+
+  // Update the document list by replacing or adding the new document
+  updatedFacilityDetails[index] = {
+    ...updatedFacilityDetails[index],
+    uploadedDocuments: [
+      ...filteredDocuments, // Keep only the documents with different types
+      newDocument,          // Add the new document
+    ],
+  };
+
       return {
         ...prevData,
         facilitySectorDetails: updatedFacilityDetails,
@@ -496,22 +502,16 @@ const CategoryModal = ({ open, onClose, data }) => {
                         }`}
                       />
 
-                      {detail.uploadedDocuments
+                      {data && detail.uploadedDocuments
                         .filter(
                           (doc) => doc.document_Type === "Uncertainty Guidance"
                         )
                         .map((doc, docIndex) => (
-                          <div
-                            key={docIndex}
-                            className="uploaded-file-name"
-                            style={{
-                              margin: "10px",
-                              fontSize: "14px",
-                              color: "#333",
-                            }}
-                          >
-                            <span>{doc.file_Name}</span>
-                          </div>
+                          <div  key={docIndex}
+                          className="uploaded-files"><div className="uploaded-file">
+                            <span className="file-name">{doc.file_Name}</span>
+                            </div></div>
+                          
                         ))}
                     </Col>
                     <Col md={12}>
@@ -533,23 +533,17 @@ const CategoryModal = ({ open, onClose, data }) => {
                           )
                         }
                       />
-                      {detail.uploadedDocuments
+                      {data && detail.uploadedDocuments
                         .filter(
                           (doc) =>
                             doc.document_Type === "QA/QC for Emission Data"
                         )
                         .map((doc, docIndex) => (
-                          <div
-                            key={docIndex}
-                            className="uploaded-file-name"
-                            style={{
-                              margin: "10px",
-                              fontSize: "14px",
-                              color: "#333",
-                            }}
-                          >
-                            <span>{doc.file_Name}</span>
-                          </div>
+                          <div  key={docIndex}
+                          className="uploaded-files"><div className="uploaded-file">
+                            <span className="file-name">{doc.file_Name}</span>
+                            </div></div>
+                         
                         ))}
                     </Col>
                     <Col md={12}>
@@ -571,24 +565,17 @@ const CategoryModal = ({ open, onClose, data }) => {
                           )
                         }
                       />
-                      {detail.uploadedDocuments
+                      {data && detail.uploadedDocuments
                         .filter(
                           (doc) =>
                             doc.document_Type === "QA/QC for Activity Data"
                         )
                         .map((doc, docIndex) => (
-                          <div
-                            key={docIndex}
-                            className="uploaded-file-name"
-                            style={{
-                              margin: "10px",
-                              fontSize: "14px",
-                              color: "#333",
-                            }}
-                          >
-                            <span>{doc.file_Name}</span>
-                          </div>
-                        ))}
+                          <div  key={docIndex}
+                          className="uploaded-files"><div className="uploaded-file">
+                            <span className="file-name">{doc.file_Name}</span>
+                            </div></div>
+                      ))}
                     </Col>
                   </div>
                 </div>

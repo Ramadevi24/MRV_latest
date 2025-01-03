@@ -64,6 +64,7 @@ const {
   });
   };
   
+  console.log(level2Categories, 'level2Categories')
   const columns = [
     { key: "sector_ID", label: t("Sector"), sortable: true, render: (val) => {
       const sectorName = level1Categories.find((sector) => sector.id === val)?.name || "";

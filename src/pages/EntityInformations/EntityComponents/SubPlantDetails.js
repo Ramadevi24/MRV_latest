@@ -22,7 +22,7 @@ const SubPlantDetails = () => {
   const fetchAllSubPlantsByFacilityId = async (id) => {
     try {
       const data = await fetchSubPlantByFacilityId(id);
-      const transformedData = data.map(subPlant => ({
+      const transformedData = data?.map(subPlant => ({
         ...subPlant,
         fuelTypeId: fuels && fuels[subPlant.fuelTypeId] ? fuels[subPlant.fuelTypeId] : "", // Fallback for unmapped IDs
       }));
