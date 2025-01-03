@@ -1,13 +1,33 @@
-import React,{useState} from "react";
+import React,{useState, useContext, useEffect} from "react";
 import { useTranslation } from "react-i18next";
 import DataTable from '../../../Components/CommonComponents/DataTable';
 import Button from '../../../Components/CommonComponents/Button';
 import addIcon from '../../../assets/images/Power Sector--- Data Entry/Plus.png'
 import EmissionSourceModal from "./EmissionSourceModal";
+import {EmissionSourceContext} from "../../../contexts/EmissionSourceContext"
 
 const EmissionSourceDetails = () => {
   const { t } = useTranslation();
   const [isEmissionOpen, setIsEmissionOpen] = useState(false);
+  const {fetchEmissionSourceByFacilityId} = useContext(EmissionSourceContext)
+  const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
+  const [FacilityEmissionSource, setFacilityEmissionSource] = useState([]);
+
+  console.log(FacilityEmissionSource, 'FacilityEmissionSource')
+
+  useEffect(() => {
+    fetchAllEmissionSourceByFacilityId(facilityStoredData?.facilityID);
+    }, []);
+  
+    const fetchAllEmissionSourceByFacilityId = async (id) => {
+      try {
+        const data = await fetchEmissionSourceByFacilityId(id);
+        setFacilityEmissionSource(data);
+      } catch (error) {
+        console.log("Error fetching sub-plants", error);
+        setLoading(false);
+      }
+    };
 
   const handleEmissionClick = () => {
     setIsEmissionOpen(true);
@@ -17,12 +37,13 @@ const EmissionSourceDetails = () => {
     setIsEmissionOpen(false);
   };
   const columns = [
-    { key: "Sub Plant", label: t("Sub Plant"), sortable: true },
-    { key: "Stack ID", label: "Stack ID", sortable: true },
-    { key: "Stack Diameter", label: "Stack Diameter", sortable: true },
-    { key: "Stack Height", label: "Stack Height", sortable: true },
-    { key: "Exit Velocity", label: "Exit Velocity", sortable: true },
-    { key: "Exit Temperature", label: "Exit Temperature", sortable: true },
+    { key: "subPlantID", label: t("Sub Plant"), sortable: true },
+    { key: "stackSource", label: t("Stack Source"), sortable: true },
+    { key: "stackID", label: "Stack ID", sortable: true },
+    { key: "diameter", label: "Stack Diameter", sortable: true },
+    { key: "height", label: "Stack Height", sortable: true },
+    { key: "velocity", label: "Exit Velocity", sortable: true },
+    { key: "temperature", label: "Exit Temperature", sortable: true },
     { key: "Actions", label: "Action", render: (val, item) => (
       <div className="d-flex gap-2">
         <button className="btn btn-sm btn-info" onClick={() => navigate(`/edit-role/${item.roleID}`)}>
@@ -57,7 +78,7 @@ const EmissionSourceDetails = () => {
         </Button>
       </div>
       <DataTable
-        data={data}
+        data={FacilityEmissionSource}
         columns={columns}
         onSort={handleSort}
         onAction={(action, item) => {

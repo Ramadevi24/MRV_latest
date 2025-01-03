@@ -26,6 +26,16 @@ export const getEmissionSourceById = async (id) => {
     throw new Error("Error Fetching Emission Source");
   }
 };
+export const getEmissionSourceByFacilityId = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/facilityId?facilityId=${id}`, {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
+    });
+    return response.data.$values;
+  } catch (error) {
+    throw new Error("Error Fetching Emission Source");
+  }
+};
 
 export const createEmissionSource = async (emmisionSourceData) => {
   try {

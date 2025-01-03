@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Modal from "../../../Components/CommonComponents/Modal";
 import { Col, Container, Row, Card } from "reactstrap";
 import FormField from "../../../Components/CommonComponents/FormField";
@@ -12,12 +12,30 @@ import { useTranslation } from "react-i18next";
 const EmissionSourceModal = ({ open, onClose }) => {
   const { power } = useParams();
   const { addEmissionSource, fetchAllEmissionSources } = useContext(EmissionSourceContext);
-  const {subPlants} = useContext(SubPlantContext);
+  const {fetchSubPlantByFacilityId} = useContext(SubPlantContext);
   const { t } = useTranslation();
+   const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
+   const [facilitySubPlants, setFacilitySubPlants] = useState([]);
+
+ useEffect(() => {
+     fetchAllSubPlantsByFacilityId(facilityStoredData?.facilityID);
+   }, []);
+ 
+   const fetchAllSubPlantsByFacilityId = async (id) => {
+     try {
+       const data = await fetchSubPlantByFacilityId(id);
+       setFacilitySubPlants(data);
+     } catch (error) {
+       console.log("Error fetching sub-plants", error);
+     }
+   };
+ 
+
   const [formValues, setFormValues] = useState({
       subPlantID: 0,
       stackID: "",
       stackSource: "",
+      CEMSIDs:"",
       diameter: 0,
       height: 0,
       velocity: 0,
@@ -70,6 +88,9 @@ const EmissionSourceModal = ({ open, onClose }) => {
     }
     if (!formValues.stackSource.trim()) {
       newErrors.stackSource = `${t("Please enter stackSource.")}`;
+    }
+    if (!formValues.CEMSIDs.trim()) {
+      newErrors.CEMSIDs = `${t("Please enter CEMSIDs.")}`;
     }
     if (!formValues.diameter) {
       newErrors.diameter = `${t("Please enter diameter.")}`;
@@ -143,6 +164,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
           volumetricFlowRate: Number(formValues.volumetricFlowRate),
           temperature: Number(formValues.temperature),
           cO2CaptureEfficiency: Number(formValues.cO2CaptureEfficiency),
+          CEMSIDs: formValues.CEMSIDs,
           abatementEfficiencies: [
             {
               pollutantName: "No2",
@@ -153,7 +175,6 @@ const EmissionSourceModal = ({ open, onClose }) => {
         };
         try {
           const response = await addEmissionSource(createFormData);
-          console.log(response, "responded");
           if (response) {
             onClose();
             toast.success(t("Emission Source Created Successfully."), {
@@ -182,7 +203,7 @@ const EmissionSourceModal = ({ open, onClose }) => {
                   <FormField
                     label="Sub Plant Name"
                     isDropdown
-                    options={subPlants}
+                    options={facilitySubPlants}
                     labelKey="subPlantName"
                     valueKey="subPlantID"
                     value={formValues.subPlantID}
@@ -221,13 +242,16 @@ const EmissionSourceModal = ({ open, onClose }) => {
                       error={errors.stackSource}
                     />
                   </Col>
-                  {/* <Col md={6}>
+                  <Col md={6}>
                     <FormField
                       label="CEMS ID's"
                       placeholder="CEM12345, CEM3426, CEM2341"
                       type="text"
+                      value={formValues.CEMSIDs}
+                      onChange={handleChange("CEMSIDs")}
+                      error={errors.CEMSIDs}
                     />
-                  </Col> */}
+                  </Col>
                   <Col md={6}>
                     <FormField
                       label="Diameter (m)"

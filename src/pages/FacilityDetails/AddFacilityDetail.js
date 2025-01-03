@@ -196,9 +196,8 @@ function AddFacilityDetail() {
 
     const handleSecondTabSubmission = async () => {
       try {
-        const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
         const getFacilityDataById = await fetchAllFacilityWithDetailsByFacilityID(
-          facilityStoredData.facilityID
+          facilityStoredData?.facilityID
         );
     
         if (getFacilityDataById) {
@@ -214,9 +213,8 @@ function AddFacilityDetail() {
 
     const handleFinalSubmission = async () => {
       try {
-        const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
         const updatedSubmitData = { ...formData, isSubmitted: true, isDelete: false };
-        const response = await updateFacilitySubmitData(facilityStoredData.facilityID, updatedSubmitData);
+        const response = await updateFacilitySubmitData(facilityStoredData?.facilityID, updatedSubmitData);
         if (response) {
           Navigate("/FacilityDetailsGrid/:component");
           toast.success("Facility added successfully");
