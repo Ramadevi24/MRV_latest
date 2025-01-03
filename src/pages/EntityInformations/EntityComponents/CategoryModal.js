@@ -501,17 +501,11 @@ const CategoryModal = ({ open, onClose, data }) => {
                           (doc) => doc.document_Type === "Uncertainty Guidance"
                         )
                         .map((doc, docIndex) => (
-                          <div
-                            key={docIndex}
-                            className="uploaded-file-name"
-                            style={{
-                              margin: "10px",
-                              fontSize: "14px",
-                              color: "#333",
-                            }}
-                          >
-                            <span>{doc.file_Name}</span>
-                          </div>
+                          <div  key={docIndex}
+                          className="uploaded-files"><div className="uploaded-file">
+                            <span className="file-name">{doc.file_Name}</span>
+                            </div></div>
+                          
                         ))}
                     </Col>
                     <Col md={12}>
@@ -539,17 +533,11 @@ const CategoryModal = ({ open, onClose, data }) => {
                             doc.document_Type === "QA/QC for Emission Data"
                         )
                         .map((doc, docIndex) => (
-                          <div
-                            key={docIndex}
-                            className="uploaded-file-name"
-                            style={{
-                              margin: "10px",
-                              fontSize: "14px",
-                              color: "#333",
-                            }}
-                          >
-                            <span>{doc.file_Name}</span>
-                          </div>
+                          <div  key={docIndex}
+                          className="uploaded-files"><div className="uploaded-file">
+                            <span className="file-name">{doc.file_Name}</span>
+                            </div></div>
+                         
                         ))}
                     </Col>
                     <Col md={12}>
@@ -577,18 +565,11 @@ const CategoryModal = ({ open, onClose, data }) => {
                             doc.document_Type === "QA/QC for Activity Data"
                         )
                         .map((doc, docIndex) => (
-                          <div
-                            key={docIndex}
-                            className="uploaded-file-name"
-                            style={{
-                              margin: "10px",
-                              fontSize: "14px",
-                              color: "#333",
-                            }}
-                          >
-                            <span>{doc.file_Name}</span>
-                          </div>
-                        ))}
+                          <div  key={docIndex}
+                          className="uploaded-files"><div className="uploaded-file">
+                            <span className="file-name">{doc.file_Name}</span>
+                            </div></div>
+                      ))}
                     </Col>
                   </div>
                 </div>
