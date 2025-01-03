@@ -16,7 +16,7 @@ const SubPlantDetails = () => {
   const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
 
   useEffect(() => {
-    fetchAllSubPlantsByFacilityId(facilityStoredData.facilityID);
+    fetchAllSubPlantsByFacilityId(facilityStoredData?.facilityID);
   }, []);
 
   const fetchAllSubPlantsByFacilityId = async (id) => {
@@ -30,7 +30,6 @@ const SubPlantDetails = () => {
       setFacilitySubPlants(transformedData);
     } catch (error) {
       console.log("Error fetching sub-plants", error);
-      setLoading(false);
     }
   };
 
