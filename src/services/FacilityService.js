@@ -7,7 +7,7 @@ const API_URL = `${config.api.API_URL}/Facility`;
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 
 // Get all tenants
-export const getFacility = async () => {
+export const getFacilityByUser = async () => {
   try {
     const response = await axios.get(`${API_URL}/GetAllFacilitiesNamesByUser`, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
@@ -17,17 +17,27 @@ export const getFacility = async () => {
     throw new Error("Error fetching facility");
   }
 };
+export const getGetAllFacilitiesNamesByUser = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/GetAllFacilityWithDetails/${id}`, {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
+    });
+    return response;
+  } catch (error) {
+    throw new Error("Error fetching tenant");
+  }
+};
 
-// export const getTenantById = async (id) => {
-//   try {
-//     const response = await axios.get(`${API_URL}/${id}`, {
-//       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
-//     });
-//     return response;
-//   } catch (error) {
-//     throw new Error("Error fetching tenant");
-//   }
-// };
+export const getAllFacilityWithDetailsByFacilityID = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/GetAllFacilityWithDetails/${id}`, {
+      headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
+    });
+    return response;
+  } catch (error) {
+    throw new Error("Error fetching tenant");
+  }
+};
 
 // Create a new tenant
 export const createFacility = async (data) => {

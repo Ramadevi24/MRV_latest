@@ -36,8 +36,8 @@ const SubPlantModal = ({ open, onClose }) => {
       phoneNumber: 0,
     },
   });
-
   const [errors, setErrors] = useState({});
+  const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
 
   const handleChange =
     (field, isNested = false) =>
@@ -92,7 +92,7 @@ const SubPlantModal = ({ open, onClose }) => {
       )}`;
     }
     if (!formValues.fuelTypeId.trim()) {
-      newErrors.fuelTypeId = `${t("Select Fuel type.")}`;
+      newErrors.fuelTypeId = `${t("Please Select Fuel type.")}`;
     }
       if (!isContact) {
         if (!formValues.contactDetails.name.trim()) {
@@ -125,7 +125,7 @@ const SubPlantModal = ({ open, onClose }) => {
 
     const createFormData = {
       ...formValues,
-      facilityID: 1002,
+      facilityID: facilityStoredData.facilityID,
       isSubmitted: false,
       contactDetails: isContact ? null : formValues.contactDetails,
     };
@@ -257,11 +257,9 @@ const SubPlantModal = ({ open, onClose }) => {
                       <FormField
                         label="Fuel Type"
                         isDropdown
-                        options={[
-                          { label: "Natural Gas", value: "natural_gas" },
-                          { label: "Diesel", value: "diesel" },
-                          { label: "Gas Oil", value: "gas_oil" },
-                        ]}
+                        options={fuels}
+                        labelKey="subPlantName"
+                        valueKey="subPlantID"
                         value={formValues.fuelTypeId}
                         onChange={handleChange("fuelTypeId")}
                         error={errors.fuelTypeId}
