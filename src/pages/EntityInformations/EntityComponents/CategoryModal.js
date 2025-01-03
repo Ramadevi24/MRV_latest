@@ -65,7 +65,7 @@ const CategoryModal = ({ open, onClose, data }) => {
     }, [data]);
 
 
-    useEffect(() => {
+    useEffect(() => {console.log(submittedData);
       if (submittedData.length > 0) {
         localStorage.setItem("submittedData", JSON.stringify(submittedData));
         if(localStorage.getItem("close") == "true") {
@@ -90,7 +90,7 @@ const CategoryModal = ({ open, onClose, data }) => {
     onSave({ ...formData, id: data.id });  // Ensure to pass the ID along with updated data
   };
 
-  const handleInputChange = (index, field, value) => { 
+  const handleInputChange = (index, field, value) => {
     setFormData((prevData) => {
       const updatedFacilityDetails = [...prevData.facilitySectorDetails];
       updatedFacilityDetails[index] = {
@@ -131,8 +131,7 @@ const CategoryModal = ({ open, onClose, data }) => {
     const newDocument = {
       document_Type: documentType,
       file_Name: file[0].name,
-      file_path: file[0].path || "",
-      file_size: file[0].size || 0,
+      file: file
     };
   
     setFormData((prevData) => {
@@ -147,7 +146,6 @@ const CategoryModal = ({ open, onClose, data }) => {
           newDocument,
         ],
       };
-  
       return {
         ...prevData,
         facilitySectorDetails: updatedFacilityDetails,
@@ -167,14 +165,13 @@ const CategoryModal = ({ open, onClose, data }) => {
       alert("Please fill all required fields in all facility sector details.");
       return;
     }
-  
     const updatedData = formData.facilitySectorDetails.map((detail) => ({
       ...detail,
       uploadedDocuments: detail.uploadedDocuments.filter(
-        (doc) => doc.document_Type && doc.file_Name // Remove invalid documents
+        (doc) => doc.document_Type && doc.file_Name
+ // Remove invalid documents
       ),
     }));
-  
     if (updatedData.length > 0) {
         const mergedData = updatedData.map((item) => {
           const existingItem = submittedData.find(
@@ -185,7 +182,7 @@ const CategoryModal = ({ open, onClose, data }) => {
             id: existingItem ? existingItem.id : uuidv4(), // Keep the same ID or assign a new one
           };
         });
-    
+
         // Update submittedData with merged data
         setSubmittedData((prevData) => {
           // Remove replaced entries from prevData
@@ -197,6 +194,7 @@ const CategoryModal = ({ open, onClose, data }) => {
          
           return [...filteredData, ...mergedData];
         });
+
 
       }
     setFormData({
@@ -328,34 +326,45 @@ const CategoryModal = ({ open, onClose, data }) => {
                     label="GHG Gases Covered"
                     placeholder="N2O, CH4"
                     isDropdown
+                    isMultiSelect="true"
+
                     options={gases}
                     valueKey="gasName"
                     labelKey="gasName"
-                    value={detail.ghg_gases_covered}
-                    onChange={(e) =>
+                    value={detail?.ghg_gases_covered}
+                   /* onChange={(e) =>
                       handleInputChange(index, "ghg_gases_covered", e.target.value)
+                    }*/
+                    onChange={(selectedOptions) =>
+                      handleInputChange(index, "ghg_gases_covered", selectedOptions)
                     }
                   />
                 </Col>
               </Row>
               <Row>
                 <Col md={6}>
+                
                   <FormField
                     label="Precursors Gases Covered"
                     placeholder="N2O, CH4"
                     isDropdown
+                    isMultiSelect="true"
                     options={gases}
                     valueKey="gasName"
                     labelKey="gasName"
-                    value={detail.precursors_gases_covered}
-                    onChange={(e) =>
+                    value={detail?.precursors_gases_covered}
+                   /* onChange={(e) =>
                       handleInputChange(index, "precursors_gases_covered", e.target.value)
+                    }*/
+                    onChange={(selectedOptions) =>
+                      handleInputChange(index, "precursors_gases_covered", selectedOptions)
                     }
+                  
                   />
                 </Col>
               </Row>
               <div className="category-sub-modal">
-                <h4 className="category-sub-title">Upload Documents{console.log(detail.uncertainty_guidance)}</h4>
+                <h4 className="category-sub-title">Upload Documents</h4>
                 <Col md={12}>
                   <FileUpload
                     label="Uncertainty Guidance?"
