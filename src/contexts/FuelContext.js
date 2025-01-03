@@ -9,6 +9,10 @@ export const FuelProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    fetchFuels();
+  }, []);
+
 
     const fetchFuels = async () => {
       setLoading(true);

@@ -5,9 +5,34 @@ import FormField from "../../../Components/CommonComponents/FormField";
 import deleteIcon from "../../../assets/images/Power Sector--- Data Entry/Vector.png";
 import { MenuContext } from "../../../contexts/MenuContext";
 import { useParams } from "react-router-dom";
+import { EmissionSourceContext } from "../../../contexts/EmissionSourceContext";
+import { SubPlantContext } from "../../../contexts/SubPlantContext";
+import { useTranslation } from "react-i18next";
 
 const EmissionSourceModal = ({ open, onClose }) => {
   const { power } = useParams();
+  const { addEmissionSource, fetchAllEmissionSources } = useContext(EmissionSourceContext);
+  const {subPlants} = useContext(SubPlantContext);
+  const { t } = useTranslation();
+  const [formValues, setFormValues] = useState({
+      subPlantID: 0,
+      stackID: "",
+      stackSource: "",
+      diameter: 0,
+      height: 0,
+      velocity: 0,
+      volumetricFlowRate: 0,
+      temperature: 0,
+      cO2CaptureEfficiency: 0,
+      abatementEfficiencies: [
+        {
+          pollutantName: "",
+          efficiencyValue: 0
+        }
+      ]
+  });
+  const [errors, setErrors] = useState({});
+    
   const [rows, setRows] = useState([
     { name: "CO", value: 30 },
     { name: "CH4", value: 21 },
@@ -33,6 +58,114 @@ const EmissionSourceModal = ({ open, onClose }) => {
   const removeRow = (index) => {
     setRows(rows.filter((_, i) => i !== index));
   };
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!formValues.subPlantID) {
+      newErrors.subPlantID = `${t("Please Select Sub-Plant.")}`;
+    }
+    if (!formValues.stackID.trim()) {
+      newErrors.stackID = `${t("Please enter stackID.")}`;
+    }
+    if (!formValues.stackSource.trim()) {
+      newErrors.stackSource = `${t("Please enter stackSource.")}`;
+    }
+    if (!formValues.diameter) {
+      newErrors.diameter = `${t("Please enter diameter.")}`;
+    }
+    if (!formValues.height) {
+      newErrors.height = `${t(
+        "Please enter height."
+      )}`;
+    }
+    if (!formValues.velocity) {
+      newErrors.velocity = `${t(
+        "velocity is required."
+      )}`;
+    }
+    if (!formValues.volumetricFlowRate) {
+      newErrors.volumetricFlowRate = `${t(
+        "volumetricFlowRate is required."
+      )}`;
+    }
+    if (!formValues.temperature) {
+      newErrors.temperature = `${t("Temperature is required.")}`;
+    }
+        if (
+          !formValues.cO2CaptureEfficiency ||
+          formValues.cO2CaptureEfficiency <= 0
+        ) {
+          newErrors.cO2CaptureEfficiency = `${t("cO2CaptureEfficiency is required.")}`;
+        }
+      
+    return newErrors;
+  };
+
+  const handleChange =
+    (field, isNested = false) =>
+    (event) => {
+      if (isNested) {
+        setFormValues({
+          ...formValues,
+          contactDetails: {
+            ...formValues.contactDetails,
+            [field]: event.target.value,
+          },
+        });
+        if (errors[field]) {
+          setErrors({ ...errors, [field]: "" });
+        }
+      } else {
+        setFormValues({ ...formValues, [field]: event.target.value });
+        if (errors[field]) {
+          setErrors({ ...errors, [field]: "" });
+        }
+      }
+    };
+
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+          setErrors(validationErrors);
+          return;
+        }
+    
+        const createFormData = {
+          ...formValues,
+          subPlantID: Number(formValues.subPlantID),
+          stackID: formValues.stackID,
+          stackSource: formValues.stackSource,
+          diameter: Number(formValues.diameter),
+          height: Number(formValues.height),
+          velocity: Number(formValues.velocity),
+          volumetricFlowRate: Number(formValues.volumetricFlowRate),
+          temperature: Number(formValues.temperature),
+          cO2CaptureEfficiency: Number(formValues.cO2CaptureEfficiency),
+          abatementEfficiencies: [
+            {
+              pollutantName: "No2",
+              efficiencyValue: 20
+            }
+          ],
+          isSubmitted: false
+        };
+        try {
+          const response = await addEmissionSource(createFormData);
+          console.log(response, "responded");
+          if (response) {
+            onClose();
+            toast.success(t("Emission Source Created Successfully."), {
+              autoClose: 3000,
+            });
+            await fetchAllEmissionSources();
+          }
+        } catch (error) {
+          console.log(t("Error Creating Sub-Plant"));
+        }
+      };
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -43,13 +176,18 @@ const EmissionSourceModal = ({ open, onClose }) => {
             isOpen={open}
             onClose={onClose}
           >
-            <form>
+            <form onSubmit={handleSubmit}>
               <Row>
                 <Col md={6}>
                   <FormField
                     label="Sub Plant Name"
                     isDropdown
-                    options={[{ name: "GT/HRSG 41", value: "GT/HRSG 41" }]}
+                    options={subPlants}
+                    labelKey="subPlantName"
+                    valueKey="subPlantID"
+                    value={formValues.subPlantID}
+                    onChange={handleChange("subPlantID")}
+                    error={errors.subPlantID}
                   />
                 </Col>
               </Row>
@@ -67,7 +205,10 @@ const EmissionSourceModal = ({ open, onClose }) => {
                     <FormField
                       label="Stack ID"
                       placeholder="GT12345"
-                      type="number"
+                      type="text"
+                      value={formValues.stackID}
+                    onChange={handleChange("stackID")}
+                    error={errors.stackID}
                     />
                   </Col>
                   <Col md={6}>
@@ -75,36 +216,48 @@ const EmissionSourceModal = ({ open, onClose }) => {
                       label="Emission Source"
                       placeholder="Industrial Boiler"
                       type="text"
+                      value={formValues.stackSource}
+                      onChange={handleChange("stackSource")}
+                      error={errors.stackSource}
                     />
                   </Col>
-                  <Col md={6}>
+                  {/* <Col md={6}>
                     <FormField
-                      label="CEMS ID’s"
+                      label="CEMS ID's"
                       placeholder="CEM12345, CEM3426, CEM2341"
                       type="text"
                     />
-                  </Col>
+                  </Col> */}
                   <Col md={6}>
                     <FormField
                       label="Diameter (m)"
                       placeholder="1.5"
                       type="number"
+                      value={formValues.diameter}
+                      onChange={handleChange("diameter")}
+                      error={errors.diameter}
                     />
                   </Col>
-                </Row>
-                <Row>
                   <Col md={6}>
                     <FormField
                       label="Height (m)"
                       placeholder="60"
                       type="number"
+                      value={formValues.height}
+                      onChange={handleChange("height")}
+                      error={errors.height}
                     />
                   </Col>
+               
+                
                   <Col md={6}>
                     <FormField
                       label="Velocity (m/s)"
                       placeholder="120"
                       type="number"
+                      value={formValues.velocity}
+                      onChange={handleChange("velocity")}
+                      error={errors.velocity}
                     />
                   </Col>
                   <Col md={6}>
@@ -112,6 +265,9 @@ const EmissionSourceModal = ({ open, onClose }) => {
                       label="Volumetric Flow Rate (m3/hrs)"
                       placeholder="178"
                       type="number"
+                      value={formValues.volumetricFlowRate}
+                      onChange={handleChange("volumetricFlowRate")}
+                      error={errors.volumetricFlowRate}
                     />
                   </Col>
                   <Col md={6}>
@@ -119,6 +275,9 @@ const EmissionSourceModal = ({ open, onClose }) => {
                       label="Temperature (c0)"
                       placeholder="178"
                       type="number"
+                      value={formValues.temperature}
+                      onChange={handleChange("temperature")}
+                      error={errors.temperature}
                     />
                   </Col>
                   <Col md={6}>
@@ -126,10 +285,12 @@ const EmissionSourceModal = ({ open, onClose }) => {
                       label="CO2 Capture Efficiency (%)"
                       placeholder="20"
                       type="number"
+                      value={formValues.cO2CaptureEfficiency}
+                      onChange={handleChange("cO2CaptureEfficiency")}
+                      error={errors.cO2CaptureEfficiency}
                     />
                   </Col>
                 </Row>
-                <Row></Row>
               </div>
               {/* {power !== ":construction" && (<div>
                 <Row>

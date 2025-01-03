@@ -6,7 +6,7 @@ const DataTable = ({ data, onSort, onAction, columns }) => {
     <table className="table align-middle table-nowrap custom-table" id="customerTable">
       <thead className="table-light">
         <tr>
-          {columns.map(({ key, label, sortable }) => (
+          {columns?.map(({ key, label, sortable }) => (
             <th
               key={key}
               onClick={sortable ? () => onSort(key) : null}

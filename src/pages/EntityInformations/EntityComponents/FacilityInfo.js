@@ -28,95 +28,31 @@ const FacilityInfo = ({ onInputChange, formData, errors }) => {
     <div>
       <Row>
         <Col md={3}>
-          <FormField
-            label="Emirate"
-            isDropdown
-            options={emirates}
-            valueKey="emiratesID"
-            labelKey="name"
-            onChange={handleChange("emiratesID")}
-            error={errors.emiratesID}
-            value={formData.emiratesID}
-          />
-        </Col>
-        <Col md={3}>
-          <FormField
-            label="Reporting Entity"
-            isDropdown
-            options={entity}
-            valueKey="entityId"
-            labelKey="entityName"
-            onChange={handleChange("entityID")}
-            error={errors.entityID}
-            value={formData.entityID}
-          />
-        </Col>
-        <Col md={3}>
-          <FormField
-            label="Site Operator"
-            placeholder="Name"
-            type="text"
-            onChange={handleChange("siteOperatorName")}
-            error={errors.siteOperatorName}
-            value={formData.siteOperatorName}
-          />
-        </Col>
-        <Col md={3}>
-          <FormField
-            label="Facility"
-            placeholder="IB11/Taweelah"
-            type="text"
-            onChange={handleChange("facilityName")}
-            error={errors.facilityName}
-            value={formData.facilityName}
-          />
-        </Col>
+     <FormField label="Emirate" isDropdown options={emirates || []} valueKey="emiratesID" labelKey="name"  onChange={handleChange("emiratesID")}  error={errors?.emiratesID} value={formData?.emiratesID || ''}/>
+     </Col>
+     <Col md={3}>
+      <FormField label="Reporting Entity" isDropdown options={entity || []} valueKey="entityId" labelKey="entityName" onChange={handleChange("entityID")}  error={errors?.entityID} value={formData?.entityID || ''}/>
+      </Col>
+      <Col md={3}>
+      <FormField label="Site Operator" placeholder="Name" type="text" onChange={handleChange("siteOperatorName")} error={errors?.siteOperatorName} value={formData?.siteOperatorName || ''}/>
+      </Col>
+      <Col md={3}>
+      <FormField label="Facility" placeholder="IB11/Taweelah" type="text" onChange={handleChange("facilityName")} error={errors?.facilityName} value={formData?.facilityName || ''}/>
+      </Col>
       </Row>
       <Row>
-        <Col md={3}>
-          <FormField
-            label="Coverage Area of the Data"
-            isDropdown
-            options={coverageArea}
-            valueKey="coverageAreaOfTheDataID"
-            labelKey="name"
-            onChange={handleChange("coverageAreaOfTheDataID")}
-            error={errors.coverageAreaOfTheDataID}
-            value={formData.coverageAreaOfTheDataID}
-          />
-        </Col>
-        <Col md={3}>
-          <FormField
-            label="Longitude Coordinates"
-            placeholder="23.44, 56.37"
-            icon={locationIcon}
-            type="number"
-            onChange={handleChange("longitude")}
-            error={errors.longitude}
-            value={formData.longitude}
-          />
-        </Col>
-        <Col md={3}>
-          <FormField
-            label="Latitude Coordinates"
-            placeholder="23.44, 56.37"
-            icon={locationIcon}
-            type="number"
-            onChange={handleChange("latitude")}
-            error={errors.latitude}
-            value={formData.latitude}
-          />
-        </Col>
-        <Col md={3}>
-          <FormField
-            label="Street Address"
-            placeholder="Sultan Bin Zayed Street"
-            type="text"
-            onChange={handleChange("streetAddress")}
-            error={errors.streetAddress}
-            value={formData.streetAddress}
-          />
-        </Col>
+      <Col md={3}>
+      <FormField label="Coverage Area of the Data" isDropdown options={coverageArea} valueKey="coverageAreaOfTheDataID" labelKey="name" onChange={handleChange("coverageAreaOfTheDataID")} error={errors?.coverageAreaOfTheDataID} value={formData?.coverageAreaOfTheDataID || ''}/>
+      </Col>
+      <Col md={3}>
+      <FormField label="longitude Coordinates" placeholder="23.44, 56.37" icon={locationIcon} type="number" onChange={handleChange("longitude")} error={errors?.longitude} value={formData?.longitude || ''}/>
+      </Col>
+      <Col md={3}>
+      <FormField label="latitude Coordinates" placeholder="23.44, 56.37" icon={locationIcon} type="number" onChange={handleChange("latitude")} error={errors?.latitude} value={formData?.latitude || ''}/>
+      </Col>
+      <Col md={3}>
+      <FormField label="Street Address" placeholder="Sultan Bin Zayed Street" type="text" onChange={handleChange("streetAddress")} error={errors?.streetAddress} value={formData?.streetAddress || ''}/>
+      </Col>
       </Row>
     </div>
   );

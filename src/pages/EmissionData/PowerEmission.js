@@ -1,5 +1,6 @@
 import React, { useState, useContext,useEffect } from "react";
 import FormField from "../../Components/CommonComponents/FormField";
+import config from "../../config";
 import "../../assets/scss/CSS/EntityComponents.css";
 import { useTranslation } from "react-i18next";
 import {
@@ -21,7 +22,8 @@ import VerticalEmissionTable3 from "../../Components/CommonComponents/VerticalEm
 import { useParams } from "react-router-dom";
 import FileUpload from "../../Components/CommonComponents/FileUpload";
 import { FacilityContext } from "../../contexts/FacilityContext";
-
+const API_URL = `${config.api.API_URL}/PowerGeneration`;
+const AUTH_TOKEN = localStorage.getItem("AuthToken");
 function PowerEmission() {
   const [file, setFile] = useState(null);
   const [tierLevel, setTierLevel] = useState("T1");
@@ -31,17 +33,28 @@ function PowerEmission() {
   const [ActivityQAQC, setActivityQAQC] = useState(false);
   const { facility, loading, fetchAllFacility } = useContext(FacilityContext);
   const { t } = useTranslation();
-  console.log(facility);
+  const [uploadedFiles, setUploadedFiles] = useState({});
   const [facilityOptions, setFacilityOptions] = useState(facility);
   const [calendarYear, setCalendarYear] = useState([]);
+  const [formData, setFormData] = useState({
+    FacilityID: "",
+    CalendarYear: "",
+    TierLevel: "",
+    UncertaintyGuidance: "",
+    QAQC_EmissionData: "",
+    QAQC_ActivityData: "",
+  });
   const handleUncertainty = () => {
     setUncertainty(!Uncertainty);
+    setFormData({ ...formData, UncertaintyGuidance:!Uncertainty });
   };
   const handleQAQC = () => {
     setQAQC(!QAQC);
+    setFormData({ ...formData, QAQC_EmissionData:!QAQC });
   };
   const handleActivityQAQC = () => {
     setActivityQAQC(!ActivityQAQC);
+    setFormData({ ...formData, QAQC_ActivityData:!ActivityQAQC });
   };
   const FuelPowerheaders = [
     "Fuel Type",
@@ -336,13 +349,7 @@ function PowerEmission() {
     { parameter: "Temperature (°C)", values: [34, 13, 17, 24] },
     { parameter: "Flow Rate(m3/hrs)", values: [24, 23, 17, 46] },
   ];
-  /* const emissionPowerT3parameters = [
-    { parameter: "Is Monitored", values:["Yes", "Yes","Yes","Yes", "No","No","No"]},
-    {parameter: "Emission Factor",values:[34,13,17,24]},
-    {parameter: "Source Of emission factor",values:[24, 23,17,46]},
-    {parameter: "Emission (Tonnes)",values:[24, 23,17,46]}
-
-  ];*/
+ 
 
   const emissionPowerT3parameters = [
     {
@@ -396,70 +403,7 @@ function PowerEmission() {
     },
   ];
 
-  // const stackPowerT3parameters = [
-  //   { type: "CH4(%)", ST12345: 34, ST12346: 25, ST12347: 12, ST12348: 45 },
-  //   { type: "PFC (%)", ST12345: 32, ST12346: 31, ST12347: 34, ST12348: 14 },
-  //   { type: "CO2(%)", ST12345: 45, ST12346: 28, ST12347: 45, ST12348: 17 },
-  //   { type: "Other 1(%)", ST12345: 21, ST12346: 25, ST12347: 24, ST12348: 16 },
-  //   { type: "Other 2(%)", ST12345: 23, ST12346: 17, ST12347: 36, ST12348: 28 },
-  //   {
-  //     type: "CO2 Capture Efficiency (%)",
-  //     ST12345: 45,
-  //     ST12346: 25,
-  //     ST12347: 31,
-  //     ST12348: 17,
-  //   },
-  //   {
-  //     type: "Technology",
-  //     ST12345: "Stream Turbine",
-  //     ST12346: "Gas Turbine",
-  //     ST12347: "Stream Turbine",
-  //     ST12348: "Gas Turbine",
-  //   },
-  //   {
-  //     type: "Combustion Technology",
-  //     ST12345: "CCGT",
-  //     ST12346: "Gas Combustion",
-  //     ST12347: "PCC",
-  //     ST12348: "CCGT",
-  //   },
-  //   {
-  //     type: "Control Technology",
-  //     ST12345: "Dry Low NOX",
-  //     ST12346: "FGD",
-  //     ST12347: "Dry Low NOX",
-  //     ST12348: "FGD",
-  //   },
-  //   {
-  //     type: "Quality Of Maintenance",
-  //     ST12345: "Reliability-Centre",
-  //     ST12346: "Reliability-Centre",
-  //     ST12347: "Reliability-Centre",
-  //     ST12348: "Reliability-Centre",
-  //   },
-  //   {
-  //     type: "Age of equipment (years)",
-  //     ST12345: 3,
-  //     ST12346: 2,
-  //     ST12347: 4,
-  //     ST12348: 3,
-  //   },
-  //   {
-  //     type: "Velocity (m/s)",
-  //     ST12345: 34,
-  //     ST12346: 13,
-  //     ST12347: 24,
-  //     ST12348: 26,
-  //   },
-  //   {
-  //     type: "Temperature (C0)",
-  //     ST12345: 32,
-  //     ST12346: 24,
-  //     ST12347: 27,
-  //     ST12348: 21,
-  //   },
-  // ];
-
+  
   const handleTierChange = (event) => {
     setTierLevel(event.target.value);
   };
@@ -471,29 +415,68 @@ function PowerEmission() {
   const handleFileRemove = () => {
     setFile(null);
   };
+  const handleFileUpload = (controlId,files) => {
+    console.log("Uploaded Files:", files);
+    setUploadedFiles((prevFiles) => ({
+      ...prevFiles,
+      [controlId]: [...(prevFiles[controlId] || []), ...files],
+    }));   
+  };
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    const files = []; 
+    console.log("Uploaded Files:", uploadedFiles);
+    
+    Object.entries(uploadedFiles).forEach(([controlType, files]) => {
+      files.forEach((file) => {
+        console.log(controlType, file);
+        //files.push({key: controlType, value: file});
+        formData.append("files", file);
+      });
+    });
+    console.log(files);
+    console.log("Form Data:", formData);
+    try {
+      const response = await fetch(`${API_URL}/powerGeneration`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${AUTH_TOKEN}`,
+        },
+      });
+
+      if (response.ok) {
+        console.log("Files uploaded successfully");
+      } else {
+        console.error("Error uploading files");
+      }
+    } catch (error) {
+      console.error("Error uploading files:", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if(name === "TierLevel"){
+      setTierLevel(e.target.value);
+    }
+    setFormData({ ...formData, [name]: value });
+    console.log(formData);
+  };
+
   useEffect(() => {
     const startYear = 2005;
     const currentYear = new Date().getFullYear();
-    const years = [];
-    const facilites=[];
+    const years = [];   
     for (let year = startYear; year <= currentYear; year++) {
       years.push({ name: year.toString(), value: year.toString() });
-    }
-    console.log(years);
-    setCalendarYear(years);
-  //   for(var i=0;i<facility.length;i++){
-  //     facilites.push({ name: facility[i].facilityName, value: facility[i].facilityId.toString()});
-  //   }
-  //   // facility.map((fac) => {
-  //   //     facilites.push({ name: fac.facilityName, value: fac.facilityId.toString()});
-  //   // });
-  //   console.log(facilites);
+    }    
+    setCalendarYear(years);  
     setFacilityOptions(facility);
-
-
   }, [facility]);
   return (
     <div className="page-content">
+      <form encType="multipart/form-data">
       <Container fluid>
         <Row>
           <Col lg={12}>
@@ -525,6 +508,8 @@ function PowerEmission() {
                       options={facilityOptions}
                       valueKey="facilityId"
                       labelKey="facilityName"
+                      name="FacilityID"
+                      onChange={handleInputChange}
                     ></FormField>
                   </Col>
                   <Col md={4}>
@@ -535,6 +520,8 @@ function PowerEmission() {
                       options={calendarYear}
                       valueKey="name"
                       labelKey="name"
+                      name="CalendarYear"
+                      onChange={handleInputChange}
                     />
                   </Col>
                   <Col md={4}>
@@ -545,11 +532,12 @@ function PowerEmission() {
                         { name: "T1", name: "T1" },
                         { name: "T2", name: "T2" },
                         { name: "T3", name: "T3" },
-                      ]}
-                      onChange={handleTierChange}
+                      ]}                     
                       value={tierLevel}
                       valueKey="name"
                       labelKey="name"
+                      name="TierLevel"
+                      onChange={handleInputChange}
                     />
                   </Col>
                 </Row>
@@ -559,6 +547,9 @@ function PowerEmission() {
                       label={t("UncertaintyGuidance")}
                       toggleClick={handleUncertainty}
                       conditionData={Uncertainty}
+                      allowedFileTypes={["pdf","png","jpg","jpeg","doc","docx"]}
+                      maxFileSize={5 * 1024 * 1024}
+                      onFileUpload={(files) => handleFileUpload("UncertaintyGuidance", files)}
                     />
                   </Col>
                   <Col md={4}>
@@ -566,6 +557,9 @@ function PowerEmission() {
                       label={t("QAQC")}
                       toggleClick={handleQAQC}
                       conditionData={QAQC}
+                      allowedFileTypes={["pdf","png","jpg","jpeg","doc","docx"]}
+                      maxFileSize={5 * 1024 * 1024}
+                      onFileUpload={(files) => handleFileUpload("QAQCEmissionData", files)}
                     />
                   </Col>
                   <Col md={4}>
@@ -573,6 +567,9 @@ function PowerEmission() {
                       label={t("ActivityQAQC")}
                       toggleClick={handleActivityQAQC}
                       conditionData={ActivityQAQC}
+                      allowedFileTypes={["pdf","png","jpg","jpeg","doc","docx"]}
+                      maxFileSize={5 * 1024 * 1024}
+                      onFileUpload={(files) => handleFileUpload("QAQCActivityData", files)}
                     />
                   </Col>
                 </Row>
@@ -836,10 +833,10 @@ function PowerEmission() {
                   >
                     {t("Cancel")}
                   </Button>
-                  <Button type="submit" color="info" className=" me-2">
+                  <Button type="submit" color="info" className=" me-2" onClick={handleSubmit}>
                     {t("Save")}
                   </Button>
-                  <Button type="submit" color="success">
+                  <Button type="submit" color="success"  onClick={handleSubmit}>
                     {t("Submit")}
                   </Button>
                 </div>
@@ -847,7 +844,10 @@ function PowerEmission() {
             </Card>
           </Col>
         </Row>
-      </Container>
+
+      </Container>        
+      </form>
+
     </div>
   );
 }

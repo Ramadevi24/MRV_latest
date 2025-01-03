@@ -199,9 +199,9 @@ const CategoryModal = ({ open, onClose, data }) => {
   const handleFileUpload = (index, documentType, file) => {
     const newDocument = {
       document_Type: documentType,
-      file_Name: file.name,
-      file_path: file.path || "",
-      file_size: file.size || 0,
+      file_Name: file[0].name,
+      file_path: file[0].path || "",
+      file_size: file[0].size || 0,
     };
 
     setFormData((prevData) => {

@@ -2,7 +2,7 @@ import axios from "axios";
 import config from "../config";
 import { toast } from "react-toastify";
 
-const API_URL = `${config.api.API_URL}/EmissionSource`;
+const API_URL = `${config.api.API_URL}/Emission`;
 const AUTH_TOKEN = localStorage.getItem("AuthToken");
 
 export const getEmissionSources = async () => {
@@ -10,7 +10,7 @@ export const getEmissionSources = async () => {
     const response = await axios.get(API_URL, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response.value.$values;
+    return response.$values;
   } catch (error) {
     throw new Error("Error Fetching Emission Sources");
   }
@@ -30,7 +30,7 @@ export const getEmissionSourceById = async (id) => {
 export const createEmissionSource = async (emmisionSourceData) => {
   try {
     const response = await axios.post(
-      `${API_URL}/createEmissionSource`,
+      `${API_URL}/create`,
       emmisionSourceData,
       {
         headers: { Authorization: `Bearer ${AUTH_TOKEN}` },

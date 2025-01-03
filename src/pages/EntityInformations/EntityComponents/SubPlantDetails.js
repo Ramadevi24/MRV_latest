@@ -1,13 +1,15 @@
-import React,{useState} from 'react';
+import React,{useContext, useState} from 'react';
 import { useTranslation } from "react-i18next";
 import DataTable from '../../../Components/CommonComponents/DataTable';
 import Button from '../../../Components/CommonComponents/Button';
 import addIcon from '../../../assets/images/Power Sector--- Data Entry/Plus.png'
 import SubPlantModal from './SubPlantModal';
+import { SubPlantContext } from '../../../contexts/SubPlantContext';
 
 const SubPlantDetails = () => {
   const { t } = useTranslation();
   const [isSubPlantOpen, setIsSubPlantOpen] = useState(false);
+  const {subPlants, removeSubPlant, fetchAllSubPlants} = useContext(SubPlantContext);
 
   const handleSubPlantClick = () => {
     setIsSubPlantOpen(true);
@@ -16,32 +18,27 @@ const SubPlantDetails = () => {
   const handleSubPlantCloseModal = () => {
     setIsSubPlantOpen(false);
   };
-  // const headers = ["Sub Plant", "Location Coordinates", "Technology", "Configuration", "Fuel Type"];
+
+  const handleDelete = async(id) => {
+    await removeSubPlant(id);
+    fetchAllSubPlants()
+  };
+
   const columns = [
-    { key: "Sub Plant", label: t("Sub Plant"), sortable: true },
-    { key: "Location Coordinates", label: t("Location Coordinates"), sortable: true },
-    { key: "Technology", label: t("Technology"), sortable: true },
-    { key: "Configuration", label: t("Configuration"), sortable: true },
-    { key: "Fuel Type", label: t("Fuel Type"), sortable: true },
+    { key: "subPlantName", label: t("Sub Plant"), sortable: true },
+    { key: "technology", label: t("Technology"), sortable: true },
+    { key: "configuration", label: t("Configuration"), sortable: true },
+    { key: "fuelTypeId", label: t("Fuel Type"), sortable: true },
     { key: "Actions", label: t("Action"), render: (val, item) => (
       <div className="d-flex gap-2">
-        <button className="btn btn-sm btn-info" onClick={() => navigate(`/edit-role/${item.roleID}`)}>
+        <button className="btn btn-sm btn-info" onClick={() => navigate(`/edit-role/${item.subPlantID}`)}>
           <i className="ri-pencil-line" />
         </button>
-        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item.roleID)}>
+        <button className="btn btn-sm btn-danger" onClick={() => handleDelete(item.subPlantID)}>
           <i className="ri-delete-bin-line" />
         </button>
       </div>
     ) },
-  ];
-  const data = [
-    {
-      "Sub Plant": "GT/HRSG 41",
-      "Location Coordinates": "23.44, 56.37",
-      Technology: "Stream Turbine",
-      Configuration: "Combined Cycle",
-      "Fuel Type": "Natural Gas, Diesel"
-    }
   ];
 
   const handleSort = (key) => {
@@ -58,12 +55,12 @@ const SubPlantDetails = () => {
         </Button>
       </div>
       <DataTable
-        data={data}
+        data={subPlants}
         columns={columns}
         onSort={handleSort}
         onAction={(action, item) => {
-          if (action === "edit") navigate(`/edit-role/${item.roleID}`);
-          if (action === "delete") handleDelete(item.roleID);
+          if (action === "edit") navigate(`/edit-role/${item.subPlantID}`);
+          if (action === "delete") handleDelete(item.subPlantID);
         }}
       />
       {isSubPlantOpen && (
