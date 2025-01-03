@@ -3,13 +3,13 @@ import ToggleSwitch from "./ToggleSwitch";
 import DownloadIcon from "../../assets/images/Power Sector--- Data Entry/basil_upload-solid.png";
 import { useTranslation } from "react-i18next";
 
-const FileUpload = ({ 
-  label, 
-  toggleClick, 
-  conditionData, 
-  onFileUpload, 
-  allowedFileTypes = [], 
-  maxFileSize = 1 * 1024 * 1024 // Default max file size: 5 MB
+const FileUpload = ({
+  label,
+  toggleClick,
+  conditionData,
+  onFileUpload,
+  allowedFileTypes = [],
+  maxFileSize = 5 * 1024 * 1024, // Default max file size: 5 MB
 }) => {
   const [files, setFiles] = useState([]);
   const [error, setError] = useState("");
@@ -18,6 +18,7 @@ const FileUpload = ({
   const handleFileChange = (event) => {
     const selectedFiles = Array.from(event.target.files);
     handleFiles(selectedFiles);
+    event.target.value = null; // Reset the input to allow re-upload of the same file
   };
 
   const handleDrop = (event) => {
@@ -30,12 +31,13 @@ const FileUpload = ({
     setError("");
 
     const validFiles = selectedFiles.filter((file) => {
-      if (allowedFileTypes.length > 0 && !allowedFileTypes.includes(file.type)) {
-        setError(`Invalid file type: ${file.name}`);
+      const fileExtension = file.name.split(".").pop().toLowerCase();
+      if (allowedFileTypes.length > 0 && !allowedFileTypes.includes(fileExtension)) {       
+        setError(t("InvalidFileType", { fileName: file.name }));
         return false;
       }
-      if (file.size > maxFileSize) {
-        setError(`File too large: ${file.name}`);
+      if (file.size > maxFileSize) {        
+        setError(t("FileTooLarge", { fileName: file.name }));
         return false;
       }
       return true;
@@ -65,41 +67,51 @@ const FileUpload = ({
         />
       </div>
       {conditionData && (
+       <> {error && <div className="error-message">{error}</div>}  
         <div
           className="file-upload-body"
           onDragOver={(e) => e.preventDefault()}
           onDrop={handleDrop}
         >
-          {!files.length ? (
-            <div className="file-upload-align">
-              <div style={{ display: "flex" }}>
-                <input
-                  type="file"
-                  id={`upload-${label}`}
-                  onChange={handleFileChange}
-                  hidden
-                  multiple
-                />
-                <img
-                  src={DownloadIcon}
-                  alt="Upload"
-                  style={{ width: "15px", height: "15px" }}
-                />
-                <label
-                  htmlFor={`upload-${label}`}
-                  className="upload-placeholder"
-                >
-                  {t("DragDropFiles")}
-                </label>
-              </div>
-              <div>
-                <label htmlFor={`upload-${label}`} className="upload-button">
-                  {t("Upload")}
-                </label>
-              </div>
-              {error && <div className="error-message">{error}</div>}
+          
+          <div className="file-upload-align">
+            <input
+              type="file"
+              id={`upload-${label}`}
+              onChange={handleFileChange}
+              hidden
+              multiple
+            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <img
+                src={DownloadIcon}
+                alt="Upload"
+                style={{ width: "15px", height: "15px" }}
+              />
+              <label
+                htmlFor={`upload-${label}`}
+                className="upload-placeholder"
+                style={{ marginLeft: "10px", cursor: "pointer" }}
+              >
+                {t("DragDropFiles") }
+              </label>
+              <label
+                htmlFor={`upload-${label}`}
+                className="upload-button"
+                style={{ marginLeft: "10px", cursor: "pointer" }}
+              >
+                {t("Upload")}
+              </label>
             </div>
-          ) : (
+            
+          </div>
+          {files.length > 0 && (
             <div className="uploaded-files">
               {files.map((file, index) => (
                 <div key={index} className="uploaded-file">
@@ -114,7 +126,9 @@ const FileUpload = ({
               ))}
             </div>
           )}
+        
         </div>
+        </>
       )}
     </div>
   );
