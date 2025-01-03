@@ -16,69 +16,72 @@ import {
   Button,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
-import {FacilityContext} from "../../contexts/FacilityContext";
+import { FacilityContext } from "../../contexts/FacilityContext";
 import { useTranslation } from "react-i18next";
 import ViewFacility from "./ViewFacility";
 import { toast } from "react-toastify";
 
 function AddFacilityDetail() {
   const { t } = useTranslation();
-  const {addFacility, fetchAllFacilityWithDetailsByFacilityID, updateFacilitySubmitData} = useContext(FacilityContext);
+  const {
+    addFacility,
+    fetchAllFacilityWithDetailsByFacilityID,
+    updateFacilitySubmitData,
+  } = useContext(FacilityContext);
   const [isContactDetailsVisible, setContactDetailsVisible] = useState(true);
   const [activeTab, setActiveTab] = useState(0);
   const Navigate = useNavigate();
-  const categoriesData = localStorage.getItem('submittedData') ? JSON.parse(localStorage.getItem('submittedData')) : [];
+  const categoriesData = localStorage.getItem("submittedData")
+    ? JSON.parse(localStorage.getItem("submittedData"))
+    : [];
   const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
 
   const [formData, setFormData] = useState({
     facilityName: "",
     siteOperatorName: "",
-    emiratesID:0,
-    entityID:0,
-    coverageAreaOfTheDataID:0,
+    emiratesID: 0,
+    entityID: 0,
+    coverageAreaOfTheDataID: 0,
     longitude: 0,
     latitude: 0,
     streetAddress: "",
     isContactPersonSameAsEntity: isContactDetailsVisible,
     contactDetails: {
-    name: "",
-    title: "",
-    email: "",
-    phoneNumber: 0
-  },
-  facilitySectorDetails: categoriesData
+      name: "",
+      title: "",
+      email: "",
+      phoneNumber: 0,
+    },
+    facilitySectorDetails: categoriesData,
   });
 
-  const [errors, setErrors] = useState({ });
+  const [errors, setErrors] = useState({});
 
   const validateField = (field, value) => {
-    let errorMessage = "";
-  
-    if (["contactDetails", "isSubmitted", "isDelete", "isContactPersonSameAsEntity"].includes(field)) {
-      return errorMessage;
-    }
     if (field === "contactDetails") {
+      const errors = {};
       if (!isContactDetailsVisible) {
-        if (!value.contactDetails.name) {
-          return "Contact name is required.";
+        if (!value.name) {
+          errors.name = "Contact name is required.";
         }
-        if (!value.contactDetails.title) {
-          return "Contact title is required.";
+        if (!value.title) {
+          errors.title = "Contact title is required.";
         }
-        if (!value.contactDetails.email) {
-          return "Contact email is required.";
+        if (!value.email) {
+          errors.email = "Contact email is required.";
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.email)) {
-          return "Please provide a valid email address.";
+          errors.email = "Please provide a valid email address.";
         }
-        if (!value.contactDetails.phoneNumber) {
-          return "Contact phone number is required.";
+        if (!value.phoneNumber) {
+          errors.phoneNumber = "Contact phone number is required.";
         } else if (!/^\+?[0-9]{7,15}$/.test(value.phoneNumber)) {
-          return "Please provide a valid phone number.";
+          errors.phoneNumber = "Please provide a valid phone number.";
         }
       }
-      return errorMessage; // No errors for visible contactDetails
+      return errors;
     }
 
+    let errorMessage = "";
     if (!value) {
       errorMessage = `${field} field is required.`;
     } else if (field === "longitude" || field === "latitude") {
@@ -86,7 +89,6 @@ function AddFacilityDetail() {
         errorMessage = `Please provide a valid ${field} coordinate.`;
       }
     }
-  
     return errorMessage;
   };
 
@@ -111,20 +113,26 @@ function AddFacilityDetail() {
       };
     });
 
-    const error = validateField(field, value, isContactDetailsVisible);
-    setErrors((prev) => ({
-      ...prev,
-      [field]: error,
-    }));
+    if (field === "contactDetails") {
+      const contactErrors = validateField(field, value);
+      setErrors((prev) => ({
+        ...prev,
+        contactDetails: contactErrors,
+      }));
+    } else {
+      const error = validateField(field, value);
+      setErrors((prev) => ({
+        ...prev,
+        [field]: error,
+      }));
+    }
   };
-  
 
   const tabs = [
     "Facility Configuration",
     "Sub Plant Details (Power)",
     "View Details",
   ];
-
 
   const addFacilityWithTimeout = (facilityData, timeout = 10000) => {
     return Promise.race([
@@ -133,101 +141,114 @@ function AddFacilityDetail() {
         setTimeout(() => reject(new Error("Request timed out")), timeout)
       ),
     ]);
-  }
+  };
 
   const handleNext = async () => {
     const newErrors = {};
     Object.keys(formData).forEach((field) => {
       if (field === "contactDetails") {
-        const contactError = validateField(
-          "contactDetails",
-          formData.contactDetails,
-          isContactDetailsVisible
-        );
-        if (contactError) {
-          newErrors[field] = contactError;
+        const contactErrors = validateField(field, formData[field]);
+        if (Object.keys(contactErrors).length > 0) {
+          newErrors[field] = contactErrors;
         }
       } else {
-        const error = validateField(field, formData[field], isContactDetailsVisible);
+        const error = validateField(field, formData[field]);
         if (error) {
           newErrors[field] = error;
         }
       }
     });
+
     setErrors(newErrors);
-    const hasErrors = Object.values(newErrors).some((error) => error);
+    const hasErrors = Object.values(newErrors).some((error) =>
+      typeof error === "string" ? error : Object.keys(error).length > 0
+    );
+
     if (hasErrors) {
       console.warn("Validation errors detected:", newErrors);
       return;
     }
-    if (activeTab === 0) {
-     await handleFirstTabSubmission();
-    }
-    else if (activeTab === 1) {
-      await handleSecondTabSubmission();
-      }
-      else if (activeTab === 2) {
-        await handleFinalSubmission();
-      }
-    }
 
-    const handleFirstTabSubmission = async () => {
-      const updatedData = {
+    if (activeTab === 0) {
+      await handleFirstTabSubmission();
+    } else if (activeTab === 1) {
+      await handleSecondTabSubmission();
+    } else if (activeTab === 2) {
+      await handleFinalSubmission();
+    }
+  };
+
+  const handleFirstTabSubmission = async () => {
+    const updatedData = {
+      ...formData,
+      isContactPersonSameAsEntity: isContactDetailsVisible,
+      contactDetails: isContactDetailsVisible ? null : formData.contactDetails,
+      facilitySectorDetails: categoriesData,
+      isSubmitted: false,
+      isDelete: false,
+    };
+
+    try {
+      const newFacility = await addFacilityWithTimeout(updatedData);
+      if (newFacility) {
+        localStorage.setItem(
+          "facilityData",
+          JSON.stringify(newFacility.facility)
+        );
+        setActiveTab(activeTab + 1);
+      } else {
+        console.error("Failed to submit data: No response received.");
+      }
+    } catch (error) {
+      console.error("Error during first tab submission:", error);
+    }
+  };
+
+  const handleSecondTabSubmission = async () => {
+    try {
+      const facilityStoredData = JSON.parse(
+        localStorage.getItem("facilityData")
+      );
+      const getFacilityDataById = await fetchAllFacilityWithDetailsByFacilityID(
+        facilityStoredData.facilityID
+      );
+
+      if (getFacilityDataById) {
+        setFormData(getFacilityDataById);
+        setActiveTab(activeTab + 1);
+      } else {
+        console.error("Failed to fetch facility data by ID.");
+      }
+    } catch (error) {
+      console.error("Error during second tab submission:", error);
+    }
+  };
+
+  const handleFinalSubmission = async () => {
+    try {
+      const facilityStoredData = JSON.parse(
+        localStorage.getItem("facilityData")
+      );
+      const updatedSubmitData = {
         ...formData,
-        isContactPersonSameAsEntity: isContactDetailsVisible,
-        contactDetails: isContactDetailsVisible ? null : formData.contactDetails,
-        facilitySectorDetails: categoriesData,
-        isSubmitted: false,
+        isSubmitted: true,
         isDelete: false,
       };
-    
-      try {
-        const newFacility = await addFacilityWithTimeout(updatedData);
-        if (newFacility) {
-          localStorage.setItem("facilityData", JSON.stringify(newFacility.facility));
-          setActiveTab(activeTab + 1);
-        } else {
-          console.error("Failed to submit data: No response received.");
-        }
-      } catch (error) {
-        console.error("Error during first tab submission:", error);
+      const response = await updateFacilitySubmitData(
+        facilityStoredData.facilityID,
+        updatedSubmitData
+      );
+      if (response) {
+        Navigate("/FacilityDetailsGrid/:component");
+        toast.success("Facility added successfully");
+      } else {
+        console.error("Failed to update facility data.");
       }
-    };
-
-    const handleSecondTabSubmission = async () => {
-      try {
-        const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
-        const getFacilityDataById = await fetchAllFacilityWithDetailsByFacilityID(
-          facilityStoredData.facilityID
-        );
-    
-        if (getFacilityDataById) {
-          setFormData(getFacilityDataById);
-          setActiveTab(activeTab + 1);
-        } else {
-          console.error("Failed to fetch facility data by ID.");
-        }
-      } catch (error) {
-        console.error("Error during second tab submission:", error);
-      }
-    };
-
-    const handleFinalSubmission = async () => {
-      try {
-        const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
-        const updatedSubmitData = { ...formData, isSubmitted: true, isDelete: false };
-        const response = await updateFacilitySubmitData(facilityStoredData.facilityID, updatedSubmitData);
-        if (response) {
-          Navigate("/FacilityDetailsGrid/:component");
-          toast.success("Facility added successfully");
-        } else {
-          console.error("Failed to update facility data.");
-        }
-        localStorage.removeItem("facilityData");
-      } catch (error) {
-        console.error("Error during final submission:", error);
-      }
-    };
+      localStorage.removeItem("facilityData");
+    } catch (error) {
+      console.error("Error during final submission:", error);
+    }
+  };
 
   const loadDataFromLocalStorage = () => {
     const savedData = localStorage.getItem("facilityData");
@@ -293,7 +314,11 @@ function AddFacilityDetail() {
                 {/* Tab Content */}
                 {activeTab === 0 && (
                   <>
-                   <FacilityInfo onInputChange={handleInputChange} formData={formData} errors={errors}/>
+                    <FacilityInfo
+                      onInputChange={handleInputChange}
+                      formData={formData}
+                      errors={errors}
+                    />
                     <Col md={4}>
                       <ToggleSwitch
                         label="Contact Person is same as Entity"
@@ -303,18 +328,29 @@ function AddFacilityDetail() {
                         isCheckedData={isContactDetailsVisible}
                       />
                     </Col>
-                    {!isContactDetailsVisible && <ContactDetails onInputChange={handleInputChange} formData={formData.contactDetails} errors={errors}/>}
+                    {!isContactDetailsVisible && (
+                      <ContactDetails
+                        onInputChange={handleInputChange}
+                        formData={formData.contactDetails}
+                        errors={errors.contactDetails || {}}
+                      />
+                    )}
+
                     <CategoryDetails />
                   </>
                 )}
                 {activeTab === 1 && (
                   <>
-                    <SubPlantDetails formData={formData}/>
-                    <EmissionSourceDetails formData={formData}/>
+                    <SubPlantDetails formData={formData} />
+                    <EmissionSourceDetails formData={formData} />
                   </>
                 )}
                 {activeTab === 2 && (
-                  <ViewFacility formData={formData} onInputChange={handleInputChange} errors={errors}/>
+                  <ViewFacility
+                    formData={formData}
+                    onInputChange={handleInputChange}
+                    errors={errors}
+                  />
                 )}
 
                 {/* Navigation Buttons */}
