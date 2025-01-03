@@ -53,9 +53,9 @@ export const FacilityProvider = ({ children }) => {
     try {
       setLoading(true);
       const updatedFacility = await updateSubmitFacility(id, facilityData);
-      setTenants(
-        tenants.map((tenant) =>
-          tenant.id === id ? updatedFacility : facility
+      setFacility(
+        facility.map((item) =>
+          item.id === id ? updatedFacility : facility
         )
       );
     } catch (error) {

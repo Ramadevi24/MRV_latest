@@ -17,14 +17,14 @@ export const getFacilityByUser = async () => {
     throw new Error("Error fetching facility");
   }
 };
-export const getGetAllFacilitiesNamesByUser = async (id) => {
+export const getGetAllFacilitiesNamesByUser = async () => {
   try {
-    const response = await axios.get(`${API_URL}/GetAllFacilityWithDetails/${id}`, {
+    const response = await axios.get(`${API_URL}/GetAllFacilitiesNamesByUser`, {
       headers: { Authorization: `Bearer ${AUTH_TOKEN}` },
     });
-    return response;
+    return response.$values;
   } catch (error) {
-    throw new Error("Error fetching tenant");
+    throw new Error("Error fetching facility");
   }
 };
 
@@ -35,7 +35,7 @@ export const getAllFacilityWithDetailsByFacilityID = async (id) => {
     });
     return response;
   } catch (error) {
-    throw new Error("Error fetching tenant");
+    throw new Error("Error fetching facility");
   }
 };
 

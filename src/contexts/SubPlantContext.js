@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import {
   getSubPlant,
   getSubPlantById,
+  getSubPlantByFacilityId,
   createSubPlant,
   updateSubPlant,
   deleteSubPlant,
@@ -26,6 +27,18 @@ export const SubPlantProvider = ({ children }) => {
       setLoading(false);
     } catch (error) {
       console.log("Error fetching sub-plants", error);
+      setLoading(false);
+    }
+  };
+
+  const fetchSubPlantByFacilityId = async (id) => {
+    try {
+      setLoading(true);
+      const FacilitysubPlant = await getSubPlantByFacilityId(id);
+      return FacilitysubPlant;
+    } catch (error) {
+      console.log("Error fetching sub-plant by id", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -89,6 +102,7 @@ export const SubPlantProvider = ({ children }) => {
         addSubPlant,
         editSubPlant,
         removeSubPlant,
+        fetchSubPlantByFacilityId
       }}
     >
       {" "}

@@ -1,15 +1,38 @@
-import React,{useContext, useState} from 'react';
+import React,{useContext, useEffect, useState} from 'react';
 import { useTranslation } from "react-i18next";
 import DataTable from '../../../Components/CommonComponents/DataTable';
 import Button from '../../../Components/CommonComponents/Button';
 import addIcon from '../../../assets/images/Power Sector--- Data Entry/Plus.png'
 import SubPlantModal from './SubPlantModal';
 import { SubPlantContext } from '../../../contexts/SubPlantContext';
+import { FuelContext } from '../../../contexts/FuelContext';
 
 const SubPlantDetails = () => {
   const { t } = useTranslation();
   const [isSubPlantOpen, setIsSubPlantOpen] = useState(false);
-  const {subPlants, removeSubPlant, fetchAllSubPlants} = useContext(SubPlantContext);
+  const {removeSubPlant, fetchAllSubPlants, fetchSubPlantByFacilityId} = useContext(SubPlantContext);
+  const {fuels} = useContext(FuelContext)
+  const [FacilitySubPlants, setFacilitySubPlants] = useState([]);
+  const facilityStoredData = JSON.parse(localStorage.getItem("facilityData"));
+
+  useEffect(() => {
+    fetchAllSubPlantsByFacilityId(facilityStoredData.facilityID);
+  }, []);
+
+  const fetchAllSubPlantsByFacilityId = async (id) => {
+    try {
+      const data = await fetchSubPlantByFacilityId(id);
+      const transformedData = data.map(subPlant => ({
+        ...subPlant,
+        fuelTypeId: fuels && fuels[subPlant.fuelTypeId] ? fuels[subPlant.fuelTypeId] : "", // Fallback for unmapped IDs
+      }));
+      console.log(transformedData, 'transformedData')
+      setFacilitySubPlants(transformedData);
+    } catch (error) {
+      console.log("Error fetching sub-plants", error);
+      setLoading(false);
+    }
+  };
 
   const handleSubPlantClick = () => {
     setIsSubPlantOpen(true);
@@ -55,7 +78,7 @@ const SubPlantDetails = () => {
         </Button>
       </div>
       <DataTable
-        data={subPlants}
+        data={FacilitySubPlants}
         columns={columns}
         onSort={handleSort}
         onAction={(action, item) => {
